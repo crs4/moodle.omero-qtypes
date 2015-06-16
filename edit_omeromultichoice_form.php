@@ -15,11 +15,11 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Defines the editing form for the YOURQTYPENAME question type.
+ * Defines the editing form for the omeromultichoice question type.
  *
  * @package    qtype
  * @subpackage YOURQTYPENAME
- * @copyright  THEYEAR YOURNAME (YOURCONTACTINFO)
+ * @copyright  2015 CRS4
 
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -29,13 +29,12 @@ defined('MOODLE_INTERNAL') || die();
 
 
 /**
- * YOURQTYPENAME question editing form definition.
+ * omeromultichoice question editing form definition.
  *
- * @copyright  THEYEAR YOURNAME (YOURCONTACTINFO)
-
- * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ * @copyright  2015 CRS4
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later // FIXME: check the licence
  */
-class qtype_YOURQTYPENAME_edit_form extends question_edit_form {
+class qtype_omeromultichoice_edit_form extends question_edit_form {
 
     protected function definition_inner($mform) {
         $this->add_interactive_settings();
@@ -49,6 +48,6 @@ class qtype_YOURQTYPENAME_edit_form extends question_edit_form {
     }
 
     public function qtype() {
-        return 'YOURQTYPENAME';
+        return 'omeromultichoice';
     }
 }

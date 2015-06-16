@@ -15,13 +15,12 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Question type class for the YOURQTYPENAME question type.
+ * Question type class for the omeromultichoice question type.
  *
  * @package    qtype
- * @subpackage YOURQTYPENAME
- * @copyright  THEYEAR YOURNAME (YOURCONTACTINFO)
-
- * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ * @subpackage omeromultichoice
+ * @copyright  2015 CRS4
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later //FIXME: check the licence
  */
 
 
@@ -33,13 +32,12 @@ require_once($CFG->dirroot . '/question/type/YOURQTYPENAME/question.php');
 
 
 /**
- * The YOURQTYPENAME question type.
+ * The omeromultichoice question type.
  *
- * @copyright  THEYEAR YOURNAME (YOURCONTACTINFO)
-
- * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ * @copyright  2015 CRS4
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later // FIXME: check the licence
  */
-class qtype_YOURQTYPENAME extends question_type {
+class qtype_omeromultichoice extends question_type {
 
     public function move_files($questionid, $oldcontextid, $newcontextid) {
         parent::move_files($questionid, $oldcontextid, $newcontextid);

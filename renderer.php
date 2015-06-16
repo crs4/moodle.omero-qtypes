@@ -15,13 +15,12 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * YOURQTYPENAME question renderer class.
+ * omeromultichoice question renderer class.
  *
  * @package    qtype
- * @subpackage YOURQTYPENAME
- * @copyright  THEYEAR YOURNAME (YOURCONTACTINFO)
-
- * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ * @subpackage omeromultichoice
+ * @copyright  2015 CRS4
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later //FIXME: check the licence
  */
 
 
@@ -29,13 +28,12 @@ defined('MOODLE_INTERNAL') || die();
 
 
 /**
- * Generates the output for YOURQTYPENAME questions.
+ * Generates the output for omeromultichoice questions.
  *
- * @copyright  THEYEAR YOURNAME (YOURCONTACTINFO)
-
- * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ * @copyright  2015 CRS4
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later //FIXME: check the licence
  */
-class qtype_YOURQTYPENAME_renderer extends qtype_renderer {
+class qtype_omeromultichoice_renderer extends qtype_renderer {
     public function formulation_and_controls(question_attempt $qa,
             question_display_options $options) {
 

@@ -15,18 +15,17 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * YOURQTYPENAME question type version information.
+ * omeromultichoice question type version information.
  *
  * @package    qtype
- * @subpackage YOURQTYPENAME
- * @copyright  THEYEAR YOURNAME (YOURCONTACTINFO)
-
- * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ * @subpackage omeromultichoice
+ * @copyright  2015 CRS4
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later //FIXME: check the licence
  */
 
 defined('MOODLE_INTERNAL') || die();
 
-$plugin->component = 'qtype_YOURQTYPENAME';
+$plugin->component = 'qtype_omeromultichoice';
 $plugin->version   = 2013012900;
 
 $plugin->requires  = 2012062504;
