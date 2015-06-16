@@ -23,7 +23,7 @@
 
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-$string['pluginname'] = 'omeromultichoice';
+$string['pluginname'] = 'Omero MultiChoice';
 $string['pluginname_help'] = 'Create a cloze question type with embedded response fields in the question text to enter a numeric
 or text value or select a value from a number of options.';
 $string['pluginname_link'] = 'question/type/omeromultichoice';
