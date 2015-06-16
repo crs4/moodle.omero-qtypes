@@ -18,7 +18,7 @@
  * Defines the editing form for the omeromultichoice question type.
  *
  * @package    qtype
- * @subpackage YOURQTYPENAME
+ * @subpackage omeromultichoice
  * @copyright  2015 CRS4
 
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
