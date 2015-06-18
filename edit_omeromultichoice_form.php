@@ -27,6 +27,7 @@
 
 defined('MOODLE_INTERNAL') || die();
 
+require_once($CFG->dirroot . '/question/type/multichoice/edit_multichoice_form.php');
 
 /**
  * omeromultichoice question editing form definition.
@@ -34,20 +35,20 @@ defined('MOODLE_INTERNAL') || die();
  * @copyright  2015 CRS4
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later // FIXME: check the licence
  */
-class qtype_omeromultichoice_edit_form extends question_edit_form {
+class qtype_omeromultichoice_edit_form extends qtype_multichoice_edit_form {
 
-    protected function definition_inner($mform) {
-        $this->add_interactive_settings();
-    }
-
-    protected function data_preprocessing($question) {
-        $question = parent::data_preprocessing($question);
-        $question = $this->data_preprocessing_hints($question);
-
-        return $question;
-    }
-
-    public function qtype() {
-        return 'omeromultichoice';
-    }
+//    protected function definition_inner($mform) {
+//        $this->add_interactive_settings();
+//    }
+//
+//    protected function data_preprocessing($question) {
+//        $question = parent::data_preprocessing($question);
+//        $question = $this->data_preprocessing_hints($question);
+//
+//        return $question;
+//    }
+//
+//    public function qtype() {
+//        return 'omeromultichoice';
+//    }
 }
