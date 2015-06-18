@@ -28,6 +28,7 @@ defined('MOODLE_INTERNAL') || die();
 
 require_once($CFG->libdir . '/questionlib.php');
 require_once($CFG->dirroot . '/question/engine/lib.php');
+require_once($CFG->dirroot . '/question/type/multichoice/questiontype.php');
 require_once($CFG->dirroot . '/question/type/omeromultichoice/question.php');
 
 
@@ -37,34 +38,34 @@ require_once($CFG->dirroot . '/question/type/omeromultichoice/question.php');
  * @copyright  2015 CRS4
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later // FIXME: check the licence
  */
-class qtype_omeromultichoice extends question_type {
+class qtype_omeromultichoice extends qtype_multichoice {
 
-    public function move_files($questionid, $oldcontextid, $newcontextid) {
-        parent::move_files($questionid, $oldcontextid, $newcontextid);
-        $this->move_files_in_hints($questionid, $oldcontextid, $newcontextid);
-    }
-
-    protected function delete_files($questionid, $contextid) {
-        parent::delete_files($questionid, $contextid);
-        $this->delete_files_in_hints($questionid, $contextid);
-    }
-
-    public function save_question_options($question) {
-        $this->save_hints($question);
-    }
-
-    protected function initialise_question_instance(question_definition $question, $questiondata) {
-        // TODO.
-        parent::initialise_question_instance($question, $questiondata);
-    }
-
-    public function get_random_guess_score($questiondata) {
-        // TODO.
-        return 0;
-    }
-
-    public function get_possible_responses($questiondata) {
-        // TODO.
-        return array();
-    }
+//    public function move_files($questionid, $oldcontextid, $newcontextid) {
+//        parent::move_files($questionid, $oldcontextid, $newcontextid);
+//        $this->move_files_in_hints($questionid, $oldcontextid, $newcontextid);
+//    }
+//
+//    protected function delete_files($questionid, $contextid) {
+//        parent::delete_files($questionid, $contextid);
+//        $this->delete_files_in_hints($questionid, $contextid);
+//    }
+//
+//    public function save_question_options($question) {
+//        $this->save_hints($question);
+//    }
+//
+//    protected function initialise_question_instance(question_definition $question, $questiondata) {
+//        // TODO.
+//        parent::initialise_question_instance($question, $questiondata);
+//    }
+//
+//    public function get_random_guess_score($questiondata) {
+//        // TODO.
+//        return 0;
+//    }
+//
+//    public function get_possible_responses($questiondata) {
+//        // TODO.
+//        return array();
+//    }
 }
