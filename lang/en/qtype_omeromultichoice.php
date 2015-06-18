@@ -27,9 +27,9 @@ $string['pluginname'] = 'Omero MultiChoice';
 $string['pluginname_help'] = 'Create a cloze question type with embedded response fields in the question text to enter a numeric
 or text value or select a value from a number of options.';
 $string['pluginname_link'] = 'question/type/omeromultichoice';
-$string['pluginnameadding'] = 'Adding a omeromultichoice question';
-$string['pluginnameediting'] = 'Editing a omeromultichoice question';
-$string['pluginnamesummary'] = 'A omeromultichoice question type which allows the embedding of the response fields for various available
+$string['pluginnameadding'] = 'Adding a Omero MultiChoice question';
+$string['pluginnameediting'] = 'Editing a Omero MultiChoice question';
+$string['pluginnamesummary'] = 'A Omero MultiChoice question type which allows the embedding of the response fields for various available
 sub questions in the question text.
 
 So the student can enter a numeric or short text answer or choose an answer or answer(s) from
