@@ -33,41 +33,41 @@ defined('MOODLE_INTERNAL') || die();
  * @copyright  2015 CRS4
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later //FIXME: check the licence
  */
-class qtype_omeromultichoice_renderer extends qtype_renderer {
-    public function formulation_and_controls(question_attempt $qa,
-            question_display_options $options) {
-
-        $question = $qa->get_question();
-
-        $questiontext = $question->format_questiontext($qa);
-        $placeholder = false;
-        if (preg_match('/_____+/', $questiontext, $matches)) {
-            $placeholder = $matches[0];
-        }
-        $input = '**subq controls go in here**';
-
-        if ($placeholder) {
-            $questiontext = substr_replace($questiontext, $input,
-                    strpos($questiontext, $placeholder), strlen($placeholder));
-        }
-
-        $result = html_writer::tag('div', $questiontext, array('class' => 'qtext'));
-
-        /* if ($qa->get_state() == question_state::$invalid) {
-            $result .= html_writer::nonempty_tag('div',
-                    $question->get_validation_error(array('answer' => $currentanswer)),
-                    array('class' => 'validationerror'));
-        }*/
-        return $result;
-    }
-
-    public function specific_feedback(question_attempt $qa) {
-        // TODO.
-        return '';
-    }
-
-    public function correct_response(question_attempt $qa) {
-        // TODO.
-        return '';
-    }
+class qtype_omeromultichoice_renderer extends qtype_multichoice_single_renderer {
+//    public function formulation_and_controls(question_attempt $qa,
+//            question_display_options $options) {
+//
+//        $question = $qa->get_question();
+//
+//        $questiontext = $question->format_questiontext($qa);
+//        $placeholder = false;
+//        if (preg_match('/_____+/', $questiontext, $matches)) {
+//            $placeholder = $matches[0];
+//        }
+//        $input = '**subq controls go in here**';
+//
+//        if ($placeholder) {
+//            $questiontext = substr_replace($questiontext, $input,
+//                    strpos($questiontext, $placeholder), strlen($placeholder));
+//        }
+//
+//        $result = html_writer::tag('div', $questiontext, array('class' => 'qtext'));
+//
+//        /* if ($qa->get_state() == question_state::$invalid) {
+//            $result .= html_writer::nonempty_tag('div',
+//                    $question->get_validation_error(array('answer' => $currentanswer)),
+//                    array('class' => 'validationerror'));
+//        }*/
+//        return $result;
+//    }
+//
+//    public function specific_feedback(question_attempt $qa) {
+//        // TODO.
+//        return '';
+//    }
+//
+//    public function correct_response(question_attempt $qa) {
+//        // TODO.
+//        return '';
+//    }
 }
