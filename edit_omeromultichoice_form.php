@@ -20,7 +20,6 @@
  * @package    qtype
  * @subpackage omeromultichoice
  * @copyright  2015 CRS4
-
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later //FIXME: check the licence
  */
 
@@ -35,12 +34,47 @@ require_once($CFG->dirroot . '/question/type/multichoice/edit_multichoice_form.p
  * @copyright  2015 CRS4
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later // FIXME: check the licence
  */
-class qtype_omeromultichoice_edit_form extends qtype_multichoice_edit_form {
+class qtype_omeromultichoice_edit_form extends qtype_multichoice_edit_form
+{
 
 //    protected function definition_inner($mform) {
 //        $this->add_interactive_settings();
 //    }
 //
+
+
+    protected function definition_inner($mform)
+    {
+        global $OUTPUT;
+
+        $mform->addElement('omefilepicker', 'userfile', get_string('file'), null,
+            array('maxbytes' => 2048, 'accepted_types' => array('*'),
+                  'return_types'=> array( FILE_INTERNAL | FILE_EXTERNAL)));
+
+        $mform->addElement('select', 'single',
+            get_string('answerhowmany', 'qtype_multichoice'), $menu);
+        $mform->setDefault('single', 1);
+
+        $mform->addElement('advcheckbox', 'shuffleanswers',
+            get_string('shuffleanswers', 'qtype_multichoice'), null, null, array(0, 1));
+        $mform->addHelpButton('shuffleanswers', 'shuffleanswers', 'qtype_multichoice');
+        $mform->setDefault('shuffleanswers', 1);
+
+        $mform->addElement('select', 'answernumbering',
+            get_string('answernumbering', 'qtype_multichoice'),
+            qtype_multichoice::get_numbering_styles());
+        $mform->setDefault('answernumbering', 'abc');
+
+        $this->add_per_answer_fields($mform, get_string('choiceno', 'qtype_multichoice', '{no}'),
+            question_bank::fraction_options_full(), max(1, QUESTION_NUMANS_START));
+
+        $this->add_combined_feedback_fields(true);
+        $mform->disabledIf('shownumcorrect', 'single', 'eq', 1);
+
+        $this->add_interactive_settings(true, true);
+    }
+
+
 //    protected function data_preprocessing($question) {
 //        $question = parent::data_preprocessing($question);
 //        $question = $this->data_preprocessing_hints($question);
