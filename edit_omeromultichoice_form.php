@@ -49,7 +49,7 @@ class qtype_omeromultichoice_edit_form extends qtype_multichoice_edit_form
             get_string('answersingleno', 'qtype_multichoice'),
             get_string('answersingleyes', 'qtype_multichoice'),
         );
-        $mform->addElement('omefilepicker', 'userfile', get_string('file'), null,
+        $mform->addElement('omerofilepicker', 'userfile', get_string('file'), null,
             array('maxbytes' => 2048, 'accepted_types' => array('*'),
                   'return_types'=> array( FILE_INTERNAL | FILE_EXTERNAL)));
 
