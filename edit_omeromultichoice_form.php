@@ -37,16 +37,18 @@ require_once($CFG->dirroot . '/question/type/multichoice/edit_multichoice_form.p
 class qtype_omeromultichoice_edit_form extends qtype_multichoice_edit_form
 {
 
-//    protected function definition_inner($mform) {
-//        $this->add_interactive_settings();
-//    }
-//
-
-
     protected function definition_inner($mform)
     {
-        global $OUTPUT;
+        global $PAGE, $OUTPUT;
 
+        $module = array('name'=>'omero_multichoice_helper', 'fullpath'=>'/question/type/omeromultichoice/omero_multichoice_helper.js',
+            'requires'=>array('omemultichoice_qtype', 'node', 'node-event-simulate', 'core_dndupload'));
+        $PAGE->requires->js_init_call('M.omero_multichoice_helper.init', array(), true, $module);
+
+        $menu = array(
+            get_string('answersingleno', 'qtype_multichoice'),
+            get_string('answersingleyes', 'qtype_multichoice'),
+        );
         $mform->addElement('omefilepicker', 'userfile', get_string('file'), null,
             array('maxbytes' => 2048, 'accepted_types' => array('*'),
                   'return_types'=> array( FILE_INTERNAL | FILE_EXTERNAL)));
