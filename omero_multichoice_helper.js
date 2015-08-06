@@ -1,24 +1,36 @@
 /* Omero Multichoice QType Helper */
 M.omero_multichoice_helper = {};
 
+// private shorthand for M.omero_multichoice_helper
+var me = M.omero_multichoice_helper;
+
 /**
  * Initialization function
  *
  * @param module_name
  * @param options
  */
-M.omero_multichoice_helper.init = function (module_name, options) {
-    M.omero_multichoice_helper.module_name = module_name;
+me.init = function (module_name, options) {
 
+    // init instance properties
+    me.module_name = module_name; // module name
+    me.selected_roi_shapes = [];  // list of current selected rois
+
+    // Register event handlers
     document.addEventListener("frameLoaded", function (e) {
-        M.omero_multichoice_helper.registerFrameWindowEventHandlers(e.detail.frameId);
+        me.registerFrameWindowEventHandlers(e.detail.frameId);
     }, true);
+
+    // register jquery
+    require(['jquery'], function($) {
+        me.$ = $;
+    });
 
     console.log("omero_multichoice_helper js helper initialized!!!");
 };
 
 
-M.omero_multichoice_helper.registerFrameWindowEventHandlers = function(frameId){
+me.registerFrameWindowEventHandlers = function(frameId){
 
     var omero_viewer_frame = document.getElementById(frameId);
     if(!omero_viewer_frame){
@@ -36,14 +48,19 @@ M.omero_multichoice_helper.registerFrameWindowEventHandlers = function(frameId){
  *
  * @param info
  */
-M.omero_multichoice_helper.roiShapeSelected = function(info){
-    console.log("Check message", info);
+me.roiShapeSelected = function(info){
+    me.selected_roi_shapes.push(info.detail);
+    console.log("Selected RoiShape", info, "Current Selected ROIS", me.selected_roi_shapes);
 }
 
 /**
  * Handle the RoiShapeDeselection event
+ *
  * @param info
  */
-M.omero_multichoice_helper.roiShapeDeselected = function(info){
-    console.log("Check message", info);
+me.roiShapeDeselected = function(info){
+    me.selected_roi_shapes = me.$.grep(me.selected_roi_shapes, function(v){
+        return v.id != info.detail.id;
+    });
+    console.log("DeSelected RoiShape", info, "Current DeSelected ROIS", me.selected_roi_shapes);
 }
