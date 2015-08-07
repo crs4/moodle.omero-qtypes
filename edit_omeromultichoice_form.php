@@ -37,12 +37,13 @@ require_once($CFG->dirroot . '/question/type/multichoice/edit_multichoice_form.p
 class qtype_omeromultichoice_edit_form extends qtype_multichoice_edit_form
 {
 
+
     protected function definition_inner($mform)
     {
         global $PAGE, $OUTPUT;
 
-        $module = array('name'=>'omero_multichoice_helper', 'fullpath'=>'/question/type/omeromultichoice/omero_multichoice_helper.js',
-            'requires'=>array('omemultichoice_qtype', 'node', 'node-event-simulate', 'core_dndupload'));
+        $module = array('name' => 'omero_multichoice_helper', 'fullpath' => '/question/type/omeromultichoice/omero_multichoice_helper.js',
+            'requires' => array('omemultichoice_qtype', 'node', 'node-event-simulate', 'core_dndupload'));
         $PAGE->requires->js_init_call('M.omero_multichoice_helper.init', array(), true, $module);
 
         $menu = array(
@@ -51,8 +52,7 @@ class qtype_omeromultichoice_edit_form extends qtype_multichoice_edit_form
         );
         $mform->addElement('omerofilepicker', 'usefilereference', get_string('file'), null,
             array('maxbytes' => 2048, 'accepted_types' => array('*'),
-                  'return_types'=> array( FILE_INTERNAL | FILE_EXTERNAL)));
-
+                'return_types' => array(FILE_INTERNAL | FILE_EXTERNAL)));
         $mform->addElement('select', 'single',
             get_string('answerhowmany', 'qtype_multichoice'), $menu);
         $mform->setDefault('single', 1);
@@ -68,23 +68,50 @@ class qtype_omeromultichoice_edit_form extends qtype_multichoice_edit_form
         $mform->setDefault('answernumbering', 'abc');
 
         $this->add_per_answer_fields($mform, get_string('choiceno', 'qtype_multichoice', '{no}'),
-            question_bank::fraction_options_full(), max(1, QUESTION_NUMANS_START));
+            question_bank::fraction_options_full(), 1);
 
         $this->add_combined_feedback_fields(true);
         $mform->disabledIf('shownumcorrect', 'single', 'eq', 1);
 
         $this->add_interactive_settings(true, true);
-}
+    }
 
 
-//    protected function data_preprocessing($question) {
-//        $question = parent::data_preprocessing($question);
-//        $question = $this->data_preprocessing_hints($question);
-//
-//        return $question;
-//    }
-//
-//    public function qtype() {
-//        return 'omeromultichoice';
-//    }
+
+    protected function get_per_answer_fields($mform, $label, $gradeoptions,
+                                             &$repeatedoptions, &$answersoption)
+    {
+        $repeated = array();
+        $repeated[] = $mform->addElement('html', '<div class="omeromultichoice-qanswer-container">');
+        $repeated[] = $mform->createElement('editor', 'answer',
+            $label, array('rows' => 1), $this->editoroptions);
+        $repeated[] = $mform->createElement('select', 'roi',
+            "ROI", $gradeoptions);
+        $repeated[] = $mform->createElement('select', 'fraction',
+            get_string('grade'), $gradeoptions);
+        $repeated[] = $mform->createElement('editor', 'feedback',
+            get_string('feedback', 'question'), array('rows' => 1), $this->editoroptions);
+        $repeated[] = $mform->addElement('html', '</div>');
+
+        $repeatedoptions['answer']['type'] = PARAM_RAW;
+        $repeatedoptions['fraction']['default'] = 0;
+        $answersoption = 'answers';
+
+        return $repeated;
+    }
+
+
+    protected function get_hint_fields($withclearwrong = false, $withshownumpartscorrect = false)
+    {
+        list($repeated, $repeatedoptions) = parent::get_hint_fields($withclearwrong, $withshownumpartscorrect);
+        $repeatedoptions['hintclearwrong']['disabledif'] = array('single', 'eq', 1);
+        $repeatedoptions['hintshownumcorrect']['disabledif'] = array('single', 'eq', 1);
+        return array($repeated, $repeatedoptions);
+    }
+
+
+    public function qtype()
+    {
+        return 'omeromultichoice';
+    }
 }
