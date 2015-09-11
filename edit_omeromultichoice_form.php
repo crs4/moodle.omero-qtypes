@@ -67,8 +67,9 @@ class qtype_omeromultichoice_edit_form extends qtype_multichoice_edit_form
             qtype_multichoice::get_numbering_styles());
         $mform->setDefault('answernumbering', 'abc');
 
+        // Set the initial number of answers to 0; add answers one by one
         $this->add_per_answer_fields($mform, get_string('choiceno', 'qtype_multichoice', '{no}'),
-            question_bank::fraction_options_full(), 1);
+            question_bank::fraction_options_full(), 0, 1);
 
         $this->add_combined_feedback_fields(true);
         $mform->disabledIf('shownumcorrect', 'single', 'eq', 1);
