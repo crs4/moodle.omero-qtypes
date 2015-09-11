@@ -31,6 +31,8 @@ $string['pluginnameadding'] = 'Adding a Omero MultiChoice question';
 $string['pluginnameediting'] = 'Editing a Omero MultiChoice question';
 $string['pluginnamesummary'] = 'A Omero MultiChoice question type which allows the embedding of the response fields for various available
 sub questions in the question text.
-
 So the student can enter a numeric or short text answer or choose an answer or answer(s) from
  using a select box, check boxes or radio boxes.';
+$string['add_roi_answer'] = 'Add new ROI answer';
+
+$string['choiceno'] = 'ROI Choice {$a}';
