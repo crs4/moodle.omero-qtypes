@@ -59,9 +59,6 @@ class qtype_omeromultichoice_edit_form extends qtype_multichoice_edit_form
             get_string('answersingleno', 'qtype_multichoice'),
             get_string('answersingleyes', 'qtype_multichoice'),
         );
-        $mform->addElement('omerofilepicker', 'usefilereference', get_string('file'), null,
-            array('maxbytes' => 2048, 'accepted_types' => array('*'),
-                'return_types' => array(FILE_INTERNAL | FILE_EXTERNAL)));
         $mform->addElement('select', 'single',
             get_string('answerhowmany', 'qtype_multichoice'), $menu);
         $mform->setDefault('single', 1);
@@ -84,6 +81,10 @@ class qtype_omeromultichoice_edit_form extends qtype_multichoice_edit_form
         $mform->disabledIf('shownumcorrect', 'single', 'eq', 1);
 
         $this->add_interactive_settings(true, true);
+
+        // Set the editing mode
+        $mform->setType("editing_mode", PARAM_BOOL);
+        $mform->addElement('hidden', 'editing_mode', 'true');
     }
 
 

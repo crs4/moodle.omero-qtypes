@@ -26,8 +26,28 @@ me.init = function (module_name, options) {
         me.$ = $;
     });
 
+    // Perform form form enhancements
+    if(me.isEditingMode()){
+
+    }
+
     console.log("omero_multichoice_helper js helper initialized!!!");
 };
+
+
+me.isEditingMode = function(){
+    return me._getForm() != null;
+}
+
+
+me._getForm = function(){
+    for(var i in document.forms){
+        var f = document.forms[i];
+        if(f.elements['editing_mode'])
+            return f;
+    }
+    return null;
+}
 
 
 me.registerFrameWindowEventHandlers = function(frameId){
@@ -51,6 +71,7 @@ me.registerFrameWindowEventHandlers = function(frameId){
 me.roiShapeSelected = function(info){
     me.selected_roi_shapes.push(info.detail);
     console.log("Selected RoiShape", info, "Current Selected ROIS", me.selected_roi_shapes);
+    alert("Selezionata ROI: " + info.detail.id);
 }
 
 /**
@@ -64,3 +85,12 @@ me.roiShapeDeselected = function(info){
     });
     console.log("DeSelected RoiShape", info, "Current DeSelected ROIS", me.selected_roi_shapes);
 }
+
+
+
+me.updateRoiAnswerThumb = function(roi_id){
+    alert("Updating!!!");
+}
+
+
+
