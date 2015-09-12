@@ -151,5 +151,16 @@ class qtype_omeromultichoice_edit_form extends qtype_multichoice_edit_form
         return array($repeated, $repeatedoptions);
     }
 
-
+    /**
+     * Perform the form validation
+     *
+     * @param $data
+     * @param $files
+     * @return mixed
+     */
+    public function validation($data, $files) {
+        echo "Number of ROIS: " . count($data['roi']);
+        $errors = parent::validation($data, $files);
+        return $errors;
+    }
 }
