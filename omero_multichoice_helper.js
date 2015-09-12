@@ -87,10 +87,3 @@ me.roiShapeDeselected = function(info){
 }
 
 
-
-me.updateRoiAnswerThumb = function(roi_id){
-    alert("Updating!!!");
-}
-
-
-
