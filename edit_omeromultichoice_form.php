@@ -96,6 +96,17 @@ class qtype_omeromultichoice_edit_form extends qtype_multichoice_edit_form
     }
 
 
+    /**
+     * Build the repeated elements of the form
+     * (i.e., form elements for setting answers)
+     *
+     * @param $mform
+     * @param $label
+     * @param $gradeoptions
+     * @param $repeatedoptions
+     * @param $answersoption
+     * @return array
+     */
     protected function get_per_answer_fields($mform, $label, $gradeoptions,
                                              &$repeatedoptions, &$answersoption)
     {
