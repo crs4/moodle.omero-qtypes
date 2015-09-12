@@ -55,6 +55,16 @@ class qtype_omeromultichoice_edit_form extends qtype_multichoice_edit_form
             'requires' => array('omemultichoice_qtype', 'node', 'node-event-simulate', 'core_dndupload'));
         $PAGE->requires->js_init_call('M.omero_multichoice_helper.init', array(), true, $module);
 
+
+
+        $mform->addElement('omerofilepicker', 'usefilereference', get_string('file'), null,
+            array('maxbytes' => 2048, 'accepted_types' => array('*'),
+                'return_types' => array(FILE_INTERNAL | FILE_EXTERNAL)));
+
+        $mform->addElement("button", "add-roi-answer", get_string("add_roi_answer", "qtype_omeromultichoice"),
+            array("float"=>"right"));
+
+
         $menu = array(
             get_string('answersingleno', 'qtype_multichoice'),
             get_string('answersingleyes', 'qtype_multichoice'),

@@ -162,3 +162,13 @@ body#page-question-type-omeromultichoice div[id^=fitem_id_][id*=feedback_] {
 .omeromultichoice-qanswer-roi-details-text{
 
 }
+
+
+
+body#page-question-type-omeromultichoice div[id^=fitem_id_][id*=add-roi-answer] {
+    margin-bottom: 40px;
+    margin-right: 10px;
+    float: right;
+}
+
+
