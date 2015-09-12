@@ -133,7 +133,7 @@ class qtype_omeromultichoice_edit_form extends qtype_multichoice_edit_form
         $repeated[] = $mform->createElement('html',
             '<div class="omeromultichoice-qanswer-roi-details-text"><b>Label:</b> ain asdasdlkj asd</div>');
         $repeated[] = $mform->createElement('html',
-            '<div class="omeromultichoice-qanswer-roi-details-text"><b>Label:</b> ain asdasdlkj asd <input</div>');
+            '<div class="omeromultichoice-qanswer-roi-details-text"><b>Label:</b> ain asdasdlkj asd </div>');
         $repeated[] = $mform->createElement('html', '</div>'); // -> Close 'details-text-container'
         $repeated[] = $mform->createElement('html', '</div>'); // -> Close 'qanswer-roi-details-container
 
