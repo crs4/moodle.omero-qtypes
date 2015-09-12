@@ -37,7 +37,16 @@ require_once($CFG->dirroot . '/question/type/multichoice/edit_multichoice_form.p
 class qtype_omeromultichoice_edit_form extends qtype_multichoice_edit_form
 {
 
+    public function qtype()
+    {
+        return 'omeromultichoice';
+    }
 
+    /**
+     * Define the form for editing the question
+     *
+     * @param $mform
+     */
     protected function definition_inner($mform)
     {
         global $PAGE, $OUTPUT;
@@ -143,8 +152,4 @@ class qtype_omeromultichoice_edit_form extends qtype_multichoice_edit_form
     }
 
 
-    public function qtype()
-    {
-        return 'omeromultichoice';
-    }
 }
