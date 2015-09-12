@@ -18,7 +18,7 @@ me.init = function (module_name, options) {
 
     // Register event handlers
     document.addEventListener("frameLoaded", function (e) {
-        me.registerFrameWindowEventHandlers(e.detail.frameId);
+        me._registerFrameWindowEventHandlers(e.detail.frameId);
     }, true);
 
     // register jquery
@@ -35,11 +35,18 @@ me.init = function (module_name, options) {
 };
 
 
+
+
 me.isEditingMode = function(){
     return me._getForm() != null;
 }
 
-
+/**
+ * Return the question editor form
+ *
+ * @returns {*}
+ * @private
+ */
 me._getForm = function(){
     for(var i in document.forms){
         var f = document.forms[i];
@@ -50,7 +57,14 @@ me._getForm = function(){
 }
 
 
-me.registerFrameWindowEventHandlers = function(frameId){
+/**
+ * Register listeners for events triggered
+ * by the frame identified by 'frameId'
+ *
+ * @param frameId
+ * @private
+ */
+me._registerFrameWindowEventHandlers = function(frameId){
 
     var omero_viewer_frame = document.getElementById(frameId);
     if(!omero_viewer_frame){
@@ -85,5 +99,3 @@ me.roiShapeDeselected = function(info){
     });
     console.log("DeSelected RoiShape", info, "Current DeSelected ROIS", me.selected_roi_shapes);
 }
-
-
