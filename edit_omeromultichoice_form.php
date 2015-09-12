@@ -175,4 +175,167 @@ class qtype_omeromultichoice_edit_form extends qtype_multichoice_edit_form
         $errors = parent::validation($data, $files);
         return $errors;
     }
+
+
+
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+    /**
+     * Add a set of form fields, obtained from get_per_answer_fields, to the form,
+     * one for each existing answer, with some blanks for some new ones.
+     * @param object $mform the form being built.
+     * @param $label the label to use for each option.
+     * @param $gradeoptions the possible grades for each answer.
+     * @param $minoptions the minimum number of answer blanks to display.
+     *      Default QUESTION_NUMANS_START.
+     * @param $addoptions the number of answer blanks to add. Default QUESTION_NUMANS_ADD.
+     */
+    protected function add_per_answer_fields(&$mform, $label, $gradeoptions,
+                                             $minoptions = QUESTION_NUMANS_START, $addoptions = QUESTION_NUMANS_ADD) {
+        $mform->addElement('header', 'answerhdr',
+            get_string('answers', 'question'), '');
+        $mform->setExpanded('answerhdr', 1);
+        $answersoption = '';
+        $repeatedoptions = array();
+        $repeated = $this->get_per_answer_fields($mform, $label, $gradeoptions,
+            $repeatedoptions, $answersoption);
+
+        if (isset($this->question->options)) {
+            $repeatsatstart = count($this->question->options->$answersoption);
+        } else {
+            $repeatsatstart = $minoptions;
+        }
+
+        $this->repeat_elements($repeated, $repeatsatstart, $repeatedoptions,
+            'noanswers', 'addanswers', $addoptions,
+            $this->get_more_choices_string(), true);
+    }
+
+
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+    /**
+     * FIXME: is it really needed?
+     * Override method to add a repeating group of elements to a form,
+     * only for disabling 'addanswers' button
+     *
+     * @param array $elementobjs Array of elements or groups of elements that are to be repeated
+     * @param int $repeats no of times to repeat elements initially
+     * @param array $options a nested array. The first array key is the element name.
+     *    the second array key is the type of option to set, and depend on that option,
+     *    the value takes different forms.
+     *         'default'    - default value to set. Can include '{no}' which is replaced by the repeat number.
+     *         'type'       - PARAM_* type.
+     *         'helpbutton' - array containing the helpbutton params.
+     *         'disabledif' - array containing the disabledIf() arguments after the element name.
+     *         'rule'       - array containing the addRule arguments after the element name.
+     *         'expanded'   - whether this section of the form should be expanded by default. (Name be a header element.)
+     *         'advanced'   - whether this element is hidden by 'Show more ...'.
+     * @param string $repeathiddenname name for hidden element storing no of repeats in this form
+     * @param string $addfieldsname name for button to add more fields
+     * @param int $addfieldsno how many fields to add at a time
+     * @param string $addstring name of button, {no} is replaced by no of blanks that will be added.
+     * @param bool $addbuttoninside if true, don't call closeHeaderBefore($addfieldsname). Default false.
+     * @return int no of repeats of element in this page
+     */
+    function repeat_elements($elementobjs, $repeats, $options, $repeathiddenname,
+                             $addfieldsname, $addfieldsno=5, $addstring=null, $addbuttoninside=false){
+        if ($addstring===null){
+            $addstring = get_string('addfields', 'form', $addfieldsno);
+        } else {
+            $addstring = str_ireplace('{no}', $addfieldsno, $addstring);
+        }
+        $repeats = optional_param($repeathiddenname, $repeats, PARAM_INT);
+        $addfields = optional_param($addfieldsname, '', PARAM_TEXT);
+        if (!empty($addfields)){
+            $repeats += $addfieldsno;
+        }
+        $mform =& $this->_form;
+        $mform->registerNoSubmitButton($addfieldsname);
+        $mform->addElement('hidden', $repeathiddenname, $repeats);
+        $mform->setType($repeathiddenname, PARAM_INT);
+        //value not to be overridden by submitted value
+        $mform->setConstants(array($repeathiddenname=>$repeats));
+        $namecloned = array();
+        for ($i = 0; $i < $repeats; $i++) {
+            foreach ($elementobjs as $elementobj){
+                $elementclone = fullclone($elementobj);
+                $this->repeat_elements_fix_clone($i, $elementclone, $namecloned);
+
+                if ($elementclone instanceof HTML_QuickForm_group && !$elementclone->_appendName) {
+                    foreach ($elementclone->getElements() as $el) {
+                        $this->repeat_elements_fix_clone($i, $el, $namecloned);
+                    }
+                    $elementclone->setLabel(str_replace('{no}', $i + 1, $elementclone->getLabel()));
+                }
+
+                $mform->addElement($elementclone);
+            }
+        }
+        for ($i=0; $i<$repeats; $i++) {
+            foreach ($options as $elementname => $elementoptions){
+                $pos=strpos($elementname, '[');
+                if ($pos!==FALSE){
+                    $realelementname = substr($elementname, 0, $pos)."[$i]";
+                    $realelementname .= substr($elementname, $pos);
+                }else {
+                    $realelementname = $elementname."[$i]";
+                }
+                foreach ($elementoptions as  $option => $params){
+
+                    switch ($option){
+                        case 'default' :
+                            $mform->setDefault($realelementname, str_replace('{no}', $i + 1, $params));
+                            break;
+                        case 'helpbutton' :
+                            $params = array_merge(array($realelementname), $params);
+                            call_user_func_array(array(&$mform, 'addHelpButton'), $params);
+                            break;
+                        case 'disabledif' :
+                            foreach ($namecloned as $num => $name){
+                                if ($params[0] == $name){
+                                    $params[0] = $params[0]."[$i]";
+                                    break;
+                                }
+                            }
+                            $params = array_merge(array($realelementname), $params);
+                            call_user_func_array(array(&$mform, 'disabledIf'), $params);
+                            break;
+                        case 'rule' :
+                            if (is_string($params)){
+                                $params = array(null, $params, null, 'client');
+                            }
+                            $params = array_merge(array($realelementname), $params);
+                            call_user_func_array(array(&$mform, 'addRule'), $params);
+                            break;
+
+                        case 'type':
+                            $mform->setType($realelementname, $params);
+                            break;
+
+                        case 'expanded':
+                            $mform->setExpanded($realelementname, $params);
+                            break;
+
+                        case 'advanced' :
+                            $mform->setAdvanced($realelementname, $params);
+                            break;
+                    }
+                }
+            }
+        }
+
+        // FIXME: disable the button for adding new repeated elements
+        //$mform->addElement('submit', $addfieldsname, $addstring);
+
+        if (!$addbuttoninside) {
+            $mform->closeHeaderBefore($addfieldsname);
+        }
+
+        return $repeats;
+    }
 }
+
