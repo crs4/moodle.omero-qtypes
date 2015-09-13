@@ -110,6 +110,7 @@ class qtype_omeromultichoice_edit_form extends qtype_multichoice_edit_form
         $mform->addElement('hidden', 'available_rois', 'none');
 
 
+        $mform->addElement('hidden', 'omero_image_url', 'none');
         echo "<br/>FORM definition: done<br/><br/>";
     }
 
