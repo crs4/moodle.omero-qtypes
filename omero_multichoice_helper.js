@@ -18,10 +18,12 @@ me.init = function (module_name, options) {
     me.selected_roi_shapes = [];  // list of current selected rois
     me.available_rois = [];
     me.roi_based_answers = [];
+    me.current_rois_info = null;
 
-    // Register event handlers
     document.addEventListener("frameLoaded", function (e) {
-        me._registerFrameWindowEventHandlers(e.detail.frameId);
+        me.current_image_info = e.detail;
+        me._registerFrameWindowEventHandlers(e.detail.frame_id);
+        me._loadROIsInfo();
     }, true);
 
     // register jquery
