@@ -60,6 +60,7 @@ me._initQuestionEditorForm = function () {
         me.available_rois.push(me.current_rois_info[j].id);
     }
 
+    me._initRoiBasedAnswers();
     console.log("Available ROIs:", me.available_rois);
     console.log("ROI based answers:", me.roi_based_answers);
 
@@ -84,10 +85,28 @@ me._initRoiBasedAnswers = function () {
     if (me.form) {
         me.roi_based_answers = me.form.elements['roi_based_answers'].value.split(",");
 
+        var containers = document.getElementsByClassName("omeromultichoice-qanswer-roi-based-answer-container");
         for (var i in me.roi_based_answers) {
 
-            var roi_id = null;
+            var roi_id = me.roi_based_answers[i];
+            if (roi_id == "none") continue;
 
+            var roi_info = me.current_rois_info[roi_id];
+            if(!roi_info) throw Error("ROI info not found (ID: " + roi_id + ")!!!");
+
+            var container = containers[i];
+
+            // set the thumbnail
+            var thumbnail = container.getElementsByClassName("roi_thumb shape_thumb")[0];
+            thumbnail.src = "http://192.168.1.160:8080/webgateway/render_shape_thumbnail/" + roi_id + "/?color=f00";
+
+            // set details
+            var details = container.getElementsByClassName("omeromultichoice-qanswer-roi-details-text");
+            details[0].getElementsByClassName("roi-field-value")[0].innerHTML = roi_info.id;
+            details[1].getElementsByClassName("roi-field-value")[0].innerHTML = roi_info.shapes[0].textValue;
+            details[2].getElementsByClassName("roi-field-value")[0].innerHTML = roi_info.shapes[0].type;
+            details[3].getElementsByClassName("roi-field-value")[0].innerHTML = roi_info.shapes[0].width;
+            details[4].getElementsByClassName("roi-field-value")[0].innerHTML = roi_info.shapes[0].height;
         }
     }
 }
