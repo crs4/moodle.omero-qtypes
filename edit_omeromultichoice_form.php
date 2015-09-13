@@ -158,7 +158,7 @@ class qtype_omeromultichoice_edit_form extends qtype_multichoice_edit_form
         $repeated[] = $mform->createElement('html', '<div class="omeromultichoice-qanswer-roi-container">');
             // Image container
         $repeated[] = $mform->createElement('html', '<div class="omeromultichoice-qanswer-roi-image-container">');
-        $repeated[] = $mform->createElement('html', '<img src=" http://192.168.1.160:8080/webgateway/render_shape_thumbnail/011/?color=f00" id="11_shape_thumb" class="roi_thumb shape_thumb" style="vertical-align: top;" color="f00" width="150px" height="150px">');
+        $repeated[] = $mform->createElement('html', '<img src="" class="roi_thumb shape_thumb" style="vertical-align: top;" color="f00" width="150px" height="150px">');
         $repeated[] = $mform->createElement('html', '</div>'); // -> Close 'qanswer-roi-image-container
             // ROI description
         $repeated[] = $mform->createElement('html', '<div class="omeromultichoice-qanswer-roi-details-container">');
@@ -241,7 +241,6 @@ class qtype_omeromultichoice_edit_form extends qtype_multichoice_edit_form
                 $answers = $data["answer"];
             else
                 $answers = $data->{"answer"};
-            echo "<br>Number of answers: " . count($answers);
 
             if (isset($_POST["roi_based_answers"])) {
                 $roi_based_answers_el = $_POST["roi_based_answers"];
@@ -506,7 +505,6 @@ class qtype_omeromultichoice_edit_form extends qtype_multichoice_edit_form
                     $realelementname = $elementname."[$i]";
                 }
                 foreach ($elementoptions as  $option => $params){
-
                     switch ($option){
                         case 'default' :
                             $mform->setDefault($realelementname, str_replace('{no}', $i + 1, $params));
