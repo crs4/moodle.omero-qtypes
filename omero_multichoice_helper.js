@@ -24,17 +24,17 @@ me.init = function (module_name, options) {
         me.current_image_info = e.detail;
         me._registerFrameWindowEventHandlers(e.detail.frame_id);
         me._loadROIsInfo();
+
+        // Performs form enhancements
+        if (me.isEditingMode()) {
+            me._initQuestionEditorForm();
+        }
     }, true);
 
     // register jquery
     require(['jquery'], function ($) {
         me.$ = $;
     });
-
-    // Perform form form enhancements
-    if (me.isEditingMode()) {
-        me._initQuestionEditorForm();
-    }
 
     console.log("omero_multichoice_helper js helper initialized!!!");
 };
@@ -54,24 +54,41 @@ me._initQuestionEditorForm = function () {
     // register the reference to the current form
     me.form = form;
 
-    // FIXME: to fill dynamically with get_rois_json
-    me.available_rois = [11,12,13];
-    me.roi_based_answers = form.elements['roi_based_answers'].value.split(",");
+    // Initializes the list of available ROIs
+    me.available_rois = [];
+    for(var j in me.current_rois_info){
+        me.available_rois.push(me.current_rois_info[j].id);
+    }
+
     console.log("Available ROIs:", me.available_rois);
     console.log("ROI based answers:", me.roi_based_answers);
 
+    // Registers the listener for the button 'add-roi-answer'
     var add_roi_button = form.elements['add-roi-answer'];
     add_roi_button.onclick = me.addRoiBasedAnswerAction;
     me.enableNewRoiBasedAnswerButton(false);
-
+    // Hides the server-side button for adding answers
     form.elements['addanswers'].style.display = "none";
 }
 
 
-me.enableNewRoiBasedAnswerButton = function(enabled){
-    if(me.form) {
+me.enableNewRoiBasedAnswerButton = function (enabled) {
+    if (me.form) {
         var add_roi_button = me.form.elements['add-roi-answer'];
         add_roi_button.disabled = !enabled;
+    }
+}
+
+
+me._initRoiBasedAnswers = function () {
+    if (me.form) {
+        me.roi_based_answers = me.form.elements['roi_based_answers'].value.split(",");
+
+        for (var i in me.roi_based_answers) {
+
+            var roi_id = null;
+
+        }
     }
 }
 
@@ -85,7 +102,7 @@ me.addRoiBasedAnswerAction = function () {
     var no_answers = parseInt(form.elements['noanswers'].value);
 
     // Update the list of roi-answer association adding the current selected ROI
-    if(me.last_roi_shape_selected) {
+    if (me.last_roi_shape_selected) {
         me.addRoiBasedAnswer(me.last_roi_shape_selected.shapeId);
 
         // form submission
@@ -112,12 +129,11 @@ me.addRoiBasedAnswer = function (roi_id) {
 }
 
 
-me.removeRoiBasedAnswer = function(roi_id){
+me.removeRoiBasedAnswer = function (roi_id) {
     // Get the number of current answers
     var no_answers = parseInt(form.elements['noanswers'].value);
 
 }
-
 
 
 me.isEditingMode = function () {
@@ -191,7 +207,7 @@ me.roiShapeSelected = function (info) {
     console.log(me.roi_based_answers);
     console.log(me.roi_based_answers.indexOf(info.detail.shapeId));
     // enable button only if the current ROI not in roi_based_answers
-    if(me.roi_based_answers.indexOf(info.detail.shapeId.toString()) == -1)
+    if (me.roi_based_answers.indexOf(info.detail.shapeId.toString()) == -1)
         me.enableNewRoiBasedAnswerButton(true);
     else
         me.enableNewRoiBasedAnswerButton(false);
