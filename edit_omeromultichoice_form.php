@@ -224,11 +224,11 @@ class qtype_omeromultichoice_edit_form extends qtype_multichoice_edit_form
 
         $data = parent::get_data();
         echo "<br><br>Data RETRIVIED....";
-        print_r($data);
+        //print_r($data);
 
         echo "<br><br>Updated DATA....";
         $this->update_raw_data($data);
-        print_r($data);
+        //print_r($data);
 
         echo "<br/>Getting DATA: DONE....";
         return $data;
@@ -351,20 +351,7 @@ class qtype_omeromultichoice_edit_form extends qtype_multichoice_edit_form
      * @return mixed
      */
     public function validation($data, $files) {
-        echo "Number of Answers: " . count($data['answer']);
-        print_r($data['answers']);
 
-        echo "<br/><br/>Printing answers: ";
-        print_r($data["answer"]);
-
-        echo "<br/><br/>Printing fraction: ";
-        print_r($data["fraction"]);
-
-        echo "<br/><br/>Printing feedback: ";
-        print_r($data["feedback"]);
-
-
-        echo "<br/><br/>";
 
         $this->update_raw_data($data);
 
@@ -373,6 +360,20 @@ class qtype_omeromultichoice_edit_form extends qtype_multichoice_edit_form
             $errors["generic"] = "At least 2 answers";
 
 
+            //echo "Number of Answers: " . count($data['answer']);
+            //print_r($data['answers']);
+
+//            echo "<br/><br/>Printing answers: ";
+//            print_r($data["answer"]);
+//
+//            echo "<br/><br/>Printing fraction: ";
+//            print_r($data["fraction"]);
+//
+//            echo "<br/><br/>Printing feedback: ";
+//            print_r($data["feedback"]);
+//
+//
+//            echo "<br/><br/>";
 
 //        foreach ($data as $k => $v) {
 //            echo "<br/>" . $k . " ---> " . $v;
