@@ -238,15 +238,16 @@ class qtype_omeromultichoice_edit_form extends qtype_multichoice_edit_form
     private function update_raw_data(&$data){
         if(!empty($data)) {
             if(is_array($data))
-                $answers = $data["answer"];
+                $answers = &$data["answer"];
             else
-                $answers = $data->{"answer"};
+                $answers = &$data->{"answer"};
 
+            echo "ROI BASED Answers: " . $_POST["roi_based_answers"];
             if (isset($_POST["roi_based_answers"])) {
                 $roi_based_answers_el = $_POST["roi_based_answers"];
                 $roi_based_answers = explode(",", $roi_based_answers_el);
                 foreach($roi_based_answers as $k => $a){
-                    $answers[$k] = array("text" => "$a", "format" => 1, "itemid" => "");
+                    $answers[$k] = array("text" => "$a", "format" => 1, "itemid" => "x");
                 }
             }
         }
