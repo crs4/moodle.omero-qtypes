@@ -35,6 +35,31 @@ So the student can enter a numeric or short text answer or choose an answer or a
  using a select box, check boxes or radio boxes.';
 $string['add_roi_answer'] = 'Add new ROI answer';
 
-$string['choiceno'] = 'ROI Choice {$a}';
+$string['choiceno'] = '{$a}';
+
+$string['roi_choiceno'] = 'ROI choice {$a}';
 
 $string['add_roi_answer'] = 'Add a new ROI based answer';
+
+
+/** ROI description
+/* subset of a JSON ROI
+ *   "height" : 603,
+     "id" : 11,
+     "strokeAlpha" : 0.765625,
+     "strokeColor" : "#c4c4c4",
+     "strokeWidth" : 1,
+     "textValue" : "<br/>Comment ROI1",
+     "theT" : 0,
+     "theZ" : 0,
+     "transform" : "none",
+     "type" : "Rectangle",
+     "width" : 604,
+     "x" : 24019,
+     "y" : 14605
+ */
+$string['roi_id'] = 'Identifier';
+$string['roi_comment'] = 'Comment';
+$string['roi_type'] = 'Type';
+$string['roi_width'] = 'Width';
+$string['roi_height'] = 'Height';

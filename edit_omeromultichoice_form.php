@@ -84,7 +84,7 @@ class qtype_omeromultichoice_edit_form extends qtype_multichoice_edit_form
         $mform->setDefault('answernumbering', 'abc');
 
         // Set the initial number of answers to 0; add answers one by one
-        $this->add_per_answer_fields($mform, get_string('choiceno', 'qtype_omeromultichoice', '{no}'),
+        $this->add_per_answer_fields($mform, get_string('roi_choiceno', 'qtype_omeromultichoice', '{no}'),
             question_bank::fraction_options_full(), 0, 1);
 
         $this->add_combined_feedback_fields(true);
@@ -144,63 +144,52 @@ class qtype_omeromultichoice_edit_form extends qtype_multichoice_edit_form
     {
         $repeated = array();
 
+        // Main DIV container
         $repeated[] = $mform->createElement('html', '<div class="omeromultichoice-qanswer-roi-based-answer-container">');
 
-        // ROI Selector Container
-        $repeated[] = $mform->createElement('html', '<div class="omeromultichoice-qanswer-roi-selector-container">');
-        $repeated[] = $mform->createElement('static', "description", $label . ": ");
-        $repeated[] = $mform->createElement('select', 'roi', "", $gradeoptions);
-        $repeated[] = $mform->createElement('html', '</div>'); // -> Close 'qanswer-roi-selector-container'
+        // ROI choice label
+        $repeated[] = $mform->createElement('static', "description", $label);
 
-        $repeated[] = $mform->createElement('hidden', 'answer', "xxx");
+        // hidden field for storing answer/roi ID
+        $repeated[] = $mform->createElement('hidden', 'answer', "none");
 
+        // ROI details
         $repeated[] = $mform->createElement('html', '<div class="omeromultichoice-qanswer-container">');
         $repeated[] = $mform->createElement('html', '<div class="omeromultichoice-qanswer-roi-container">');
-        // Image container
+            // Image container
         $repeated[] = $mform->createElement('html', '<div class="omeromultichoice-qanswer-roi-image-container">');
         $repeated[] = $mform->createElement('html', '<img src=" http://192.168.1.160:8080/webgateway/render_shape_thumbnail/011/?color=f00" id="11_shape_thumb" class="roi_thumb shape_thumb" style="vertical-align: top;" color="f00" width="150px" height="150px">');
         $repeated[] = $mform->createElement('html', '</div>'); // -> Close 'qanswer-roi-image-container
-
+            // ROI description
         $repeated[] = $mform->createElement('html', '<div class="omeromultichoice-qanswer-roi-details-container">');
         $repeated[] = $mform->createElement('html', '<div class="omeromultichoice-qanswer-roi-details-text-container">');
-        $repeated[] = $mform->createElement('html',
-            '<div class="omeromultichoice-qanswer-roi-details-text"><b>Name:</b> ain asdasdlkj asd</div>');
-        $repeated[] = $mform->createElement('html',
-            '<div class="omeromultichoice-qanswer-roi-details-text"><b>Label:</b> ain asdasdlkj asd</div>');
-        $repeated[] = $mform->createElement('html',
-            '<div class="omeromultichoice-qanswer-roi-details-text"><b>Label:</b> ain asdasdlkj asd </div>');
+        // Adds ROI description fields
+        $roi_description_fields = array("id", "comment", "type", "width", "height");
+        foreach($roi_description_fields as $field){
+            $repeated[] = $mform->createElement('html', '<div class="omeromultichoice-qanswer-roi-details-text">');
+            $repeated[] = $mform->createElement('html', '<span class="roi-field-label">' . get_string("roi_".$field, "qtype_omeromultichoice") . ':</span>');
+            $repeated[] = $mform->createElement('html', '<span class="roi-field-value">' . get_string("roi_".$field, "qtype_omeromultichoice") . '</span>');
+            $repeated[] = $mform->createElement('html', '</div>');
+        }
+
         $repeated[] = $mform->createElement('html', '</div>'); // -> Close 'details-text-container'
         $repeated[] = $mform->createElement('html', '</div>'); // -> Close 'qanswer-roi-details-container
-
         $repeated[] = $mform->createElement('html', '</div>'); // -> Close 'qanswer-roi-container'
 
+        // ROI-based answer grade selector
         $repeated[] = $mform->createElement('select', 'fraction', get_string('grade'), $gradeoptions);
 
+        // Feedback editor
         $repeated[] = $mform->createElement('editor', 'feedback',
             get_string('feedback', 'question'), array('rows' => 1), $this->editoroptions);
 
         $repeated[] = $mform->createElement('html', '</div>'); // -> Close 'qanswer-roi-details-container'
-
         $repeated[] = $mform->createElement('html', '</div>'); // -> Close 'qanswer-roi-based-answer-container'
 
+        // Default values
         $repeatedoptions['answer']['type'] = PARAM_RAW;
         $repeatedoptions['fraction']['default'] = 0;
         $answersoption = 'answers';
-
-        echo "<br/> REPEATED options   ....  <br/>";
-        print_r($repeatedoptions);
-        echo "<br/>   .... ";
-        echo "<br/>   .... ";
-
-        $mform->setType("roi_id", PARAM_RAW);
-        $repeated[] = $mform->createElement('hidden', 'roi_id', 'xxx');
-
-//        // FIXME: to debug
-//        $mform->setType("answer[text]", PARAM_RAW);
-//        $repeated[] = $mform->createElement('hidden', 'answer[text]', 'true');
-//
-//        $mform->setType("answer", PARAM_RAW);
-//        $repeated[] = $mform->createElement('hidden', 'answer', 'truexxx');
 
         return $repeated;
     }
@@ -362,8 +351,8 @@ class qtype_omeromultichoice_edit_form extends qtype_multichoice_edit_form
      * @return mixed
      */
     public function validation($data, $files) {
-        echo "Number of ROIS: " . count($data['roi_id']);
-        print_r($data['roi_id']);
+        echo "Number of Answers: " . count($data['answer']);
+        print_r($data['answers']);
 
         echo "<br/><br/>Printing answers: ";
         print_r($data["answer"]);

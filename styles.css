@@ -160,17 +160,26 @@ body#page-question-type-omeromultichoice div[id^=fitem_id_][id*=feedback_] {
 }
 */
 
+.omeromultichoice-qanswer-roi-based-answer-container .fitem .fitemtitle .fstaticlabel{
+    margin-left: 15px;
+}
+
 .omeromultichoice-qanswer-roi-details-text-container{
     font-weight: normal;
     display: block;
     background: #EEE;
     height: 100px;
     text-indent: 15px;
-    padding: 10px;
+    padding: 25px 10px;
 }
 
 .omeromultichoice-qanswer-roi-details-text{
 
+}
+
+.omeromultichoice-qanswer-roi-details-text .roi-field-label{
+    font-weight: bold;
+    margin-right: 10px;
 }
 
 
