@@ -42,10 +42,20 @@ body#page-question-type-omeromultichoice div[id^=fitem_id_][id*=answer_] {
     border-bottom: 0;
 }
 
+body#page-question-type-omeromultichoice div.omeromultichoice-qanswer-roi-based-answer-container {
+    display: block;
+    background-color: #EEE;
+    padding-top: 15px;
+    margin-bottom: 10px;
+    border: 1px solid #BBB;
+}
+
+
 body#page-question-type-omeromultichoice div.omeromultichoice-qanswer-roi-container {
     display: block;
     background-color: #e1e1e1;
     padding-top: 15px;
+    padding-bottom: 15px;
     margin-bottom: 25px;
     border: 1px solid #BBB;
 }

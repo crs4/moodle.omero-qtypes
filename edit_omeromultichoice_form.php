@@ -144,6 +144,8 @@ class qtype_omeromultichoice_edit_form extends qtype_multichoice_edit_form
     {
         $repeated = array();
 
+        $repeated[] = $mform->createElement('html', '<div class="omeromultichoice-qanswer-roi-based-answer-container">');
+
         // ROI Selector Container
         $repeated[] = $mform->createElement('html', '<div class="omeromultichoice-qanswer-roi-selector-container">');
         $repeated[] = $mform->createElement('static', "description", $label . ": ");
@@ -178,6 +180,8 @@ class qtype_omeromultichoice_edit_form extends qtype_multichoice_edit_form
             get_string('feedback', 'question'), array('rows' => 1), $this->editoroptions);
 
         $repeated[] = $mform->createElement('html', '</div>'); // -> Close 'qanswer-roi-details-container'
+
+        $repeated[] = $mform->createElement('html', '</div>'); // -> Close 'qanswer-roi-based-answer-container'
 
         $repeatedoptions['answer']['type'] = PARAM_RAW;
         $repeatedoptions['fraction']['default'] = 0;
