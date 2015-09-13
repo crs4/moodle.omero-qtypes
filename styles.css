@@ -172,3 +172,7 @@ body#page-question-type-omeromultichoice div[id^=fitem_id_][id*=add-roi-answer] 
 }
 
 
+
+body#page-question-type-omeromultichoice input[name="addanswers"]{
+    display: none;
+}

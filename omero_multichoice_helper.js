@@ -14,7 +14,10 @@ me.init = function (module_name, options) {
 
     // init instance properties
     me.module_name = module_name; // module name
+    me.last_roi_shape_selected = null;
     me.selected_roi_shapes = [];  // list of current selected rois
+    me.available_rois = [];
+    me.roi_based_answers = [];
 
     // Register event handlers
     document.addEventListener("frameLoaded", function (e) {
@@ -46,33 +49,73 @@ me._initQuestionEditorForm = function () {
     var form = me._getForm();
     if (!form) return;
 
+    // register the reference to the current form
+    me.form = form;
+
+    // FIXME: to fill dynamically with get_rois_json
+    me.available_rois = [11,12,13];
+    me.roi_based_answers = form.elements['roi_based_answers'].value.split(",");
+    console.log("Available ROIs:", me.available_rois);
+    console.log("ROI based answers:", me.roi_based_answers);
+
     var add_roi_button = form.elements['add-roi-answer'];
-    add_roi_button.onclick = me.addRoiBasedAnswer;
+    add_roi_button.onclick = me.addRoiBasedAnswerAction;
+    me.enableNewRoiBasedAnswerButton(false);
+
+    form.elements['addanswers'].style.display = "none";
 }
 
 
-me.addRoiBasedAnswer = function () {
+me.enableNewRoiBasedAnswerButton = function(enabled){
+    if(me.form) {
+        var add_roi_button = me.form.elements['add-roi-answer'];
+        add_roi_button.disabled = !enabled;
+    }
+}
 
-    var form = me._getForm();
+
+me.addRoiBasedAnswerAction = function () {
+
+    var form = me.form;
     if (!form) throw Error("No 'question-editor' form found!!!");
 
-    // Add the new ROI
-    var n = document.createElement("input");
-    n.setAttribute("name", "roi[" + no_answers + "]");
-    n.setAttribute("id", "id_roi_" + no_answers);
-    n.setAttribute("value", "0.1");
-    form.appendChild(n);
-
-    // Increment the number of answers
+    // Get the number of current answers
     var no_answers = parseInt(form.elements['noanswers'].value);
-    form.elements['noanswers'].value = no_answers + 1;
 
-    // Disable the client-side validation
-    skipClientValidation = true;
+    // Update the list of roi-answer association adding the current selected ROI
+    if(me.last_roi_shape_selected) {
+        me.addRoiBasedAnswer(me.last_roi_shape_selected.shapeId);
 
-    // form submission
-    form.submit();
+        // form submission
+        var action_el = form.elements['addanswers'];
+        action_el.click();
+    }
 }
+
+
+/**
+ * Adds a new roi to the list of rois associated to answers
+ * @param roi_id
+ */
+me.addRoiBasedAnswer = function (roi_id) {
+    var form = me.form;
+    if (!form) throw Error("No 'question-editor' form found!!!");
+    // Update the list of roi-answer association adding a new ROI
+    if (form.elements['roi_based_answers'].value == "none")
+        form.elements['roi_based_answers'].value = roi_id;
+    else
+        form.elements['roi_based_answers'].value += "," + roi_id;
+
+    console.log("Current ROI answers: " + form.elements['roi_based_answers'].value);
+}
+
+
+me.removeRoiBasedAnswer = function(roi_id){
+    // Get the number of current answers
+    var no_answers = parseInt(form.elements['noanswers'].value);
+
+}
+
 
 
 me.isEditingMode = function () {
@@ -88,8 +131,10 @@ me.isEditingMode = function () {
 me._getForm = function () {
     for (var i in document.forms) {
         var f = document.forms[i];
-        if (f.elements['editing_mode'])
-            return f;
+        if (f != null && f != undefined && f.elements) {
+            if (f.elements['editing_mode'])
+                return f;
+        }
     }
     return null;
 }
@@ -121,9 +166,16 @@ me._registerFrameWindowEventHandlers = function (frameId) {
  * @param info
  */
 me.roiShapeSelected = function (info) {
+    me.last_roi_shape_selected = info.detail;
     me.selected_roi_shapes.push(info.detail);
+    console.log(me.roi_based_answers);
+    console.log(me.roi_based_answers.indexOf(info.detail.shapeId));
+    // enable button only if the current ROI not in roi_based_answers
+    if(me.roi_based_answers.indexOf(info.detail.shapeId.toString()) == -1)
+        me.enableNewRoiBasedAnswerButton(true);
+    else
+        me.enableNewRoiBasedAnswerButton(false);
     console.log("Selected RoiShape", info, "Current Selected ROIS", me.selected_roi_shapes);
-    alert("Selezionata ROI: " + info.detail.id);
 }
 
 /**
@@ -132,8 +184,10 @@ me.roiShapeSelected = function (info) {
  * @param info
  */
 me.roiShapeDeselected = function (info) {
+    me.last_roi_shape_selected = null;
     me.selected_roi_shapes = me.$.grep(me.selected_roi_shapes, function (v) {
         return v.id != info.detail.id;
     });
+    me.enableNewRoiBasedAnswerButton(false);
     console.log("DeSelected RoiShape", info, "Current DeSelected ROIS", me.selected_roi_shapes);
 }

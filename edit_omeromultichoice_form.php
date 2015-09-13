@@ -51,18 +51,18 @@ class qtype_omeromultichoice_edit_form extends qtype_multichoice_edit_form
     {
         global $PAGE, $OUTPUT;
 
+        echo "<br/>FORM definition....";
         $module = array('name' => 'omero_multichoice_helper', 'fullpath' => '/question/type/omeromultichoice/omero_multichoice_helper.js',
             'requires' => array('omemultichoice_qtype', 'node', 'node-event-simulate', 'core_dndupload'));
         $PAGE->requires->js_init_call('M.omero_multichoice_helper.init', array(), true, $module);
-
 
 
         $mform->addElement('omerofilepicker', 'usefilereference', get_string('file'), null,
             array('maxbytes' => 2048, 'accepted_types' => array('*'),
                 'return_types' => array(FILE_INTERNAL | FILE_EXTERNAL)));
 
-        $mform->addElement("button", "add-roi-answer", get_string("add_roi_answer", "qtype_omeromultichoice"),
-            array("float"=>"right"));
+        $mform->addElement("button", "add-roi-answer",
+            get_string("add_roi_answer", "qtype_omeromultichoice"), array("disabled"=> true));
 
 
         $menu = array(
@@ -95,6 +95,22 @@ class qtype_omeromultichoice_edit_form extends qtype_multichoice_edit_form
         // Set the editing mode
         $mform->setType("editing_mode", PARAM_BOOL);
         $mform->addElement('hidden', 'editing_mode', 'true');
+
+
+        //
+        $mform->setType("current_selected_roi", PARAM_RAW);
+        $mform->addElement('hidden', 'current_selected_roi', 'none');
+
+        //
+        $mform->setType("roi_based_answers", PARAM_RAW);
+        $mform->addElement('hidden', 'roi_based_answers', 'none');
+
+        //
+        $mform->setType("available_rois", PARAM_RAW);
+        $mform->addElement('hidden', 'available_rois', 'none');
+
+
+        echo "<br/>FORM definition: done<br/><br/>";
     }
 
 
@@ -129,6 +145,7 @@ class qtype_omeromultichoice_edit_form extends qtype_multichoice_edit_form
         $repeated[] = $mform->createElement('select', 'roi', "", $gradeoptions);
         $repeated[] = $mform->createElement('html', '</div>'); // -> Close 'qanswer-roi-selector-container'
 
+        $repeated[] = $mform->createElement('hidden', 'answer', "xxx");
 
         $repeated[] = $mform->createElement('html', '<div class="omeromultichoice-qanswer-container">');
         $repeated[] = $mform->createElement('html', '<div class="omeromultichoice-qanswer-roi-container">');
@@ -161,9 +178,153 @@ class qtype_omeromultichoice_edit_form extends qtype_multichoice_edit_form
         $repeatedoptions['fraction']['default'] = 0;
         $answersoption = 'answers';
 
+        echo "<br/> REPEATED options   ....  <br/>";
+        print_r($repeatedoptions);
+        echo "<br/>   .... ";
+        echo "<br/>   .... ";
+
+        $mform->setType("roi_id", PARAM_RAW);
+        $repeated[] = $mform->createElement('hidden', 'roi_id', 'xxx');
+
+//        // FIXME: to debug
+//        $mform->setType("answer[text]", PARAM_RAW);
+//        $repeated[] = $mform->createElement('hidden', 'answer[text]', 'true');
+//
+//        $mform->setType("answer", PARAM_RAW);
+//        $repeated[] = $mform->createElement('hidden', 'answer', 'truexxx');
+
         return $repeated;
     }
 
+
+    protected function data_preprocessing($question) {
+        echo "<br>Preprocessing....<br/>";
+        print_r($question);
+        $question = parent::data_preprocessing($question);
+        $question = $this->data_preprocessing_answers($question, true);
+        $question = $this->data_preprocessing_combined_feedback($question, true);
+        $question = $this->data_preprocessing_hints($question, true, true);
+
+        if (!empty($question->options)) {
+            $question->single = $question->options->single;
+            $question->shuffleanswers = $question->options->shuffleanswers;
+            $question->answernumbering = $question->options->answernumbering;
+        }
+
+        echo "<br/> Options: <br/>";
+        //print_r($question->options);
+        echo "<br/> Options done!!! <br/>";
+
+        echo "<br>Preprocessing: done....<br/>";
+
+        return $question;
+    }
+
+
+    public function get_data(){
+        echo "<br>GETTING DATA.....";
+        $data = parent::get_data();
+        if(!empty($data)) {
+            $answers = $data->{"answer"};
+            echo "<br>Number of answers: " . count($answers);
+
+            if (isset($_POST["roi_based_answers"])) {
+                $roi_based_answers_el = $_POST["roi_based_answers"];
+                $roi_based_answers = explode(",", $roi_based_answers_el);
+                foreach($roi_based_answers as $k => $a){
+                    $data->{"answer"}[$k] = array("text" => "$a", "format" => 1, "itemid" => "");
+                }
+            }
+        }
+
+        echo "<br><br>Data RETRIVIED....";
+        print_r($data);
+        echo "<br/>Getting DATA: DONE....";
+        return $data;
+    }
+
+
+
+    public function set_data($question) {
+        echo "Calling set data.....";
+        print_r($question);
+        parent::set_data($question);
+        echo "<br/>Calling set data: DONE....";
+    }
+
+    protected function data_preprocessing_answers($question, $withanswerfiles = false) {
+        echo "<br/>Proprocessing answers....<br/>";
+        print_r($question);
+
+        if (empty($question->options->answers)) {
+            return $question;
+        }
+
+
+        print_r($question->options);
+
+        $key = 0;
+        foreach ($question->options->answers as $answer) {
+            if ($withanswerfiles) {
+                // Prepare the feedback editor to display files in draft area.
+                $draftitemid = file_get_submitted_draft_itemid('answer['.$key.']');
+                $question->answer[$key]['text'] = file_prepare_draft_area(
+                    $draftitemid,          // Draftid
+                    $this->context->id,    // context
+                    'question',            // component
+                    'answer',              // filarea
+                    !empty($answer->id) ? (int) $answer->id : null, // itemid
+                    $this->fileoptions,    // options
+                    $answer->answer        // text.
+                );
+                $question->answer[$key]['itemid'] = $draftitemid;
+                $question->answer[$key]['format'] = $answer->answerformat;
+            } else {
+                $question->answer[$key] = $answer->answer;
+            }
+
+            $question->fraction[$key] = 0 + $answer->fraction;
+            $question->feedback[$key] = array();
+
+            // Evil hack alert. Formslib can store defaults in two ways for
+            // repeat elements:
+            //   ->_defaultValues['fraction[0]'] and
+            //   ->_defaultValues['fraction'][0].
+            // The $repeatedoptions['fraction']['default'] = 0 bit above means
+            // that ->_defaultValues['fraction[0]'] has already been set, but we
+            // are using object notation here, so we will be setting
+            // ->_defaultValues['fraction'][0]. That does not work, so we have
+            // to unset ->_defaultValues['fraction[0]'].
+            unset($this->_form->_defaultValues["fraction[{$key}]"]);
+
+            // Prepare the feedback editor to display files in draft area.
+            $draftitemid = file_get_submitted_draft_itemid('feedback['.$key.']');
+            $question->feedback[$key]['text'] = file_prepare_draft_area(
+                $draftitemid,          // Draftid
+                $this->context->id,    // context
+                'question',            // component
+                'answerfeedback',      // filarea
+                !empty($answer->id) ? (int) $answer->id : null, // itemid
+                $this->fileoptions,    // options
+                $answer->feedback      // text.
+            );
+            $question->feedback[$key]['itemid'] = $draftitemid;
+            $question->feedback[$key]['format'] = $answer->feedbackformat;
+            $key++;
+        }
+
+        // Now process extra answer fields.
+        $extraanswerfields = question_bank::get_qtype($question->qtype)->extra_answer_fields();
+        if (is_array($extraanswerfields)) {
+            // Omit table name.
+            array_shift($extraanswerfields);
+            $question = $this->data_preprocessing_extra_answer_fields($question, $extraanswerfields);
+        }
+
+        echo "<br/>Proprocessing answers: done ....<br/><br/>";
+
+        return $question;
+    }
 
     protected function get_hint_fields($withclearwrong = false, $withshownumpartscorrect = false)
     {
@@ -181,11 +342,50 @@ class qtype_omeromultichoice_edit_form extends qtype_multichoice_edit_form
      * @return mixed
      */
     public function validation($data, $files) {
-        echo "Number of ROIS: " . count($data['roi']);
-        $errors = parent::validation($data, $files);
+        echo "Number of ROIS: " . count($data['roi_id']);
+        print_r($data['roi_id']);
+
+        echo "<br/><br/>Printing answers: ";
+        print_r($data["answer"]);
+
+        echo "<br/><br/>Printing fraction: ";
+        print_r($data["fraction"]);
+
+        echo "<br/><br/>Printing feedback: ";
+        print_r($data["feedback"]);
+
+
+        echo "<br/><br/>";
+
+        $errors = array();
+        if(count($data["answer"])<3)
+            $errors["generic"] = "At least 2 answers";
+
+
+
+//        foreach ($data as $k => $v) {
+//            echo "<br/>" . $k . " ---> " . $v;
+//            if(is_array($v)){
+//                echo "<br/>Array: " . $k . "---------------------------------";
+//                foreach($v as $ak => $av){
+//                    echo "<br/>" . $ak . " ---> " . $av;
+//                }
+//                echo "<br/>Array: " . $k . "---------------------------------";
+//            }
+//        }
+
+
+        //$errors = parent::validation($data, $files);
+
+        //if(count($data['roi_id']<2))
+        //    $errors["answer[0]"] = "At least....";
         return $errors;
     }
 
+
+    public function render(){
+        echo "Rendering";
+    }
 
 
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -339,7 +539,7 @@ class qtype_omeromultichoice_edit_form extends qtype_multichoice_edit_form
         }
 
         // FIXME: disable the button for adding new repeated elements
-        //$mform->addElement('submit', $addfieldsname, $addstring);
+        $mform->addElement('submit', $addfieldsname, $addstring);
 
         if (!$addbuttoninside) {
             $mform->closeHeaderBefore($addfieldsname);
