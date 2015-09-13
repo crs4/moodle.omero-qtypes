@@ -110,7 +110,11 @@ class qtype_omeromultichoice_edit_form extends qtype_multichoice_edit_form
         $mform->addElement('hidden', 'available_rois', 'none');
 
 
+        //
+        $mform->setType("omero_image_url", PARAM_RAW);
         $mform->addElement('hidden', 'omero_image_url', 'none');
+
+
         echo "<br/>FORM definition: done<br/><br/>";
     }
 
@@ -224,26 +228,37 @@ class qtype_omeromultichoice_edit_form extends qtype_multichoice_edit_form
 
     public function get_data(){
         echo "<br>GETTING DATA.....";
+
         $data = parent::get_data();
+        echo "<br><br>Data RETRIVIED....";
+        print_r($data);
+
+        echo "<br><br>Updated DATA....";
+        $this->update_raw_data($data);
+        print_r($data);
+
+        echo "<br/>Getting DATA: DONE....";
+        return $data;
+    }
+
+
+    private function update_raw_data(&$data){
         if(!empty($data)) {
-            $answers = $data->{"answer"};
+            if(is_array($data))
+                $answers = $data["answer"];
+            else
+                $answers = $data->{"answer"};
             echo "<br>Number of answers: " . count($answers);
 
             if (isset($_POST["roi_based_answers"])) {
                 $roi_based_answers_el = $_POST["roi_based_answers"];
                 $roi_based_answers = explode(",", $roi_based_answers_el);
                 foreach($roi_based_answers as $k => $a){
-                    $data->{"answer"}[$k] = array("text" => "$a", "format" => 1, "itemid" => "");
+                    $answers[$k] = array("text" => "$a", "format" => 1, "itemid" => "");
                 }
             }
         }
-
-        echo "<br><br>Data RETRIVIED....";
-        print_r($data);
-        echo "<br/>Getting DATA: DONE....";
-        return $data;
     }
-
 
 
     public function set_data($question) {
@@ -358,6 +373,8 @@ class qtype_omeromultichoice_edit_form extends qtype_multichoice_edit_form
 
         echo "<br/><br/>";
 
+        $this->update_raw_data($data);
+
         $errors = array();
         if(count($data["answer"])<3)
             $errors["generic"] = "At least 2 answers";
@@ -376,7 +393,7 @@ class qtype_omeromultichoice_edit_form extends qtype_multichoice_edit_form
 //        }
 
 
-        //$errors = parent::validation($data, $files);
+        $errors = parent::validation($data, $files);
 
         //if(count($data['roi_id']<2))
         //    $errors["answer[0]"] = "At least....";
