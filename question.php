@@ -27,14 +27,21 @@
 defined('MOODLE_INTERNAL') || die();
 
 
+require_once($CFG->libdir . '/questionlib.php');
+require_once($CFG->dirroot . '/question/engine/lib.php');
+require_once($CFG->dirroot . '/question/type/multichoice/questiontype.php');
+require_once($CFG->dirroot . '/question/type/multichoice/question.php');
+
+
 /**
  * Represents a omeromultichoice question.
  *
  * @copyright  2015 CRS4
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later // FIXME: check the licence
  */
-class qtype_omeromultichoice_question extends question_graded_automatically_with_countback {
+class qtype_omeromultichoice_question extends qtype_multichoice_single_question {
 
+    /*
     public function get_expected_data() {
         // TODO.
         return array();
@@ -90,4 +97,5 @@ class qtype_omeromultichoice_question extends question_graded_automatically_with
         // TODO.
         return 0;
     }
+    */
 }
