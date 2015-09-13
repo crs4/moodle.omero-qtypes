@@ -165,6 +165,20 @@ me._registerFrameWindowEventHandlers = function (frame_id) {
 
 
 /**
+ * Loads ROIs info for the current image
+ * @private
+ */
+me._loadROIsInfo = function(){
+    var frameWindow = me._omero_viewer_frame.contentWindow;
+
+    // FIXME: remove dependency to the 'omero_viewer_controller' (i.e., see 'repository' module)
+    // Register a reference to the Omero Repository Controller
+    me.omero_viewer_controller = frameWindow.omero_viewer_controller;
+    me.current_rois_info = me.omero_viewer_controller.getCurrentROIsInfo();
+    console.log(me.current_rois_info);
+}
+
+/**
  * Handle the RoiShapeSelection Event
  *
  * @param info
