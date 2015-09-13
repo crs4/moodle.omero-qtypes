@@ -142,18 +142,22 @@ me._getForm = function () {
 
 /**
  * Register listeners for events triggered
- * by the frame identified by 'frameId'
+ * by the frame identified by 'frame_id'
  *
- * @param frameId
+ * @param frame_id
  * @private
  */
-me._registerFrameWindowEventHandlers = function (frameId) {
+me._registerFrameWindowEventHandlers = function (frame_id) {
 
-    var omero_viewer_frame = document.getElementById(frameId);
+    var omero_viewer_frame = document.getElementById(frame_id);
     if (!omero_viewer_frame) {
-        throw EventException("Frame " + frameId + " not found!!!");
+        throw EventException("Frame " + frame_id + " not found!!!");
     }
 
+    // Registers a reference to the frame
+    me._omero_viewer_frame = omero_viewer_frame;
+
+    // Adds listeners
     var frameWindow = omero_viewer_frame.contentWindow;
     frameWindow.addEventListener("roiShapeSelected", M.omero_multichoice_helper.roiShapeSelected);
     frameWindow.addEventListener("roiShapeDeselected", M.omero_multichoice_helper.roiShapeDeselected);
