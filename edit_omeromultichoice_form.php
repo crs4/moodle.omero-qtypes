@@ -168,7 +168,7 @@ class qtype_omeromultichoice_edit_form extends qtype_multichoice_edit_form
         foreach($roi_description_fields as $field){
             $repeated[] = $mform->createElement('html', '<div class="omeromultichoice-qanswer-roi-details-text">');
             $repeated[] = $mform->createElement('html', '<span class="roi-field-label">' . get_string("roi_".$field, "qtype_omeromultichoice") . ':</span>');
-            $repeated[] = $mform->createElement('html', '<span class="roi-field-value">' . get_string("roi_".$field, "qtype_omeromultichoice") . '</span>');
+            $repeated[] = $mform->createElement('html', '<span class="roi-field-value">...</span>');
             $repeated[] = $mform->createElement('html', '</div>');
         }
 
