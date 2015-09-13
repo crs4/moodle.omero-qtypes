@@ -192,7 +192,13 @@ me._loadROIsInfo = function(){
     // FIXME: remove dependency to the 'omero_viewer_controller' (i.e., see 'repository' module)
     // Register a reference to the Omero Repository Controller
     me.omero_viewer_controller = frameWindow.omero_viewer_controller;
-    me.current_rois_info = me.omero_viewer_controller.getCurrentROIsInfo();
+    me.current_rois_info = [];
+    var roi_infos = me.omero_viewer_controller.getCurrentROIsInfo();
+    for(var i in roi_infos){
+        var roi_info = roi_infos[i];
+        me.current_rois_info[roi_info.id] = roi_info;
+    }
+
     console.log(me.current_rois_info);
 }
 
