@@ -207,7 +207,17 @@ class qtype_omeromultichoice_edit_form extends qtype_multichoice_edit_form
             $question->single = $question->options->single;
             $question->shuffleanswers = $question->options->shuffleanswers;
             $question->answernumbering = $question->options->answernumbering;
+
+            // Prepare the roi_based_answers field
+            $roi_based_answers = [];
+            foreach($question->options->answers as $answer){
+                array_push($roi_based_answers, $answer->answer);
+            }
+            $question->roi_based_answers = implode(",", $roi_based_answers);
+
+            $question->omero_image_url = $question->options->omeroimageurl;
         }
+
 
         echo "<br/> Options: <br/>";
         //print_r($question->options);
