@@ -199,7 +199,7 @@ class qtype_omeromultichoice_edit_form extends qtype_multichoice_edit_form
         echo "<br>Preprocessing....<br/>";
         print_r($question);
         $question = parent::data_preprocessing($question);
-        $question = $this->data_preprocessing_answers($question, true);
+        $question = $this->data_preprocessing_answers($question, false);
         $question = $this->data_preprocessing_combined_feedback($question, true);
         $question = $this->data_preprocessing_hints($question, true, true);
 
