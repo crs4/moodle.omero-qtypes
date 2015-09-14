@@ -33,7 +33,11 @@ defined('MOODLE_INTERNAL') || die();
  * @copyright  2015 CRS4
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later //FIXME: check the licence
  */
-class qtype_omeromultichoice_renderer extends qtype_multichoice_single_renderer {
+
+require_once($CFG->dirroot . '/question/type/multichoice/renderer.php');
+
+
+class qtype_omeromultichoice_single_renderer extends qtype_multichoice_single_renderer {
 //    public function formulation_and_controls(question_attempt $qa,
 //            question_display_options $options) {
 //

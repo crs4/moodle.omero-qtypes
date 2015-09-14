@@ -98,4 +98,9 @@ class qtype_omeromultichoice_question extends qtype_multichoice_single_question 
         return 0;
     }
     */
+
+
+    public function get_renderer(moodle_page $page) {
+        return $page->get_renderer('qtype_omeromultichoice', 'single');
+    }
 }
