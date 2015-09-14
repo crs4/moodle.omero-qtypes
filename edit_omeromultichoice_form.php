@@ -263,14 +263,15 @@ class qtype_omeromultichoice_edit_form extends qtype_multichoice_edit_form
 
     protected function data_preprocessing_answers($question, $withanswerfiles = false) {
         echo "<br/>Proprocessing answers....<br/>";
-        print_r($question);
 
         if (empty($question->options->answers)) {
             return $question;
         }
 
 
-        print_r($question->options);
+        print_r($question->options->answers);
+
+
 
         $key = 0;
         foreach ($question->options->answers as $answer) {
