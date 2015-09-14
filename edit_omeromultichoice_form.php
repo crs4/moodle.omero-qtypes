@@ -57,9 +57,10 @@ class qtype_omeromultichoice_edit_form extends qtype_multichoice_edit_form
         $PAGE->requires->js_init_call('M.omero_multichoice_helper.init', array(), true, $module);
 
 
-        $mform->addElement('omerofilepicker', 'usefilereference', get_string('file'), null,
+        $mform->addElement('omerofilepicker', 'omeroimagefilereference', get_string('file'), null,
             array('maxbytes' => 2048, 'accepted_types' => array('*'),
-                'return_types' => array(FILE_INTERNAL | FILE_EXTERNAL)));
+                'return_types' => array(FILE_INTERNAL | FILE_EXTERNAL))
+        );
 
         $mform->addElement("button", "add-roi-answer",
             get_string("add_roi_answer", "qtype_omeromultichoice"), array("disabled"=> true));
@@ -113,7 +114,6 @@ class qtype_omeromultichoice_edit_form extends qtype_multichoice_edit_form
         //
         $mform->setType("omero_image_url", PARAM_RAW);
         $mform->addElement('hidden', 'omero_image_url', 'none');
-
 
         echo "<br/>FORM definition: done<br/><br/>";
     }
