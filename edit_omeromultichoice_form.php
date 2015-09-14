@@ -139,11 +139,16 @@ class qtype_omeromultichoice_edit_form extends qtype_multichoice_edit_form
     {
         $repeated = array();
 
-        // Main DIV container
-        $repeated[] = $mform->createElement('html', '<div class="omeromultichoice-qanswer-roi-based-answer-container">');
+        $repeated[] = $mform->createElement('html', '<div class="fitem roi-based-answer">');
 
         // ROI choice label
         $repeated[] = $mform->createElement('static', "description", $label);
+
+        $repeated[] = $mform->createElement('html', '<div class="felement felement-roi-based-answer">');
+
+        // Main DIV container
+        $repeated[] = $mform->createElement('html', '<div class="omeromultichoice-qanswer-roi-based-answer-container">');
+
 
         // hidden field for storing answer/roi ID
         $repeated[] = $mform->createElement('hidden', 'answer', "none");
@@ -180,6 +185,10 @@ class qtype_omeromultichoice_edit_form extends qtype_multichoice_edit_form
 
         $repeated[] = $mform->createElement('html', '</div>'); // -> Close 'qanswer-roi-details-container'
         $repeated[] = $mform->createElement('html', '</div>'); // -> Close 'qanswer-roi-based-answer-container'
+
+        $repeated[] = $mform->createElement('html', '</div>'); // -> Close 'felement'
+
+        $repeated[] = $mform->createElement('html', '</div>'); // -> Close 'fitem'
 
         // Default values
         $repeatedoptions['answer']['type'] = PARAM_RAW;

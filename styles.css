@@ -45,11 +45,15 @@ body#page-question-type-omeromultichoice div[id^=fitem_id_][id*=answer_] {
 body#page-question-type-omeromultichoice div.omeromultichoice-qanswer-roi-based-answer-container {
     display: block;
     background-color: #EEE;
-    padding-top: 15px;
+    /*padding-top: 15px;*/
     margin-bottom: 10px;
     border: 1px solid #BBB;
 }
 
+
+body#page-question-type-omeromultichoice div.roi-based-answer div.felement-roi-based-answer{
+    margin-top: -30px;
+}
 
 body#page-question-type-omeromultichoice div.omeromultichoice-qanswer-roi-container {
     display: block;
