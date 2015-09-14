@@ -51,7 +51,6 @@ class qtype_omeromultichoice_edit_form extends qtype_multichoice_edit_form
     {
         global $PAGE, $OUTPUT;
 
-        echo "<br/>FORM definition....";
         $module = array('name' => 'omero_multichoice_helper', 'fullpath' => '/question/type/omeromultichoice/omero_multichoice_helper.js',
             'requires' => array('omemultichoice_qtype', 'node', 'node-event-simulate', 'core_dndupload'));
         $PAGE->requires->js_init_call('M.omero_multichoice_helper.init', array(), true, $module);
@@ -63,7 +62,7 @@ class qtype_omeromultichoice_edit_form extends qtype_multichoice_edit_form
         );
 
         $mform->addElement("button", "add-roi-answer",
-            get_string("add_roi_answer", "qtype_omeromultichoice"), array("disabled"=> true));
+            get_string("add_roi_answer", "qtype_omeromultichoice"), array("disabled" => true));
 
 
         $menu = array(
@@ -97,7 +96,6 @@ class qtype_omeromultichoice_edit_form extends qtype_multichoice_edit_form
         $mform->setType("editing_mode", PARAM_BOOL);
         $mform->addElement('hidden', 'editing_mode', 'true');
 
-
         //
         $mform->setType("current_selected_roi", PARAM_RAW);
         $mform->addElement('hidden', 'current_selected_roi', 'none');
@@ -110,12 +108,9 @@ class qtype_omeromultichoice_edit_form extends qtype_multichoice_edit_form
         $mform->setType("available_rois", PARAM_RAW);
         $mform->addElement('hidden', 'available_rois', 'none');
 
-
         //
         $mform->setType("omero_image_url", PARAM_RAW);
         $mform->addElement('hidden', 'omero_image_url', 'none');
-
-        echo "<br/>FORM definition: done<br/><br/>";
     }
 
 
@@ -156,18 +151,18 @@ class qtype_omeromultichoice_edit_form extends qtype_multichoice_edit_form
         // ROI details
         $repeated[] = $mform->createElement('html', '<div class="omeromultichoice-qanswer-container">');
         $repeated[] = $mform->createElement('html', '<div class="omeromultichoice-qanswer-roi-container">');
-            // Image container
+        // Image container
         $repeated[] = $mform->createElement('html', '<div class="omeromultichoice-qanswer-roi-image-container">');
         $repeated[] = $mform->createElement('html', '<img src="" class="roi_thumb shape_thumb" style="vertical-align: top;" color="f00" width="150px" height="150px">');
         $repeated[] = $mform->createElement('html', '</div>'); // -> Close 'qanswer-roi-image-container
-            // ROI description
+        // ROI description
         $repeated[] = $mform->createElement('html', '<div class="omeromultichoice-qanswer-roi-details-container">');
         $repeated[] = $mform->createElement('html', '<div class="omeromultichoice-qanswer-roi-details-text-container">');
         // Adds ROI description fields
         $roi_description_fields = array("id", "comment", "type", "width", "height");
-        foreach($roi_description_fields as $field){
+        foreach ($roi_description_fields as $field) {
             $repeated[] = $mform->createElement('html', '<div class="omeromultichoice-qanswer-roi-details-text">');
-            $repeated[] = $mform->createElement('html', '<span class="roi-field-label">' . get_string("roi_".$field, "qtype_omeromultichoice") . ':</span>');
+            $repeated[] = $mform->createElement('html', '<span class="roi-field-label">' . get_string("roi_" . $field, "qtype_omeromultichoice") . ':</span>');
             $repeated[] = $mform->createElement('html', '<span class="roi-field-value">...</span>');
             $repeated[] = $mform->createElement('html', '</div>');
         }
@@ -195,9 +190,8 @@ class qtype_omeromultichoice_edit_form extends qtype_multichoice_edit_form
     }
 
 
-    protected function data_preprocessing($question) {
-        echo "<br>Preprocessing....<br/>";
-        print_r($question);
+    protected function data_preprocessing($question)
+    {
         $question = parent::data_preprocessing($question);
         $question = $this->data_preprocessing_answers($question, false);
         $question = $this->data_preprocessing_combined_feedback($question, true);
@@ -210,53 +204,37 @@ class qtype_omeromultichoice_edit_form extends qtype_multichoice_edit_form
 
             // Prepare the roi_based_answers field
             $roi_based_answers = [];
-            foreach($question->options->answers as $answer){
+            foreach ($question->options->answers as $answer) {
                 array_push($roi_based_answers, $answer->answer);
             }
             $question->roi_based_answers = implode(",", $roi_based_answers);
 
             $question->omero_image_url = $question->options->omeroimageurl;
         }
-
-
-        echo "<br/> Options: <br/>";
-        //print_r($question->options);
-        echo "<br/> Options done!!! <br/>";
-
-        echo "<br>Preprocessing: done....<br/>";
-
         return $question;
     }
 
 
-    public function get_data(){
-        echo "<br>GETTING DATA.....";
-
+    public function get_data()
+    {
         $data = parent::get_data();
-        echo "<br><br>Data RETRIVIED....";
-        //print_r($data);
-
-        echo "<br><br>Updated DATA....";
         $this->update_raw_data($data);
-        //print_r($data);
-
-        echo "<br/>Getting DATA: DONE....";
         return $data;
     }
 
 
-    private function update_raw_data(&$data){
-        if(!empty($data)) {
-            if(is_array($data))
+    private function update_raw_data(&$data)
+    {
+        if (!empty($data)) {
+            if (is_array($data))
                 $answers = &$data["answer"];
             else
                 $answers = &$data->{"answer"};
 
-            echo "ROI BASED Answers: " . $_POST["roi_based_answers"];
             if (isset($_POST["roi_based_answers"])) {
                 $roi_based_answers_el = $_POST["roi_based_answers"];
                 $roi_based_answers = explode(",", $roi_based_answers_el);
-                foreach($roi_based_answers as $k => $a){
+                foreach ($roi_based_answers as $k => $a) {
                     $answers[$k] = array("text" => "$a", "format" => 1, "itemid" => "x");
                 }
             }
@@ -264,36 +242,28 @@ class qtype_omeromultichoice_edit_form extends qtype_multichoice_edit_form
     }
 
 
-    public function set_data($question) {
-        echo "Calling set data.....";
-        print_r($question);
+    public function set_data($question)
+    {
         parent::set_data($question);
-        echo "<br/>Calling set data: DONE....";
     }
 
-    protected function data_preprocessing_answers($question, $withanswerfiles = false) {
-        echo "<br/>Proprocessing answers....<br/>";
-
+    protected function data_preprocessing_answers($question, $withanswerfiles = false)
+    {
         if (empty($question->options->answers)) {
             return $question;
         }
-
-
-        print_r($question->options->answers);
-
-
 
         $key = 0;
         foreach ($question->options->answers as $answer) {
             if ($withanswerfiles) {
                 // Prepare the feedback editor to display files in draft area.
-                $draftitemid = file_get_submitted_draft_itemid('answer['.$key.']');
+                $draftitemid = file_get_submitted_draft_itemid('answer[' . $key . ']');
                 $question->answer[$key]['text'] = file_prepare_draft_area(
                     $draftitemid,          // Draftid
                     $this->context->id,    // context
                     'question',            // component
                     'answer',              // filarea
-                    !empty($answer->id) ? (int) $answer->id : null, // itemid
+                    !empty($answer->id) ? (int)$answer->id : null, // itemid
                     $this->fileoptions,    // options
                     $answer->answer        // text.
                 );
@@ -318,13 +288,13 @@ class qtype_omeromultichoice_edit_form extends qtype_multichoice_edit_form
             unset($this->_form->_defaultValues["fraction[{$key}]"]);
 
             // Prepare the feedback editor to display files in draft area.
-            $draftitemid = file_get_submitted_draft_itemid('feedback['.$key.']');
+            $draftitemid = file_get_submitted_draft_itemid('feedback[' . $key . ']');
             $question->feedback[$key]['text'] = file_prepare_draft_area(
                 $draftitemid,          // Draftid
                 $this->context->id,    // context
                 'question',            // component
                 'answerfeedback',      // filarea
-                !empty($answer->id) ? (int) $answer->id : null, // itemid
+                !empty($answer->id) ? (int)$answer->id : null, // itemid
                 $this->fileoptions,    // options
                 $answer->feedback      // text.
             );
@@ -340,8 +310,6 @@ class qtype_omeromultichoice_edit_form extends qtype_multichoice_edit_form
             array_shift($extraanswerfields);
             $question = $this->data_preprocessing_extra_answer_fields($question, $extraanswerfields);
         }
-
-        echo "<br/>Proprocessing answers: done ....<br/><br/>";
 
         return $question;
     }
@@ -361,53 +329,18 @@ class qtype_omeromultichoice_edit_form extends qtype_multichoice_edit_form
      * @param $files
      * @return mixed
      */
-    public function validation($data, $files) {
-
-
+    public function validation($data, $files)
+    {
+        //
         $this->update_raw_data($data);
-
+        // checks specific errors
         $errors = array();
-        if(count($data["answer"])<3)
+        if (count($data["answer"]) < 3)
             $errors["generic"] = "At least 2 answers";
-
-
-            //echo "Number of Answers: " . count($data['answer']);
-            //print_r($data['answers']);
-
-//            echo "<br/><br/>Printing answers: ";
-//            print_r($data["answer"]);
-//
-//            echo "<br/><br/>Printing fraction: ";
-//            print_r($data["fraction"]);
-//
-//            echo "<br/><br/>Printing feedback: ";
-//            print_r($data["feedback"]);
-//
-//
-//            echo "<br/><br/>";
-
-//        foreach ($data as $k => $v) {
-//            echo "<br/>" . $k . " ---> " . $v;
-//            if(is_array($v)){
-//                echo "<br/>Array: " . $k . "---------------------------------";
-//                foreach($v as $ak => $av){
-//                    echo "<br/>" . $ak . " ---> " . $av;
-//                }
-//                echo "<br/>Array: " . $k . "---------------------------------";
-//            }
-//        }
-
-
+        // question multichoice validation
         $errors = parent::validation($data, $files);
-
-        //if(count($data['roi_id']<2))
-        //    $errors["answer[0]"] = "At least....";
+        // return found errors
         return $errors;
-    }
-
-
-    public function render(){
-        echo "Rendering";
     }
 
 
@@ -425,7 +358,8 @@ class qtype_omeromultichoice_edit_form extends qtype_multichoice_edit_form
      * @param $addoptions the number of answer blanks to add. Default QUESTION_NUMANS_ADD.
      */
     protected function add_per_answer_fields(&$mform, $label, $gradeoptions,
-                                             $minoptions = QUESTION_NUMANS_START, $addoptions = QUESTION_NUMANS_ADD) {
+                                             $minoptions = QUESTION_NUMANS_START, $addoptions = QUESTION_NUMANS_ADD)
+    {
         $mform->addElement('header', 'answerhdr',
             get_string('answers', 'question'), '');
         $mform->setExpanded('answerhdr', 1);
@@ -447,7 +381,6 @@ class qtype_omeromultichoice_edit_form extends qtype_multichoice_edit_form
 
 
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////
-
 
 
     /**
@@ -475,15 +408,16 @@ class qtype_omeromultichoice_edit_form extends qtype_multichoice_edit_form
      * @return int no of repeats of element in this page
      */
     function repeat_elements($elementobjs, $repeats, $options, $repeathiddenname,
-                             $addfieldsname, $addfieldsno=5, $addstring=null, $addbuttoninside=false){
-        if ($addstring===null){
+                             $addfieldsname, $addfieldsno = 5, $addstring = null, $addbuttoninside = false)
+    {
+        if ($addstring === null) {
             $addstring = get_string('addfields', 'form', $addfieldsno);
         } else {
             $addstring = str_ireplace('{no}', $addfieldsno, $addstring);
         }
         $repeats = optional_param($repeathiddenname, $repeats, PARAM_INT);
         $addfields = optional_param($addfieldsname, '', PARAM_TEXT);
-        if (!empty($addfields)){
+        if (!empty($addfields)) {
             $repeats += $addfieldsno;
         }
         $mform =& $this->_form;
@@ -491,10 +425,10 @@ class qtype_omeromultichoice_edit_form extends qtype_multichoice_edit_form
         $mform->addElement('hidden', $repeathiddenname, $repeats);
         $mform->setType($repeathiddenname, PARAM_INT);
         //value not to be overridden by submitted value
-        $mform->setConstants(array($repeathiddenname=>$repeats));
+        $mform->setConstants(array($repeathiddenname => $repeats));
         $namecloned = array();
         for ($i = 0; $i < $repeats; $i++) {
-            foreach ($elementobjs as $elementobj){
+            foreach ($elementobjs as $elementobj) {
                 $elementclone = fullclone($elementobj);
                 $this->repeat_elements_fix_clone($i, $elementclone, $namecloned);
 
@@ -508,17 +442,17 @@ class qtype_omeromultichoice_edit_form extends qtype_multichoice_edit_form
                 $mform->addElement($elementclone);
             }
         }
-        for ($i=0; $i<$repeats; $i++) {
-            foreach ($options as $elementname => $elementoptions){
-                $pos=strpos($elementname, '[');
-                if ($pos!==FALSE){
-                    $realelementname = substr($elementname, 0, $pos)."[$i]";
+        for ($i = 0; $i < $repeats; $i++) {
+            foreach ($options as $elementname => $elementoptions) {
+                $pos = strpos($elementname, '[');
+                if ($pos !== FALSE) {
+                    $realelementname = substr($elementname, 0, $pos) . "[$i]";
                     $realelementname .= substr($elementname, $pos);
-                }else {
-                    $realelementname = $elementname."[$i]";
+                } else {
+                    $realelementname = $elementname . "[$i]";
                 }
-                foreach ($elementoptions as  $option => $params){
-                    switch ($option){
+                foreach ($elementoptions as $option => $params) {
+                    switch ($option) {
                         case 'default' :
                             $mform->setDefault($realelementname, str_replace('{no}', $i + 1, $params));
                             break;
@@ -527,9 +461,9 @@ class qtype_omeromultichoice_edit_form extends qtype_multichoice_edit_form
                             call_user_func_array(array(&$mform, 'addHelpButton'), $params);
                             break;
                         case 'disabledif' :
-                            foreach ($namecloned as $num => $name){
-                                if ($params[0] == $name){
-                                    $params[0] = $params[0]."[$i]";
+                            foreach ($namecloned as $num => $name) {
+                                if ($params[0] == $name) {
+                                    $params[0] = $params[0] . "[$i]";
                                     break;
                                 }
                             }
@@ -537,7 +471,7 @@ class qtype_omeromultichoice_edit_form extends qtype_multichoice_edit_form
                             call_user_func_array(array(&$mform, 'disabledIf'), $params);
                             break;
                         case 'rule' :
-                            if (is_string($params)){
+                            if (is_string($params)) {
                                 $params = array(null, $params, null, 'client');
                             }
                             $params = array_merge(array($realelementname), $params);
