@@ -98,7 +98,8 @@ me._initRoiBasedAnswers = function () {
 
             // set the thumbnail
             var thumbnail = container.getElementsByClassName("roi_thumb shape_thumb")[0];
-            thumbnail.src = "http://192.168.1.160:8080/webgateway/render_shape_thumbnail/" + roi_id + "/?color=f00";
+            thumbnail.src = me.omero_viewer_controller.omero_server +
+                "/webgateway/render_shape_thumbnail/" + roi_id + "/?color=f00";
 
             // set details
             var details = container.getElementsByClassName("omeromultichoice-qanswer-roi-details-text");
