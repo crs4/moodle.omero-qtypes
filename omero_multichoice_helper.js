@@ -70,7 +70,7 @@ me._initQuestionEditorForm = function () {
     me.enableNewRoiBasedAnswerButton(false);
     // Hides the server-side button for adding answers
     form.elements['addanswers'].style.display = "none";
-}
+};
 
 
 me.enableNewRoiBasedAnswerButton = function (enabled) {
@@ -78,7 +78,7 @@ me.enableNewRoiBasedAnswerButton = function (enabled) {
         var add_roi_button = me.form.elements['add-roi-answer'];
         add_roi_button.disabled = !enabled;
     }
-}
+};
 
 
 me._initRoiBasedAnswers = function () {
@@ -110,7 +110,7 @@ me._initRoiBasedAnswers = function () {
             details[4].getElementsByClassName("roi-field-value")[0].innerHTML = roi_info.shapes[0].height;
         }
     }
-}
+};
 
 
 me.addRoiBasedAnswerAction = function () {
@@ -129,7 +129,7 @@ me.addRoiBasedAnswerAction = function () {
         var action_el = form.elements['addanswers'];
         action_el.click();
     }
-}
+};
 
 
 /**
@@ -146,19 +146,19 @@ me.addRoiBasedAnswer = function (roi_id) {
         form.elements['roi_based_answers'].value += "," + roi_id;
 
     console.log("Current ROI answers: " + form.elements['roi_based_answers'].value);
-}
+};
 
 
 me.removeRoiBasedAnswer = function (roi_id) {
     // Get the number of current answers
     var no_answers = parseInt(form.elements['noanswers'].value);
 
-}
+};
 
 
 me.isEditingMode = function () {
     return me._getForm() != null;
-}
+};
 
 /**
  * Return the question editor form
@@ -175,7 +175,7 @@ me._getForm = function () {
         }
     }
     return null;
-}
+};
 
 
 /**
@@ -199,7 +199,7 @@ me._registerFrameWindowEventHandlers = function (frame_id) {
     var frameWindow = omero_viewer_frame.contentWindow;
     frameWindow.addEventListener("roiShapeSelected", M.omero_multichoice_helper.roiShapeSelected);
     frameWindow.addEventListener("roiShapeDeselected", M.omero_multichoice_helper.roiShapeDeselected);
-}
+};
 
 
 /**
@@ -220,7 +220,7 @@ me._loadROIsInfo = function(){
     }
 
     console.log(me.current_rois_info);
-}
+};
 
 /**
  * Handle the RoiShapeSelection Event
@@ -238,7 +238,7 @@ me.roiShapeSelected = function (info) {
     else
         me.enableNewRoiBasedAnswerButton(false);
     console.log("Selected RoiShape", info, "Current Selected ROIS", me.selected_roi_shapes);
-}
+};
 
 /**
  * Handle the RoiShapeDeselection event
@@ -252,4 +252,7 @@ me.roiShapeDeselected = function (info) {
     });
     me.enableNewRoiBasedAnswerButton(false);
     console.log("DeSelected RoiShape", info, "Current DeSelected ROIS", me.selected_roi_shapes);
-}
+};
+
+
+
