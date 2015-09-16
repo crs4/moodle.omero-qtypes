@@ -136,8 +136,7 @@ me._initRoiBasedAnswers = function () {
 
             // set the thumbnail
             var thumbnail = container.getElementsByClassName("roi_thumb shape_thumb")[0];
-            thumbnail.src = me.omero_viewer_controller.omero_server +
-                "/webgateway/render_shape_thumbnail/" + roi_id + "/?color=f00";
+            thumbnail.src = me.getRoiShapeThumbnailUrl(roi_id);
 
             // set details
             var details = container.getElementsByClassName("omeromultichoice-qanswer-roi-details-text");
@@ -148,6 +147,17 @@ me._initRoiBasedAnswers = function () {
             details[4].getElementsByClassName("roi-field-value")[0].innerHTML = roi_info.shapes[0].height;
         }
     }
+};
+
+/**
+ * Returns the URL of the ROI thumbnail identified by roi_id
+ *
+ * @param roi_id
+ * @returns {string}
+ */
+me.getRoiShapeThumbnailUrl = function (roi_id) {
+    return me.omero_viewer_controller.omero_server +
+        "/webgateway/render_shape_thumbnail/" + roi_id + "/?color=f00";
 };
 
 
