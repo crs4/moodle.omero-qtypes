@@ -10,7 +10,7 @@ var me = M.omero_multichoice_helper;
  * @param module_name
  * @param options
  */
-me.init = function (module_name, frame_id, options) {
+me.init = function (module_name, frame_id, visible_roi_list, options) {
 
     // init instance properties
     me.module_name = module_name; // module name
@@ -24,8 +24,8 @@ me.init = function (module_name, frame_id, options) {
     if (frame_id) {
         me._setFrameObject(frame_id);
         me._omero_viewer_frame.contentWindow.addEventListener("omeroViewerInitialized", function (e) {
-            me._initialize(frame_id, e.detail);
-            alert("OmeroImageViewer init loaded!!!");
+            me._initialize(frame_id, e.detail, visible_roi_list);
+            console.log("OmeroImageViewer init loaded!!!");
         }, true);
     }
     document.addEventListener("frameLoaded", function (e) {
@@ -44,7 +44,7 @@ me.init = function (module_name, frame_id, options) {
  * @param image_details
  * @private
  */
-me._initialize = function (frame_id, image_details) {
+me._initialize = function (frame_id, image_details, visible_roi_list) {
     me.current_image_info = image_details;
     me._registerFrameWindowEventHandlers(frame_id);
     me._loadROIsInfo();
@@ -52,19 +52,22 @@ me._initialize = function (frame_id, image_details) {
     // Performs form enhancements
     if (me.isEditingMode()) {
         me._initQuestionEditorForm();
+    } else {
+        console.log("Loaded ROIs", me.current_rois_info);
+        me.omero_viewer_controller.showRois(visible_roi_list);
     }
-}
+};
 
 
 /**
  * Updates the reference to the frame containing OmeroImageViewer
+ *
  * @param frame_id
  * @returns {Element|*|omero_viewer_frame}
  * @private
  */
 me._setFrameObject = function (frame_id) {
     var omero_viewer_frame = document.getElementById(frame_id);
-    alert("FrameID: " + frame_id);
     if (!omero_viewer_frame) {
         throw EventException("Frame " + frame_id + " not found!!!");
     }
