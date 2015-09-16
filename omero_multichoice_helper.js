@@ -10,7 +10,7 @@ var me = M.omero_multichoice_helper;
  * @param module_name
  * @param options
  */
-me.init = function (module_name, options) {
+me.init = function (module_name, frame_id, options) {
 
     // init instance properties
     me.module_name = module_name; // module name
@@ -20,24 +20,59 @@ me.init = function (module_name, options) {
     me.roi_based_answers = [];
     me.current_rois_info = null;
 
+    // FIXME: use a single event to catch the viewer initialization
+    if (frame_id) {
+        me._setFrameObject(frame_id);
+        me._omero_viewer_frame.contentWindow.addEventListener("omeroViewerInitialized", function (e) {
+            me._initialize(frame_id, e.detail);
+            alert("OmeroImageViewer init loaded!!!");
+        }, true);
+    }
     document.addEventListener("frameLoaded", function (e) {
-        me.current_image_info = e.detail;
-        me._registerFrameWindowEventHandlers(e.detail.frame_id);
-        me._loadROIsInfo();
-
-        // Performs form enhancements
-        if (me.isEditingMode()) {
-            me._initQuestionEditorForm();
-        }
+        me._initialize(e.detail.frame_id, e.detail);
+        console.log("OmeroImageViewer initialized !!!");
     }, true);
-
-    // register jquery
-    require(['jquery'], function ($) {
-        me.$ = $;
-    });
 
     console.log("omero_multichoice_helper js helper initialized!!!");
 };
+
+
+/**
+ * Module initialization
+ *
+ * @param frame_id
+ * @param image_details
+ * @private
+ */
+me._initialize = function (frame_id, image_details) {
+    me.current_image_info = image_details;
+    me._registerFrameWindowEventHandlers(frame_id);
+    me._loadROIsInfo();
+
+    // Performs form enhancements
+    if (me.isEditingMode()) {
+        me._initQuestionEditorForm();
+    }
+}
+
+
+/**
+ * Updates the reference to the frame containing OmeroImageViewer
+ * @param frame_id
+ * @returns {Element|*|omero_viewer_frame}
+ * @private
+ */
+me._setFrameObject = function (frame_id) {
+    var omero_viewer_frame = document.getElementById(frame_id);
+    alert("FrameID: " + frame_id);
+    if (!omero_viewer_frame) {
+        throw EventException("Frame " + frame_id + " not found!!!");
+    }
+    // Registers a reference to the frame
+    me._omero_viewer_frame = omero_viewer_frame;
+    // enable chaining
+    return me._omero_viewer_frame;
+}
 
 
 /**
@@ -56,7 +91,7 @@ me._initQuestionEditorForm = function () {
 
     // Initializes the list of available ROIs
     me.available_rois = [];
-    for(var j in me.current_rois_info){
+    for (var j in me.current_rois_info) {
         me.available_rois.push(me.current_rois_info[j].id);
     }
 
@@ -92,7 +127,7 @@ me._initRoiBasedAnswers = function () {
             if (roi_id == "none") continue;
 
             var roi_info = me.current_rois_info[roi_id];
-            if(!roi_info) throw Error("ROI info not found (ID: " + roi_id + ")!!!");
+            if (!roi_info) throw Error("ROI info not found (ID: " + roi_id + ")!!!");
 
             var container = containers[i];
 
@@ -206,7 +241,7 @@ me._registerFrameWindowEventHandlers = function (frame_id) {
  * Loads ROIs info for the current image
  * @private
  */
-me._loadROIsInfo = function(){
+me._loadROIsInfo = function () {
     var frameWindow = me._omero_viewer_frame.contentWindow;
 
     // FIXME: remove dependency to the 'omero_viewer_controller' (i.e., see 'repository' module)
@@ -214,7 +249,7 @@ me._loadROIsInfo = function(){
     me.omero_viewer_controller = frameWindow.omero_viewer_controller;
     me.current_rois_info = [];
     var roi_infos = me.omero_viewer_controller.getCurrentROIsInfo();
-    for(var i in roi_infos){
+    for (var i in roi_infos) {
         var roi_info = roi_infos[i];
         me.current_rois_info[roi_info.id] = roi_info;
     }
