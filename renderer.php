@@ -43,30 +43,70 @@ class qtype_omeromultichoice_single_renderer extends qtype_multichoice_single_re
     public function formulation_and_controls(question_attempt $qa,
                                              question_display_options $options)
     {
+        global $CFG, $PAGE, $OUTPUT;
 
-
+        // get the current question
         $question = $qa->get_question();
 
-        echo "OMERO: $question->omeroimageurl";
+        // the OMERO image URL
+        $omero_image_url = $question->omeroimageurl;
 
+        // extract the omero server
+        $OMERO_SERVER = substr($omero_image_url, 0, strpos($omero_image_url, "/webgateway"));
+
+        // get the image id
+        $omero_image = 1;
+
+        // set the frame of the OmeroImageViewer
+        $omero_frame_id = "omero-image-viewer";
+
+//        $module = array('name' => 'omero_multichoice_helper', 'fullpath' => '/question/type/omeromultichoice/omero_multichoice_helper.js',
+//            'requires' => array('omemultichoice_qtype', 'node', 'node-event-simulate', 'core_dndupload'));
+//        $PAGE->requires->js_init_call('M.omero_multichoice_helper.init', array(), true, $module);
+
+
+        $omero_image_wrapper = '<script type="text/javascript" ' .
+            'src="/moodle/question/type/omeromultichoice/omero_multichoice_helper.js" ' .
+            '></script>';
+
+
+        // build the iframe element for wrapping the OmeroImageViewer
+        $omero_image_wrapper .= html_writer::tag('iframe', "",
+            array(
+                "src" => "/moodle/repository/omero/viewer.php" .
+                    "?id=$omero_image" .
+                    "&width=" . urlencode("100%") .
+                    "&height=400px" .
+                    "&frame=$omero_frame_id" .
+                    "&showRoiTable=false",
+                "width" => "100%",
+                "height" => "450px",
+                "id" => $omero_frame_id //,
+                //"onload" => 'M.omero_multichoice_helper.init();'
+            )
+        );
+
+        // set question controls
         $response = $question->get_response($qa);
 
         $inputname = $qa->get_qt_field_name('answer');
         $inputattributes = array(
             'type' => $this->get_input_type(),
-            'name' => $inputname,
+            'name' => $inputname
         );
 
         if ($options->readonly) {
             $inputattributes['disabled'] = 'disabled';
         }
 
+        $roi_id_list = array();
         $radiobuttons = array();
         $feedbackimg = array();
         $feedback = array();
         $classes = array();
         foreach ($question->get_order($qa) as $value => $ansid) {
             $ans = $question->answers[$ansid];
+            array_push($roi_id_list, $ans->answer);
             $inputattributes['name'] = $this->get_input_name($qa, $value);
             $inputattributes['value'] = $this->get_input_value($value);
             $inputattributes['id'] = $this->get_input_id($qa, $value);
@@ -87,10 +127,11 @@ class qtype_omeromultichoice_single_renderer extends qtype_multichoice_single_re
             $radiobuttons[] = $hidden . html_writer::empty_tag('input', $inputattributes) .
                 html_writer::tag('label',
                     $this->number_in_style($value, $question->answernumbering) .
-                    $question->make_html_inline($question->format_text(
-                        $ans->answer, $ans->answerformat,
-                        $qa, 'question', 'answer', $ansid)),
-                    array('for' => $inputattributes['id']));
+                    html_writer::tag("img", "", array(
+                        "src" => "$OMERO_SERVER/webgateway/render_shape_thumbnail/" . $ans->answer . "/?color=f00",
+                        "onclick" => "M.omero_multichoice_helper.moveToRoiShape($ans->answer)"
+                    )));
+
 
             // Param $options->suppresschoicefeedback is a hack specific to the
             // oumultiresponse question type. It would be good to refactor to
@@ -116,9 +157,18 @@ class qtype_omeromultichoice_single_renderer extends qtype_multichoice_single_re
             $classes[] = $class;
         }
 
+        /**
+         * Render the question
+         */
         $result = '';
+        // question text
         $result .= html_writer::tag('div', $question->format_questiontext($qa),
             array('class' => 'qtext'));
+        // viewer of the question image
+        $result .= $omero_image_wrapper;
+        $result .= html_writer::script(
+            "M.omero_multichoice_helper.init('omero_multichoice_helper', " .
+            "'$omero_frame_id', [" . implode(",", $roi_id_list) . "])");
 
         $result .= html_writer::start_tag('div', array('class' => 'ablock'));
         $result .= html_writer::tag('div', $this->prompt(), array('class' => 'prompt'));
@@ -137,6 +187,10 @@ class qtype_omeromultichoice_single_renderer extends qtype_multichoice_single_re
                 $question->get_validation_error($qa->get_last_qt_data()),
                 array('class' => 'validationerror'));
         }
+
+
+        // add initialization
+
 
         return $result;
     }
