@@ -83,7 +83,7 @@ me._setFrameObject = function (frame_id) {
  * @param roi_id
  */
 me.moveToRoiShape = function (roi_id) {
-    me.omero_viewer_controller.handleShapeRowClick({id: roi_id});
+    me.omero_viewer_controller._handleShapeRowClick({id: roi_id});
 }
 
 
