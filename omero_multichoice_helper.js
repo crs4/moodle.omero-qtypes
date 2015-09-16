@@ -77,6 +77,15 @@ me._setFrameObject = function (frame_id) {
     return me._omero_viewer_frame;
 }
 
+/**
+ * Focus on the ROI shape
+ *
+ * @param roi_id
+ */
+me.moveToRoiShape = function (roi_id) {
+    me.omero_viewer_controller.handleShapeRowClick({id: roi_id});
+}
+
 
 /**
  * Initialize event listeners
