@@ -41,6 +41,9 @@ require_once($CFG->dirroot . '/question/type/omeromultichoice/question.php');
 class qtype_omeromultichoice extends qtype_multichoice
 {
 
+    const PLAIN_ANSWERS = 0;
+    const ROI_BASED_ANSWERS = 1;
+
 //    public function move_files($questionid, $oldcontextid, $newcontextid) {
 //        parent::move_files($questionid, $oldcontextid, $newcontextid);
 //        $this->move_files_in_hints($questionid, $oldcontextid, $newcontextid);
