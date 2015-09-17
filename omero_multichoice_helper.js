@@ -54,7 +54,16 @@ me._initialize = function (frame_id, image_details, visible_roi_list) {
         me._initQuestionEditorForm();
     } else {
         console.log("Loaded ROIs", me.current_rois_info);
-        me.omero_viewer_controller.showRois(visible_roi_list);
+
+        // FIXME: use a better way to identify the answer type
+        if(visible_roi_list == "all") {
+            var all = [];
+            for(var i in me.current_rois_info)
+                all.push(me.current_rois_info[i].id);
+            me.omero_viewer_controller.showRois(all);
+        }else{
+            me.omero_viewer_controller.showRois(visible_roi_list);
+        }
     }
 };
 
