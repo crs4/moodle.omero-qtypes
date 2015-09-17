@@ -221,4 +221,16 @@ class qtype_omeromultichoice extends qtype_multichoice
         $DB->delete_records('qtype_omemultichoice_options', array('questionid' => $questionid));
         parent::delete_question($questionid, $contextid);
     }
+
+
+    ///////////////////////////////////////////////////////////////////////////////
+
+    /**
+     * Returns the list of supported omero-question types
+     *
+     * @return array
+     */
+    public function get_question_types(){
+        return array(qtype_omeromultichoice::PLAIN_ANSWERS, qtype_omeromultichoice::ROI_BASED_ANSWERS);
+    }
 }
