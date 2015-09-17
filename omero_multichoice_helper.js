@@ -111,12 +111,17 @@ me._initQuestionEditorForm = function () {
     console.log("Available ROIs:", me.available_rois);
     console.log("ROI based answers:", me.roi_based_answers);
 
-    // Registers the listener for the button 'add-roi-answer'
-    var add_roi_button = form.elements['add-roi-answer'];
-    add_roi_button.onclick = me.addRoiBasedAnswerAction;
-    me.enableNewRoiBasedAnswerButton(false);
-    // Hides the server-side button for adding answers
-    form.elements['addanswers'].style.display = "none";
+    // FIXME: use a better way to identify the answer type
+    if(document.forms[0].elements['answertype'].value == "1") {
+        // Registers the listener for the button 'add-roi-answer'
+        var add_roi_button = form.elements['add-roi-answer'];
+        add_roi_button.onclick = me.addRoiBasedAnswerAction;
+        me.enableNewRoiBasedAnswerButton(false);
+        // Hides the server-side button for adding answers
+        form.elements['addanswers'].style.display = "none";
+    }else{
+        form.elements['addanswers'].style.display = "visible";
+    }
 };
 
 
