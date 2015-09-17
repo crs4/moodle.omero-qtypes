@@ -33,12 +33,12 @@
 
 /* Editing form. */
 body#page-question-type-omeromultichoice div[id^=fitem_id_][id*=answer_] {
-    background: #EEE;
+    /*background: #EEE;*/
     margin-top: 0;
     margin-bottom: 0;
     padding-bottom: 5px;
     padding-top: 5px;
-    border: 1px solid #BBB;
+    /*border: 1px solid #BBB;*/
     border-bottom: 0;
 }
 
@@ -187,7 +187,7 @@ body#page-question-type-omeromultichoice div[id^=fitem_id_][id*=add-roi-answer] 
 }
 
 body#page-question-type-omeromultichoice input[name="addanswers"] {
-    display: none;
+    /*display: none;*/
 }
 
 body#page-question-preview .que .formulation {
