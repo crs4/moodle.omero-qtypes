@@ -58,6 +58,8 @@ class qtype_omeromultichoice extends qtype_multichoice
 //        $this->save_hints($question);
 //    }
 
+
+
     protected function make_question_instance($questiondata)
     {
         question_bank::load_question_definition_classes($this->name());
@@ -148,6 +150,7 @@ class qtype_omeromultichoice extends qtype_multichoice
         if (!$options) {
             $options = new stdClass();
             $options->questionid = $question->id;
+            $options->type = qtype_omeromultichoice::PLAIN_ANSWERS;
             $options->omeroimageurl = '';
             $options->correctfeedback = '';
             $options->partiallycorrectfeedback = '';
@@ -159,6 +162,7 @@ class qtype_omeromultichoice extends qtype_multichoice
         if (isset($question->layout)) {
             $options->layout = $question->layout;
         }
+        $options->type = $question->type;
         $options->omeroimageurl = $question->omero_image_url;
         $options->answernumbering = $question->answernumbering;
         $options->shuffleanswers = $question->shuffleanswers;
@@ -206,6 +210,7 @@ class qtype_omeromultichoice extends qtype_multichoice
     protected function initialise_question_instance(question_definition $question, $questiondata)
     {
         parent::initialise_question_instance($question, $questiondata);
+        $question->type = $questiondata->options->type;
         $question->omeroimageurl = $questiondata->options->omeroimageurl;
     }
 
