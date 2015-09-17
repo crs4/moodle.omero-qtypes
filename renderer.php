@@ -124,14 +124,22 @@ class qtype_omeromultichoice_single_renderer extends qtype_multichoice_single_re
                     'value' => 0,
                 ));
             }
-            $radiobuttons[] = $hidden . html_writer::empty_tag('input', $inputattributes) .
-                html_writer::tag('label',
-                    $this->number_in_style($value, $question->answernumbering) .
-                    html_writer::tag("img", "", array(
-                        "src" => "$OMERO_SERVER/webgateway/render_shape_thumbnail/" . $ans->answer . "/?color=f00",
-                        "onclick" => "M.omero_multichoice_helper.moveToRoiShape($ans->answer)"
-                    )));
 
+            $answer_content = "";
+            if ($question->answertype == qtype_omeromultichoice::ROI_BASED_ANSWERS) {
+                $answer_content = html_writer::tag("img", "", array(
+                    "src" => "$OMERO_SERVER/webgateway/render_shape_thumbnail/" . $ans->answer . "/?color=f00",
+                    "onclick" => "M.omero_multichoice_helper.moveToRoiShape($ans->answer)"
+                ));
+            } else {
+                $answer_content = html_writer::tag('span', $ans->answer);
+            }
+
+            $radiobuttons[] = $hidden . html_writer::empty_tag('input', $inputattributes) .
+                //html_writer::tag('span',
+                html_writer::tag('label',
+                    "<b>" . $this->number_in_style($value, $question->answernumbering) . "</b>" . $answer_content
+                );
 
             // Param $options->suppresschoicefeedback is a hack specific to the
             // oumultiresponse question type. It would be good to refactor to
@@ -160,15 +168,18 @@ class qtype_omeromultichoice_single_renderer extends qtype_multichoice_single_re
         /**
          * Render the question
          */
+
         $result = '';
         // question text
         $result .= html_writer::tag('div', $question->format_questiontext($qa),
             array('class' => 'qtext'));
         // viewer of the question image
         $result .= $omero_image_wrapper;
+        $script_args = ($question->answertype == qtype_omeromultichoice::ROI_BASED_ANSWERS) ?
+            "[" . implode(",", $roi_id_list) . "]" : "'all'";
         $result .= html_writer::script(
             "M.omero_multichoice_helper.init('omero_multichoice_helper', " .
-            "'$omero_frame_id', [" . implode(",", $roi_id_list) . "])");
+            "'$omero_frame_id', $script_args)");
 
         $result .= html_writer::start_tag('div', array('class' => 'ablock'));
         $result .= html_writer::tag('div', $this->prompt(), array('class' => 'prompt'));
