@@ -153,8 +153,8 @@ class qtype_omeromultichoice_edit_form extends qtype_multichoice_edit_form
                                              &$repeatedoptions, &$answersoption)
     {
         //if($mform->getElement("answertype")->getSelected()[0]==qtype_omeromultichoice::ROI_BASED_ANSWERS)
-        //if ((isset($_REQUEST['answertype']) && $_REQUEST['answertype'] == qtype_omeromultichoice::ROI_BASED_ANSWERS))
-        if(isset($this->question->options) && $this->question->options->answertype==qtype_omeromultichoice::ROI_BASED_ANSWERS)
+        if ((isset($_REQUEST['answertype']) && $_REQUEST['answertype'] == qtype_omeromultichoice::ROI_BASED_ANSWERS))
+        //if(isset($this->question->options) && $this->question->options->answertype==qtype_omeromultichoice::ROI_BASED_ANSWERS)
             return $this->get_per_roi_based_answer_fields($mform, $label, $gradeoptions,
                 $repeatedoptions, $answersoption);
         else return $this->get_per_plaintext_answer_fields($mform, $label,$gradeoptions,
