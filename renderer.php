@@ -55,7 +55,8 @@ class qtype_omeromultichoice_single_renderer extends qtype_multichoice_single_re
         $OMERO_SERVER = substr($omero_image_url, 0, strpos($omero_image_url, "/webgateway"));
 
         // get the image id
-        $omero_image = 1;
+        $omero_image_str = strrchr($omero_image_url, "/");
+        $omero_image = substr($omero_image_str, 1, strlen($omero_image_str));
 
         // set the frame of the OmeroImageViewer
         $omero_frame_id = "omero-image-viewer";
