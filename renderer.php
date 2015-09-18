@@ -133,7 +133,7 @@ class qtype_omeromultichoice_single_renderer extends qtype_multichoice_single_re
                     "onclick" => "M.omero_multichoice_helper.moveToRoiShape($ans->answer)"
                 ));
             } else {
-                $answer_content = html_writer::tag('span', $ans->answer);
+                $answer_content = '<div style="display: inline-block">' . $ans->answer . '</div>';
             }
 
             $radiobuttons[] = $hidden . html_writer::empty_tag('input', $inputattributes) .
