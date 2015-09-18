@@ -152,10 +152,12 @@ class qtype_omeromultichoice_edit_form extends qtype_multichoice_edit_form
     protected function get_per_answer_fields($mform, $label, $gradeoptions,
                                              &$repeatedoptions, &$answersoption)
     {
-        if (isset($_REQUEST['answertype']) && $_REQUEST['answertype'] == qtype_omeromultichoice::ROI_BASED_ANSWERS)
+        //if($mform->getElement("answertype")->getSelected()[0]==qtype_omeromultichoice::ROI_BASED_ANSWERS)
+        //if ((isset($_REQUEST['answertype']) && $_REQUEST['answertype'] == qtype_omeromultichoice::ROI_BASED_ANSWERS))
+        if(isset($this->question->options) && $this->question->options->answertype==qtype_omeromultichoice::ROI_BASED_ANSWERS)
             return $this->get_per_roi_based_answer_fields($mform, $label, $gradeoptions,
                 $repeatedoptions, $answersoption);
-        else return $this->get_per_plaintext_answer_fields($mform, $label, $gradeoptions,
+        else return $this->get_per_plaintext_answer_fields($mform, $label,$gradeoptions,
             $repeatedoptions, $answersoption);
     }
 
@@ -256,12 +258,12 @@ class qtype_omeromultichoice_edit_form extends qtype_multichoice_edit_form
     protected function data_preprocessing($question)
     {
         $question = parent::data_preprocessing($question);
-        if (isset($_REQUEST['answertype']) &&
-            $_REQUEST['answertype'] == qtype_omeromultichoice::ROI_BASED_ANSWERS
-        )
+        if(isset($this->question->options) && $question->options->answertype==qtype_omeromultichoice::ROI_BASED_ANSWERS)
+        {
             $question = $this->data_preprocessing_answers($question, false);
-        else
+        }else {
             $question = $this->data_preprocessing_answers($question, true);
+        }
         $question = $this->data_preprocessing_combined_feedback($question, true);
         $question = $this->data_preprocessing_hints($question, true, true);
 
@@ -276,7 +278,7 @@ class qtype_omeromultichoice_edit_form extends qtype_multichoice_edit_form
                 array_push($roi_based_answers, $answer->answer);
             }
             $question->roi_based_answers = implode(",", $roi_based_answers);
-
+            $question->answertype = $question->options->answertype;
             $question->omero_image_url = $question->options->omeroimageurl;
         }
         return $question;
