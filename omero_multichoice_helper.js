@@ -137,7 +137,9 @@ me._initQuestionEditorForm = function () {
 me.enableNewRoiBasedAnswerButton = function (enabled) {
     if (me.form) {
         var add_roi_button = me.form.elements['add-roi-answer'];
-        add_roi_button.disabled = !enabled;
+        if(add_roi_button) {
+            add_roi_button.disabled = !enabled;
+        }
     }
 };
 
