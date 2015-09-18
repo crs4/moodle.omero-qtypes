@@ -256,7 +256,12 @@ class qtype_omeromultichoice_edit_form extends qtype_multichoice_edit_form
     protected function data_preprocessing($question)
     {
         $question = parent::data_preprocessing($question);
-        $question = $this->data_preprocessing_answers($question, false);
+        if (isset($_REQUEST['answertype']) &&
+            $_REQUEST['answertype'] == qtype_omeromultichoice::ROI_BASED_ANSWERS
+        )
+            $question = $this->data_preprocessing_answers($question, false);
+        else
+            $question = $this->data_preprocessing_answers($question, true);
         $question = $this->data_preprocessing_combined_feedback($question, true);
         $question = $this->data_preprocessing_hints($question, true, true);
 
@@ -402,7 +407,7 @@ class qtype_omeromultichoice_edit_form extends qtype_multichoice_edit_form
             $this->update_raw_data($data);
         }
 
-        if ($_REQUEST['answertype'] < 3)
+        if ($_REQUEST['noanswers'] < 3)
             $errors["generic"] = "At least 2 answers";
 
         // checks specific errors
@@ -411,7 +416,7 @@ class qtype_omeromultichoice_edit_form extends qtype_multichoice_edit_form
             $errors["generic"] = "At least 2 answers";
 
         // question multichoice validation
-        if ($_REQUEST['answertype'] > 0)
+        if ($_REQUEST['noanswers'] > 0)
             $errors = parent::validation($data, $files);
         // return found errors
         return $errors;
