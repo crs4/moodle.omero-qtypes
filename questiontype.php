@@ -41,6 +41,9 @@ require_once($CFG->dirroot . '/question/type/omeromultichoice/question.php');
 class qtype_omeromultichoice extends qtype_multichoice
 {
 
+    const PLAIN_ANSWERS = 0;
+    const ROI_BASED_ANSWERS = 1;
+
 //    public function move_files($questionid, $oldcontextid, $newcontextid) {
 //        parent::move_files($questionid, $oldcontextid, $newcontextid);
 //        $this->move_files_in_hints($questionid, $oldcontextid, $newcontextid);
@@ -54,6 +57,8 @@ class qtype_omeromultichoice extends qtype_multichoice
 //    public function save_question_options($question) {
 //        $this->save_hints($question);
 //    }
+
+
 
     protected function make_question_instance($questiondata)
     {
@@ -145,6 +150,7 @@ class qtype_omeromultichoice extends qtype_multichoice
         if (!$options) {
             $options = new stdClass();
             $options->questionid = $question->id;
+            $options->answertype = qtype_omeromultichoice::PLAIN_ANSWERS;
             $options->omeroimageurl = '';
             $options->correctfeedback = '';
             $options->partiallycorrectfeedback = '';
@@ -156,6 +162,7 @@ class qtype_omeromultichoice extends qtype_multichoice
         if (isset($question->layout)) {
             $options->layout = $question->layout;
         }
+        $options->answertype = $question->answertype;
         $options->omeroimageurl = $question->omero_image_url;
         $options->answernumbering = $question->answernumbering;
         $options->shuffleanswers = $question->shuffleanswers;
@@ -203,7 +210,14 @@ class qtype_omeromultichoice extends qtype_multichoice
     protected function initialise_question_instance(question_definition $question, $questiondata)
     {
         parent::initialise_question_instance($question, $questiondata);
+        // set the omero image url
         $question->omeroimageurl = $questiondata->options->omeroimageurl;
+        // set the question answer type
+        if(!empty($questiondata->options->answertype)) {
+            $question->answertype = $questiondata->options->answertype;
+        } else {
+            $question->answertype = qtype_omeromultichoice::PLAIN_ANSWERS;
+        }
     }
 
 
@@ -212,5 +226,17 @@ class qtype_omeromultichoice extends qtype_multichoice
         global $DB;
         $DB->delete_records('qtype_omemultichoice_options', array('questionid' => $questionid));
         parent::delete_question($questionid, $contextid);
+    }
+
+
+    ///////////////////////////////////////////////////////////////////////////////
+
+    /**
+     * Returns the list of supported omero-question types
+     *
+     * @return array
+     */
+    public static function get_question_types(){
+        return array(qtype_omeromultichoice::PLAIN_ANSWERS, qtype_omeromultichoice::ROI_BASED_ANSWERS);
     }
 }

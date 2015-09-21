@@ -61,9 +61,19 @@ class qtype_omeromultichoice_edit_form extends qtype_multichoice_edit_form
                 'return_types' => array(FILE_INTERNAL | FILE_EXTERNAL))
         );
 
-        $mform->addElement("button", "add-roi-answer",
-            get_string("add_roi_answer", "qtype_omeromultichoice"), array("disabled" => true));
+//        $enable_add_plaintext_answer_button =
+//            !isset($_REQUEST['answertype']) || $_REQUEST['answertype'] == qtype_omeromultichoice::PLAIN_ANSWERS;
+//        if (!$enable_add_plaintext_answer_button)
 
+        if ((isset($_REQUEST['answertype'])
+                && $_REQUEST['answertype'] == qtype_omeromultichoice::ROI_BASED_ANSWERS) ||
+            (isset($this->question->options)
+                && $this->question->options->answertype == qtype_omeromultichoice::ROI_BASED_ANSWERS)
+        ) {
+            $mform->addElement("button", "add-roi-answer",
+                get_string("add_roi_answer", "qtype_omeromultichoice"));
+            //,array("disabled" => true));
+        }
 
         $menu = array(
             get_string('answersingleno', 'qtype_multichoice'),
@@ -72,6 +82,17 @@ class qtype_omeromultichoice_edit_form extends qtype_multichoice_edit_form
         $mform->addElement('select', 'single',
             get_string('answerhowmany', 'qtype_multichoice'), $menu);
         $mform->setDefault('single', 1);
+
+        // Set answer types and the related selector
+        $answer_type_menu = array();
+        foreach (qtype_omeromultichoice::get_question_types() as $type) {
+            array_push($answer_type_menu, get_string("qtype_$type", 'qtype_omeromultichoice'));
+        }
+        $mform->addElement('select', 'answertype',
+            get_string('answer_type', 'qtype_omeromultichoice'), $answer_type_menu,
+            array("onchange" => "document.forms[0].elements['noanswers'].value=0; document.forms[0].submit()"));
+        $mform->setDefault('answertype', qtype_omeromultichoice::PLAIN_ANSWERS);
+
 
         $mform->addElement('advcheckbox', 'shuffleanswers',
             get_string('shuffleanswers', 'qtype_multichoice'), null, null, array(0, 1));
@@ -84,12 +105,13 @@ class qtype_omeromultichoice_edit_form extends qtype_multichoice_edit_form
         $mform->setDefault('answernumbering', 'abc');
 
         // Set the initial number of answers to 0; add answers one by one
-        $this->add_per_answer_fields($mform, get_string('roi_choiceno', 'qtype_omeromultichoice', '{no}'),
+        $this->add_per_answer_fields($mform, get_string('choiceno', 'qtype_multichoice', '{no}'),
             question_bank::fraction_options_full(), 0, 1);
 
         $this->add_combined_feedback_fields(true);
         $mform->disabledIf('shownumcorrect', 'single', 'eq', 1);
 
+        // default interactive settings
         $this->add_interactive_settings(true, true);
 
         // Set the editing mode
@@ -136,6 +158,48 @@ class qtype_omeromultichoice_edit_form extends qtype_multichoice_edit_form
      */
     protected function get_per_answer_fields($mform, $label, $gradeoptions,
                                              &$repeatedoptions, &$answersoption)
+    {
+        //if($mform->getElement("answertype")->getSelected()[0]==qtype_omeromultichoice::ROI_BASED_ANSWERS)
+        if ((isset($_REQUEST['answertype']) && $_REQUEST['answertype'] == qtype_omeromultichoice::ROI_BASED_ANSWERS) ||
+            (isset($this->question->options) && $this->question->options->answertype == qtype_omeromultichoice::ROI_BASED_ANSWERS)
+        )
+            return $this->get_per_roi_based_answer_fields($mform, $label, $gradeoptions,
+                $repeatedoptions, $answersoption);
+        else return $this->get_per_plaintext_answer_fields($mform, $label, $gradeoptions,
+            $repeatedoptions, $answersoption);
+    }
+
+    protected function get_per_plaintext_answer_fields($mform, $label, $gradeoptions,
+                                                       &$repeatedoptions, &$answersoption)
+    {
+        $repeated = array();
+        $repeated[] = $mform->createElement('editor', 'answer',
+            $label, array('rows' => 1), $this->editoroptions);
+        $repeated[] = $mform->createElement('select', 'fraction',
+            get_string('grade'), $gradeoptions);
+        $repeated[] = $mform->createElement('editor', 'feedback',
+            get_string('feedback', 'question'), array('rows' => 1), $this->editoroptions);
+        $repeated[] = $mform->createElement('html', '<div style="margin-bottom: 60px;"></div>');
+        $repeatedoptions['answer']['type'] = PARAM_RAW;
+        $repeatedoptions['fraction']['default'] = 0;
+        $answersoption = 'answers';
+        return $repeated;
+    }
+
+
+    /**
+     * Build the repeated elements of the form
+     * (i.e., form elements for setting answers)
+     *
+     * @param $mform
+     * @param $label
+     * @param $gradeoptions
+     * @param $repeatedoptions
+     * @param $answersoption
+     * @return array
+     */
+    protected function get_per_roi_based_answer_fields($mform, $label, $gradeoptions,
+                                                       &$repeatedoptions, &$answersoption)
     {
         $repeated = array();
 
@@ -202,7 +266,11 @@ class qtype_omeromultichoice_edit_form extends qtype_multichoice_edit_form
     protected function data_preprocessing($question)
     {
         $question = parent::data_preprocessing($question);
-        $question = $this->data_preprocessing_answers($question, false);
+        if (isset($this->question->options) && $question->options->answertype == qtype_omeromultichoice::ROI_BASED_ANSWERS) {
+            $question = $this->data_preprocessing_answers($question, false);
+        } else {
+            $question = $this->data_preprocessing_answers($question, true);
+        }
         $question = $this->data_preprocessing_combined_feedback($question, true);
         $question = $this->data_preprocessing_hints($question, true, true);
 
@@ -217,7 +285,7 @@ class qtype_omeromultichoice_edit_form extends qtype_multichoice_edit_form
                 array_push($roi_based_answers, $answer->answer);
             }
             $question->roi_based_answers = implode(",", $roi_based_answers);
-
+            $question->answertype = $question->options->answertype;
             $question->omero_image_url = $question->options->omeroimageurl;
         }
         return $question;
@@ -227,7 +295,10 @@ class qtype_omeromultichoice_edit_form extends qtype_multichoice_edit_form
     public function get_data()
     {
         $data = parent::get_data();
-        $this->update_raw_data($data);
+        if (isset($_REQUEST['answertype']) &&
+            $_REQUEST['answertype'] == qtype_omeromultichoice::ROI_BASED_ANSWERS
+        )
+            $this->update_raw_data($data);
         return $data;
     }
 
@@ -340,14 +411,22 @@ class qtype_omeromultichoice_edit_form extends qtype_multichoice_edit_form
      */
     public function validation($data, $files)
     {
-        //
-        $this->update_raw_data($data);
+        if (isset($_REQUEST['answertype']) && $_REQUEST['answertype'] == qtype_omeromultichoice::ROI_BASED_ANSWERS) {
+            //
+            $this->update_raw_data($data);
+        }
+
+        if ($_REQUEST['noanswers'] < 3)
+            $errors["generic"] = "At least 2 answers";
+
         // checks specific errors
         $errors = array();
-        if (count($data["answer"]) < 3)
+        if (!isset($data["answer"]) || count($data["answer"]) < 3)
             $errors["generic"] = "At least 2 answers";
+
         // question multichoice validation
-        $errors = parent::validation($data, $files);
+        if ($_REQUEST['noanswers'] > 0)
+            $errors = parent::validation($data, $files);
         // return found errors
         return $errors;
     }

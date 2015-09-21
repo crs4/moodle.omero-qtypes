@@ -10,6 +10,7 @@
         <FIELD NAME="questionid" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false" COMMENT="Foreign key references question.id"/>
         <FIELD NAME="omeroimageurl" TYPE="text" NOTNULL="true" SEQUENCE="false" COMMENT="OMERO image URL."/>
         <FIELD NAME="layout" TYPE="int" LENGTH="4" NOTNULL="true" DEFAULT="0" SEQUENCE="false" COMMENT="Not used. Was intended for a vertical/horizontal layout option. See MDL-18445."/>
+        <FIELD NAME="answertype" TYPE="int" LENGTH="4" NOTNULL="true" DEFAULT="0" SEQUENCE="false" COMMENT="Store the subtype of the question."/>
         <FIELD NAME="single" TYPE="int" LENGTH="4" NOTNULL="true" DEFAULT="0" SEQUENCE="false" COMMENT="If 0 it multiple response (checkboxes). Otherwise it is radio buttons."/>
         <FIELD NAME="shuffleanswers" TYPE="int" LENGTH="4" NOTNULL="true" DEFAULT="1" SEQUENCE="false" COMMENT="Whether the choices can be randomly shuffled."/>
         <FIELD NAME="correctfeedback" TYPE="text" NOTNULL="true" SEQUENCE="false" COMMENT="Feedback shown for any correct response."/>

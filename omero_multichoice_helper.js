@@ -54,7 +54,16 @@ me._initialize = function (frame_id, image_details, visible_roi_list) {
         me._initQuestionEditorForm();
     } else {
         console.log("Loaded ROIs", me.current_rois_info);
-        me.omero_viewer_controller.showRois(visible_roi_list);
+
+        // FIXME: use a better way to identify the answer type
+        if(visible_roi_list == "all") {
+            var all = [];
+            for(var i in me.current_rois_info)
+                all.push(me.current_rois_info[i].id);
+            me.omero_viewer_controller.showRois(all);
+        }else{
+            me.omero_viewer_controller.showRois(visible_roi_list);
+        }
     }
 };
 
@@ -111,19 +120,26 @@ me._initQuestionEditorForm = function () {
     console.log("Available ROIs:", me.available_rois);
     console.log("ROI based answers:", me.roi_based_answers);
 
-    // Registers the listener for the button 'add-roi-answer'
-    var add_roi_button = form.elements['add-roi-answer'];
-    add_roi_button.onclick = me.addRoiBasedAnswerAction;
-    me.enableNewRoiBasedAnswerButton(false);
-    // Hides the server-side button for adding answers
-    form.elements['addanswers'].style.display = "none";
+    // FIXME: use a better way to identify the answer type
+    if(document.forms[0].elements['answertype'].value == "1") {
+        // Registers the listener for the button 'add-roi-answer'
+        var add_roi_button = form.elements['add-roi-answer'];
+        add_roi_button.onclick = me.addRoiBasedAnswerAction;
+        me.enableNewRoiBasedAnswerButton(false);
+        // Hides the server-side button for adding answers
+        form.elements['addanswers'].style.display = "none";
+    }else{
+        form.elements['addanswers'].style.display = "visible";
+    }
 };
 
 
 me.enableNewRoiBasedAnswerButton = function (enabled) {
     if (me.form) {
         var add_roi_button = me.form.elements['add-roi-answer'];
-        add_roi_button.disabled = !enabled;
+        if(add_roi_button) {
+            add_roi_button.disabled = !enabled;
+        }
     }
 };
 

@@ -41,6 +41,10 @@ $string['roi_choiceno'] = 'ROI choice {$a}';
 
 $string['add_roi_answer'] = 'Add a new ROI based answer';
 
+$string['answer_type'] = "Answer type";
+
+$string['qtype_0'] = "Plaintext";
+$string['qtype_1'] = "ROI based";
 
 /** ROI description
 /* subset of a JSON ROI
