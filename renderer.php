@@ -406,8 +406,8 @@ class qtype_omeromultichoice_multi_renderer extends qtype_multichoice_multi_rend
             $omero_image_params = $matches[2];
         }
 
-        // set the frame of the OmeroImageViewer
-        $omero_frame_id = "omero-image-viewer";
+        // set the ID of the OmeroImageViewer
+        $omero_frame_id = "omero-image-viewer" . uniqid('', true);
 
 //        $module = array('name' => 'omero_multichoice_helper', 'fullpath' => '/question/type/omeromultichoice/omero_multichoice_helper.js',
 //            'requires' => array('omemultichoice_qtype', 'node', 'node-event-simulate', 'core_dndupload'));
