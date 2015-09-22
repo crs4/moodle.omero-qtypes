@@ -63,12 +63,11 @@ class qtype_omeromultichoice extends qtype_multichoice
     protected function make_question_instance($questiondata)
     {
         question_bank::load_question_definition_classes($this->name());
-//        if ($questiondata->options->single) {
-//            $class = 'qtype_multichoice_single_question';
-//        } else {
-//            $class = 'qtype_multichoice_multi_question';
-//        }
-        $class = 'qtype_omeromultichoice_question';
+        if ($questiondata->options->single) {
+            $class = 'qtype_omeromultichoice_single_question';
+        } else {
+            $class = 'qtype_omeromultichoice_multi_question';
+        }
         return new $class();
     }
 
