@@ -56,12 +56,12 @@ me._initialize = function (frame_id, image_details, visible_roi_list) {
         console.log("Loaded ROIs", me.current_rois_info);
 
         // FIXME: use a better way to identify the answer type
-        if(visible_roi_list == "all") {
+        if (visible_roi_list == "all") {
             var all = [];
-            for(var i in me.current_rois_info)
+            for (var i in me.current_rois_info)
                 all.push(me.current_rois_info[i].id);
             me.omero_viewer_controller.showRois(all);
-        }else{
+        } else {
             me.omero_viewer_controller.showRois(visible_roi_list);
         }
     }
@@ -116,19 +116,23 @@ me._initQuestionEditorForm = function () {
         me.available_rois.push(me.current_rois_info[j].id);
     }
 
+    // Registers the submit function
+    document.forms[0].onsubmit = me._on_question_submitted;
+
+    // Initializes the ROI based answers
     me._initRoiBasedAnswers();
     console.log("Available ROIs:", me.available_rois);
     console.log("ROI based answers:", me.roi_based_answers);
 
     // FIXME: use a better way to identify the answer type
-    if(document.forms[0].elements['answertype'].value == "1") {
+    if (document.forms[0].elements['answertype'].value == "1") {
         // Registers the listener for the button 'add-roi-answer'
         var add_roi_button = form.elements['add-roi-answer'];
         add_roi_button.onclick = me.addRoiBasedAnswerAction;
         me.enableNewRoiBasedAnswerButton(false);
         // Hides the server-side button for adding answers
         form.elements['addanswers'].style.display = "none";
-    }else{
+    } else {
         form.elements['addanswers'].style.display = "visible";
     }
 };
@@ -137,7 +141,7 @@ me._initQuestionEditorForm = function () {
 me.enableNewRoiBasedAnswerButton = function (enabled) {
     if (me.form) {
         var add_roi_button = me.form.elements['add-roi-answer'];
-        if(add_roi_button) {
+        if (add_roi_button) {
             add_roi_button.disabled = !enabled;
         }
     }
@@ -173,6 +177,45 @@ me._initRoiBasedAnswers = function () {
         }
     }
 };
+
+
+/**
+ * Performs several controls before the form submition
+ *
+ * @private
+ */
+me._on_question_submitted = function () {
+
+    // get the form element containing the url of the current selected image
+    var image_url_input_element = document.forms[0].elements["omero_image_url"];
+
+    // get the relative path to the current image selection:
+    // including references to the current zoom level, displayed area, etc.
+    var image_relative_path = me._build_image_link();
+
+    // update the current input element value
+    var old = image_url_input_element.value;
+    var newurl = me.omero_viewer_controller.omero_server + "/webgateway/render_thumbnail/" + image_relative_path;
+
+    // update the current URL with image params (i.e., zoom, channels, etc.)
+    console.log("Updating URL...", old, newurl);
+    image_url_input_element.value = newurl.replace("/?", "?");
+}
+
+
+/**
+ * Builds the link to the current portion of the displayed image
+ *
+ * @returns {string} the relative path of the image
+ * @private
+ */
+me._build_image_link = function () {
+    var viewport = me.omero_viewer_controller.viewport;
+    var link = viewport.getCurrentImgUrlPath() + '?' + viewport.getQuery(true, true, true);
+    console.log("Current image link", link);
+    return link;
+}
+
 
 /**
  * Returns the URL of the ROI thumbnail identified by roi_id
