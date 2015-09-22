@@ -55,6 +55,9 @@ me._initialize = function (frame_id, image_details, visible_roi_list) {
     } else {
         console.log("Loaded ROIs", me.current_rois_info);
 
+        // FIXME: maximize viewport when it starts
+        me.omero_viewer_controller.maximize();
+
         // FIXME: use a better way to identify the answer type
         if (visible_roi_list == "all") {
             var all = [];
