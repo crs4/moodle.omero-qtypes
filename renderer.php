@@ -54,9 +54,13 @@ class qtype_omeromultichoice_single_renderer extends qtype_multichoice_single_re
         // extract the omero server
         $OMERO_SERVER = substr($omero_image_url, 0, strpos($omero_image_url, "/webgateway"));
 
-        // get the image id
-        $omero_image_str = strrchr($omero_image_url, "/");
-        $omero_image = substr($omero_image_str, 1, strlen($omero_image_str));
+        // parse the URL to get the image ID and its related params
+        $matches = array();
+        $pattern = '/\/([0123456789]+)(\?.*)/';
+        if(preg_match($pattern, $omero_image_url, $matches)){
+            $omero_image = $matches[1];
+            $omero_image_params = $matches[2];
+        }
 
         // set the frame of the OmeroImageViewer
         $omero_frame_id = "omero-image-viewer";
@@ -77,11 +81,12 @@ class qtype_omeromultichoice_single_renderer extends qtype_multichoice_single_re
                 "src" => "/moodle/repository/omero/viewer.php" .
                     "?id=$omero_image" .
                     "&width=" . urlencode("100%") .
-                    "&height=400px" .
+                    "&height=450px" .
                     "&frame=$omero_frame_id" .
-                    "&showRoiTable=false",
+                    "&showRoiTable=false" .
+                    "&$omero_image_params",
                 "width" => "100%",
-                "height" => "450px",
+                "height" => "500px",
                 "id" => $omero_frame_id //,
                 //"onload" => 'M.omero_multichoice_helper.init();'
             )
