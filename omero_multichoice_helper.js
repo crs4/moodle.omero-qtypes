@@ -284,8 +284,26 @@ me.addRoiBasedAnswer = function (roi_id) {
 me.removeRoiBasedAnswer = function (roi_id) {
     // Get the number of current answers
     var no_answers = parseInt(form.elements['noanswers'].value);
-
 };
+
+
+me.addVisibleRoi = function (roi_id) {
+    console.log("Adding new visible ROI...", roi_id, me._visible_roi_list);
+    roi_id = roi_id.toString();
+    if (me._visible_roi_list.indexOf(roi_id) == -1) {
+        me._visible_roi_list.push(roi_id);
+    }
+}
+
+
+me.removeVisibleRoi = function (roi_id) {
+    console.log("Removing a visible ROI...", roi_id, me._visible_roi_list);
+    roi_id = roi_id.toString();
+    var index = me._visible_roi_list.indexOf((roi_id));
+    if (index > -1) {
+        me._visible_roi_list.slice(index, 1);
+    }
+}
 
 
 me.isEditingMode = function () {
