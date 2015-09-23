@@ -119,13 +119,26 @@ me._initQuestionEditorForm = function () {
         me.available_rois.push(me.current_rois_info[j].id);
     }
 
+    // Initialize the list of ROIs to show
+    var visible_rois_input_field = document.forms[0].elements['visible_rois'].value;
+    if(visible_rois_input_field
+        && visible_rois_input_field.length>0
+        && visible_rois_input_field!="none"){
+        me._visible_roi_list = visible_rois_input_field.split(",");
+    }else{
+        me._visible_roi_list = [];
+    }
+
     // Registers the submit function
     document.forms[0].onsubmit = me._on_question_submitted;
 
     // Initializes the ROI based answers
     me._initRoiBasedAnswers();
+
+    // Logs the current state of ROI lists
     console.log("Available ROIs:", me.available_rois);
     console.log("ROI based answers:", me.roi_based_answers);
+    console.log("Visible ROIs:", me._visible_roi_list);
 
     // FIXME: use a better way to identify the answer type
     if (document.forms[0].elements['answertype'].value == "1") {
