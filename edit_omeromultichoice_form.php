@@ -125,6 +125,10 @@ class qtype_omeromultichoice_edit_form extends qtype_multichoice_edit_form
         $mform->addElement('hidden', 'current_selected_roi', 'none');
 
         //
+        $mform->setType("visible_rois", PARAM_RAW);
+        $mform->addElement('hidden', 'visible_rois', 'none');
+
+        //
         $mform->setType("roi_based_answers", PARAM_RAW);
         $mform->addElement('hidden', 'roi_based_answers', 'none');
 
