@@ -213,6 +213,9 @@ me._on_question_submitted = function () {
     var old = image_url_input_element.value;
     var newurl = me.omero_viewer_controller.omero_server + "/webgateway/render_thumbnail/" + image_relative_path;
 
+    // update the list of ROIs to display
+    document.forms[0].elements['visible_rois'].value = me._visible_roi_list.join(",");
+
     // update the current URL with image params (i.e., zoom, channels, etc.)
     console.log("Updating URL...", old, newurl);
     image_url_input_element.value = newurl.replace("/?", "?");
