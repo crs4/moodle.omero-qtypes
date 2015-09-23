@@ -349,6 +349,7 @@ me._registerFrameWindowEventHandlers = function (frame_id) {
     var frameWindow = omero_viewer_frame.contentWindow;
     frameWindow.addEventListener("roiShapeSelected", M.omero_multichoice_helper.roiShapeSelected);
     frameWindow.addEventListener("roiShapeDeselected", M.omero_multichoice_helper.roiShapeDeselected);
+    frameWindow.addEventListener("roiVisibilityChanged", M.omero_multichoice_helper.roiVisibilityChanged);
 };
 
 
@@ -397,12 +398,32 @@ me.roiShapeSelected = function (info) {
  */
 me.roiShapeDeselected = function (info) {
     me.last_roi_shape_selected = null;
-    me.selected_roi_shapes = me.$.grep(me.selected_roi_shapes, function (v) {
-        return v.id != info.detail.id;
-    });
+    var index = me.selected_roi_shapes.indexOf(info.detail.id);
+    if (index > -1) {
+        me.selected_roi_shapes.slice(index, 1);
+    }
     me.enableNewRoiBasedAnswerButton(false);
     console.log("DeSelected RoiShape", info, "Current DeSelected ROIS", me.selected_roi_shapes);
 };
 
 
+me.roiVisibilityChanged = function (event) {
+    if (!event) return;
+
+    var roi_info = event.detail.detail;
+    if(event.detail.visible){
+        me.addVisibleRoi(roi_info.id);
+    }else{
+        me.removeVisibleRoi(roi_info.id);
+    }
+
+    console.log("Changed vibility to " + event.detail.visible
+        + " of RoiShape", roi_info, "Visible ROIs: " + me._visible_roi_list.join(","));
+};
+
+
+//
+//Array.prototype.contains = function(obj){
+//    return this.indexOf(obj) != -1;
+//}
 
