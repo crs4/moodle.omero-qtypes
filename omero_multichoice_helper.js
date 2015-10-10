@@ -119,13 +119,26 @@ me._initQuestionEditorForm = function () {
         me.available_rois.push(me.current_rois_info[j].id);
     }
 
+    // Initialize the list of ROIs to show
+    var visible_rois_input_field = document.forms[0].elements['visible_rois'].value;
+    if(visible_rois_input_field
+        && visible_rois_input_field.length>0
+        && visible_rois_input_field!="none"){
+        me._visible_roi_list = visible_rois_input_field.split(",");
+    }else{
+        me._visible_roi_list = [];
+    }
+
     // Registers the submit function
     document.forms[0].onsubmit = me._on_question_submitted;
 
     // Initializes the ROI based answers
     me._initRoiBasedAnswers();
+
+    // Logs the current state of ROI lists
     console.log("Available ROIs:", me.available_rois);
     console.log("ROI based answers:", me.roi_based_answers);
+    console.log("Visible ROIs:", me._visible_roi_list);
 
     // FIXME: use a better way to identify the answer type
     if (document.forms[0].elements['answertype'].value == "1") {
@@ -200,6 +213,9 @@ me._on_question_submitted = function () {
     var old = image_url_input_element.value;
     var newurl = me.omero_viewer_controller.omero_server + "/webgateway/render_thumbnail/" + image_relative_path;
 
+    // update the list of ROIs to display
+    document.forms[0].elements['visible_rois'].value = me._visible_roi_list.join(",");
+
     // update the current URL with image params (i.e., zoom, channels, etc.)
     console.log("Updating URL...", old, newurl);
     image_url_input_element.value = newurl.replace("/?", "?");
@@ -271,8 +287,26 @@ me.addRoiBasedAnswer = function (roi_id) {
 me.removeRoiBasedAnswer = function (roi_id) {
     // Get the number of current answers
     var no_answers = parseInt(form.elements['noanswers'].value);
-
 };
+
+
+me.addVisibleRoi = function (roi_id) {
+    console.log("Adding new visible ROI...", roi_id, me._visible_roi_list);
+    roi_id = roi_id.toString();
+    if (me._visible_roi_list.indexOf(roi_id) == -1) {
+        me._visible_roi_list.push(roi_id);
+    }
+}
+
+
+me.removeVisibleRoi = function (roi_id) {
+    console.log("Removing a visible ROI...", roi_id, me._visible_roi_list);
+    roi_id = roi_id.toString();
+    var index = me._visible_roi_list.indexOf((roi_id));
+    if (index > -1) {
+        me._visible_roi_list.slice(index, 1);
+    }
+}
 
 
 me.isEditingMode = function () {
@@ -318,6 +352,7 @@ me._registerFrameWindowEventHandlers = function (frame_id) {
     var frameWindow = omero_viewer_frame.contentWindow;
     frameWindow.addEventListener("roiShapeSelected", M.omero_multichoice_helper.roiShapeSelected);
     frameWindow.addEventListener("roiShapeDeselected", M.omero_multichoice_helper.roiShapeDeselected);
+    frameWindow.addEventListener("roiVisibilityChanged", M.omero_multichoice_helper.roiVisibilityChanged);
 };
 
 
@@ -366,12 +401,32 @@ me.roiShapeSelected = function (info) {
  */
 me.roiShapeDeselected = function (info) {
     me.last_roi_shape_selected = null;
-    me.selected_roi_shapes = me.$.grep(me.selected_roi_shapes, function (v) {
-        return v.id != info.detail.id;
-    });
+    var index = me.selected_roi_shapes.indexOf(info.detail.id);
+    if (index > -1) {
+        me.selected_roi_shapes.slice(index, 1);
+    }
     me.enableNewRoiBasedAnswerButton(false);
     console.log("DeSelected RoiShape", info, "Current DeSelected ROIS", me.selected_roi_shapes);
 };
 
 
+me.roiVisibilityChanged = function (event) {
+    if (!event) return;
+
+    var roi_info = event.detail.detail;
+    if(event.detail.visible){
+        me.addVisibleRoi(roi_info.id);
+    }else{
+        me.removeVisibleRoi(roi_info.id);
+    }
+
+    console.log("Changed vibility to " + event.detail.visible
+        + " of RoiShape", roi_info, "Visible ROIs: " + me._visible_roi_list.join(","));
+};
+
+
+//
+//Array.prototype.contains = function(obj){
+//    return this.indexOf(obj) != -1;
+//}
 

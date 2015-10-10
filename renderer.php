@@ -106,8 +106,8 @@ abstract class qtype_omeromultichoice_base_renderer extends qtype_multichoice_re
 {
 
     public static function impl_formulation_and_controls(qtype_multichoice_renderer_base $renderer,
-                                                    question_attempt $qa,
-                                                    question_display_options $options)
+                                                         question_attempt $qa,
+                                                         question_display_options $options)
     {
         global $CFG, $PAGE, $OUTPUT;
 
@@ -128,35 +128,7 @@ abstract class qtype_omeromultichoice_base_renderer extends qtype_multichoice_re
             $omero_image_params = $matches[2];
         }
 
-        // set the ID of the OmeroImageViewer
-        $omero_frame_id = "omero-image-viewer" . uniqid('', true);
 
-//        $module = array('name' => 'omero_multichoice_helper', 'fullpath' => '/question/type/omeromultichoice/omero_multichoice_helper.js',
-//            'requires' => array('omemultichoice_qtype', 'node', 'node-event-simulate', 'core_dndupload'));
-//        $PAGE->requires->js_init_call('M.omero_multichoice_helper.init', array(), true, $module);
-
-
-        $omero_image_wrapper = '<script type="text/javascript" ' .
-            'src="/moodle/question/type/omeromultichoice/omero_multichoice_helper.js" ' .
-            '></script>';
-
-
-        // build the iframe element for wrapping the OmeroImageViewer
-        $omero_image_wrapper .= html_writer::tag('iframe', "",
-            array(
-                "src" => "/moodle/repository/omero/viewer.php" .
-                    "?id=$omero_image" .
-                    "&width=" . urlencode("100%") .
-                    "&height=450px" .
-                    "&frame=$omero_frame_id" .
-                    "&showRoiTable=false" .
-                    "&$omero_image_params",
-                "width" => "100%",
-                "height" => "500px",
-                "id" => $omero_frame_id //,
-                //"onload" => 'M.omero_multichoice_helper.init();'
-            )
-        );
 
         // set question controls
         $response = $question->get_response($qa);
@@ -178,7 +150,6 @@ abstract class qtype_omeromultichoice_base_renderer extends qtype_multichoice_re
         $classes = array();
         foreach ($question->get_order($qa) as $value => $ansid) {
             $ans = $question->answers[$ansid];
-            array_push($roi_id_list, $ans->answer);
             $inputattributes['name'] = $renderer->get_input_name($qa, $value);
             $inputattributes['value'] = $renderer->get_input_value($value);
             $inputattributes['id'] = $renderer->get_input_id($qa, $value);
@@ -235,6 +206,19 @@ abstract class qtype_omeromultichoice_base_renderer extends qtype_multichoice_re
                 $feedbackimg[] = '';
             }
             $classes[] = $class;
+
+            // If the question type is ROI based, add the question to
+            // the list of ROIs to display
+            if ($question->answertype == qtype_omeromultichoice::ROI_BASED_ANSWERS) {
+                array_push($roi_id_list, $ans->answer);
+            }
+        }
+
+        // Completes the list of ROIs to show with ROIs explicitly
+        // selected by the teacher as ROI to display
+        foreach (explode(",", $question->visible_rois) as $rtd) {
+            if (!in_array($rtd, $roi_id_list))
+                array_push($roi_id_list, $rtd);
         }
 
         /**
@@ -244,10 +228,38 @@ abstract class qtype_omeromultichoice_base_renderer extends qtype_multichoice_re
         // question text
         $result .= html_writer::tag('div', $question->format_questiontext($qa),
             array('class' => 'qtext'));
+
         // viewer of the question image
+
+        // set the ID of the OmeroImageViewer
+        $omero_frame_id = "omero-image-viewer" . uniqid('', true);
+
+        // load the script for handling the OmeroImageViewer
+        $omero_image_wrapper = '<script type="text/javascript" ' .
+            'src="/moodle/question/type/omeromultichoice/omero_multichoice_helper.js" ' .
+            '></script>';
+
+        // build the iframe element for wrapping the OmeroImageViewer
+        $omero_image_wrapper .= html_writer::tag('iframe', "",
+            array(
+                "src" => "/moodle/repository/omero/viewer.php" .
+                    "?id=$omero_image" .
+                    "&width=" . urlencode("100%") .
+                    "&height=450px" .
+                    "&frame=$omero_frame_id" .
+                    "&showRoiTable=false" .
+                    "&$omero_image_params" .
+                    "&visibleRois=" . implode(",", $roi_id_list),
+                "width" => "100%",
+                "height" => "500px",
+                "id" => $omero_frame_id //,
+                //"onload" => 'M.omero_multichoice_helper.init();'
+            )
+        );
         $result .= $omero_image_wrapper;
-        $script_args = ($question->answertype == qtype_omeromultichoice::ROI_BASED_ANSWERS) ?
-            "[" . implode(",", $roi_id_list) . "]" : "'all'";
+
+        // TODO: use the question->visible_rois
+        $script_args = "[" . implode(",", $roi_id_list) . "]"; // list of ROIs to display
         $result .= html_writer::script(
             "M.omero_multichoice_helper.init('omero_multichoice_helper', " .
             "'$omero_frame_id', $script_args)");

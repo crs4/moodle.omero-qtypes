@@ -51,7 +51,9 @@ class qtype_omeromultichoice_edit_form extends qtype_multichoice_edit_form
     {
         global $PAGE, $OUTPUT;
 
-        $module = array('name' => 'omero_multichoice_helper', 'fullpath' => '/question/type/omeromultichoice/omero_multichoice_helper.js',
+        $module = array(
+            'name' => 'omero_multichoice_helper',
+            'fullpath' => '/question/type/omeromultichoice/omero_multichoice_helper.js',
             'requires' => array('omemultichoice_qtype', 'node', 'node-event-simulate', 'core_dndupload'));
         $PAGE->requires->js_init_call('M.omero_multichoice_helper.init', array(), true, $module);
 
@@ -121,6 +123,10 @@ class qtype_omeromultichoice_edit_form extends qtype_multichoice_edit_form
         //
         $mform->setType("current_selected_roi", PARAM_RAW);
         $mform->addElement('hidden', 'current_selected_roi', 'none');
+
+        //
+        $mform->setType("visible_rois", PARAM_RAW);
+        $mform->addElement('hidden', 'visible_rois', 'none');
 
         //
         $mform->setType("roi_based_answers", PARAM_RAW);
@@ -280,10 +286,16 @@ class qtype_omeromultichoice_edit_form extends qtype_multichoice_edit_form
             $question->answernumbering = $question->options->answernumbering;
 
             // Prepare the roi_based_answers field
-            $roi_based_answers = [];
-            foreach ($question->options->answers as $answer) {
-                array_push($roi_based_answers, $answer->answer);
+
+            if (isset($this->question->options)
+                && $question->options->answertype == qtype_omeromultichoice::ROI_BASED_ANSWERS) {
+                $roi_based_answers = [];
+                foreach ($question->options->answers as $answer) {
+                    array_push($roi_based_answers, $answer->answer);
+                }
             }
+
+            $question->visible_rois = $question->options->visiblerois;
             $question->roi_based_answers = implode(",", $roi_based_answers);
             $question->answertype = $question->options->answertype;
             $question->omero_image_url = $question->options->omeroimageurl;
@@ -411,7 +423,8 @@ class qtype_omeromultichoice_edit_form extends qtype_multichoice_edit_form
      */
     public function validation($data, $files)
     {
-        if (isset($_REQUEST['answertype']) && $_REQUEST['answertype'] == qtype_omeromultichoice::ROI_BASED_ANSWERS) {
+        if (isset($_REQUEST['answertype'])
+            && $_REQUEST['answertype'] == qtype_omeromultichoice::ROI_BASED_ANSWERS) {
             //
             $this->update_raw_data($data);
         }

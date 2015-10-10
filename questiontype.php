@@ -154,6 +154,7 @@ class qtype_omeromultichoice extends qtype_multichoice
             $options->correctfeedback = '';
             $options->partiallycorrectfeedback = '';
             $options->incorrectfeedback = '';
+            $options->visiblerois = '';
             $options->id = $DB->insert_record('qtype_omemultichoice_options', $options);
         }
 
@@ -165,6 +166,7 @@ class qtype_omeromultichoice extends qtype_multichoice
         $options->omeroimageurl = $question->omero_image_url;
         $options->answernumbering = $question->answernumbering;
         $options->shuffleanswers = $question->shuffleanswers;
+        $options->visiblerois = $question->visible_rois;
         $options = $this->save_combined_feedback_helper($options, $question, $context, true);
         $DB->update_record('qtype_omemultichoice_options', $options);
 
@@ -211,6 +213,7 @@ class qtype_omeromultichoice extends qtype_multichoice
         parent::initialise_question_instance($question, $questiondata);
         // set the omero image url
         $question->omeroimageurl = $questiondata->options->omeroimageurl;
+        $question->visible_rois = $questiondata->options->visiblerois;
         // set the question answer type
         if(!empty($questiondata->options->answertype)) {
             $question->answertype = $questiondata->options->answertype;
