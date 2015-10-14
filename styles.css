@@ -134,14 +134,14 @@ body#page-question-type-omeromultichoice div[id^=fitem_id_][id*=roi_] .fitemtitl
 body#page-question-type-omeromultichoice div[id^=fitem_id_][id*=fraction_] {
     padding-bottom: 5px;
     border-bottom: 0;
-    margin: 0 6px;
+    margin: 0 0px 5px;
 }
 
 body#page-question-type-omeromultichoice div[id^=fitem_id_][id*=feedback_] {
     padding-bottom: 5px;
     padding-top: 5px;
     border-top: 0;
-    margin: 0 6px 5px;
+    margin: 0 0px 5px;
 }
 
 /*
