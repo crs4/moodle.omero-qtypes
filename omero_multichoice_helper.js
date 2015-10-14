@@ -102,7 +102,7 @@ me._registerFrameObject = function (frame_id, visible_roi_list) {
  */
 me.moveToRoiShape = function (roi_id) {
     me.omero_viewer_controller._handleShapeRowClick({id: roi_id});
-}
+};
 
 
 /**
@@ -225,7 +225,7 @@ me._on_question_submitted = function () {
     // update the current URL with image params (i.e., zoom, channels, etc.)
     console.log("Updating URL...", old, newurl);
     image_url_input_element.value = newurl.replace("/?", "?");
-}
+};
 
 
 /**
@@ -239,7 +239,7 @@ me._build_image_link = function () {
     var link = viewport.getCurrentImgUrlPath() + '?' + viewport.getQuery(true, true, true);
     console.log("Current image link", link);
     return link;
-}
+};
 
 
 /**
@@ -302,7 +302,7 @@ me.addVisibleRoi = function (roi_id) {
     if (me._visible_roi_list.indexOf(roi_id) == -1) {
         me._visible_roi_list.push(roi_id);
     }
-}
+};
 
 
 me.removeVisibleRoi = function (roi_id) {
@@ -312,7 +312,7 @@ me.removeVisibleRoi = function (roi_id) {
     if (index > -1) {
         me._visible_roi_list.slice(index, 1);
     }
-}
+};
 
 
 me.isEditingMode = function () {
@@ -429,10 +429,3 @@ me.roiVisibilityChanged = function (event) {
     console.log("Changed vibility to " + event.detail.visible
         + " of RoiShape", roi_info, "Visible ROIs: " + me._visible_roi_list.join(","));
 };
-
-
-//
-//Array.prototype.contains = function(obj){
-//    return this.indexOf(obj) != -1;
-//}
-
