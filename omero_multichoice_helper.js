@@ -29,7 +29,7 @@ me.init = function (module_name, frame_id, visible_roi_list, options) {
     document.addEventListener("frameLoaded", function (e) {
         var frame_id = e.detail.frame_id;
         console.log("frame Loaded!!!");
-        console.log(me._registerFrameObject(frame_id, visible_roi_list));
+        me._registerFrameObject(frame_id, visible_roi_list, e.detail);
     }, true);
 
     console.log("omero_multichoice_helper js helper initialized!!!");
@@ -77,7 +77,7 @@ me._initialize = function (frame_id, image_details, visible_roi_list) {
  * @returns {Element|*|omero_viewer_frame}
  * @private
  */
-me._registerFrameObject = function (frame_id, visible_roi_list) {
+me._registerFrameObject = function (frame_id, visible_roi_list, frame_details) {
     var omero_viewer_frame = document.getElementById(frame_id);
     if (!omero_viewer_frame) {
         throw ("Frame " + frame_id + " not found!!!");
@@ -85,11 +85,18 @@ me._registerFrameObject = function (frame_id, visible_roi_list) {
     // Registers a reference to the frame
     me._omero_viewer_frame = omero_viewer_frame;
 
-    // Register the main listener for the 'omeroViewerInitialized' event
-    me._omero_viewer_frame.contentWindow.addEventListener("omeroViewerInitialized", function (e) {
-        me._initialize(frame_id, e.detail, visible_roi_list);
-        console.log("OmeroImageViewer init loaded!!!");
-    }, true);
+    if(frame_details == undefined) {
+        // Register the main listener for the 'omeroViewerInitialized' event
+        me._omero_viewer_frame.contentWindow.addEventListener("omeroViewerInitialized", function (e) {
+            me._initialize(frame_id, e.detail, visible_roi_list);
+            console.log("OmeroImageViewer init loaded!!!");
+        }, true);
+    }else{
+        me._initialize(frame_id, frame_details, visible_roi_list);
+    }
+
+    // Log message (for debugging)
+    console.log("Frame Object Registered!!!");
 
     // enable chaining
     return me._omero_viewer_frame;
