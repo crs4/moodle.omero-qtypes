@@ -26,7 +26,7 @@
 defined('MOODLE_INTERNAL') || die();
 
 $plugin->component = 'qtype_omeromultichoice';
-$plugin->version   = 2013012900;
+$plugin->version   = 2015101500;
 
 $plugin->requires  = 2012062504;
 
