@@ -296,7 +296,9 @@ class qtype_omeromultichoice_edit_form extends qtype_multichoice_edit_form
             }
 
             $question->visible_rois = $question->options->visiblerois;
-            $question->roi_based_answers = implode(",", $roi_based_answers);
+            if(isset($roi_based_answers)) {
+                $question->roi_based_answers = implode(",", $roi_based_answers);
+            }
             $question->answertype = $question->options->answertype;
             $question->omero_image_url = $question->options->omeroimageurl;
         }
