@@ -20,17 +20,16 @@ me.init = function (module_name, frame_id, visible_roi_list, options) {
     me.roi_based_answers = [];
     me.current_rois_info = null;
 
-    // FIXME: use a single event to catch the viewer initialization
+    // register frame object is already loaded
     if (frame_id) {
-        me._setFrameObject(frame_id);
-        me._omero_viewer_frame.contentWindow.addEventListener("omeroViewerInitialized", function (e) {
-            me._initialize(frame_id, e.detail, visible_roi_list);
-            console.log("OmeroImageViewer init loaded!!!");
-        }, true);
+        me._registerFrameObject(frame_id, visible_roi_list);
     }
+
+    // register the frame when loaded
     document.addEventListener("frameLoaded", function (e) {
-        me._initialize(e.detail.frame_id, e.detail);
-        console.log("OmeroImageViewer initialized !!!");
+        var frame_id = e.detail.frame_id;
+        console.log("frame Loaded!!!");
+        console.log(me._registerFrameObject(frame_id, visible_roi_list));
     }, true);
 
     console.log("omero_multichoice_helper js helper initialized!!!");
@@ -78,16 +77,23 @@ me._initialize = function (frame_id, image_details, visible_roi_list) {
  * @returns {Element|*|omero_viewer_frame}
  * @private
  */
-me._setFrameObject = function (frame_id) {
+me._registerFrameObject = function (frame_id, visible_roi_list) {
     var omero_viewer_frame = document.getElementById(frame_id);
     if (!omero_viewer_frame) {
-        throw EventException("Frame " + frame_id + " not found!!!");
+        throw ("Frame " + frame_id + " not found!!!");
     }
     // Registers a reference to the frame
     me._omero_viewer_frame = omero_viewer_frame;
+
+    // Register the main listener for the 'omeroViewerInitialized' event
+    me._omero_viewer_frame.contentWindow.addEventListener("omeroViewerInitialized", function (e) {
+        me._initialize(frame_id, e.detail, visible_roi_list);
+        console.log("OmeroImageViewer init loaded!!!");
+    }, true);
+
     // enable chaining
     return me._omero_viewer_frame;
-}
+};
 
 /**
  * Focus on the ROI shape
