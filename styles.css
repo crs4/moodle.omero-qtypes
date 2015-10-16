@@ -1,0 +1,204 @@
+.que.omeromultichoice .answer .specificfeedback {
+    display: inline;
+    padding: 0 0.7em;
+    background: #FFF3BF;
+}
+
+.que.omeromultichoice .answer div.r0,
+.que.omeromultichoice .answer div.r1 {
+    padding: 0.3em 0 0.3em 25px;
+    text-indent: -25px;
+}
+
+.que.omeromultichoice .answer div.r0 label,
+.que.omeromultichoice .answer div.r1 label,
+.que.omeromultichoice .answer div.r0 div.specificfeedback,
+.que.omeromultichoice .answer div.r1 div.specificfeedback {
+    /* In Chrome and IE, the text-indent above is applied to any embedded table
+       cells or <li>s, which screws up the intended layout. This fixes it again. */
+    text-indent: 0;
+}
+
+.que.omeromultichoice .answer div.r0 input,
+.que.omeromultichoice .answer div.r1 input {
+    margin: 0 5px;
+    padding: 0;
+    width: 15px;
+}
+
+.dir-rtl .que.omeromultichoice .answer div.r0,
+.dir-rtl .que.omeromultichoice .answer div.r1 {
+    padding: 0.3em 25px 0.3em 0;
+}
+
+/* Editing form. */
+body#page-question-type-omeromultichoice div[id^=fitem_id_][id*=answer_] {
+    /*background: #EEE;*/
+    margin-top: 0;
+    margin-bottom: 0;
+    padding-bottom: 5px;
+    padding-top: 5px;
+    /*border: 1px solid #BBB;*/
+    border-bottom: 0;
+}
+
+body#page-question-type-omeromultichoice div.omeromultichoice-qanswer-roi-based-answer-container {
+    display: block;
+    background-color: #EEE;
+    /*padding-top: 15px;*/
+    margin-bottom: 10px;
+    border: 1px solid #BBB;
+}
+
+body#page-question-type-omeromultichoice div.roi-based-answer div.felement-roi-based-answer {
+    margin-top: -30px;
+}
+
+body#page-question-type-omeromultichoice div.omeromultichoice-qanswer-roi-container {
+    display: block;
+    background-color: #e1e1e1;
+    padding-top: 15px;
+    padding-bottom: 15px;
+    margin-bottom: 25px;
+    border: 1px solid #BBB;
+}
+
+body#page-question-type-omeromultichoice div.omeromultichoice-qanswer-roi-image-container {
+    background-color: #e1e1e1;
+    padding: 0 0 0 10px;
+    margin-top: 0px;
+    margin-left: 0px;
+    width: 160px;
+    height: 160px;
+    float: left;
+}
+
+body#page-question-type-omeromultichoice div.omeromultichoice-qanswer-roi-details-container {
+    background-color: #EEE;
+    border: 1px solid #BBB;
+    margin-top: 0px;
+    margin-right: 10px;
+    padding: 0 10px 0 10px;
+    min-height: 150px;
+}
+
+body#page-question-type-omeromultichoice div[id^=fitem_id_][id*=answer_] .fitemtitle {
+    font-weight: bold;
+}
+
+body#page-question-type-omeromultichoice div[id^=fitem_id_] .fitemtitle {
+    margin-left: 0px;
+    margin-right: 0px;
+    padding-left: 6px;
+    padding-right: 0px;
+}
+
+body.dir-rtl#page-question-type-omeromultichoice div[id^=fitem_id_] .fitemtitle {
+    margin-left: 0px;
+    margin-right: 0px;
+    padding-left: 0px;
+    padding-right: 6px;
+}
+
+body#page-question-type-omeromultichoice div.omeromultichoice-qanswer-roi-selector-container {
+    display: block;
+    padding: 0;
+    margin: 0 0 0 0px;
+}
+
+body#page-question-type-omeromultichoice div.omeromultichoice-qanswer-roi-selector-container .fitem {
+    display: inline-block;
+    margin-bottom: 15px;
+    margin-left: 20px;
+    padding: 0;
+}
+
+body#page-question-type-omeromultichoice div.omeromultichoice-qanswer-roi-selector-container .fitemtitle {
+    display: inline-block;
+    padding: 0;
+}
+
+body#page-question-type-omeromultichoice div[id^=fitem_id_][id*=roi_] {
+    margin-bottom: 0;
+    display: inline-block;
+    margin-top: 0;
+    padding: 0;
+    margin-left: 0;
+}
+
+body#page-question-type-omeromultichoice div[id^=fitem_id_][id*=roi_] .fitemtitle {
+    margin: 0;
+    padding: 0;
+}
+
+body#page-question-type-omeromultichoice div[id^=fitem_id_][id*=fraction_] {
+    padding-bottom: 5px;
+    border-bottom: 0;
+    margin: 0 0px 5px;
+}
+
+body#page-question-type-omeromultichoice div[id^=fitem_id_][id*=feedback_] {
+    padding-bottom: 5px;
+    padding-top: 5px;
+    border-top: 0;
+    margin: 0 0px 5px;
+}
+
+/*
+.omeromultichoice-qanswer-roi-details-container .fitem{
+    display: inline-block;
+    padding: 0;
+    margin: 5px;
+}
+
+.omeromultichoice-qanswer-roi-details-container .fitemtitle{
+    display: inline-block;
+    padding: 0;
+    margin: 5px;
+}
+*/
+
+.omeromultichoice-qanswer-roi-based-answer-container .fitem .fitemtitle .fstaticlabel {
+    margin-left: 15px;
+}
+
+.omeromultichoice-qanswer-roi-details-text-container {
+    font-weight: normal;
+    display: block;
+    background: #EEE;
+    height: 100px;
+    text-indent: 15px;
+    padding: 25px 10px;
+}
+
+.omeromultichoice-qanswer-roi-details-text {
+
+}
+
+.omeromultichoice-qanswer-roi-details-text .roi-field-label {
+    font-weight: bold;
+    margin-right: 10px;
+}
+
+body#page-question-type-omeromultichoice div[id^=fitem_id_][id*=add-roi-answer] {
+    margin-bottom: 40px;
+    margin-right: 10px;
+    float: right;
+}
+
+body#page-question-type-omeromultichoice input[name="addanswers"] {
+    /*display: none;*/
+}
+
+body#page-question-preview .que .formulation {
+    background: white;
+    min-height: 600px;
+    border: none;
+    padding: 0 25px;
+    margin: 0;
+}
+
+#omero-image-viewer {
+    border: none;
+    background-color: #d9edf7;
+}
