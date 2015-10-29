@@ -112,6 +112,26 @@ class qtype_omeromultichoice_multi_renderer extends qtype_multichoice_multi_rend
     {
         return $this->get_input_name($qa, $value);
     }
+
+
+    public function correct_response(question_attempt $qa) {
+        $counter = 0;
+        $question = $qa->get_question();
+        $right = array();
+        foreach ($question->answers as $ansid => $ans) {
+            if ($ans->fraction > 0) {
+                $right[] = qtype_omeromultichoice_base_renderer::number_answer($counter, $question->answernumbering);
+            }
+            $counter ++;
+        }
+
+        if (!empty($right)) {
+            return get_string('correctansweris', 'qtype_multichoice',
+                implode(' + ', $right));
+        }
+        return '';
+    }
+
 }
 
 
