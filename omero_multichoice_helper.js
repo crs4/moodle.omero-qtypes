@@ -317,7 +317,7 @@ me.removeVisibleRoi = function (roi_id) {
     roi_id = roi_id.toString();
     var index = me._visible_roi_list.indexOf((roi_id));
     if (index > -1) {
-        me._visible_roi_list.slice(index, 1);
+        me._visible_roi_list.splice(index, 1);
     }
 };
 
