@@ -44,7 +44,7 @@ $string['add_roi_answer'] = 'Add a new ROI based answer';
 $string['answer_type'] = "Answer type";
 
 $string['qtype_0'] = "Plaintext";
-$string['qtype_1'] = "ROI based";
+$string['qtype_1'] = "ROI answer";
 
 /** ROI description
 /* subset of a JSON ROI
@@ -67,3 +67,7 @@ $string['roi_comment'] = 'Comment';
 $string['roi_type'] = 'Type';
 $string['roi_width'] = 'Width';
 $string['roi_height'] = 'Height';
+
+$string['answerhowmany'] = 'One or multiple correct answers?';
+$string['answersingleno'] = 'Multiple correct answers allowed';
+$string['answersingleyes'] = 'One correct answer only';
