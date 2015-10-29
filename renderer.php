@@ -67,7 +67,20 @@ class qtype_omeromultichoice_single_renderer extends qtype_multichoice_single_re
         return $qa->get_qt_field_name('answer' . $value);
     }
 
+    public function correct_response(question_attempt $qa) {
+        $counter = 0;
+        $question = $qa->get_question();
+        foreach ($question->answers as $ansid => $ans) {
+            if (question_state::graded_state_for_fraction($ans->fraction) ==
+                question_state::$gradedright) {
+                return get_string('correctansweris', 'qtype_multichoice',
+                    qtype_omeromultichoice_base_renderer::number_answer($counter, $question->answernumbering));
+            }
+            $counter++;
+        }
 
+        return '';
+    }
 }
 
 
@@ -99,6 +112,26 @@ class qtype_omeromultichoice_multi_renderer extends qtype_multichoice_multi_rend
     {
         return $this->get_input_name($qa, $value);
     }
+
+
+    public function correct_response(question_attempt $qa) {
+        $counter = 0;
+        $question = $qa->get_question();
+        $right = array();
+        foreach ($question->answers as $ansid => $ans) {
+            if ($ans->fraction > 0) {
+                $right[] = qtype_omeromultichoice_base_renderer::number_answer($counter, $question->answernumbering);
+            }
+            $counter ++;
+        }
+
+        if (!empty($right)) {
+            return get_string('correctansweris', 'qtype_multichoice',
+                implode(' + ', $right));
+        }
+        return '';
+    }
+
 }
 
 
@@ -283,6 +316,38 @@ abstract class qtype_omeromultichoice_base_renderer extends qtype_multichoice_re
         }
 
         return $result;
+    }
+
+
+    /**
+     * @param int $num The number, starting at 0.
+     * @param string $style The style to render the number in. One of the
+     * options returned by {@link qtype_multichoice:;get_numbering_styles()}.
+     * @return string the number $num in the requested style.
+     */
+    public static function number_answer($num, $style) {
+        switch($style) {
+            case 'abc':
+                $number = chr(ord('a') + $num);
+                break;
+            case 'ABCD':
+                $number = chr(ord('A') + $num);
+                break;
+            case '123':
+                $number = $num + 1;
+                break;
+            case 'iii':
+                $number = question_utils::int_to_roman($num + 1);
+                break;
+            case 'IIII':
+                $number = strtoupper(question_utils::int_to_roman($num + 1));
+                break;
+            case 'none':
+                return '';
+            default:
+                return 'ERR';
+        }
+        return "($number)";
     }
 }
 
