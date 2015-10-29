@@ -284,6 +284,38 @@ abstract class qtype_omeromultichoice_base_renderer extends qtype_multichoice_re
 
         return $result;
     }
+
+
+    /**
+     * @param int $num The number, starting at 0.
+     * @param string $style The style to render the number in. One of the
+     * options returned by {@link qtype_multichoice:;get_numbering_styles()}.
+     * @return string the number $num in the requested style.
+     */
+    public static function number_answer($num, $style) {
+        switch($style) {
+            case 'abc':
+                $number = chr(ord('a') + $num);
+                break;
+            case 'ABCD':
+                $number = chr(ord('A') + $num);
+                break;
+            case '123':
+                $number = $num + 1;
+                break;
+            case 'iii':
+                $number = question_utils::int_to_roman($num + 1);
+                break;
+            case 'IIII':
+                $number = strtoupper(question_utils::int_to_roman($num + 1));
+                break;
+            case 'none':
+                return '';
+            default:
+                return 'ERR';
+        }
+        return "($number)";
+    }
 }
 
 
