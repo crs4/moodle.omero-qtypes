@@ -67,7 +67,20 @@ class qtype_omeromultichoice_single_renderer extends qtype_multichoice_single_re
         return $qa->get_qt_field_name('answer' . $value);
     }
 
+    public function correct_response(question_attempt $qa) {
+        $counter = 0;
+        $question = $qa->get_question();
+        foreach ($question->answers as $ansid => $ans) {
+            if (question_state::graded_state_for_fraction($ans->fraction) ==
+                question_state::$gradedright) {
+                return get_string('correctansweris', 'qtype_multichoice',
+                    qtype_omeromultichoice_base_renderer::number_answer($counter, $question->answernumbering));
+            }
+            $counter++;
+        }
 
+        return '';
+    }
 }
 
 
