@@ -78,11 +78,11 @@ class qtype_omeromultichoice_edit_form extends qtype_multichoice_edit_form
         }
 
         $menu = array(
-            get_string('answersingleno', 'qtype_multichoice'),
-            get_string('answersingleyes', 'qtype_multichoice'),
+            get_string('answersingleno', 'qtype_omeromultichoice'),
+            get_string('answersingleyes', 'qtype_omeromultichoice'),
         );
         $mform->addElement('select', 'single',
-            get_string('answerhowmany', 'qtype_multichoice'), $menu);
+            get_string('answerhowmany', 'qtype_omeromultichoice'), $menu);
         $mform->setDefault('single', 1);
 
         // Set answer types and the related selector
