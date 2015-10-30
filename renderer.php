@@ -67,12 +67,14 @@ class qtype_omeromultichoice_single_renderer extends qtype_multichoice_single_re
         return $qa->get_qt_field_name('answer' . $value);
     }
 
-    public function correct_response(question_attempt $qa) {
+    public function correct_response(question_attempt $qa)
+    {
         $question = $qa->get_question();
         foreach ($question->get_order($qa) as $ans_number => $ans_id) {
             $answer = $question->answers[$ans_id];
             if (question_state::graded_state_for_fraction($answer->fraction) ==
-                question_state::$gradedright) {
+                question_state::$gradedright
+            ) {
                 return get_string('correctansweris', 'qtype_multichoice',
                     qtype_omeromultichoice_base_renderer::number_answer($ans_number, $question->answernumbering));
             }
@@ -113,7 +115,8 @@ class qtype_omeromultichoice_multi_renderer extends qtype_multichoice_multi_rend
     }
 
 
-    public function correct_response(question_attempt $qa) {
+    public function correct_response(question_attempt $qa)
+    {
         $counter = 0;
         $question = $qa->get_question();
         $right = array();
@@ -122,7 +125,7 @@ class qtype_omeromultichoice_multi_renderer extends qtype_multichoice_multi_rend
             if ($answer->fraction > 0) {
                 $right[] = qtype_omeromultichoice_base_renderer::number_answer($ans_number, $question->answernumbering);
             }
-            $counter ++;
+            $counter++;
         }
 
         if (!empty($right)) {
@@ -160,7 +163,6 @@ abstract class qtype_omeromultichoice_base_renderer extends qtype_multichoice_re
             $omero_image = $matches[1];
             $omero_image_params = $matches[2];
         }
-
 
 
         // set question controls
@@ -208,7 +210,9 @@ abstract class qtype_omeromultichoice_base_renderer extends qtype_multichoice_re
                     "onclick" => "M.omero_multichoice_helper.moveToRoiShape($ans->answer)"
                 ));
             } else {
-                $answer_content = '<div style="display: inline-block">' . $ans->answer . '</div>';
+                $ans_text = html_writer::tag('span', $question->format_questiontext($qa),
+                    array('class' => 'qtext'));
+                $answer_content = '<div style="display: inline-block">' . $ans_text . '</div>';
             }
 
             $radiobuttons[] = $hidden . html_writer::empty_tag('input', $inputattributes) .
