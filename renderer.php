@@ -117,9 +117,10 @@ class qtype_omeromultichoice_multi_renderer extends qtype_multichoice_multi_rend
         $counter = 0;
         $question = $qa->get_question();
         $right = array();
-        foreach ($question->answers as $ansid => $ans) {
-            if ($ans->fraction > 0) {
-                $right[] = qtype_omeromultichoice_base_renderer::number_answer($counter, $question->answernumbering);
+        foreach ($question->get_order($qa) as $ans_number => $answer_id) {
+            $answer = $question->answers[$answer_id];
+            if ($answer->fraction > 0) {
+                $right[] = qtype_omeromultichoice_base_renderer::number_answer($ans_number, $question->answernumbering);
             }
             $counter ++;
         }
