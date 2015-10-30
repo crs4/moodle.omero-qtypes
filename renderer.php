@@ -210,7 +210,9 @@ abstract class qtype_omeromultichoice_base_renderer extends qtype_multichoice_re
                     "onclick" => "M.omero_multichoice_helper.moveToRoiShape($ans->answer)"
                 ));
             } else {
-                $answer_content = '<div style="display: inline-block">' . $ans->answer . '</div>';
+                $ans_text = html_writer::tag('span', $question->format_questiontext($qa),
+                    array('class' => 'qtext'));
+                $answer_content = '<div style="display: inline-block">' . $ans_text . '</div>';
             }
 
             $radiobuttons[] = $hidden . html_writer::empty_tag('input', $inputattributes) .
