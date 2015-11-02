@@ -68,6 +68,8 @@ $string['roi_type'] = 'Type';
 $string['roi_width'] = 'Width';
 $string['roi_height'] = 'Height';
 
+$string['language'] = "Language";
+
 $string['answerhowmany'] = 'One or multiple correct answers?';
 $string['answersingleno'] = 'Multiple correct answers allowed';
 $string['answersingleyes'] = 'One correct answer only';
