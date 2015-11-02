@@ -110,7 +110,9 @@ class qtype_omeromultichoice_edit_form extends qtype_multichoice_edit_form
         // Choose language section
         $languages=array();
         $languages += get_string_manager()->get_list_of_translations();
-        $mform->addElement('select', 'lang', get_string('language', 'qtype_omeromultichoice'), $languages);
+        $mform->addElement('select', 'question_language',
+            get_string('language', 'qtype_omeromultichoice'), $languages,
+            array("class"=>"question-language-selector"));
         $mform->setDefault('lang', current_language());
 
 
