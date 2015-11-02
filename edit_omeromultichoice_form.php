@@ -107,6 +107,14 @@ class qtype_omeromultichoice_edit_form extends qtype_multichoice_edit_form
             }
         }
 
+        // Choose language section
+        $languages=array();
+        $languages += get_string_manager()->get_list_of_translations();
+        $mform->addElement('select', 'lang', get_string('language', 'qtype_omeromultichoice'), $languages);
+        $mform->setDefault('lang', current_language());
+
+
+        // Question Text
         $mform->addElement('text', 'name', get_string('questionname', 'question'),
             array('size' => 50, 'maxlength' => 255));
         $mform->setType('name', PARAM_TEXT);
