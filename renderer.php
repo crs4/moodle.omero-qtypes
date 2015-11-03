@@ -210,7 +210,12 @@ abstract class qtype_omeromultichoice_base_renderer extends qtype_multichoice_re
                     "onclick" => "M.omero_multichoice_helper.moveToRoiShape($ans->answer)"
                 ));
             } else {
-                $ans_text = html_writer::tag('span', $question->format_questiontext($qa),
+                $formatoptions = new stdClass();
+                $formatoptions->noclean = false;
+                $formatoptions->para = false;
+                $ans_text = $question->answers[$ansid]->answer;
+                $ans_text = format_text($ans_text, $question->questiontextformat, $formatoptions);
+                $ans_text = html_writer::tag('span', $ans_text,
                     array('class' => 'qtext'));
                 $answer_content = '<div style="display: inline-block">' . $ans_text . '</div>';
             }
