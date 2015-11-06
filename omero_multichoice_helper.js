@@ -534,8 +534,6 @@ me._initLocalizedStrings = function () {
         me._localized_textareas[localized_string_name] = document.querySelectorAll("[class^=" + localized_string_name + "]");
         for (var j = 0; j < me._localized_textareas[localized_string_name].length; j++) {
             var locale_textarea = me._localized_textareas[localized_string_name][j];
-
-
             if (locale_textarea.className == "answer") {
                 var pattern = /answer_(\w+)_(\d+)/;
                 var matches = pattern.exec("" + locale_textarea.id);

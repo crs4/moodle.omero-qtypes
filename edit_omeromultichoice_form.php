@@ -472,7 +472,6 @@ class qtype_omeromultichoice_edit_form extends qtype_multichoice_edit_form
             $question->answernumbering = $question->options->answernumbering;
 
             // Prepare the roi_based_answers field
-
             if (isset($this->question->options)
                 && $question->options->answertype == qtype_omeromultichoice::ROI_BASED_ANSWERS
             ) {
