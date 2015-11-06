@@ -362,7 +362,6 @@ class qtype_omeromultichoice_edit_form extends qtype_multichoice_edit_form
             get_string('grade'), $gradeoptions);
         $repeated[] = $mform->createElement('editor', 'feedback',
             get_string('feedback', 'question'), array('rows' => 1), $this->editoroptions);
-        $repeated[] = $mform->createElement('html', '<div style="margin-bottom: 60px;"></div>');
         $repeatedoptions['answer']['type'] = PARAM_RAW;
         $repeatedoptions['fraction']['default'] = 0;
         $answersoption = 'answers';
@@ -371,9 +370,9 @@ class qtype_omeromultichoice_edit_form extends qtype_multichoice_edit_form
 
         foreach ($languages as $lang_id => $lang_string) {
             $repeated[] = $mform->createElement('textarea', "answer" . "_" . $lang_id,
-                "", array("style" => "display: none;", "lang" => $lang_id, "class" => "answer"));
+                "", array("style" => "display: none; margin: 0; padding: 0;", "lang" => $lang_id, "class" => "answer"));
             $repeated[] = $mform->createElement('textarea', "feedback" . "_" . $lang_id,
-                "", array("style" => "display: none;", "lang" => $lang_id, "class" => "feedback"));
+                "", array("style" => "display: none; margin: 0; padding: 0;", "lang" => $lang_id, "class" => "feedback"));
         }
 
         return $repeated;
