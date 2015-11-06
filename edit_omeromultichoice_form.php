@@ -300,8 +300,24 @@ class qtype_omeromultichoice_edit_form extends qtype_multichoice_edit_form
         //
         $mform->setType("omero_image_url", PARAM_RAW);
         $mform->addElement('hidden', 'omero_image_url', 'none');
+
+        // Initialize hidden textarea for localized strings
+        $this->add_localized_fields_for($this->localized_strings);//
     }
 
+
+    protected function add_localized_fields_for($string_names)
+    {
+        $mform = $this->_form;
+        // Initialize hidden textarea for localized strings
+        $languages = get_string_manager()->get_list_of_translations();
+        foreach ($string_names as $localized_string) {
+            foreach ($languages as $lang_id => $lang_string) {
+                $mform->addElement('textarea', $localized_string . "_" . $lang_id,
+                    "", array("style" => "display: none;", "lang" => $lang_id, "class" => "$localized_string"));
+            }
+        }
+    }
 
     /**
      * Language string to use for 'Add {no} more {whatever we call answers}'.
