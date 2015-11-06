@@ -475,7 +475,8 @@ class qtype_omeromultichoice_edit_form extends qtype_multichoice_edit_form
             // Prepare the roi_based_answers field
 
             if (isset($this->question->options)
-                && $question->options->answertype == qtype_omeromultichoice::ROI_BASED_ANSWERS) {
+                && $question->options->answertype == qtype_omeromultichoice::ROI_BASED_ANSWERS
+            ) {
                 $roi_based_answers = [];
                 foreach ($question->options->answers as $answer) {
                     array_push($roi_based_answers, $answer->answer);
@@ -483,7 +484,7 @@ class qtype_omeromultichoice_edit_form extends qtype_multichoice_edit_form
             }
 
             $question->visible_rois = $question->options->visiblerois;
-            if(isset($roi_based_answers)) {
+            if (isset($roi_based_answers)) {
                 $question->roi_based_answers = implode(",", $roi_based_answers);
             }
             $question->answertype = $question->options->answertype;
