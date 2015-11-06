@@ -54,7 +54,8 @@ class qtype_omeromultichoice_edit_form extends qtype_multichoice_edit_form
      * If your question type does not support all these fields, then you can
      * override this method and remove the ones you don't want with $mform->removeElement().
      */
-    protected function definition() {
+    protected function definition()
+    {
         global $COURSE, $CFG, $DB, $PAGE;
 
         $qtype = $this->qtype();
@@ -76,7 +77,8 @@ class qtype_omeromultichoice_edit_form extends qtype_multichoice_edit_form
             $mform->addElement('questioncategory', 'category', get_string('category', 'question'),
                 array('contexts' => $contexts));
         } else if (!($this->question->formoptions->canmove ||
-            $this->question->formoptions->cansaveasnew)) {
+            $this->question->formoptions->cansaveasnew)
+        ) {
             // Editing question with no permission to move from category.
             $mform->addElement('questioncategory', 'category', get_string('category', 'question'),
                 array('contexts' => array($this->categorycontext)));
@@ -90,7 +92,8 @@ class qtype_omeromultichoice_edit_form extends qtype_multichoice_edit_form
                 get_string('categorycurrent', 'question'),
                 array('contexts' => array($this->categorycontext)));
             if ($this->question->formoptions->canedit ||
-                $this->question->formoptions->cansaveasnew) {
+                $this->question->formoptions->cansaveasnew
+            ) {
                 // Not move only form.
                 $currentgrp[1] = $mform->createElement('checkbox', 'usecurrentcat', '',
                     get_string('categorycurrentuse', 'question'));
@@ -105,20 +108,20 @@ class qtype_omeromultichoice_edit_form extends qtype_multichoice_edit_form
                 get_string('categorymoveto', 'question'),
                 array('contexts' => array($this->categorycontext)));
             if ($this->question->formoptions->canedit ||
-                $this->question->formoptions->cansaveasnew) {
+                $this->question->formoptions->cansaveasnew
+            ) {
                 // Not move only form.
                 $mform->disabledIf('categorymoveto', 'usecurrentcat', 'checked');
             }
         }
 
         // Choose language section
-        $languages=array();
+        $languages = array();
         $languages += get_string_manager()->get_list_of_translations();
         $mform->addElement('select', 'question_language',
             get_string('language', 'qtype_omeromultichoice'), $languages,
-            array("class"=>"question-language-selector"));
+            array("class" => "question-language-selector"));
         $mform->setDefault('lang', current_language());
-
 
         // Question Text
         $mform->addElement('text', 'name', get_string('questionname', 'question'),
@@ -198,7 +201,8 @@ class qtype_omeromultichoice_edit_form extends qtype_multichoice_edit_form
         $this->add_action_buttons(true, get_string('savechanges'));
 
         if ((!empty($this->question->id)) && (!($this->question->formoptions->canedit ||
-                $this->question->formoptions->cansaveasnew))) {
+                $this->question->formoptions->cansaveasnew))
+        ) {
             $mform->hardFreezeAllVisibleExcept(array('categorymoveto', 'buttonar', 'currentgrp'));
         }
     }
