@@ -36,6 +36,10 @@ require_once($CFG->dirroot . '/question/type/multichoice/edit_multichoice_form.p
  */
 class qtype_omeromultichoice_edit_form extends qtype_multichoice_edit_form
 {
+    private $localized_strings = array(
+        "questiontext", "generalfeedback",
+        "correctfeedback", "partiallycorrectfeedback", "incorrectfeedback"
+    );
 
     public function qtype()
     {
