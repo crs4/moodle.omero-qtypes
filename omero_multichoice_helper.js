@@ -20,6 +20,23 @@ me.init = function (module_name, frame_id, visible_roi_list, options) {
     me.roi_based_answers = [];
     me.current_rois_info = null;
 
+    // list of supported languages
+    me._supported_languages = [];
+
+    // list of names of localized strings
+    me._localized_string_names = [
+        "questiontext",
+        "generalfeedback",
+        "correctfeedback", "partiallycorrectfeedback", "incorrectfeedback",
+        "answer"
+    ];
+
+    // list of localized strings
+    me._localized_strings = [];
+
+    // list of localized textareas
+    me._localized_textareas = [];
+
     // register frame object is already loaded
     if (frame_id) {
         me._registerFrameObject(frame_id, visible_roi_list);
