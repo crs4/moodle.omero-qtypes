@@ -117,13 +117,13 @@ me._registerFrameObject = function (frame_id, visible_roi_list, frame_details) {
     // Registers a reference to the frame
     me._omero_viewer_frame = omero_viewer_frame;
 
-    if(frame_details == undefined) {
+    if (frame_details == undefined) {
         // Register the main listener for the 'omeroViewerInitialized' event
         me._omero_viewer_frame.contentWindow.addEventListener("omeroViewerInitialized", function (e) {
             me._initialize(frame_id, e.detail, visible_roi_list);
             console.log("OmeroImageViewer init loaded!!!");
         }, true);
-    }else{
+    } else {
         me._initialize(frame_id, frame_details, visible_roi_list);
     }
 
