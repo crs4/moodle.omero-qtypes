@@ -497,16 +497,17 @@ class qtype_omeromultichoice_edit_form extends qtype_multichoice_edit_form
     public function get_data()
     {
         $data = parent::get_data();
-        if (isset($_REQUEST['answertype']) &&
-            $_REQUEST['answertype'] == qtype_omeromultichoice::ROI_BASED_ANSWERS
-        )
-            $this->update_raw_data($data);
+        $this->update_answers($data);
+        $this->update_localized_strings($data);
         return $data;
     }
 
 
-    private function update_raw_data(&$data)
+    private function update_answers(&$data)
     {
+        if (!isset($_REQUEST['answertype']) || $_REQUEST['answertype'] != qtype_omeromultichoice::ROI_BASED_ANSWERS)
+            return;
+
         if (!empty($data)) {
             if (is_array($data))
                 $answers = &$data["answer"];
@@ -524,12 +525,116 @@ class qtype_omeromultichoice_edit_form extends qtype_multichoice_edit_form
     }
 
 
+    private function update_localized_strings(&$data)
+    {
+        $languages = array();
+        $languages += get_string_manager()->get_list_of_translations();
+
+        if (!empty($data)) {
+            foreach ($this->localized_strings as $localized_string) {
+
+                if (is_array($data)) {
+                    $obj = &$data["$localized_string"];
+                } else {
+                    $obj = &$data->{"$localized_string"};
+                }
+
+                $text = "";
+                foreach ($languages as $lang_id => $lang_description) {
+                    $txt = "";
+                    if (is_array($data))
+                        $txt = &$data[$localized_string . "_" . $lang_id];
+                    else
+                        $txt = &$data->{$localized_string . "_" . $lang_id};
+                    $text .= '<span class="multilang" lang="' . $lang_id . '">' . $txt . '</span>';
+                }
+                if (isset($obj["text"]))
+                    $obj["text"] = $text;
+                else $obj = $text;
+            }
+
+
+            if (is_array($data)) {
+                $answer = &$data["answer"];
+            } else {
+                $answer = &$data->{"answer"};
+            }
+
+            for ($i = 0; $i < count($answer); $i++) {
+                $answer[$i]["text"] = "";
+                foreach ($languages as $lang_id => $lang_description) {
+                    if (is_array($data)) {
+                        $answer_lang = &$data["answer_" . $lang_id];
+                    } else {
+                        $answer_lang = &$data->{"answer_" . $lang_id};
+                    }
+                    if (isset($answer_lang[$i]) && !empty($answer_lang[$i]))
+                        $answer[$i]["text"] .= '<span class="multilang" lang="' . $lang_id . '">' . $answer_lang[$i] . '</span>';
+                }
+            }
+        }
+    }
+
+
     public function set_data($question)
     {
+        foreach ($this->localized_strings as $localized_string)
+            $this->set_localized_string($question, $localized_string);
+
+        $count = 0;
+        if (isset($question->options) && isset($question->options->answers)) {
+            foreach ($question->options->answers as $i => $answer) {
+                preg_match_all('/<span class="multilang" lang="([\w]+)">(.*?)(<\/span>)/', $answer->answer, $matches);
+                for ($i = 0; $i < count($matches[0]); $i++) {
+                    $language = $matches[1][$i];
+                    $localized_string = $matches[2][$i];
+                    if (!isset($question->{"answer_" . $language}))
+                        $question->{"answer_" . $language} = array();
+                    array_push($question->{"answer_" . $language}, $localized_string);
+                }
+
+                $count++;
+            }
+        }
+
         parent::set_data($question);
     }
 
-    protected function data_preprocessing_answers($question, $withanswerfiles = false)
+
+    public function set_localized_string($obj, $property_name)
+    {
+        if ($obj == null) return;
+
+        $languages = get_string_manager()->get_list_of_translations();
+        $query_obj = null;
+
+        if (isset($obj->{$property_name}))
+            $query_obj = $obj;
+
+        else if (isset($obj->options) && isset($obj->options->{$property_name}))
+            $query_obj = $obj->options;
+
+        if ($query_obj != null) {
+            preg_match_all('/<span class="multilang" lang="([\w]+)">(.*?)(<\/span>)/', $query_obj->{$property_name}, $matches);
+            for ($i = 0; $i < count($matches[0]); $i++) {
+                $language = $matches[1][$i];
+                $localized_string = $matches[2][$i];
+                $obj->{$property_name . "_" . $language} = $localized_string;
+            }
+        } else {
+            foreach ($languages as $language) {
+                $obj->{$property_name . "_" . $language} = "";
+            }
+        }
+
+        if (isset($obj->{$property_name . "_" . current_language()})) {
+            $obj->{$property_name} = $obj->{$property_name . "_" . current_language()};
+        }
+    }
+
+
+    protected
+    function data_preprocessing_answers($question, $withanswerfiles = false)
     {
         if (empty($question->options->answers)) {
             return $question;
