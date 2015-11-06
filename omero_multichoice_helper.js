@@ -145,6 +145,41 @@ me.moveToRoiShape = function (roi_id) {
 
 
 /**
+ * Initializes the list of supported languages
+ * and sets the currently selected language
+ *
+ * @private
+ */
+me._initLanguageSelector = function () {
+
+    // initializes the list of supported languages
+    me._supported_languages = [];
+    var language_selector = document.forms[0].elements["question_language"];
+    var language_options = language_selector.options;
+    for (var i = 0; i < language_options.length; i++) {
+        me._supported_languages.push(language_options[i].value);
+    }
+
+    // handles the event 'language changed'
+    document.forms[0].elements["question_language"].onchange = me._updateCurrentLanguage;
+};
+
+
+/**
+ * Updates the currently selected language
+ * @param index
+ * @returns {string|*|Number} the "id" of the current language
+ * @private
+ */
+me._updateCurrentLanguage = function () {
+    var previous_language = me._current_language;
+    var language_selector = document.forms[0].elements["question_language"];
+    me._current_language = language_selector.options[language_selector.selectedIndex].value;
+    me._updateLocalizedStrings(previous_language, me._current_language);
+};
+
+
+/**
  * Initialize event listeners
  * for some elements of the form for editing a question
  *
