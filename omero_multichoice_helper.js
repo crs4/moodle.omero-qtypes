@@ -494,12 +494,114 @@ me.roiVisibilityChanged = function (event) {
     if (!event) return;
 
     var roi_info = event.detail.detail;
-    if(event.detail.visible){
+    if (event.detail.visible) {
         me.addVisibleRoi(roi_info.id);
-    }else{
+    } else {
         me.removeVisibleRoi(roi_info.id);
     }
 
     console.log("Changed vibility to " + event.detail.visible
         + " of RoiShape", roi_info, "Visible ROIs: " + me._visible_roi_list.join(","));
+};
+
+
+me._initLocalizedStrings = function () {
+
+
+    for (var i = 0; i < me._localized_string_names.length; i++) {
+
+        //
+        console.log("Initializing Localized string: " + me._localized_string_names[i]);
+
+        // localized string
+        var localized_string_name = me._localized_string_names[i];
+        me._localized_strings[localized_string_name] = [];
+
+        // init locale strings with the default empty string
+        for (var j = 0; j < me._supported_languages.length; j++) {
+            me._localized_strings[localized_string_name][me._supported_languages[j]] = "";
+        }
+
+        // Updates the localized string with actual values
+        me._localized_textareas[localized_string_name] = document.querySelectorAll("[class^=" + localized_string_name + "]");
+        for (var j = 0; j < me._localized_textareas[localized_string_name].length; j++) {
+            var locale_textarea = me._localized_textareas[localized_string_name][j];
+
+
+            if (locale_textarea.className == "answer") {
+                var pattern = /answer_(\w+)_(\d+)/;
+                var matches = pattern.exec("" + locale_textarea.id);
+                var answer_lang = matches[1];
+                var answer_number = matches[2];
+                var answer_name = "answer_" + answer_number;
+
+                // Initializes array to host localized strings and textareas
+                if (me._localized_strings[answer_name] == undefined)
+                    me._localized_strings[answer_name] = [];
+                if (me._localized_textareas[answer_name] == undefined)
+                    me._localized_textareas[answer_name] = [];
+
+                me._localized_textareas[answer_name].push(locale_textarea);
+                me._localized_strings[answer_name][locale_textarea.getAttribute("lang")] = locale_textarea.innerHTML;
+
+            } else {
+                me._localized_strings[localized_string_name][locale_textarea.getAttribute("lang")] = locale_textarea.innerHTML;
+            }
+        }
+    }
+};
+
+
+me._updateLocalizedStrings = function (previous_language, current_language) {
+    for (var localized_string_name in me._localized_strings) {
+        var string_editor = me._getStringEditor(localized_string_name);
+        if (string_editor != null) {
+            me._localized_strings[localized_string_name][previous_language] = string_editor.innerHTML;
+            //console.log("PREVIOUS: " + me._localized_strings[localized_string_name][previous_language]);
+            //console.log("CURRENT: " + me._localized_strings[localized_string_name][current_language]);
+            string_editor.innerHTML = me._localized_strings[localized_string_name][current_language];
+        } else if (localized_string_name != "answer") {
+            console.error("Not Found editor for: " + localized_string_name);
+        }
+    }
+};
+
+me._prepareLocalizedStringsForSubmission = function () {
+    try {
+
+        for (var localized_string_name in me._localized_strings) {
+
+            // last update
+            var string_editor = me._getStringEditor(localized_string_name);
+            if (string_editor != null) {
+                me._localized_strings[localized_string_name][me._current_language] = string_editor.innerHTML;
+            }
+
+            // updates textareas
+            for (var j = 0; j < me._localized_textareas[localized_string_name].length; j++) {
+                var localized_textarea = me._localized_textareas[localized_string_name][j];
+                localized_textarea.innerHTML = me._localized_strings[localized_string_name][localized_textarea.getAttribute("lang")];
+                console.log("Updating...", localized_textarea.innerHTML, localized_textarea.getAttribute("lang"));
+            }
+        }
+    } catch (e) {
+        console.error(e.message);
+        return false;
+    }
+};
+
+
+/**
+ * Returns the editor for a given editor
+ *
+ * @param propertyName
+ * @returns {*}
+ * @private
+ */
+me._getStringEditor = function (propertyName) {
+    var string_editor = document.querySelectorAll("div" + '[id^=id_' + propertyName + 'editable]');
+    if (string_editor.length > 0) {
+        return string_editor[0];
+    }
+    return null;
 };
