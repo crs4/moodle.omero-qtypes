@@ -596,7 +596,8 @@ class qtype_omeromultichoice_edit_form extends qtype_multichoice_edit_form
         return $question;
     }
 
-    protected function get_hint_fields($withclearwrong = false, $withshownumpartscorrect = false)
+    protected
+    function get_hint_fields($withclearwrong = false, $withshownumpartscorrect = false)
     {
         list($repeated, $repeatedoptions) = parent::get_hint_fields($withclearwrong, $withshownumpartscorrect);
         $repeatedoptions['hintclearwrong']['disabledif'] = array('single', 'eq', 1);
@@ -611,11 +612,10 @@ class qtype_omeromultichoice_edit_form extends qtype_multichoice_edit_form
      * @param $files
      * @return mixed
      */
-    public function validation($data, $files)
+    public
+    function validation($data, $files)
     {
-        if (isset($_REQUEST['answertype'])
-            && $_REQUEST['answertype'] == qtype_omeromultichoice::ROI_BASED_ANSWERS) {
-            //
+        if (isset($_REQUEST['answertype']) && $_REQUEST['answertype'] == qtype_omeromultichoice::ROI_BASED_ANSWERS) {
             $this->update_raw_data($data);
         }
 
@@ -630,6 +630,7 @@ class qtype_omeromultichoice_edit_form extends qtype_multichoice_edit_form
         // question multichoice validation
         if ($_REQUEST['noanswers'] > 0)
             $errors = parent::validation($data, $files);
+
         // return found errors
         return $errors;
     }
@@ -648,8 +649,9 @@ class qtype_omeromultichoice_edit_form extends qtype_multichoice_edit_form
      *      Default QUESTION_NUMANS_START.
      * @param $addoptions the number of answer blanks to add. Default QUESTION_NUMANS_ADD.
      */
-    protected function add_per_answer_fields(&$mform, $label, $gradeoptions,
-                                             $minoptions = QUESTION_NUMANS_START, $addoptions = QUESTION_NUMANS_ADD)
+    protected
+    function add_per_answer_fields(&$mform, $label, $gradeoptions,
+                                   $minoptions = QUESTION_NUMANS_START, $addoptions = QUESTION_NUMANS_ADD)
     {
         $mform->addElement('header', 'answerhdr',
             get_string('answers', 'question'), '');
