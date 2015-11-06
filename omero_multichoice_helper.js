@@ -49,6 +49,21 @@ me.init = function (module_name, frame_id, visible_roi_list, options) {
         me._registerFrameObject(frame_id, visible_roi_list, e.detail);
     }, true);
 
+
+    // init localized strings
+    if (me.isEditingMode()) {
+
+        // registers language selector event listener
+        // and initializes the list of supported languages
+        me._initLanguageSelector();
+
+        // initializes localized strings
+        me._initLocalizedStrings();
+
+        // initialize the current language
+        me._updateCurrentLanguage();
+    }
+
     console.log("omero_multichoice_helper js helper initialized!!!");
 };
 
