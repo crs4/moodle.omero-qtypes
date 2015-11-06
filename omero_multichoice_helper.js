@@ -201,11 +201,11 @@ me._initQuestionEditorForm = function () {
 
     // Initialize the list of ROIs to show
     var visible_rois_input_field = document.forms[0].elements['visible_rois'].value;
-    if(visible_rois_input_field
-        && visible_rois_input_field.length>0
-        && visible_rois_input_field!="none"){
+    if (visible_rois_input_field
+        && visible_rois_input_field.length > 0
+        && visible_rois_input_field != "none") {
         me._visible_roi_list = visible_rois_input_field.split(",");
-    }else{
+    } else {
         me._visible_roi_list = [];
     }
 
