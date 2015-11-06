@@ -229,10 +229,6 @@ class qtype_omeromultichoice_edit_form extends qtype_multichoice_edit_form
                 'return_types' => array(FILE_INTERNAL | FILE_EXTERNAL))
         );
 
-//        $enable_add_plaintext_answer_button =
-//            !isset($_REQUEST['answertype']) || $_REQUEST['answertype'] == qtype_omeromultichoice::PLAIN_ANSWERS;
-//        if (!$enable_add_plaintext_answer_button)
-
         if ((isset($_REQUEST['answertype'])
                 && $_REQUEST['answertype'] == qtype_omeromultichoice::ROI_BASED_ANSWERS) ||
             (isset($this->question->options)
@@ -240,7 +236,6 @@ class qtype_omeromultichoice_edit_form extends qtype_multichoice_edit_form
         ) {
             $mform->addElement("button", "add-roi-answer",
                 get_string("add_roi_answer", "qtype_omeromultichoice"));
-            //,array("disabled" => true));
         }
 
         $menu = array(
