@@ -334,9 +334,12 @@ me._on_question_submitted = function (disable_validation) {
  * @private
  */
 me._build_image_link = function () {
-    var viewport = me.omero_viewer_controller.viewport;
-    var link = viewport.getCurrentImgUrlPath() + '?' + viewport.getQuery(true, true, true);
-    console.log("Current image link", link);
+    var link = null;
+    if (me.omero_viewer_controller && me.omero_viewer_controller.viewport) {
+        var viewport = me.omero_viewer_controller.viewport;
+        link = viewport.getCurrentImgUrlPath() + '?' + viewport.getQuery(true, true, true);
+        console.log("Current image link", link);
+    }
     return link;
 };
 
