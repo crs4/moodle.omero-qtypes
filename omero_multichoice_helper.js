@@ -209,6 +209,9 @@ me._initQuestionEditorForm = function () {
         me._visible_roi_list = [];
     }
 
+    // Registers the handler for the question type
+    //document.forms[0].elements['answertype'].onchange = me._on_question_type_changed;
+
     // Registers the submit function
     document.forms[0].onsubmit = me._on_question_submitted;
 
@@ -275,37 +278,51 @@ me._initRoiBasedAnswers = function () {
 };
 
 
+me._on_question_type_changed = function () {
+    document.forms[0].elements['noanswers'].value = 0;
+    me._on_question_submitted(true);
+    me._getForm().submit();
+};
+
+
 /**
  * Performs several controls before the form submition
  *
  * @private
  */
-me._on_question_submitted = function () {
-
-    // get the form element containing the url of the current selected image
-    var image_url_input_element = document.forms[0].elements["omero_image_url"];
-
-    // get the relative path to the current image selection:
-    // including references to the current zoom level, displayed area, etc.
-    var image_relative_path = me._build_image_link();
-
-    // update the current input element value
-    var old = image_url_input_element.value;
-    var newurl = me.omero_viewer_controller.omero_server + "/webgateway/render_thumbnail/" + image_relative_path;
+me._on_question_submitted = function (disable_validation) {
 
     // encode localized strings to be submitted
     me._prepareLocalizedStringsForSubmission();
 
-    // update the list of ROIs to display
-    document.forms[0].elements['visible_rois'].value = me._visible_roi_list.join(",");
+    // get the form element containing the url of the current selected image
+    var image_url_input_element = document.forms[0].elements["omero_image_url"];
+    document.forms[0].elements["omeroimagefilereference"] = image_url_input_element.value;
 
-    // update the current URL with image params (i.e., zoom, channels, etc.)
-    console.log("Updating URL...", old, newurl);
-    image_url_input_element.value = newurl.replace("/?", "?");
-    if (newurl == null || newurl.length == 0) {
-        // FIXME: a better message view
-        alert("Image not setted!!!");
+    // get the relative path to the current image selection:
+    // including references to the current zoom level, displayed area, etc.
+    var image_relative_path = me._build_image_link();
+    if (disable_validation != true && image_relative_path == null) {
+        alert("No image selected!!!");
         return false;
+    }
+
+    if (image_relative_path != null && image_relative_path.length > 0) {
+        // update the current input element value
+        var old = image_url_input_element.value;
+        var newurl = me.omero_viewer_controller.omero_server + "/webgateway/render_thumbnail/" + image_relative_path;
+
+        // update the list of ROIs to display
+        document.forms[0].elements['visible_rois'].value = me._visible_roi_list.join(",");
+
+        // update the current URL with image params (i.e., zoom, channels, etc.)
+        console.log("Updating URL...", old, newurl);
+        image_url_input_element.value = newurl.replace("/?", "?");
+        //if (newurl == null || newurl.length == 0) {
+        //    // FIXME: a better message view
+        //    alert("No image selected!!!");
+        //    return false;
+        //}
     }
 };
 

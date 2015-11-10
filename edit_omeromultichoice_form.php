@@ -253,7 +253,8 @@ class qtype_omeromultichoice_edit_form extends qtype_multichoice_edit_form
         }
         $mform->addElement('select', 'answertype',
             get_string('answer_type', 'qtype_omeromultichoice'), $answer_type_menu,
-            array("onchange" => "document.forms[0].elements['noanswers'].value=0; document.forms[0].submit()"));
+            array("onchange" => "M.omero_multichoice_helper._on_question_type_changed()")
+        );
         $mform->setDefault('answertype', qtype_omeromultichoice::PLAIN_ANSWERS);
 
 
