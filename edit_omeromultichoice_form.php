@@ -550,28 +550,28 @@ class qtype_omeromultichoice_edit_form extends qtype_multichoice_edit_form
                 else $obj = $text;
             }
 
+            if (!isset($_REQUEST['answertype']) || $_REQUEST['answertype'] != qtype_omeromultichoice::ROI_BASED_ANSWERS) {
+                if (is_array($data)) {
+                    $answer = &$data["answer"];
+                } else {
+                    $answer = &$data->{"answer"};
+                }
 
-            if (is_array($data)) {
-                $answer = &$data["answer"];
-            } else {
-                $answer = &$data->{"answer"};
-            }
-
-            for ($i = 0; $i < count($answer); $i++) {
-                $answer[$i]["text"] = "";
-                foreach ($languages as $lang_id => $lang_description) {
-                    if (is_array($data)) {
-                        $answer_lang = &$data["answer_" . $lang_id];
-                    } else {
-                        $answer_lang = &$data->{"answer_" . $lang_id};
+                for ($i = 0; $i < count($answer); $i++) {
+                    $answer[$i]["text"] = "";
+                    foreach ($languages as $lang_id => $lang_description) {
+                        if (is_array($data)) {
+                            $answer_lang = &$data["answer_" . $lang_id];
+                        } else {
+                            $answer_lang = &$data->{"answer_" . $lang_id};
+                        }
+                        if (isset($answer_lang[$i]) && !empty($answer_lang[$i]))
+                            $answer[$i]["text"] .= '<span class="multilang" lang="' . $lang_id . '">' . $answer_lang[$i] . '</span>';
                     }
-                    if (isset($answer_lang[$i]) && !empty($answer_lang[$i]))
-                        $answer[$i]["text"] .= '<span class="multilang" lang="' . $lang_id . '">' . $answer_lang[$i] . '</span>';
                 }
             }
         }
     }
-
 
     public function set_data($question)
     {
