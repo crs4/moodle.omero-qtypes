@@ -495,23 +495,22 @@ class qtype_omeromultichoice_edit_form extends qtype_multichoice_edit_form
     public function get_data()
     {
         $data = parent::get_data();
-        $this->update_answers($data);
+        $this->update_roi_based_answers($data);
         $this->update_localized_strings($data);
         return $data;
     }
 
 
-    private function update_answers(&$data)
+    private function update_roi_based_answers(&$data)
     {
-        if (!isset($_REQUEST['answertype']) || $_REQUEST['answertype'] != qtype_omeromultichoice::ROI_BASED_ANSWERS)
-            return;
-
-        if (!empty($data)) {
-            if (is_array($data))
+        if (!empty($data) && isset($_REQUEST['answertype']) &&
+            $_REQUEST['answertype'] == qtype_omeromultichoice::ROI_BASED_ANSWERS
+        ) {
+            if (is_array($data)) {
                 $answers = &$data["answer"];
-            else
+            } else {
                 $answers = &$data->{"answer"};
-
+            }
             if (isset($_POST["roi_based_answers"])) {
                 $roi_based_answers_el = $_POST["roi_based_answers"];
                 $roi_based_answers = explode(",", $roi_based_answers_el);
@@ -719,7 +718,7 @@ class qtype_omeromultichoice_edit_form extends qtype_multichoice_edit_form
     function validation($data, $files)
     {
         if (isset($_REQUEST['answertype']) && $_REQUEST['answertype'] == qtype_omeromultichoice::ROI_BASED_ANSWERS) {
-            $this->update_raw_data($data);
+            $this->update_roi_based_answers($data);
         }
 
         if ($_REQUEST['noanswers'] < 3)
