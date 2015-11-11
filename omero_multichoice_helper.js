@@ -313,7 +313,7 @@ me._on_question_submitted = function (disable_validation) {
     if (disable_validation != true && image_relative_path == null) {
 
         var errMsgCtn = document.getElementById("omeroimagefilereferencechoose-errMsg");
-        if(!errMsgCtn) {
+        if (!errMsgCtn) {
             var errMsgCtn = document.createElement("span");
             errMsgCtn.id = "omeroimagefilereferencechoose-errMsg";
             errMsgCtn.className = "error";
