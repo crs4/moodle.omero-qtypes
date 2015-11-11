@@ -616,6 +616,49 @@ class qtype_omeromultichoice_edit_form extends qtype_multichoice_edit_form
     }
 
 
+    /**
+     * Returns the list of span[@multilang]
+     * contained within the given <pre>$html</pre>
+     *
+     * @param $html
+     * @return array array of pairs (language, string)
+     */
+    private function getLocaleStrings($html)
+    {
+        $result = array();
+        $dom = new DOMDocument();
+        $dom->strictErrorChecking = FALSE;
+        $dom->loadHTML('<?xml version="1.0" encoding="UTF-8"?><html><body>' . $html . '</body></html>');
+        $finder = new DomXPath($dom);
+        $classname = "multilang";
+        $nodes = $finder->query("//*[contains(concat(' ', normalize-space(@class), ' '), ' $classname ')]");
+        foreach ($nodes as $node) {
+            $data = [$node->getAttribute("lang"), $this->DOMinnerHTML($node)];
+            array_push($result, $data);
+        }
+        return $result;
+    }
+
+    /**
+     * Returns the innerHTML of a given DOMNode
+     *
+     * @param DOMNode $element
+     * @return string
+     */
+    private function DOMinnerHTML(DOMNode $element)
+    {
+        $innerHTML = "";
+        $children  = $element->childNodes;
+
+        foreach ($children as $child)
+        {
+            $innerHTML .= $element->ownerDocument->saveHTML($child);
+        }
+
+        return $innerHTML;
+    }
+
+
     public function set_localized_string($obj, $property_name)
     {
         if ($obj == null) return;
