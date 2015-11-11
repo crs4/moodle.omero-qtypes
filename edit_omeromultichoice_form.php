@@ -543,6 +543,8 @@ class qtype_omeromultichoice_edit_form extends qtype_multichoice_edit_form
                         $txt = &$data[$localized_string . "_" . $lang_id];
                     else
                         $txt = &$data->{$localized_string . "_" . $lang_id};
+                    // removes YUI ids
+                    $txt = preg_replace('/id="([^"]+)"/i', "", $txt);
                     $text .= '<span class="multilang" lang="' . $lang_id . '">' . $txt . '</span>';
                 }
                 if (isset($obj["text"]))
@@ -565,8 +567,11 @@ class qtype_omeromultichoice_edit_form extends qtype_multichoice_edit_form
                         } else {
                             $answer_lang = &$data->{"answer_" . $lang_id};
                         }
-                        if (isset($answer_lang[$i]) && !empty($answer_lang[$i]))
-                            $answer[$i]["text"] .= '<span class="multilang" lang="' . $lang_id . '">' . $answer_lang[$i] . '</span>';
+                        if (isset($answer_lang[$i]) && !empty($answer_lang[$i])) {
+                            // removes YUI ids
+                            $txt = preg_replace('/id="([^"]+)"/i', "",  $answer_lang[$i]);
+                            $answer[$i]["text"] .= '<span class="multilang" lang="' . $lang_id . '">' . $txt . '</span>';
+                        }
                     }
                 }
             }
