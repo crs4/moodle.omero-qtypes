@@ -543,6 +543,8 @@ class qtype_omeromultichoice_edit_form extends qtype_multichoice_edit_form
                         $txt = &$data[$localized_string . "_" . $lang_id];
                     else
                         $txt = &$data->{$localized_string . "_" . $lang_id};
+                    // removes YUI ids
+                    $txt = preg_replace('/id="([^"]+)"/i', "", $txt);
                     $text .= '<span class="multilang" lang="' . $lang_id . '">' . $txt . '</span>';
                 }
                 if (isset($obj["text"]))
@@ -565,8 +567,11 @@ class qtype_omeromultichoice_edit_form extends qtype_multichoice_edit_form
                         } else {
                             $answer_lang = &$data->{"answer_" . $lang_id};
                         }
-                        if (isset($answer_lang[$i]) && !empty($answer_lang[$i]))
-                            $answer[$i]["text"] .= '<span class="multilang" lang="' . $lang_id . '">' . $answer_lang[$i] . '</span>';
+                        if (isset($answer_lang[$i]) && !empty($answer_lang[$i])) {
+                            // removes YUI ids
+                            $txt = preg_replace('/id="([^"]+)"/i', "",  $answer_lang[$i]);
+                            $answer[$i]["text"] .= '<span class="multilang" lang="' . $lang_id . '">' . $txt . '</span>';
+                        }
                     }
                 }
             }
@@ -581,11 +586,11 @@ class qtype_omeromultichoice_edit_form extends qtype_multichoice_edit_form
         $count = 0;
         if (isset($question->options) && isset($question->options->answers)) {
             foreach ($question->options->answers as $i => $answer) {
-                preg_match_all('/<span class="multilang" lang="([\w]+)">(.*?)(<\/span>)/', $answer->answer, $matches);
+                $matches = $this->getLocaleStrings($answer->answer);
                 if (count($matches[0]) > 0) {
-                    for ($i = 0; $i < count($matches[0]); $i++) {
-                        $language = $matches[1][$i];
-                        $localized_string = $matches[2][$i];
+                    for ($i = 0; $i < count($matches); $i++) {
+                        $language = $matches[$i][0];
+                        $localized_string = $matches[$i][1];
                         if (!isset($question->{"answer_" . $language}))
                             $question->{"answer_" . $language} = array();
                         array_push($question->{"answer_" . $language}, $localized_string);
@@ -602,12 +607,54 @@ class qtype_omeromultichoice_edit_form extends qtype_multichoice_edit_form
                         }
                     }
                 }
-
                 $count++;
             }
         }
 
         parent::set_data($question);
+    }
+
+
+    /**
+     * Returns the list of span[@multilang]
+     * contained within the given <pre>$html</pre>
+     *
+     * @param $html
+     * @return array array of pairs (language, string)
+     */
+    private function getLocaleStrings($html)
+    {
+        $result = array();
+        $dom = new DOMDocument();
+        $dom->strictErrorChecking = FALSE;
+        $dom->loadHTML('<?xml version="1.0" encoding="UTF-8"?><html><body>' . $html . '</body></html>');
+        $finder = new DomXPath($dom);
+        $classname = "multilang";
+        $nodes = $finder->query("//*[contains(concat(' ', normalize-space(@class), ' '), ' $classname ')]");
+        foreach ($nodes as $node) {
+            $data = [$node->getAttribute("lang"), $this->DOMinnerHTML($node)];
+            array_push($result, $data);
+        }
+        return $result;
+    }
+
+    /**
+     * Returns the innerHTML of a given DOMNode
+     *
+     * @param DOMNode $element
+     * @return string
+     */
+    private function DOMinnerHTML(DOMNode $element)
+    {
+        $innerHTML = "";
+        $children  = $element->childNodes;
+
+        foreach ($children as $child)
+        {
+            $innerHTML .= $element->ownerDocument->saveHTML($child);
+        }
+
+        return $innerHTML;
     }
 
 
@@ -625,8 +672,7 @@ class qtype_omeromultichoice_edit_form extends qtype_multichoice_edit_form
             $query_obj = $obj->options;
 
         if ($query_obj != null) {
-            preg_match_all('/<span class="multilang" lang="([\w]+)">(.*?)(<\/span>)/', $query_obj->{$property_name}, $matches);
-
+            $matches = $this->getLocaleStrings($query_obj->{$property_name});
             if (count($matches[0]) == 0) {
                 foreach ($languages as $language => $lang_name) {
                     if (strcmp($language, current_language()) === 0) {
@@ -635,11 +681,10 @@ class qtype_omeromultichoice_edit_form extends qtype_multichoice_edit_form
                         $obj->{$property_name . "_" . $language} = "";
                     }
                 }
-
             } else {
-                for ($i = 0; $i < count($matches[0]); $i++) {
-                    $language = $matches[1][$i];
-                    $localized_string = $matches[2][$i];
+                for ($i = 0; $i < count($matches); $i++) {
+                    $language = $matches[$i][0];
+                    $localized_string = $matches[$i][1];
                     $obj->{$property_name . "_" . $language} = $localized_string;
                 }
             }
