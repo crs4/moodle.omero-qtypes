@@ -582,12 +582,25 @@ class qtype_omeromultichoice_edit_form extends qtype_multichoice_edit_form
         if (isset($question->options) && isset($question->options->answers)) {
             foreach ($question->options->answers as $i => $answer) {
                 preg_match_all('/<span class="multilang" lang="([\w]+)">(.*?)(<\/span>)/', $answer->answer, $matches);
-                for ($i = 0; $i < count($matches[0]); $i++) {
-                    $language = $matches[1][$i];
-                    $localized_string = $matches[2][$i];
-                    if (!isset($question->{"answer_" . $language}))
-                        $question->{"answer_" . $language} = array();
-                    array_push($question->{"answer_" . $language}, $localized_string);
+                if (count($matches[0]) > 0) {
+                    for ($i = 0; $i < count($matches[0]); $i++) {
+                        $language = $matches[1][$i];
+                        $localized_string = $matches[2][$i];
+                        if (!isset($question->{"answer_" . $language}))
+                            $question->{"answer_" . $language} = array();
+                        array_push($question->{"answer_" . $language}, $localized_string);
+                    }
+                } else {
+                    $languages = get_string_manager()->get_list_of_translations();
+                    foreach ($languages as $language => $lang_name) {
+                        if (!isset($question->{"answer_" . $language}))
+                            $question->{"answer_" . $language} = array();
+                        if (strcmp($language, current_language()) === 0) {
+                            array_push($question->{"answer_" . $language}, $answer->answer);
+                        } else {
+                            array_push($question->{"answer_" . $language}, "");
+                        }
+                    }
                 }
 
                 $count++;
@@ -614,17 +627,16 @@ class qtype_omeromultichoice_edit_form extends qtype_multichoice_edit_form
         if ($query_obj != null) {
             preg_match_all('/<span class="multilang" lang="([\w]+)">(.*?)(<\/span>)/', $query_obj->{$property_name}, $matches);
 
-            if(count($matches[0])==0){
-                $languages = get_string_manager()->get_list_of_translations();
-                foreach($languages as $language => $lang_name){
-                    if(strcmp($language, current_language())===0){
+            if (count($matches[0]) == 0) {
+                foreach ($languages as $language => $lang_name) {
+                    if (strcmp($language, current_language()) === 0) {
                         $obj->{$property_name . "_" . $language} = $query_obj->{$property_name};
-                    }else{
+                    } else {
                         $obj->{$property_name . "_" . $language} = "";
                     }
                 }
 
-            }else {
+            } else {
                 for ($i = 0; $i < count($matches[0]); $i++) {
                     $language = $matches[1][$i];
                     $localized_string = $matches[2][$i];
