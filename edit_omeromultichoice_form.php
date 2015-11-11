@@ -613,10 +613,23 @@ class qtype_omeromultichoice_edit_form extends qtype_multichoice_edit_form
 
         if ($query_obj != null) {
             preg_match_all('/<span class="multilang" lang="([\w]+)">(.*?)(<\/span>)/', $query_obj->{$property_name}, $matches);
-            for ($i = 0; $i < count($matches[0]); $i++) {
-                $language = $matches[1][$i];
-                $localized_string = $matches[2][$i];
-                $obj->{$property_name . "_" . $language} = $localized_string;
+
+            if(count($matches[0])==0){
+                $languages = get_string_manager()->get_list_of_translations();
+                foreach($languages as $language => $lang_name){
+                    if(strcmp($language, current_language())===0){
+                        $obj->{$property_name . "_" . $language} = $query_obj->{$property_name};
+                    }else{
+                        $obj->{$property_name . "_" . $language} = "";
+                    }
+                }
+
+            }else {
+                for ($i = 0; $i < count($matches[0]); $i++) {
+                    $language = $matches[1][$i];
+                    $localized_string = $matches[2][$i];
+                    $obj->{$property_name . "_" . $language} = $localized_string;
+                }
             }
         } else {
             foreach ($languages as $language) {
