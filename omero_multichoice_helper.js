@@ -601,7 +601,7 @@ me._updateLocalizedStrings = function (previous_language, current_language) {
             me._localized_strings[localized_string_name][previous_language] = string_editor.innerHTML;
             //console.log("PREVIOUS: " + me._localized_strings[localized_string_name][previous_language]);
             //console.log("CURRENT: " + me._localized_strings[localized_string_name][current_language]);
-            string_editor.innerHTML = me._localized_strings[localized_string_name][current_language];
+            string_editor.innerHTML = me._html_entity_decode(me._localized_strings[localized_string_name][current_language]);
         } else if (localized_string_name != "answer") {
             console.error("Not Found editor for: " + localized_string_name);
         }
