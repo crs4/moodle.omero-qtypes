@@ -586,11 +586,11 @@ class qtype_omeromultichoice_edit_form extends qtype_multichoice_edit_form
         $count = 0;
         if (isset($question->options) && isset($question->options->answers)) {
             foreach ($question->options->answers as $i => $answer) {
-                preg_match_all('/<span class="multilang" lang="([\w]+)">(.*?)(<\/span>)/', $answer->answer, $matches);
+                $matches = $this->getLocaleStrings($answer->answer);
                 if (count($matches[0]) > 0) {
-                    for ($i = 0; $i < count($matches[0]); $i++) {
-                        $language = $matches[1][$i];
-                        $localized_string = $matches[2][$i];
+                    for ($i = 0; $i < count($matches); $i++) {
+                        $language = $matches[$i][0];
+                        $localized_string = $matches[$i][1];
                         if (!isset($question->{"answer_" . $language}))
                             $question->{"answer_" . $language} = array();
                         array_push($question->{"answer_" . $language}, $localized_string);
@@ -607,7 +607,6 @@ class qtype_omeromultichoice_edit_form extends qtype_multichoice_edit_form
                         }
                     }
                 }
-
                 $count++;
             }
         }
@@ -673,8 +672,7 @@ class qtype_omeromultichoice_edit_form extends qtype_multichoice_edit_form
             $query_obj = $obj->options;
 
         if ($query_obj != null) {
-            preg_match_all('/<span class="multilang" lang="([\w]+)">(.*?)(<\/span>)/', $query_obj->{$property_name}, $matches);
-
+            $matches = $this->getLocaleStrings($query_obj->{$property_name});
             if (count($matches[0]) == 0) {
                 foreach ($languages as $language => $lang_name) {
                     if (strcmp($language, current_language()) === 0) {
@@ -683,11 +681,10 @@ class qtype_omeromultichoice_edit_form extends qtype_multichoice_edit_form
                         $obj->{$property_name . "_" . $language} = "";
                     }
                 }
-
             } else {
-                for ($i = 0; $i < count($matches[0]); $i++) {
-                    $language = $matches[1][$i];
-                    $localized_string = $matches[2][$i];
+                for ($i = 0; $i < count($matches); $i++) {
+                    $language = $matches[$i][0];
+                    $localized_string = $matches[$i][1];
                     $obj->{$property_name . "_" . $language} = $localized_string;
                 }
             }
