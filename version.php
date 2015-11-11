@@ -26,8 +26,7 @@
 defined('MOODLE_INTERNAL') || die();
 
 $plugin->component = 'qtype_omeromultichoice';
-$plugin->version   = 2015101500;
-
-$plugin->requires  = 2012062504;
+$plugin->version   = 2015111100;        // The current plugin version (Date: YYYYMMDDXX).
+$plugin->requires  = 2015051102;        // Requires this Moodle version.
 
 $plugin->maturity  = MATURITY_ALPHA;

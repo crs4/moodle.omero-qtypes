@@ -20,6 +20,23 @@ me.init = function (module_name, frame_id, visible_roi_list, options) {
     me.roi_based_answers = [];
     me.current_rois_info = null;
 
+    // list of supported languages
+    me._supported_languages = [];
+
+    // list of names of localized strings
+    me._localized_string_names = [
+        "questiontext",
+        "generalfeedback",
+        "correctfeedback", "partiallycorrectfeedback", "incorrectfeedback",
+        "answer"
+    ];
+
+    // list of localized strings
+    me._localized_strings = [];
+
+    // list of localized textareas
+    me._localized_textareas = [];
+
     // register frame object is already loaded
     if (frame_id) {
         me._registerFrameObject(frame_id, visible_roi_list);
@@ -31,6 +48,25 @@ me.init = function (module_name, frame_id, visible_roi_list, options) {
         console.log("frame Loaded!!!");
         me._registerFrameObject(frame_id, visible_roi_list, e.detail);
     }, true);
+
+    // init localized strings
+    if (me.isEditingMode()) {
+
+        me._updateQuestionEditorType();
+
+        // registers language selector event listener
+        // and initializes the list of supported languages
+        me._initLanguageSelector();
+
+        // initializes localized strings
+        me._initLocalizedStrings();
+
+        // initialize the current language
+        me._updateCurrentLanguage();
+
+        // Registers the submit function
+        document.forms[0].onsubmit = me._on_question_submitted;
+    }
 
     console.log("omero_multichoice_helper js helper initialized!!!");
 };
@@ -70,6 +106,24 @@ me._initialize = function (frame_id, image_details, visible_roi_list) {
 };
 
 
+me._updateQuestionEditorType = function () {
+
+    var form = me._getForm();
+    if (!form) return;
+
+    // FIXME: use a better way to identify the answer type
+    if (document.forms[0].elements['answertype'].value == "1") {
+        // Registers the listener for the button 'add-roi-answer'
+        var add_roi_button = form.elements['add-roi-answer'];
+        add_roi_button.onclick = me.addRoiBasedAnswerAction;
+        me.enableNewRoiBasedAnswerButton(false);
+        // Hides the server-side button for adding answers
+        form.elements['addanswers'].style.display = "none";
+    } else {
+        form.elements['addanswers'].style.display = "visible";
+    }
+};
+
 /**
  * Updates the reference to the frame containing OmeroImageViewer
  *
@@ -85,13 +139,13 @@ me._registerFrameObject = function (frame_id, visible_roi_list, frame_details) {
     // Registers a reference to the frame
     me._omero_viewer_frame = omero_viewer_frame;
 
-    if(frame_details == undefined) {
+    if (frame_details == undefined) {
         // Register the main listener for the 'omeroViewerInitialized' event
         me._omero_viewer_frame.contentWindow.addEventListener("omeroViewerInitialized", function (e) {
             me._initialize(frame_id, e.detail, visible_roi_list);
             console.log("OmeroImageViewer init loaded!!!");
         }, true);
-    }else{
+    } else {
         me._initialize(frame_id, frame_details, visible_roi_list);
     }
 
@@ -109,6 +163,41 @@ me._registerFrameObject = function (frame_id, visible_roi_list, frame_details) {
  */
 me.moveToRoiShape = function (roi_id) {
     me.omero_viewer_controller._handleShapeRowClick({id: roi_id});
+};
+
+
+/**
+ * Initializes the list of supported languages
+ * and sets the currently selected language
+ *
+ * @private
+ */
+me._initLanguageSelector = function () {
+
+    // initializes the list of supported languages
+    me._supported_languages = [];
+    var language_selector = document.forms[0].elements["question_language"];
+    var language_options = language_selector.options;
+    for (var i = 0; i < language_options.length; i++) {
+        me._supported_languages.push(language_options[i].value);
+    }
+
+    // handles the event 'language changed'
+    document.forms[0].elements["question_language"].onchange = me._updateCurrentLanguage;
+};
+
+
+/**
+ * Updates the currently selected language
+ * @param index
+ * @returns {string|*|Number} the "id" of the current language
+ * @private
+ */
+me._updateCurrentLanguage = function () {
+    var previous_language = me._current_language;
+    var language_selector = document.forms[0].elements["question_language"];
+    me._current_language = language_selector.options[language_selector.selectedIndex].value;
+    me._updateLocalizedStrings(previous_language, me._current_language);
 };
 
 
@@ -134,16 +223,16 @@ me._initQuestionEditorForm = function () {
 
     // Initialize the list of ROIs to show
     var visible_rois_input_field = document.forms[0].elements['visible_rois'].value;
-    if(visible_rois_input_field
-        && visible_rois_input_field.length>0
-        && visible_rois_input_field!="none"){
+    if (visible_rois_input_field
+        && visible_rois_input_field.length > 0
+        && visible_rois_input_field != "none") {
         me._visible_roi_list = visible_rois_input_field.split(",");
-    }else{
+    } else {
         me._visible_roi_list = [];
     }
 
-    // Registers the submit function
-    document.forms[0].onsubmit = me._on_question_submitted;
+    // Registers the handler for the question type
+    //document.forms[0].elements['answertype'].onchange = me._on_question_type_changed;
 
     // Initializes the ROI based answers
     me._initRoiBasedAnswers();
@@ -152,27 +241,16 @@ me._initQuestionEditorForm = function () {
     console.log("Available ROIs:", me.available_rois);
     console.log("ROI based answers:", me.roi_based_answers);
     console.log("Visible ROIs:", me._visible_roi_list);
-
-    // FIXME: use a better way to identify the answer type
-    if (document.forms[0].elements['answertype'].value == "1") {
-        // Registers the listener for the button 'add-roi-answer'
-        var add_roi_button = form.elements['add-roi-answer'];
-        add_roi_button.onclick = me.addRoiBasedAnswerAction;
-        me.enableNewRoiBasedAnswerButton(false);
-        // Hides the server-side button for adding answers
-        form.elements['addanswers'].style.display = "none";
-    } else {
-        form.elements['addanswers'].style.display = "visible";
-    }
 };
 
 
 me.enableNewRoiBasedAnswerButton = function (enabled) {
-    if (me.form) {
-        var add_roi_button = me.form.elements['add-roi-answer'];
-        if (add_roi_button) {
-            add_roi_button.disabled = !enabled;
-        }
+    var form = me._getForm();
+    if (!form) return;
+
+    var add_roi_button = form.elements['add-roi-answer'];
+    if (add_roi_button) {
+        add_roi_button.disabled = !enabled;
     }
 };
 
@@ -208,30 +286,60 @@ me._initRoiBasedAnswers = function () {
 };
 
 
+me._on_question_type_changed = function () {
+    document.forms[0].elements['noanswers'].value = 0;
+    me._on_question_submitted(true);
+    me._getForm().submit();
+};
+
+
 /**
  * Performs several controls before the form submition
  *
  * @private
  */
-me._on_question_submitted = function () {
+me._on_question_submitted = function (disable_validation) {
+
+    // encode localized strings to be submitted
+    me._prepareLocalizedStringsForSubmission();
 
     // get the form element containing the url of the current selected image
     var image_url_input_element = document.forms[0].elements["omero_image_url"];
+    document.forms[0].elements["omeroimagefilereference"].value = image_url_input_element.value;
 
     // get the relative path to the current image selection:
     // including references to the current zoom level, displayed area, etc.
     var image_relative_path = me._build_image_link();
+    if (disable_validation != true && image_relative_path == null) {
 
-    // update the current input element value
-    var old = image_url_input_element.value;
-    var newurl = me.omero_viewer_controller.omero_server + "/webgateway/render_thumbnail/" + image_relative_path;
+        var errMsgCtn = document.getElementById("omeroimagefilereferencechoose-errMsg");
+        if(!errMsgCtn) {
+            var errMsgCtn = document.createElement("span");
+            errMsgCtn.id = "omeroimagefilereferencechoose-errMsg";
+            errMsgCtn.className = "error";
+            document.forms[0].elements["omeroimagefilereferencechoose"].parentNode.appendChild(errMsgCtn);
+        }
+        errMsgCtn.innerHTML = "No image selected!!!";
+        return false;
+    }
 
-    // update the list of ROIs to display
-    document.forms[0].elements['visible_rois'].value = me._visible_roi_list.join(",");
+    if (image_relative_path != null && image_relative_path.length > 0) {
+        // update the current input element value
+        var old = image_url_input_element.value;
+        var newurl = me.omero_viewer_controller.omero_server + "/webgateway/render_thumbnail/" + image_relative_path;
 
-    // update the current URL with image params (i.e., zoom, channels, etc.)
-    console.log("Updating URL...", old, newurl);
-    image_url_input_element.value = newurl.replace("/?", "?");
+        // update the list of ROIs to display
+        document.forms[0].elements['visible_rois'].value = me._visible_roi_list.join(",");
+
+        // update the current URL with image params (i.e., zoom, channels, etc.)
+        console.log("Updating URL...", old, newurl);
+        image_url_input_element.value = newurl.replace("/?", "?");
+        //if (newurl == null || newurl.length == 0) {
+        //    // FIXME: a better message view
+        //    alert("No image selected!!!");
+        //    return false;
+        //}
+    }
 };
 
 
@@ -242,9 +350,12 @@ me._on_question_submitted = function () {
  * @private
  */
 me._build_image_link = function () {
-    var viewport = me.omero_viewer_controller.viewport;
-    var link = viewport.getCurrentImgUrlPath() + '?' + viewport.getQuery(true, true, true);
-    console.log("Current image link", link);
+    var link = null;
+    if (me.omero_viewer_controller && me.omero_viewer_controller.viewport) {
+        var viewport = me.omero_viewer_controller.viewport;
+        link = viewport.getCurrentImgUrlPath() + '?' + viewport.getQuery(true, true, true);
+        console.log("Current image link", link);
+    }
     return link;
 };
 
@@ -427,12 +538,112 @@ me.roiVisibilityChanged = function (event) {
     if (!event) return;
 
     var roi_info = event.detail.detail;
-    if(event.detail.visible){
+    if (event.detail.visible) {
         me.addVisibleRoi(roi_info.id);
-    }else{
+    } else {
         me.removeVisibleRoi(roi_info.id);
     }
 
     console.log("Changed vibility to " + event.detail.visible
         + " of RoiShape", roi_info, "Visible ROIs: " + me._visible_roi_list.join(","));
+};
+
+
+me._initLocalizedStrings = function () {
+
+
+    for (var i = 0; i < me._localized_string_names.length; i++) {
+
+        //
+        console.log("Initializing Localized string: " + me._localized_string_names[i]);
+
+        // localized string
+        var localized_string_name = me._localized_string_names[i];
+        me._localized_strings[localized_string_name] = [];
+
+        // init locale strings with the default empty string
+        for (var j = 0; j < me._supported_languages.length; j++) {
+            me._localized_strings[localized_string_name][me._supported_languages[j]] = "";
+        }
+
+        // Updates the localized string with actual values
+        me._localized_textareas[localized_string_name] = document.querySelectorAll("[class^=" + localized_string_name + "]");
+        for (var j = 0; j < me._localized_textareas[localized_string_name].length; j++) {
+            var locale_textarea = me._localized_textareas[localized_string_name][j];
+            if (locale_textarea.className == "answer") {
+                var pattern = /answer_(\w+)_(\d+)/;
+                var matches = pattern.exec("" + locale_textarea.id);
+                var answer_lang = matches[1];
+                var answer_number = matches[2];
+                var answer_name = "answer_" + answer_number;
+
+                // Initializes array to host localized strings and textareas
+                if (me._localized_strings[answer_name] == undefined)
+                    me._localized_strings[answer_name] = [];
+                if (me._localized_textareas[answer_name] == undefined)
+                    me._localized_textareas[answer_name] = [];
+
+                me._localized_textareas[answer_name].push(locale_textarea);
+                me._localized_strings[answer_name][locale_textarea.getAttribute("lang")] = locale_textarea.innerHTML;
+
+            } else {
+                me._localized_strings[localized_string_name][locale_textarea.getAttribute("lang")] = locale_textarea.innerHTML;
+            }
+        }
+    }
+};
+
+
+me._updateLocalizedStrings = function (previous_language, current_language) {
+    for (var localized_string_name in me._localized_strings) {
+        var string_editor = me._getStringEditor(localized_string_name);
+        if (string_editor != null) {
+            me._localized_strings[localized_string_name][previous_language] = string_editor.innerHTML;
+            //console.log("PREVIOUS: " + me._localized_strings[localized_string_name][previous_language]);
+            //console.log("CURRENT: " + me._localized_strings[localized_string_name][current_language]);
+            string_editor.innerHTML = me._localized_strings[localized_string_name][current_language];
+        } else if (localized_string_name != "answer") {
+            console.error("Not Found editor for: " + localized_string_name);
+        }
+    }
+};
+
+me._prepareLocalizedStringsForSubmission = function () {
+    try {
+
+        for (var localized_string_name in me._localized_strings) {
+
+            // last update
+            var string_editor = me._getStringEditor(localized_string_name);
+            if (string_editor != null) {
+                me._localized_strings[localized_string_name][me._current_language] = string_editor.innerHTML;
+            }
+
+            // updates textareas
+            for (var j = 0; j < me._localized_textareas[localized_string_name].length; j++) {
+                var localized_textarea = me._localized_textareas[localized_string_name][j];
+                localized_textarea.innerHTML = me._localized_strings[localized_string_name][localized_textarea.getAttribute("lang")];
+                console.log("Updating...", localized_textarea.innerHTML, localized_textarea.getAttribute("lang"));
+            }
+        }
+    } catch (e) {
+        console.error(e.message);
+        return false;
+    }
+};
+
+
+/**
+ * Returns the editor for a given editor
+ *
+ * @param propertyName
+ * @returns {*}
+ * @private
+ */
+me._getStringEditor = function (propertyName) {
+    var string_editor = document.querySelectorAll("div" + '[id^=id_' + propertyName + 'editable]');
+    if (string_editor.length > 0) {
+        return string_editor[0];
+    }
+    return null;
 };
