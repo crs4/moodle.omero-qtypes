@@ -284,16 +284,18 @@ abstract class qtype_omeromultichoice_base_renderer extends qtype_multichoice_re
         // build the iframe element for wrapping the OmeroImageViewer
         $omero_image_wrapper .= html_writer::tag('iframe', "",
             array(
-                "src" => "/moodle/repository/omero/viewer.php" .
+                "src" => "/moodle/repository/omero/viewer/viewer.php" .
                     "?id=$omero_image" .
                     "&width=" . urlencode("100%") .
-                    "&height=450px" .
+                    "&height=500px" .
                     "&frame=$omero_frame_id" .
                     "&showRoiTable=false" .
                     "&$omero_image_params" .
                     "&visibleRois=" . implode(",", $roi_id_list),
                 "width" => "100%",
                 "height" => "500px",
+                "class" => "omero-image-viewer",
+                //"style" => "border: none",
                 "id" => $omero_frame_id //,
                 //"onload" => 'M.omero_multichoice_helper.init();'
             )
