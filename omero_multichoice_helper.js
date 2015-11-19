@@ -333,6 +333,9 @@ me._on_question_submitted = function (disable_validation) {
         //    return false;
         //}
     }
+
+    // update the list of ROIs to display
+    document.forms[0].elements['visible_rois'].value = me._visible_roi_list.join(",");
 };
 
 
