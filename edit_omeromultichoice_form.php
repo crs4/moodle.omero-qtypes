@@ -226,7 +226,8 @@ class qtype_omeromultichoice_edit_form extends qtype_multichoice_edit_form
 
         $mform->addElement('omerofilepicker', 'omeroimagefilereference', get_string('file'), null,
             array('maxbytes' => 2048, 'accepted_types' => array('*'),
-                'return_types' => array(FILE_INTERNAL | FILE_EXTERNAL))
+                'return_types' => array(FILE_EXTERNAL),
+                'omero_image_server' => get_config('omero', 'omero_restendpoint'))
         );
 
         if ((isset($_REQUEST['answertype'])
