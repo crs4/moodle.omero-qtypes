@@ -468,6 +468,10 @@ me._registerFrameWindowEventHandlers = function (frame_id) {
     // Registers a reference to the frame
     me._omero_viewer_frame = omero_viewer_frame;
 
+    // Register a reference to the Omero Repository Controller
+    var frameWindow = me._omero_viewer_frame.contentWindow;
+    me._image_viewer_controller = frameWindow.omero_repository_image_viewer_controller;
+
     // Adds listeners
     var frameWindow = omero_viewer_frame.contentWindow;
     frameWindow.addEventListener("roiShapeSelected", M.omero_multichoice_helper.roiShapeSelected);
