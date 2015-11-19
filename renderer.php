@@ -274,7 +274,7 @@ abstract class qtype_omeromultichoice_base_renderer extends qtype_multichoice_re
         // viewer of the question image
 
         // set the ID of the OmeroImageViewer
-        $omero_frame_id = "omero-image-viewer" . uniqid('', true);
+        $omero_frame_id = "omero-image-viewer-" . uniqid('', true);
 
         // load the script for handling the OmeroImageViewer
         $omero_image_wrapper = '<script type="text/javascript" ' .
