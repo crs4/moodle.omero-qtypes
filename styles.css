@@ -198,7 +198,10 @@ body#page-question-preview .que .formulation {
     margin: 0;
 }
 
-#omero-image-viewer {
+iframe[id^=omero-image-viewer]{
+    padding: 0;
+    margin: 20px auto 20px;
     border: none;
-    background-color: #d9edf7;
+    text-align: center;
+    min-height:400px;
 }
