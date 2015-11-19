@@ -303,8 +303,8 @@ me._on_question_submitted = function (disable_validation) {
 
     // get the relative path to the current image selection:
     // including references to the current zoom level, displayed area, etc.
-    var image_relative_path = me._build_image_link();
-    if (disable_validation != true && image_relative_path == null) {
+    var detailed_image_url = me._build_detailed_image_url();
+    if (disable_validation != true && detailed_image_url == null) {
 
         var errMsgCtn = document.getElementById("omeroimagefilereferencechoose-errMsg");
         if (!errMsgCtn) {
@@ -317,13 +317,12 @@ me._on_question_submitted = function (disable_validation) {
         return false;
     }
 
-    if (image_relative_path != null && image_relative_path.length > 0) {
+    // Update the image URL with the embedded image info (i.e., zoom and center)
+    if (detailed_image_url != null && detailed_image_url.length > 0) {
         // update the current input element value
         var old = image_url_input_element.value;
-        var newurl = me.omero_viewer_controller.omero_server + "/webgateway/render_thumbnail/" + image_relative_path;
-
-        // update the list of ROIs to display
-        document.forms[0].elements['visible_rois'].value = me._visible_roi_list.join(",");
+        // update the 'detailed_image_url' with a prefix to identify image type
+        var newurl = detailed_image_url;
 
         // update the current URL with image params (i.e., zoom, channels, etc.)
         console.log("Updating URL...", old, newurl);
