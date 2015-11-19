@@ -156,7 +156,7 @@ me._registerFrameObject = function (frame_id, visible_roi_list, frame_details) {
  * @param roi_id
  */
 me.moveToRoiShape = function (roi_id) {
-    me.omero_viewer_controller._handleShapeRowClick({id: roi_id});
+    me._image_viewer_controller._handleShapeRowClick({id: roi_id});
 };
 
 
@@ -345,11 +345,10 @@ me._on_question_submitted = function (disable_validation) {
  * @returns {string} the relative path of the image
  * @private
  */
-me._build_image_link = function () {
+me._build_detailed_image_url = function () {
     var link = null;
-    if (me.omero_viewer_controller && me.omero_viewer_controller.viewport) {
-        var viewport = me.omero_viewer_controller.viewport;
-        link = viewport.getCurrentImgUrlPath() + '?' + viewport.getQuery(true, true, true);
+    if (me._image_viewer_controller) {
+        link = me._image_viewer_controller.buildDetailedImageRelativeUrl();
         console.log("Current image link", link);
     }
     return link;
@@ -363,7 +362,7 @@ me._build_image_link = function () {
  * @returns {string}
  */
 me.getRoiShapeThumbnailUrl = function (roi_id) {
-    return me.omero_viewer_controller.omero_server +
+    return me._image_viewer_controller.omero_server +
         "/webgateway/render_shape_thumbnail/" + roi_id + "/?color=f00";
 };
 
@@ -485,13 +484,8 @@ me._registerFrameWindowEventHandlers = function (frame_id) {
  * @private
  */
 me._loadROIsInfo = function () {
-    var frameWindow = me._omero_viewer_frame.contentWindow;
-
-    // FIXME: remove dependency to the 'omero_viewer_controller' (i.e., see 'repository' module)
-    // Register a reference to the Omero Repository Controller
-    me.omero_viewer_controller = frameWindow.omero_viewer_controller;
     me.current_rois_info = [];
-    var roi_infos = me.omero_viewer_controller.getCurrentROIsInfo();
+    var roi_infos = me._image_viewer_controller.getRoiList();
     for (var i in roi_infos) {
         var roi_info = roi_infos[i];
         me.current_rois_info[roi_info.id] = roi_info;
