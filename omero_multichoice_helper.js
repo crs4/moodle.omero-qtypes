@@ -92,12 +92,9 @@ me._initialize = function (frame_id, image_details, visible_roi_list) {
 
         // FIXME: use a better way to identify the answer type
         if (visible_roi_list == "all") {
-            var all = [];
-            for (var i in me.current_rois_info)
-                all.push(me.current_rois_info[i].id);
-            me.omero_viewer_controller.showRois(all);
+            me._image_viewer_controller.showRoiShapes();
         } else {
-            me.omero_viewer_controller.showRois(visible_roi_list);
+            me._image_viewer_controller.showRoiShapes(visible_roi_list);
         }
     }
 };
