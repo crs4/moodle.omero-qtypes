@@ -156,7 +156,7 @@ me._registerFrameObject = function (frame_id, visible_roi_list, frame_details) {
  * @param roi_id
  */
 me.moveToRoiShape = function (roi_id) {
-    me._image_viewer_controller._handleShapeRowClick({id: roi_id});
+    me._omero_viewer_frame.contentWindow.omero_repository_image_viewer_controller.setFocusOnRoiShape(roi_id);
 };
 
 
