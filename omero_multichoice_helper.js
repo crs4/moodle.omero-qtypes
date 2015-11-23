@@ -82,21 +82,21 @@ me.init = function (module_name, frame_id, visible_roi_list, options) {
 me._initialize = function (frame_id, image_details, visible_roi_list) {
     me.current_image_info = image_details;
     me._registerFrameWindowEventHandlers(frame_id);
-    me._loadROIsInfo();
-
-    // Performs form enhancements
-    if (me.isEditingMode()) {
-        me._initQuestionEditorForm();
-    } else {
-        console.log("Loaded ROIs", me.current_rois_info);
-
-        // FIXME: use a better way to identify the answer type
-        if (visible_roi_list == "all") {
-            me._image_viewer_controller.showRoiShapes();
+    me._loadROIsInfo(function () {
+        // Performs form enhancements
+        if (me.isEditingMode()) {
+            me._initQuestionEditorForm();
         } else {
-            me._image_viewer_controller.showRoiShapes(visible_roi_list);
+            console.log("Loaded ROIs", me.current_rois_info);
+
+            // FIXME: use a better way to identify the answer type
+            if (visible_roi_list == "all") {
+                me._image_viewer_controller.showRoiShapes();
+            } else {
+                me._image_viewer_controller.showRoiShapes(visible_roi_list);
+            }
         }
-    }
+    });
 };
 
 
@@ -483,15 +483,18 @@ me._registerFrameWindowEventHandlers = function (frame_id) {
  * Loads ROIs info for the current image
  * @private
  */
-me._loadROIsInfo = function () {
+me._loadROIsInfo = function (callback) {
     me.current_rois_info = [];
-    var roi_infos = me._image_viewer_controller.getRoiList();
-    for (var i in roi_infos) {
-        var roi_info = roi_infos[i];
-        me.current_rois_info[roi_info.id] = roi_info;
-    }
+    me._image_viewer_controller.getModel().loadRoisInfo(function (roi_infos) {
+        for (var i in roi_infos) {
+            var roi_info = roi_infos[i];
+            me.current_rois_info[roi_info.id] = roi_info;
+        }
 
-    console.log(me.current_rois_info);
+        console.log(me.current_rois_info);
+        if (callback)
+            callback(me.current_rois_info);
+    });
 };
 
 /**
