@@ -205,11 +205,14 @@ abstract class qtype_omeromultichoice_base_renderer extends qtype_multichoice_re
 
             $answer_content = "";
             if ($question->answertype == qtype_omeromultichoice::ROI_BASED_ANSWERS) {
-                $answer_content = html_writer::tag("img", "", array(
-                    "src" => "$OMERO_SERVER/webgateway/render_shape_thumbnail/" . $ans->answer . "/?color=f00",
-                    "onclick" => "M.omero_multichoice_helper.moveToRoiShape($ans->answer)"
-                ));
-            } else {
+//                $answer_content = html_writer::tag("img", "", array(
+//                    "src" => "$OMERO_SERVER/webgateway/render_shape_thumbnail/" . $ans->answer . "/?color=f00",
+//                    "onclick" => "M.omero_multichoice_helper.moveToRoiShape($ans->answer)"
+//                ));
+
+                $inputattributes['onclick'] = "M.omero_multichoice_helper.moveToRoiShape($ans->answer)";
+
+            }else{
                 $formatoptions = new stdClass();
                 $formatoptions->noclean = false;
                 $formatoptions->para = false;
