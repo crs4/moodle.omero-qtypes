@@ -266,7 +266,7 @@ me._initRoiBasedAnswers = function () {
 
             // set the thumbnail
             var thumbnail = container.getElementsByClassName("roi_thumb shape_thumb")[0];
-            thumbnail.src = me.getRoiShapeThumbnailUrl(roi_id);
+            //thumbnail.src = me.getRoiShapeThumbnailUrl(roi_id);
 
             // set details
             var details = container.getElementsByClassName("omeromultichoice-qanswer-roi-details-text");
