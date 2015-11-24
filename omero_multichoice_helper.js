@@ -82,27 +82,21 @@ me.init = function (module_name, frame_id, visible_roi_list, options) {
 me._initialize = function (frame_id, image_details, visible_roi_list) {
     me.current_image_info = image_details;
     me._registerFrameWindowEventHandlers(frame_id);
-    me._loadROIsInfo();
-
-    // Performs form enhancements
-    if (me.isEditingMode()) {
-        me._initQuestionEditorForm();
-    } else {
-        console.log("Loaded ROIs", me.current_rois_info);
-
-        // FIXME: maximize viewport when it starts
-        me.omero_viewer_controller.maximize();
-
-        // FIXME: use a better way to identify the answer type
-        if (visible_roi_list == "all") {
-            var all = [];
-            for (var i in me.current_rois_info)
-                all.push(me.current_rois_info[i].id);
-            me.omero_viewer_controller.showRois(all);
+    me._loadROIsInfo(function () {
+        // Performs form enhancements
+        if (me.isEditingMode()) {
+            me._initQuestionEditorForm();
         } else {
-            me.omero_viewer_controller.showRois(visible_roi_list);
+            console.log("Loaded ROIs", me.current_rois_info);
+
+            // FIXME: use a better way to identify the answer type
+            if (visible_roi_list == "all") {
+                me._image_viewer_controller.showRoiShapes();
+            } else {
+                me._image_viewer_controller.showRoiShapes(visible_roi_list);
+            }
         }
-    }
+    });
 };
 
 
@@ -162,7 +156,7 @@ me._registerFrameObject = function (frame_id, visible_roi_list, frame_details) {
  * @param roi_id
  */
 me.moveToRoiShape = function (roi_id) {
-    me.omero_viewer_controller._handleShapeRowClick({id: roi_id});
+    me._omero_viewer_frame.contentWindow.omero_repository_image_viewer_controller.setFocusOnRoiShape(roi_id);
 };
 
 
@@ -272,7 +266,7 @@ me._initRoiBasedAnswers = function () {
 
             // set the thumbnail
             var thumbnail = container.getElementsByClassName("roi_thumb shape_thumb")[0];
-            thumbnail.src = me.getRoiShapeThumbnailUrl(roi_id);
+            //thumbnail.src = me.getRoiShapeThumbnailUrl(roi_id);
 
             // set details
             var details = container.getElementsByClassName("omeromultichoice-qanswer-roi-details-text");
@@ -309,8 +303,8 @@ me._on_question_submitted = function (disable_validation) {
 
     // get the relative path to the current image selection:
     // including references to the current zoom level, displayed area, etc.
-    var image_relative_path = me._build_image_link();
-    if (disable_validation != true && image_relative_path == null) {
+    var detailed_image_url = me._build_detailed_image_url();
+    if (disable_validation != true && detailed_image_url == null) {
 
         var errMsgCtn = document.getElementById("omeroimagefilereferencechoose-errMsg");
         if (!errMsgCtn) {
@@ -323,13 +317,12 @@ me._on_question_submitted = function (disable_validation) {
         return false;
     }
 
-    if (image_relative_path != null && image_relative_path.length > 0) {
+    // Update the image URL with the embedded image info (i.e., zoom and center)
+    if (detailed_image_url != null && detailed_image_url.length > 0) {
         // update the current input element value
         var old = image_url_input_element.value;
-        var newurl = me.omero_viewer_controller.omero_server + "/webgateway/render_thumbnail/" + image_relative_path;
-
-        // update the list of ROIs to display
-        document.forms[0].elements['visible_rois'].value = me._visible_roi_list.join(",");
+        // update the 'detailed_image_url' with a prefix to identify image type
+        var newurl = detailed_image_url;
 
         // update the current URL with image params (i.e., zoom, channels, etc.)
         console.log("Updating URL...", old, newurl);
@@ -340,6 +333,9 @@ me._on_question_submitted = function (disable_validation) {
         //    return false;
         //}
     }
+
+    // update the list of ROIs to display
+    document.forms[0].elements['visible_rois'].value = me._visible_roi_list.join(",");
 };
 
 
@@ -349,11 +345,10 @@ me._on_question_submitted = function (disable_validation) {
  * @returns {string} the relative path of the image
  * @private
  */
-me._build_image_link = function () {
+me._build_detailed_image_url = function () {
     var link = null;
-    if (me.omero_viewer_controller && me.omero_viewer_controller.viewport) {
-        var viewport = me.omero_viewer_controller.viewport;
-        link = viewport.getCurrentImgUrlPath() + '?' + viewport.getQuery(true, true, true);
+    if (me._image_viewer_controller) {
+        link = me._image_viewer_controller.buildDetailedImageRelativeUrl();
         console.log("Current image link", link);
     }
     return link;
@@ -367,7 +362,7 @@ me._build_image_link = function () {
  * @returns {string}
  */
 me.getRoiShapeThumbnailUrl = function (roi_id) {
-    return me.omero_viewer_controller.omero_server +
+    return me._image_viewer_controller.omero_server +
         "/webgateway/render_shape_thumbnail/" + roi_id + "/?color=f00";
 };
 
@@ -472,6 +467,10 @@ me._registerFrameWindowEventHandlers = function (frame_id) {
     // Registers a reference to the frame
     me._omero_viewer_frame = omero_viewer_frame;
 
+    // Register a reference to the Omero Repository Controller
+    var frameWindow = me._omero_viewer_frame.contentWindow;
+    me._image_viewer_controller = frameWindow.omero_repository_image_viewer_controller;
+
     // Adds listeners
     var frameWindow = omero_viewer_frame.contentWindow;
     frameWindow.addEventListener("roiShapeSelected", M.omero_multichoice_helper.roiShapeSelected);
@@ -484,20 +483,18 @@ me._registerFrameWindowEventHandlers = function (frame_id) {
  * Loads ROIs info for the current image
  * @private
  */
-me._loadROIsInfo = function () {
-    var frameWindow = me._omero_viewer_frame.contentWindow;
-
-    // FIXME: remove dependency to the 'omero_viewer_controller' (i.e., see 'repository' module)
-    // Register a reference to the Omero Repository Controller
-    me.omero_viewer_controller = frameWindow.omero_viewer_controller;
+me._loadROIsInfo = function (callback) {
     me.current_rois_info = [];
-    var roi_infos = me.omero_viewer_controller.getCurrentROIsInfo();
-    for (var i in roi_infos) {
-        var roi_info = roi_infos[i];
-        me.current_rois_info[roi_info.id] = roi_info;
-    }
+    me._image_viewer_controller.getModel().loadRoisInfo(function (roi_infos) {
+        for (var i in roi_infos) {
+            var roi_info = roi_infos[i];
+            me.current_rois_info[roi_info.id] = roi_info;
+        }
 
-    console.log(me.current_rois_info);
+        console.log(me.current_rois_info);
+        if (callback)
+            callback(me.current_rois_info);
+    });
 };
 
 /**

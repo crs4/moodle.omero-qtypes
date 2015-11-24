@@ -226,7 +226,8 @@ class qtype_omeromultichoice_edit_form extends qtype_multichoice_edit_form
 
         $mform->addElement('omerofilepicker', 'omeroimagefilereference', get_string('file'), null,
             array('maxbytes' => 2048, 'accepted_types' => array('*'),
-                'return_types' => array(FILE_INTERNAL | FILE_EXTERNAL))
+                'return_types' => array(FILE_EXTERNAL),
+                'omero_image_server' => get_config('omero', 'omero_restendpoint'))
         );
 
         if ((isset($_REQUEST['answertype'])
@@ -412,10 +413,12 @@ class qtype_omeromultichoice_edit_form extends qtype_multichoice_edit_form
         // ROI details
         $repeated[] = $mform->createElement('html', '<div class="omeromultichoice-qanswer-container">');
         $repeated[] = $mform->createElement('html', '<div class="omeromultichoice-qanswer-roi-container">');
+
         // Image container
-        $repeated[] = $mform->createElement('html', '<div class="omeromultichoice-qanswer-roi-image-container">');
-        $repeated[] = $mform->createElement('html', '<img src="" class="roi_thumb shape_thumb" style="vertical-align: top;" color="f00" width="150px" height="150px">');
-        $repeated[] = $mform->createElement('html', '</div>'); // -> Close 'qanswer-roi-image-container
+        //$repeated[] = $mform->createElement('html', '<div class="omeromultichoice-qanswer-roi-image-container">');
+        //$repeated[] = $mform->createElement('html', '<img src="" class="roi_thumb shape_thumb" style="vertical-align: top;" color="f00" width="150px" height="150px">');
+        //$repeated[] = $mform->createElement('html', '</div>'); // -> Close 'qanswer-roi-image-container
+
         // ROI description
         $repeated[] = $mform->createElement('html', '<div class="omeromultichoice-qanswer-roi-details-container">');
         $repeated[] = $mform->createElement('html', '<div class="omeromultichoice-qanswer-roi-details-text-container">');
