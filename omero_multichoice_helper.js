@@ -82,21 +82,21 @@ me.init = function (module_name, frame_id, visible_roi_list, options) {
 me._initialize = function (frame_id, image_details, visible_roi_list) {
     me.current_image_info = image_details;
     me._registerFrameWindowEventHandlers(frame_id);
-    me._loadROIsInfo();
-
-    // Performs form enhancements
-    if (me.isEditingMode()) {
-        me._initQuestionEditorForm();
-    } else {
-        console.log("Loaded ROIs", me.current_rois_info);
-
-        // FIXME: use a better way to identify the answer type
-        if (visible_roi_list == "all") {
-            me._image_viewer_controller.showRoiShapes();
+    me._loadROIsInfo(function () {
+        // Performs form enhancements
+        if (me.isEditingMode()) {
+            me._initQuestionEditorForm();
         } else {
-            me._image_viewer_controller.showRoiShapes(visible_roi_list);
+            console.log("Loaded ROIs", me.current_rois_info);
+
+            // FIXME: use a better way to identify the answer type
+            if (visible_roi_list == "all") {
+                me._image_viewer_controller.showRoiShapes();
+            } else {
+                me._image_viewer_controller.showRoiShapes(visible_roi_list);
+            }
         }
-    }
+    });
 };
 
 
@@ -156,7 +156,7 @@ me._registerFrameObject = function (frame_id, visible_roi_list, frame_details) {
  * @param roi_id
  */
 me.moveToRoiShape = function (roi_id) {
-    me._image_viewer_controller._handleShapeRowClick({id: roi_id});
+    me._omero_viewer_frame.contentWindow.omero_repository_image_viewer_controller.setFocusOnRoiShape(roi_id);
 };
 
 
@@ -266,7 +266,7 @@ me._initRoiBasedAnswers = function () {
 
             // set the thumbnail
             var thumbnail = container.getElementsByClassName("roi_thumb shape_thumb")[0];
-            thumbnail.src = me.getRoiShapeThumbnailUrl(roi_id);
+            //thumbnail.src = me.getRoiShapeThumbnailUrl(roi_id);
 
             // set details
             var details = container.getElementsByClassName("omeromultichoice-qanswer-roi-details-text");
@@ -483,15 +483,18 @@ me._registerFrameWindowEventHandlers = function (frame_id) {
  * Loads ROIs info for the current image
  * @private
  */
-me._loadROIsInfo = function () {
+me._loadROIsInfo = function (callback) {
     me.current_rois_info = [];
-    var roi_infos = me._image_viewer_controller.getRoiList();
-    for (var i in roi_infos) {
-        var roi_info = roi_infos[i];
-        me.current_rois_info[roi_info.id] = roi_info;
-    }
+    me._image_viewer_controller.getModel().loadRoisInfo(function (roi_infos) {
+        for (var i in roi_infos) {
+            var roi_info = roi_infos[i];
+            me.current_rois_info[roi_info.id] = roi_info;
+        }
 
-    console.log(me.current_rois_info);
+        console.log(me.current_rois_info);
+        if (callback)
+            callback(me.current_rois_info);
+    });
 };
 
 /**

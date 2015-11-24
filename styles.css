@@ -77,6 +77,7 @@ body#page-question-type-omeromultichoice div.omeromultichoice-qanswer-roi-detail
     background-color: #EEE;
     border: 1px solid #BBB;
     margin-top: 0px;
+    margin-left: 10px;
     margin-right: 10px;
     padding: 0 10px 0 10px;
     min-height: 150px;

@@ -205,10 +205,13 @@ abstract class qtype_omeromultichoice_base_renderer extends qtype_multichoice_re
 
             $answer_content = "";
             if ($question->answertype == qtype_omeromultichoice::ROI_BASED_ANSWERS) {
-                $answer_content = html_writer::tag("img", "", array(
-                    "src" => "$OMERO_SERVER/webgateway/render_shape_thumbnail/" . $ans->answer . "/?color=f00",
-                    "onclick" => "M.omero_multichoice_helper.moveToRoiShape($ans->answer)"
-                ));
+//                $answer_content = html_writer::tag("img", "", array(
+//                    "src" => "$OMERO_SERVER/webgateway/render_shape_thumbnail/" . $ans->answer . "/?color=f00",
+//                    "onclick" => "M.omero_multichoice_helper.moveToRoiShape($ans->answer)"
+//                ));
+
+                $inputattributes['onclick'] = "M.omero_multichoice_helper.moveToRoiShape($ans->answer)";
+
             } else {
                 $formatoptions = new stdClass();
                 $formatoptions->noclean = false;
@@ -220,10 +223,12 @@ abstract class qtype_omeromultichoice_base_renderer extends qtype_multichoice_re
                 $answer_content = '<div style="display: inline-block">' . $ans_text . '</div>';
             }
 
+            $nis = $renderer->number_in_style($value, $question->answernumbering);
+            if ($question->answertype == qtype_omeromultichoice::ROI_BASED_ANSWERS)
+                $nis = str_replace(".", "", $nis);
             $radiobuttons[] = $hidden . html_writer::empty_tag('input', $inputattributes) .
-                //html_writer::tag('span',
                 html_writer::tag('label',
-                    "<b>" . $renderer->number_in_style($value, $question->answernumbering) . "</b>" . $answer_content
+                    "<b>" . $nis . "</b>" . $answer_content
                 );
 
             // Param $options->suppresschoicefeedback is a hack specific to the
@@ -336,8 +341,9 @@ abstract class qtype_omeromultichoice_base_renderer extends qtype_multichoice_re
      * options returned by {@link qtype_multichoice:;get_numbering_styles()}.
      * @return string the number $num in the requested style.
      */
-    public static function number_answer($num, $style) {
-        switch($style) {
+    public static function number_answer($num, $style)
+    {
+        switch ($style) {
             case 'abc':
                 $number = chr(ord('a') + $num);
                 break;
