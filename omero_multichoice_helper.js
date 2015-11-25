@@ -85,7 +85,28 @@ me._initialize = function (frame_id, image_details, visible_roi_list) {
     me._image_viewer_controller.getModel().addEventListener(me);
 };
 
-me.onImageModelRoiLoaded = function(data){
+
+/**
+ * Callback to handle the <pre>ImageModelRoiLoaded</pre> event
+ * triggered by the ImageModelManager
+ *
+ * @param event the event with data ROI info
+ *        encapsulated within its <pre>details</pre> property
+ */
+me.onImageModelRoiLoaded = function (event) {
+    if (!event)
+        throw new EventException("Undefined event triggered!!!");
+
+    // Extracts data encapsulated within the event
+    var roi_infos = event.detail;
+    // Updates the list of ROI
+    me.current_rois_info = [];
+    for (var i in roi_infos) {
+        var roi_info = roi_infos[i];
+        me.current_rois_info[roi_info.id] = roi_info;
+    }
+    console.log(me.current_rois_info);
+
     // Performs form enhancements
     if (me.isEditingMode()) {
         me._initQuestionEditorForm();
