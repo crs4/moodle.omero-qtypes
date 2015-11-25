@@ -82,21 +82,23 @@ me.init = function (module_name, frame_id, visible_roi_list, options) {
 me._initialize = function (frame_id, image_details, visible_roi_list) {
     me.current_image_info = image_details;
     me._registerFrameWindowEventHandlers(frame_id);
-    me._loadROIsInfo(function () {
-        // Performs form enhancements
-        if (me.isEditingMode()) {
-            me._initQuestionEditorForm();
-        } else {
-            console.log("Loaded ROIs", me.current_rois_info);
+    me._image_viewer_controller.getModel().addEventListener(me);
+};
 
-            // FIXME: use a better way to identify the answer type
-            if (visible_roi_list == "all") {
-                me._image_viewer_controller.showRoiShapes();
-            } else {
-                me._image_viewer_controller.showRoiShapes(visible_roi_list);
-            }
+me.onImageModelRoiLoaded = function(data){
+    // Performs form enhancements
+    if (me.isEditingMode()) {
+        me._initQuestionEditorForm();
+    } else {
+        console.log("Loaded ROIs", me.current_rois_info);
+
+        // FIXME: use a better way to identify the answer type
+        if (visible_roi_list == "all") {
+            me._image_viewer_controller.showRoiShapes();
+        } else {
+            me._image_viewer_controller.showRoiShapes(visible_roi_list);
         }
-    });
+    }
 };
 
 
