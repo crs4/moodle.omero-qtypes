@@ -482,24 +482,6 @@ me._registerFrameWindowEventHandlers = function (frame_id) {
 
 
 /**
- * Loads ROIs info for the current image
- * @private
- */
-me._loadROIsInfo = function (callback) {
-    me.current_rois_info = [];
-    me._image_viewer_controller.getModel().loadRoisInfo(function (roi_infos) {
-        for (var i in roi_infos) {
-            var roi_info = roi_infos[i];
-            me.current_rois_info[roi_info.id] = roi_info;
-        }
-
-        console.log(me.current_rois_info);
-        if (callback)
-            callback(me.current_rois_info);
-    });
-};
-
-/**
  * Handle the RoiShapeSelection Event
  *
  * @param info
