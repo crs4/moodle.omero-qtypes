@@ -123,7 +123,7 @@ function RoiShapeTableController(image_id) {
             me.remove_container.prop('disabled', !me.table_container.bootstrapTable('getSelections').length);
 
             // save your data, here just save the current page
-            selections = getIdSelections();
+            selections = me.getIdSelections();
             // push or splice the selections if you want to save all data selections
         });
         me.table_container.on('expand-row.bs.table', function (e, index, row, $detail) {
@@ -138,7 +138,7 @@ function RoiShapeTableController(image_id) {
             console.log(name, args);
         });
         me.remove_container.click(function () {
-            var ids = getIdSelections();
+            var ids = me.getIdSelections();
             me.table_container.bootstrapTable('remove', {
                 field: 'id',
                 values: ids
