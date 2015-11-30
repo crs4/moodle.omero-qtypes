@@ -166,14 +166,15 @@ function RoiShapeTableController(image_id) {
         return html.join('');
     };
 
-    me.operateFormatter = function (value, row, index) {
+
+    me.answerClassFormatter = function (value, row, index) {
         return [
-            '<a class="like" href="javascript:void(0)" title="Like">',
-            '<i class="glyphicon glyphicon-heart"></i>',
-            '</a>  ',
-            '<a class="remove" href="javascript:void(0)" title="Remove">',
-            '<i class="glyphicon glyphicon-remove"></i>',
-            '</a>'
+            '<select class="answer-class form-control">',
+            '<option>1</option>',
+            '<option>2</option>',
+            '<option>3</option>',
+            '<option>4</option>',
+            '</select>'
         ].join('');
     };
 
