@@ -234,27 +234,6 @@ class qtype_omeromultichoice_edit_form extends qtype_multichoice_edit_form
     {
         global $PAGE, $OUTPUT;
 
-        $module = array(
-            'name' => 'omero_multichoice_question_helper',
-            'fullpath' => '/question/type/omeromultichoice/js/question-helper.js',
-            'requires' => array('omemultichoice_qtype', 'node', 'node-event-simulate', 'core_dndupload'));
-        $PAGE->requires->js_init_call('M.omero_multichoice_helper.init', array(), true, $module);
-
-
-        $mform->addElement('omerofilepicker', 'omeroimagefilereference', get_string('file'), null,
-            array('maxbytes' => 2048, 'accepted_types' => array('*'),
-                'return_types' => array(FILE_EXTERNAL),
-                'omero_image_server' => get_config('omero', 'omero_restendpoint'))
-        );
-
-        if ((isset($_REQUEST['answertype'])
-                && $_REQUEST['answertype'] == qtype_omeromultichoice::ROI_BASED_ANSWERS) ||
-            (isset($this->question->options)
-                && $this->question->options->answertype == qtype_omeromultichoice::ROI_BASED_ANSWERS)
-        ) {
-            $mform->addElement("button", "add-roi-answer",
-                get_string("add_roi_answer", "qtype_omeromultichoice"));
-        }
 
         $menu = array(
             get_string('answersingleno', 'qtype_omeromultichoice'),
@@ -287,16 +266,53 @@ class qtype_omeromultichoice_edit_form extends qtype_multichoice_edit_form
         $mform->setDefault('answernumbering', 'abc');
 
 
+
+        $mform->addElement('html', '<div style="margin-top: 50px"></div>');
+        $mform->addElement('header', 'omeroimageheader',
+            get_string('omero_image_and_rois', 'qtype_omeromultichoice'), '');
+        $mform->setExpanded('omeroimageheader', 1);
+
+
+
+        $module = array(
+            'name' => 'omero_multichoice_question_helper',
+            'fullpath' => '/question/type/omeromultichoice/js/question-helper.js',
+            'requires' => array('omemultichoice_qtype', 'node', 'node-event-simulate', 'core_dndupload'));
+        $PAGE->requires->js_init_call('M.omero_multichoice_helper.init', array(), true, $module);
+
+
+        $mform->addElement('omerofilepicker', 'omeroimagefilereference', " ", null,
+            array('maxbytes' => 2048, 'accepted_types' => array('*'),
+                'return_types' => array(FILE_EXTERNAL),
+                'omero_image_server' => get_config('omero', 'omero_restendpoint'))
+        );
+
+        if ((isset($_REQUEST['answertype'])
+                && $_REQUEST['answertype'] == qtype_omeromultichoice::ROI_BASED_ANSWERS) ||
+            (isset($this->question->options)
+                && $this->question->options->answertype == qtype_omeromultichoice::ROI_BASED_ANSWERS)
+        ) {
+            $mform->addElement("button", "add-roi-answer",
+                get_string("add_roi_answer", "qtype_omeromultichoice"));
+        }
+
+
+
+//        $mform->addElement('html', '<div style="margin-top: 50px"></div>');
+//        $mform->addElement('header', 'roitableinspectorheader',
+//            get_string('roi_shape_inspector', 'qtype_omeromultichoice'), '');
+//        $mform->setExpanded('roitableinspectorheader', 1);
+
         $mform->addElement('html', '
 <div class="fitem">
-    <div class="fitemtitle"><label for="myTable">ROI Table inspector</label></div>
-<div class="felement" style="height: 200px; padding: 100px 0;">
+    <div class="fitemtitle"><label for="roiShapeInspectorTable"></label></div>
+<div class="felement" style="height: 200px;">
     <div id="toolbar">
         <button id="remove" class="btn btn-danger" disabled>
             <i class="glyphicon glyphicon-remove"></i> Delete
         </button>
     </div>
-    <table id="myTable"
+    <table id="roiShapeInspectorTable"
            data-toolbar="#toolbar"
            data-search="true"
            data-height="400"
@@ -322,9 +338,17 @@ var tc = new RoiShapeTableController(1);
 </script>
 
 <script type="text/javascript">
-tc.initTable("myTable");
+tc.initTable("roiShapeInspectorTable");
 </script>
 ');
+
+        $mform->addElement('html', '<div style="margin-top: 450px"></div>');
+        $mform->addElement('header', 'answerhdr',
+            get_string('answer_classes', 'qtype_omeromultichoice'), '');
+        $mform->setExpanded('answerhdr', 1);
+
+        //$mform->addElement('header', 'answerclassheader', get_string("answers", 'form'), array("style"=> "margin-top: 600px;"));
+
 
         $mform->addElement("html", '<div class="fitem" style="margin-top: 500px">');
         $mform->addElement("html", '<div class="fitemtitle"><label for="myTable">Custom iFrame:</label></div>');
@@ -379,8 +403,6 @@ tc.initTable("myTable");
         $mform->addElement("html", '<div class="fitemtitle"><label for="myTable">Prova:</label></div>');
         $mform->addElement("html", '<div class="felement"><iframe id="myTable" src=""></iframe></div>');
         $mform->addElement("html", "</div>");
-
-
 
 
         // Set the initial number of answers to 0; add answers one by one
