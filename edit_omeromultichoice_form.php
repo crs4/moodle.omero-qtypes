@@ -326,7 +326,6 @@ tc.initTable("myTable");
 </script>
 ');
 
-
         $mform->addElement("html", '<div class="fitem" style="margin-top: 500px">');
         $mform->addElement("html", '<div class="fitemtitle"><label for="myTable">Custom iFrame:</label></div>');
         $mform->addElement("html", '<div class="felement">');
@@ -359,6 +358,30 @@ tc.initTable("myTable");
 </div><!-- /.modal -->
 ');
         $mform->addElement("html", "</div></div>");
+
+
+        //<!-- Structure to embed a new custom element to the form -->
+        $mform->addElement("html", '<div class="fitem">');
+        $mform->addElement("html", '<div class="fitemtitle"><label for="myTable">Custom iFrame:</label></div>');
+        $mform->addElement("html", '<div class="felement"><iframe id="myTable" src=""></iframe></div>');
+        $mform->addElement("html", "</div>");
+
+
+        //<!-- Structure to embed a new custom text element to the form -->
+        $mform->addElement("html", '<div class="fitem">');
+        $mform->addElement("html", '<div class="fitemtitle"><label for="myCustomTextArea">CustomTextArea:</label></div>');
+        $mform->addElement("html", '<div class="felement"><div id="myCustomTextAreaContainer" src=""><textarea id="myCustomTextArea"></textarea></div></div>', "Test");
+        $mform->addElement("html", "</div>");
+
+
+        //<!-- Structure to embed a new custom element to the form -->
+        $mform->addElement("html", '<div class="fitem">');
+        $mform->addElement("html", '<div class="fitemtitle"><label for="myTable">Prova:</label></div>');
+        $mform->addElement("html", '<div class="felement"><iframe id="myTable" src=""></iframe></div>');
+        $mform->addElement("html", "</div>");
+
+
+
 
         // Set the initial number of answers to 0; add answers one by one
         $this->add_per_answer_fields($mform, get_string('choiceno', 'qtype_multichoice', '{no}'),
