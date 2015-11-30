@@ -222,6 +222,17 @@ function RoiShapeTableController(image_id) {
         return '$' + total;
     };
 
+    me.visibilityFormatter = function (data) {
+        return [
+            '<a class="roi-shape-visibility" href="javascript:void(0)" title="Like">',
+            (data ?
+                '<i class="red glyphicon glyphicon-minus-sign"></i>' :
+                '<i class="green glyphicon glyphicon-plus-sign"></i>'),
+            '</a> '
+        ].join(" ");
+    };
+
+
     me.getHeight = function () {
         return $(window).height() - $('h1').outerHeight(true);
     };
