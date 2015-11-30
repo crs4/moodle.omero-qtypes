@@ -10,6 +10,7 @@ defined('MOODLE_INTERNAL') || die();
 
 // file: theme/sometheme/jquery/plugins.php
 $plugins = array(
+
     'angular' => array(
         'files' => array(
             "angular/angular.1.3.14.js"
@@ -37,6 +38,7 @@ $plugins = array(
             "dataTables/dataTables.bootstrap-1.10.7.js"
         )
     ),
+
     'bootstrap-table' => array(
         'files' => array(
             "bootstrap-table/bower_components/bootstrap-table/dist/bootstrap-table-min.js",
@@ -50,6 +52,4 @@ $plugins = array(
 
         )
     )
-
-
 );
