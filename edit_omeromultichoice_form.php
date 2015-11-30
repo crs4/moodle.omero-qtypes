@@ -286,6 +286,80 @@ class qtype_omeromultichoice_edit_form extends qtype_multichoice_edit_form
             qtype_multichoice::get_numbering_styles());
         $mform->setDefault('answernumbering', 'abc');
 
+
+        $mform->addElement('html', '
+<div class="fitem">
+    <div class="fitemtitle"><label for="myTable">ROI Table inspector</label></div>
+<div class="felement" style="height: 200px; padding: 100px 0;">
+    <div id="toolbar">
+        <button id="remove" class="btn btn-danger" disabled>
+            <i class="glyphicon glyphicon-remove"></i> Delete
+        </button>
+    </div>
+    <table id="myTable"
+           data-toolbar="#toolbar"
+           data-search="true"
+           data-height="400"
+           data-show-refresh="true"
+           data-show-toggle="true"
+           data-show-columns="true"
+           data-show-export="true"
+           data-detail-view="true"
+           data-minimum-count-columns="2"
+           data-show-pagination-switch="true"
+           data-pagination="true"
+           data-id-field="id"
+           data-page-list="[10, 25, 50, 100, ALL]"
+           data-show-footer="false"
+           data-side-pagination="server">
+    </table>
+  </div>
+</div>
+
+<script src="type/omeromultichoice/js/roi-shape-table.js" type="text/javascript"></script>
+<script type="text/javascript">
+var tc = new RoiShapeTableController(1);
+</script>
+
+<script type="text/javascript">
+tc.initTable("myTable");
+</script>
+');
+
+
+        $mform->addElement("html", '<div class="fitem" style="margin-top: 500px">');
+        $mform->addElement("html", '<div class="fitemtitle"><label for="myTable">Custom iFrame:</label></div>');
+        $mform->addElement("html", '<div class="felement">');
+
+        $mform->addElement("html", '<a href="#" title="Header" data-toggle="popover" data-trigger="hover" data-content="Some content">Hover over me</a>');
+
+        $mform->addElement('html', '
+<!-- Button trigger modal -->
+<button id="enableModal" type="button" class="btn btn-default btn-lg">
+  Launch demo modal
+</button>
+
+<!-- Modal -->
+<div id="myModal" class="fade modal" tabindex="-1" role="dialog" style="height: 175px;">
+  <!--<div class="modal-dialog" style="width: auto; padding: 0" >-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">Modal title</h4>
+      </div>
+      <div class="modal-body">
+        <p>One fine body&hellip;</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-success" data-dismiss="modal">Save changes</button>
+      </div>
+    </div><!-- /.modal-content -->
+  <!--</div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+');
+        $mform->addElement("html", "</div></div>");
+
         // Set the initial number of answers to 0; add answers one by one
         $this->add_per_answer_fields($mform, get_string('choiceno', 'qtype_multichoice', '{no}'),
             question_bank::fraction_options_full(), 4, 1);
@@ -589,7 +663,7 @@ class qtype_omeromultichoice_edit_form extends qtype_multichoice_edit_form
                         }
                         if (isset($answer_lang[$i]) && !empty($answer_lang[$i])) {
                             // removes YUI ids
-                            $txt = preg_replace('/id="([^"]+)"/i', "",  $answer_lang[$i]);
+                            $txt = preg_replace('/id="([^"]+)"/i', "", $answer_lang[$i]);
                             $answer[$i]["text"] .= '<span class="multilang" lang="' . $lang_id . '">' . $txt . '</span>';
                         }
                     }
@@ -667,10 +741,9 @@ class qtype_omeromultichoice_edit_form extends qtype_multichoice_edit_form
     private function DOMinnerHTML(DOMNode $element)
     {
         $innerHTML = "";
-        $children  = $element->childNodes;
+        $children = $element->childNodes;
 
-        foreach ($children as $child)
-        {
+        foreach ($children as $child) {
             $innerHTML .= $element->ownerDocument->saveHTML($child);
         }
 
