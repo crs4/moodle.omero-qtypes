@@ -199,6 +199,14 @@ function RoiShapeTableController(image_id) {
                 field: 'id',
                 values: [row.id]
             });
+        },
+
+        'change .answer-class': function (e, value, row, index) {
+            console.log(e, value, row, index);
+            console.log("ROW: ", row);
+
+            alert("Changed!!!");
+
         }
     };
 
