@@ -33,7 +33,7 @@ function RoiShapeTableController(image_id) {
 
         // Initializes the bootstrap table
         me.table_container.bootstrapTable({
-            height: "400",
+            height: "500",
             columns: [
                 [
                     {
