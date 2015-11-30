@@ -90,7 +90,7 @@ function RoiShapeTableController(image_id) {
                         width: "20px",
                         align: 'center',
                         valign: 'middle',
-                        events: me.operateEvents,
+                        events: me.eventHandler,
                         formatter: me.visibilityFormatter
                     },
                     {
@@ -99,7 +99,7 @@ function RoiShapeTableController(image_id) {
                         align: 'center',
                         valign: 'middle',
                         width: "40px",
-                        events: me.operateEvents,
+                        events: me.eventHandler,
                         formatter: me.answerClassFormatter
                     }
                 ]
@@ -178,9 +178,8 @@ function RoiShapeTableController(image_id) {
         ].join('');
     };
 
-    me.operateEvents = {
+    me.eventHandler = {
         'click .like': function (e, value, row, index) {
-            console.log(e);
             if ($(e.target).attr("class").indexOf("glyphicon-plus-sign") !== -1)
                 $(e.target).attr("class", "red glyphicon glyphicon-minus-sign");
             else
