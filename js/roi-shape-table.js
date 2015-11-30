@@ -214,12 +214,8 @@ function RoiShapeTableController(image_id) {
         return data.length;
     };
 
-    me.totalPriceFormatter = function (data) {
-        var total = 0;
-        $.each(data, function (i, row) {
-            total += +(row.price.substring(1));
-        });
-        return '$' + total;
+    me.descriptionFormatter = function (data) {
+        return data;
     };
 
     me.visibilityFormatter = function (data) {
