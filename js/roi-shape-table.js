@@ -12,7 +12,7 @@ function RoiShapeTableController(image_id) {
 
     // Builds the URL to retrieve ROI data
     me.getRoiShapeDetailInfoUrl = function () {
-        return "type/omeromultichoice/data.json";
+        return "type/omeromultichoice/tests/data.json";
     };
 
     // table setup
