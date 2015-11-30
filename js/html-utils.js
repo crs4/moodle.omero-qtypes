@@ -9,6 +9,14 @@ var me = M.omero_multichoice_html_utils;
  * Initializes this module
  */
 me.init = function () {
+
+    $('[data-toggle="popover"]').popover();
+
+
+    $("#enableModal").click(function () {
+        $('#myModal').modal();
+        //$('#myInput').focus();
+    });
 };
 
 /**
