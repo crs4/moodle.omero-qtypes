@@ -42,73 +42,65 @@ function RoiShapeTableController(image_id) {
                         rowspan: 2,
                         align: 'center',
                         valign: 'middle'
-                    }, {
-                    title: 'Item ID',
-                    field: 'id',
-                    rowspan: 2,
-                    align: 'center',
-                    valign: 'middle',
-                    sortable: true,
-                    footerFormatter: me.totalTextFormatter
-                }, {
-                    title: 'Item Detail',
-                    colspan: 4,
-                    align: 'center'
-                }
+                    },
+                    {
+                        title: 'ID',
+                        field: 'id',
+                        rowspan: 2,
+                        align: 'center',
+                        valign: 'middle',
+                        width: '30px',
+                        sortable: true,
+                        footerFormatter: me.totalTextFormatter
+                    },
+                    {
+                        title: 'ROI Shape Details',
+                        colspan: 3,
+                        align: 'center'
+                    }
                 ],
                 [
                     {
-                        field: 'name',
-                        title: 'Item Name',
-                        sortable: true,
-                        editable: true,
-                        footerFormatter: me.totalNameFormatter,
-                        align: 'center'
-                    }, {
-                    field: 'price',
-                    title: 'Item Price',
-                    sortable: true,
-                    align: 'center',
-                    editable: {
-                        type: 'text',
-                        title: 'Item Price',
-                        validate: function (value) {
-                            value = $.trim(value);
-                            if (!value) {
-                                return 'This field is required';
-                            }
-                            if (!/^$/.test(value)) {
-                                return 'This field needs to start width $.'
-                            }
-                            var data = me.table_container.bootstrapTable('getData'),
-                                index = $(this).parents('tr').data('index');
-                            console.log(data[index]);
-                            return '';
-                        }
-                    },
-                    footerFormatter: me.totalPriceFormatter
-                },
-                    {
-                        field: 'visibility',
-                        title: 'Item Visibility',
-                        align: 'center',
-                        events: me.operateEvents,
-                        formatter: function () {
-                            return [
-                                '<a class="like" href="javascript:void(0)" title="Like">',
-                                '<i class="glyphicon glyphicon-plus-sign"></i>',
-                                '</a>  '
-                            ].join(" ");
-                        }
-                    },
+                        field: 'description',
+                        title: 'Description',
+                        //sortable: true,
+                        align: 'left',
+                        editable: {
+                            type: 'textarea',
+                            title: 'ROI Shape Description',
+                            width: '200px',
+                            resize: 'none',
+                            validate: function (value) {
+                                value = $.trim(value);
+                                if (!value) {
+                                    return 'This field is required';
+                                }
 
-
+                                var data = me.table_container.bootstrapTable('getData'),
+                                    index = $(this).parents('tr').data('index');
+                                console.log(data[index]);
+                                return '';
+                            }
+                        },
+                        footerFormatter: me.descriptionFormatter
+                    },
                     {
-                        field: 'operate',
-                        title: 'Item Operate',
+                        field: 'visible',
+                        title: 'Visibility',
+                        width: "20px",
                         align: 'center',
+                        valign: 'middle',
                         events: me.operateEvents,
-                        formatter: me.operateFormatter
+                        formatter: me.visibilityFormatter
+                    },
+                    {
+                        field: 'answerClass',
+                        title: 'Class',
+                        align: 'center',
+                        valign: 'middle',
+                        width: "40px",
+                        events: me.operateEvents,
+                        formatter: me.answerClassFormatter
                     }
                 ]
             ]
