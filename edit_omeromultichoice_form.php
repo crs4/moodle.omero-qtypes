@@ -58,6 +58,23 @@ class qtype_omeromultichoice_edit_form extends qtype_multichoice_edit_form
     {
         global $COURSE, $CFG, $DB, $PAGE;
 
+        $PAGE->requires->jquery();
+        $PAGE->requires->jquery_plugin('ui');
+        $PAGE->requires->jquery_plugin('ui-css');
+
+        $PAGE->requires->jquery_plugin("bootstrap", "qtype_omeromultichoice");
+        $PAGE->requires->jquery_plugin("bootstrap-table", "qtype_omeromultichoice");
+        $PAGE->requires->jquery_plugin("dragtable", "qtype_omeromultichoice");
+//        $PAGE->requires->jquery_plugin("dataTables", "qtype_omeromultichoice");
+
+
+        $module = array(
+            'name' => 'htmlt_utils',
+            'fullpath' => '/question/type/omeromultichoice/js/html-utils.js',
+            'requires' => array());
+        $PAGE->requires->js_init_call('M.omero_multichoice_html_utils.init', array(), true, $module);
+
+
         $qtype = $this->qtype();
         $langfile = "qtype_{$qtype}";
 
