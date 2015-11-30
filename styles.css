@@ -145,6 +145,16 @@ body#page-question-type-omeromultichoice div[id^=fitem_id_][id*=feedback_] {
     margin: 0 0px 5px;
 }
 
+
+#fitem_id_omeroimagefilereference .fitemtitle{
+    display: none;
+}
+
+body#page-question-type-omeromultichoice div[id="fitem_id_omeroimagefilereference"]{
+    display: none;
+}
+
+
 /*
 .omeromultichoice-qanswer-roi-details-container .fitem{
     display: inline-block;
