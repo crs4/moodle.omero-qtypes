@@ -217,6 +217,10 @@ textarea, input[type="text"], input[type="password"], input[type="datetime"], in
 }
 
 /* fixes the size of textfields when bootstrap library is loaded */
-body#page-question-type-omeromultichoice input[type="text"]{
+body#page-question-type-omeromultichoice input[type="text"] {
     height: 30px;
+}
+
+body#page-question-type-omeromultichoice table td {
+    vertical-align: middle;
 }
