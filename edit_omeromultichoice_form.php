@@ -235,8 +235,8 @@ class qtype_omeromultichoice_edit_form extends qtype_multichoice_edit_form
         global $PAGE, $OUTPUT;
 
         $module = array(
-            'name' => 'omero_multichoice_helper',
-            'fullpath' => '/question/type/omeromultichoice/omero_multichoice_helper.js',
+            'name' => 'omero_multichoice_question_helper',
+            'fullpath' => '/question/type/omeromultichoice/js/question-helper.js',
             'requires' => array('omemultichoice_qtype', 'node', 'node-event-simulate', 'core_dndupload'));
         $PAGE->requires->js_init_call('M.omero_multichoice_helper.init', array(), true, $module);
 
