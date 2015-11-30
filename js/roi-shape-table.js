@@ -186,6 +186,23 @@ function RoiShapeTableController(image_id) {
                 $(e.target).attr("class", "green glyphicon glyphicon-plus-sign");
             alert('You click like action, row: ' + JSON.stringify(row));
         },
+
+        /**
+         * Handle the visibility change event !!!
+         *
+         * @param e
+         * @param value
+         * @param row
+         * @param index
+         */
+        'click .roi-shape-visibility': function (e, value, row, index) {
+            row.visible = !row.visible;
+            if (row.visible)
+                $(e.target).attr("class", "red glyphicon glyphicon-minus-sign");
+            else
+                $(e.target).attr("class", "green glyphicon glyphicon-plus-sign");
+        },
+
         'click .remove': function (e, value, row, index) {
             me.table_container.bootstrapTable('remove', {
                 field: 'id',
