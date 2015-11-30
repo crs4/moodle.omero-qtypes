@@ -199,10 +199,24 @@ body#page-question-preview .que .formulation {
     margin: 0;
 }
 
-iframe[id^=omero-image-viewer]{
+iframe[id^=omero-image-viewer] {
     padding: 0;
     margin: 20px auto 20px;
     border: none;
     text-align: center;
-    min-height:400px;
+    min-height: 400px;
+}
+
+.autoModal.modal .modal-body {
+    max-height: 100%;
+}
+
+/* fixes the size of textfields when bootstrap library is loaded */
+textarea, input[type="text"], input[type="password"], input[type="datetime"], input[type="datetime-local"], input[type="date"], input[type="month"], input[type="time"], input[type="week"], input[type="number"], input[type="email"], input[type="url"], input[type="search"], input[type="tel"], input[type="color"], .uneditable-input {
+    height: 30px;
+}
+
+/* fixes the size of textfields when bootstrap library is loaded */
+body#page-question-type-omeromultichoice input[type="text"]{
+    height: 30px;
 }
