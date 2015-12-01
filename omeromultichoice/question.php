@@ -39,14 +39,6 @@ require_once($CFG->dirroot . '/question/type/multichoice/question.php');
  * @copyright  2015 CRS4
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later // FIXME: check the licence
  */
-abstract class qtype_omeromultichoice_question extends qtype_multichoice_base {
-
-    public function get_renderer(moodle_page $page) {
-        return $page->get_renderer('qtype_omeromultichoice', 'single');
-    }
-}
-
-
 class qtype_omeromultichoice_single_question extends qtype_multichoice_single_question {
     public function get_renderer(moodle_page $page) {
         return $page->get_renderer('qtype_omeromultichoice', 'single');
