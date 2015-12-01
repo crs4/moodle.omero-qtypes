@@ -70,11 +70,11 @@ abstract class qtype_omerocommon_edit_form extends qtype_multichoice_edit_form
         // Setup the general section
         $this->definition_general_question_data();
 
-        // Setup the image related to the question
-        $this->definition_image_selector();
-
         // Setup the type of answers
         $this->definition_answer_types($mform);
+
+        // Setup the image related to the question
+        $this->definition_image_selector();
 
         // Setup question details
         $this->add_question_specific_fields($mform);
@@ -276,6 +276,13 @@ abstract class qtype_omerocommon_edit_form extends qtype_multichoice_edit_form
     protected function definition_image_selector()
     {
         $mform = $this->_form;
+
+        $mform->addElement('html', '<div style="margin-top: 50px"></div>');
+        $mform->addElement('header', 'omeroimageheader',
+            get_string('omero_image_and_rois', 'qtype_omeromultichoice'), '');
+        $mform->setExpanded('omeroimageheader', 1);
+
+
         $mform->addElement('omerofilepicker', 'omeroimagefilereference', " ", null,
             array('maxbytes' => 2048, 'accepted_types' => array('*'),
                 'return_types' => array(FILE_EXTERNAL),
@@ -329,12 +336,6 @@ abstract class qtype_omerocommon_edit_form extends qtype_multichoice_edit_form
             get_string('answernumbering', 'qtype_multichoice'),
             qtype_multichoice::get_numbering_styles());
         $mform->setDefault('answernumbering', 'abc');
-
-
-        $mform->addElement('html', '<div style="margin-top: 50px"></div>');
-        $mform->addElement('header', 'omeroimageheader',
-            get_string('omero_image_and_rois', 'qtype_omeromultichoice'), '');
-        $mform->setExpanded('omeroimageheader', 1);
 
 
         if ((isset($_REQUEST['answertype'])
