@@ -62,9 +62,9 @@ class qtype_omeromultichoice_edit_form extends qtype_multichoice_edit_form
         $PAGE->requires->jquery_plugin('ui');
         $PAGE->requires->jquery_plugin('ui-css');
 
-        $PAGE->requires->jquery_plugin("bootstrap", "qtype_omeromultichoice");
-        $PAGE->requires->jquery_plugin("bootstrap-table", "qtype_omeromultichoice");
-        $PAGE->requires->jquery_plugin("dragtable", "qtype_omeromultichoice");
+        $PAGE->requires->jquery_plugin("bootstrap", "qtype_omerocommon");
+        $PAGE->requires->jquery_plugin("bootstrap-table", "qtype_omerocommon");
+        $PAGE->requires->jquery_plugin("dragtable", "qtype_omerocommon");
 //        $PAGE->requires->jquery_plugin("dataTables", "qtype_omeromultichoice");
 
 
