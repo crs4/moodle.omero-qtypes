@@ -151,7 +151,7 @@ body#page-question-type-omeromultichoice div[id^=fitem_id_][id*=feedback_] {
 }
 
 body#page-question-type-omeromultichoice div[id="fitem_id_omeroimagefilereference"]{
-    display: none;
+    /*display: none;*/
 }
 
 
