@@ -280,7 +280,6 @@ class qtype_omeromultichoice_edit_form extends qtype_multichoice_edit_form
             'requires' => array('omemultichoice_qtype', 'node', 'node-event-simulate', 'core_dndupload'));
         $PAGE->requires->js_init_call('M.omero_multichoice_helper.init', array(), true, $module);
 
-
         $mform->addElement('omerofilepicker', 'omeroimagefilereference', " ", null,
             array('maxbytes' => 2048, 'accepted_types' => array('*'),
                 'return_types' => array(FILE_EXTERNAL),
@@ -304,14 +303,44 @@ class qtype_omeromultichoice_edit_form extends qtype_multichoice_edit_form
 //        $mform->setExpanded('roitableinspectorheader', 1);
 
         $mform->addElement('html', '
+
+
 <div class="fitem">
     <div class="fitemtitle"><label for="roiShapeInspectorTable"></label></div>
 <div class="felement" style="height: 200px;">
+
+
     <div id="toolbar">
+
+        <button id="add-new-roi" class="btn btn-success" disabled>
+            <i class="lyphicon glyphicon-plus"></i> Add
+        </button>
+
+        <button id="edit-roi" class="btn btn-warning" disabled>
+            <i class="glyphicon glyphicon-edit"></i> Edit
+        </button>
+
         <button id="remove" class="btn btn-danger" disabled>
             <i class="glyphicon glyphicon-remove"></i> Delete
         </button>
+
+        <!-- Single button -->
+        <div class="btn-group">
+          <button type="button" class="btn btn-info  dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            Group <span class="caret"></span>
+          </button>
+          <ul class="dropdown-menu">
+            <li><a href="#">0</a></li>
+            <li><a href="#">1</a></li>
+            <li role="separator" class="divider"></li>
+            <li><a href="#">Add Group</a></li>
+          </ul>
+        </div>
     </div>
+
+
+
+
     <table id="roiShapeInspectorTable"
            data-toolbar="#toolbar"
            data-search="true"
@@ -342,12 +371,40 @@ tc.initTable("roiShapeInspectorTable");
 </script>
 ');
 
-        $mform->addElement('html', '<div style="margin-top: 450px"></div>');
+        $mform->addElement('html', '<div style="margin-top: 320px"></div>');
         $mform->addElement('header', 'answerhdr',
-            get_string('answer_classes', 'qtype_omeromultichoice'), '');
+            get_string('answer_groups', 'qtype_omeromultichoice'), '');
         $mform->setExpanded('answerhdr', 1);
 
-        //$mform->addElement('header', 'answerclassheader', get_string("answers", 'form'), array("style"=> "margin-top: 600px;"));
+
+        $mform->addElement('html', '
+        <div class="panel panel-success">
+          <div class="panel-heading">
+            <h3 class="panel-title">
+                <a href="#" id="username" data-type="text" data-pk="1" data-title="Enter username">SUCCESS</a>
+            </h3>
+          </div>
+          <div class="panel-body">
+            Panel content
+
+            <input type="text" class="form-control" aria-label="...">
+            <div class="input-group">
+  <div class="input-group-btn">
+    <!-- Buttons -->
+  </div>
+  <input type="text" class="form-control" aria-label="...">
+</div>
+
+<div class="input-group">
+  <input type="text" class="form-control" aria-label="...">
+  <div class="input-group-btn">
+    <!-- Buttons -->
+  </div>
+</div>
+          </div>
+          <div class="panel-footer">Panel footer</div>
+        </div>
+        ');
 
 
         $mform->addElement("html", '<div class="fitem" style="margin-top: 500px">');
