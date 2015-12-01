@@ -17,6 +17,16 @@ me.init = function () {
         $('#myModal').modal();
         //$('#myInput').focus();
     });
+
+
+    $(".dropdown-toggle").dropdown();
+
+    $('#username').editable({
+
+        success: function (response, newValue) {
+            alert("Changed: !!!");
+        }
+    });
 };
 
 /**
