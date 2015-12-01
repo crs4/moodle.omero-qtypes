@@ -94,8 +94,8 @@ function RoiShapeTableController(image_id) {
                         formatter: me.visibilityFormatter
                     },
                     {
-                        field: 'answerClass',
-                        title: 'Class',
+                        field: 'answerGroup',
+                        title: 'Group',
                         align: 'center',
                         valign: 'middle',
                         width: "40px",

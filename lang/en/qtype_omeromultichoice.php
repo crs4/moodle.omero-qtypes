@@ -44,7 +44,7 @@ $string['add_roi_answer'] = 'Add a new ROI based answer';
 $string['answer_type'] = "Answer type";
 
 $string['roi_shape_inspector'] = "ROI Shape Inspector";
-$string['answer_classes'] = "Answer Classes";
+$string['answer_groups'] = "Answer Groups";
 
 $string['omero_image_and_rois'] = "Omero Image and ROIs";
 
