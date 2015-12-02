@@ -27,6 +27,7 @@
 defined('MOODLE_INTERNAL') || die();
 
 require_once($CFG->dirroot . '/question/type/multichoice/edit_multichoice_form.php');
+require_once($CFG->dirroot . '/question/type/omerocommon/js/modules.php');
 
 /**
  * omeromultichoice question editing form definition.
@@ -57,6 +58,8 @@ abstract class qtype_omerocommon_edit_form extends qtype_multichoice_edit_form
     protected function definition()
     {
         global $COURSE, $CFG, $DB, $PAGE;
+
+
 
         $qtype = $this->qtype();
         $langfile = "qtype_{$qtype}";
@@ -155,13 +158,9 @@ abstract class qtype_omerocommon_edit_form extends qtype_multichoice_edit_form
     protected function define_requirements()
     {
         global $PAGE;
-        $PAGE->requires->jquery();
-        $PAGE->requires->jquery_plugin('ui');
-        $PAGE->requires->jquery_plugin('ui-css');
 
-        $PAGE->requires->jquery_plugin("bootstrap", "qtype_omerocommon");
-        $PAGE->requires->jquery_plugin("bootstrap-table", "qtype_omerocommon");
-        $PAGE->requires->jquery_plugin("dragtable", "qtype_omerocommon");
+        // include
+        init_js_modules();
 
         $module = array(
             'name' => 'omero_multichoice_question_helper',
