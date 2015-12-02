@@ -31,14 +31,6 @@ $plugins = array(
         )
     ),
 
-//    'dataTables' => array(
-//        'files' => array(
-//            "dataTables/dataTables-1.10.7.js",
-//            "dataTables/dataTables-1.10.7.css",
-//            "dataTables/dataTables.bootstrap-1.10.7.js"
-//        )
-//    ),
-
     'bootstrap-table' => array(
         'files' => array(
             "bootstrap-table/bower_components/bootstrap-table/dist/bootstrap-table-min.js",
@@ -52,12 +44,4 @@ $plugins = array(
 
         )
     ),
-
-    'multilanguage' => array(
-        'files' => array(
-            "omerocommon/src/multilanguage/multilanguage-controller.js",
-            "omerocommon/src/multilanguage/multilanguage-element.js",
-            "omerocommon/src/multilanguage/multilanguage-attoeditor.js"
-        )
-    )
 );
