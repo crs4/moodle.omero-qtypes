@@ -70,7 +70,7 @@ class qtype_omeromultichoice_edit_form extends qtype_multichoice_edit_form
 
         $module = array(
             'name' => 'htmlt_utils',
-            'fullpath' => '/question/type/omeromultichoice/js/html-utils.js',
+            'fullpath' => '/question/type/omerocommon/js/src/html-utils.js',
             'requires' => array());
         $PAGE->requires->js_init_call('M.omero_multichoice_html_utils.init', array(), true, $module);
 
