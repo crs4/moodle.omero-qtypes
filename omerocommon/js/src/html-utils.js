@@ -10,23 +10,23 @@ var me = M.omero_multichoice_html_utils;
  */
 me.init = function () {
 
-    $('[data-toggle="popover"]').popover();
-
-
-    $("#enableModal").click(function () {
-        $('#myModal').modal();
-        //$('#myInput').focus();
-    });
-
-
-    $(".dropdown-toggle").dropdown();
-
-    $('#username').editable({
-
-        success: function (response, newValue) {
-            alert("Changed: !!!");
-        }
-    });
+    //$('[data-toggle="popover"]').popover();
+    //
+    //
+    //$("#enableModal").click(function () {
+    //    $('#myModal').modal();
+    //    //$('#myInput').focus();
+    //});
+    //
+    //
+    //$(".dropdown-toggle").dropdown();
+    //
+    //$('#username').editable({
+    //
+    //    success: function (response, newValue) {
+    //        alert("Changed: !!!");
+    //    }
+    //});
 };
 
 /**
