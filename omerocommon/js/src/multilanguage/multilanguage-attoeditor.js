@@ -25,13 +25,34 @@ define("qtype_omerocommon/multilanguage-attoeditor",
                  */
                 M.qtypes.omerocommon.MultilanguageAttoEditor = function (element_id) {
 
-
                     // the reference to this scope
                     var me = this;
 
                     // Call the parent constructor
                     M.qtypes.omerocommon.MultilanguageElement.call(this, element_id);
 
+
+                    me._editor = new M.qtypes.omerocommon.MoodleAttoEditor(element_id);
+                    me._editor.init();
+
+                    me.save = function(){
+                        var text = me._editor.getText();
+                        alert("Text: " + text);
+                        me.setLocaleText(text, me._current_language);
+                    };
+
+                    me.changeLanguage = function (language) {
+                        // call the default behaviour
+                        this.parent.changeLanguage.call(me, language);
+
+                        // update the editor with the current locale text
+                        var text = me._locale_text_map[language] || "";
+                        me._editor.setText(text);
+                    };
+
+                    me.clear = function () {
+                        me._editor.clear();
+                    };
                 };
 
 
