@@ -124,9 +124,9 @@ tc.initTable("roiShapeInspectorTable");
 ');
 
         $mform->addElement('html', '<div style="margin-top: 320px"></div>');
-        $mform->addElement('header', 'answerhdr',
+        $mform->addElement('header', 'answergroupshdr',
             get_string('answer_groups', 'qtype_omeromultichoice'), '');
-        $mform->setExpanded('answerhdr', 1);
+        $mform->setExpanded('answergroupshdr', 1);
 
 
         $mform->addElement('html', '
