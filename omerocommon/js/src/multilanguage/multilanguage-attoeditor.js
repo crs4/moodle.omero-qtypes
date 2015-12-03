@@ -6,7 +6,8 @@ define("qtype_omerocommon/multilanguage-attoeditor",
     [
         'jquery',
         'qtype_omerocommon/moodle-forms-utils',
-        'qtype_omerocommon/multilanguage-element'
+        'qtype_omerocommon/multilanguage-element',
+        'qtype_omerocommon/moodle-attoeditor',
     ],
     function ($, Element, Editor) {
         // Private functions.
