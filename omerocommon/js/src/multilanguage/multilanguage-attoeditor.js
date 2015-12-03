@@ -5,8 +5,8 @@
 define("qtype_omerocommon/multilanguage-attoeditor",
     [
         'jquery',
-        'qtype_omerocommon/multilanguage-element',
-        'qtype_omerocommon/multilanguage-attoeditor'
+        'qtype_omerocommon/moodle-forms-utils',
+        'qtype_omerocommon/multilanguage-element'
     ],
     function ($, Element, Editor) {
         // Private functions.
@@ -17,6 +17,28 @@ define("qtype_omerocommon/multilanguage-attoeditor",
             initialize: function (str) {
 
                 console.log("Initialized", this);
+
+                /**
+                 * Defines MoodleFormUtils class
+                 * @type {{}}
+                 */
+                M.qtypes.omerocommon.MultilanguageAttoEditor = function (element_id) {
+
+
+                    // the reference to this scope
+                    var me = this;
+
+                    // Call the parent constructor
+                    M.qtypes.omerocommon.MultilanguageElement.call(this, element_id);
+
+                };
+
+
+                // inherit
+                M.qtypes.omerocommon.MultilanguageAttoEditor.prototype = new M.qtypes.omerocommon.MultilanguageElement();
+
+                // correct the constructor
+                M.qtypes.omerocommon.MultilanguageAttoEditor.prototype.constructor = M.qtypes.omerocommon.MultilanguageAttoEditor;
             }
         };
     }
