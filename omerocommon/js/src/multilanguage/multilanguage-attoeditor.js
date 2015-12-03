@@ -40,6 +40,9 @@ define("qtype_omerocommon/multilanguage-attoeditor",
 
                 // correct the constructor
                 M.qtypes.omerocommon.MultilanguageAttoEditor.prototype.constructor = M.qtypes.omerocommon.MultilanguageAttoEditor;
+
+                // set the parent
+                M.qtypes.omerocommon.MultilanguageAttoEditor.prototype.parent = M.qtypes.omerocommon.MultilanguageElement.prototype;
             }
         };
     }
