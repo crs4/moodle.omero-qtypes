@@ -5,7 +5,7 @@
  * Created by kikkomep on 12/2/15.
  */
 
-define("qtype_omerocommon/question-base",
+define("qtype_omerocommon/question-editor-base",
     [
         'jquery',
         'qtype_omerocommon/moodle-forms-utils',
@@ -34,7 +34,7 @@ define("qtype_omerocommon/question-base",
                  *
                  * @constructor
                  */
-                M.qtypes.omerocommon.QuestionBase = function () {
+                M.qtypes.omerocommon.QuestionEditorBase = function () {
 
                     // the reference to this scope
                     var me = this;
@@ -42,7 +42,7 @@ define("qtype_omerocommon/question-base",
 
 
                 // A local reference to the prototype
-                var prototype = M.qtypes.omerocommon.QuestionBase.prototype;
+                var prototype = M.qtypes.omerocommon.QuestionEditorBase.prototype;
 
             }
         };

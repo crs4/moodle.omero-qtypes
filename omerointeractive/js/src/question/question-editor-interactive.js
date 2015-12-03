@@ -5,13 +5,14 @@
  * Created by kikkomep on 12/2/15.
  */
 
-define("qtype_omerointeractive/question-interactive",
+define("qtype_omerointeractive/question-editor-interactive",
     [
         'jquery',
         'qtype_omerocommon/moodle-forms-utils',
         'qtype_omerocommon/answer-base',
         'qtype_omerocommon/multilanguage-element',
-        'qtype_omerocommon/multilanguage-attoeditor'
+        'qtype_omerocommon/multilanguage-attoeditor',
+        'qtype_omerocommon/question-editor-base'
     ],
     function ($, Editor, FormUtils) {
         // Private functions.
@@ -32,23 +33,23 @@ define("qtype_omerointeractive/question-interactive",
                  * Defines MoodleFormUtils class
                  * @type {{}}
                  */
-                M.qtypes.omerocommon.QuestionInteractive = function () {
+                M.qtypes.omerocommon.QuestionEditorInteractive = function () {
 
                     // the reference to this scope
                     var me = this;
 
                     // Call the parent constructor
-                    M.qtypes.omerocommon.QuestionBase.call(this);
+                    M.qtypes.omerocommon.QuestionEditorBase.call(this);
                 };
 
                 // inherit
-                M.qtypes.omerocommon.QuestionInteractive.prototype = new M.qtypes.omerocommon.QuestionBase();
+                M.qtypes.omerocommon.QuestionEditorInteractive.prototype = new M.qtypes.omerocommon.QuestionEditorBase();
 
                 // correct the constructor
-                M.qtypes.omerocommon.QuestionInteractive.prototype.constructor = M.qtypes.omerocommon.AnswerPlaintext;
+                M.qtypes.omerocommon.QuestionEditorInteractive.prototype.constructor = M.qtypes.omerocommon.QuestionEditorInteractive;
 
                 // local reference to the current prototype
-                var prototype = M.qtypes.omerocommon.QuestionInteractive.prototype;
+                var prototype = M.qtypes.omerocommon.QuestionEditorInteractive.prototype;
 
             }
         };
