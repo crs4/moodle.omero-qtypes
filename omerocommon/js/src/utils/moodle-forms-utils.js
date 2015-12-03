@@ -143,7 +143,7 @@ define("qtype_omerocommon/moodle-forms-utils",
                      * @returns {string}
                      * @private
                      */
-                    me._generateGuid = function () {
+                    me.generateGuid = function () {
                         function s4() {
                             return Math.floor((1 + Math.random()) * 0x10000)
                                 .toString(16)
