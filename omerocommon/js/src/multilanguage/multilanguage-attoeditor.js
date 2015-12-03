@@ -20,8 +20,11 @@ define("qtype_omerocommon/multilanguage-attoeditor",
                 console.log("Initialized", this);
 
                 /**
-                 * Defines MoodleFormUtils class
-                 * @type {{}}
+                 * Builds a new MultilanguageAttoEditor
+                 *
+                 * @param element_id
+                 * @param avoid_initialization
+                 * @constructor
                  */
                 M.qtypes.omerocommon.MultilanguageAttoEditor = function (element_id, avoid_initialization) {
 
@@ -39,12 +42,19 @@ define("qtype_omerocommon/multilanguage-attoeditor",
                     if (!avoid_initialization)
                         me._editor.init();
 
+                    /**
+                     * Save the current string
+                     */
                     me.save = function(){
                         var text = me._editor.getText();
-                        alert("Text: " + text);
                         me.setLocaleText(text, me._current_language);
                     };
 
+                    /**
+                     * Updates the viewer to show the current localized text
+                     *
+                     * @param language the new language
+                     */
                     me.changeLanguage = function (language) {
                         // call the default behaviour
                         this.parent.changeLanguage.call(me, language);
@@ -54,6 +64,10 @@ define("qtype_omerocommon/multilanguage-attoeditor",
                         me._editor.setText(text);
                     };
 
+
+                    /**
+                     * Clear the current text area
+                     */
                     me.clear = function () {
                         me._editor.clear();
                     };
