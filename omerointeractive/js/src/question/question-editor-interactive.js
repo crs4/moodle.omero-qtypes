@@ -27,13 +27,13 @@ define("qtype_omerointeractive/question-editor-interactive",
                 M.qtypes = M.qtypes || {};
 
                 // defines the specific package of this module
-                M.qtypes.omerocommon = M.qtypes.omerocommon || {};
+                M.qtypes.omerointeractive = M.qtypes.omerointeractive || {};
 
                 /**
                  * Defines MoodleFormUtils class
                  * @type {{}}
                  */
-                M.qtypes.omerocommon.QuestionEditorInteractive = function () {
+                M.qtypes.omerointeractive.QuestionEditorInteractive = function () {
 
                     // the reference to this scope
                     var me = this;
@@ -43,13 +43,15 @@ define("qtype_omerointeractive/question-editor-interactive",
                 };
 
                 // inherit
-                M.qtypes.omerocommon.QuestionEditorInteractive.prototype = new M.qtypes.omerocommon.QuestionEditorBase();
+                M.qtypes.omerointeractive.QuestionEditorInteractive.prototype =
+                    new M.qtypes.omerocommon.QuestionEditorBase();
 
                 // correct the constructor
-                M.qtypes.omerocommon.QuestionEditorInteractive.prototype.constructor = M.qtypes.omerocommon.QuestionEditorInteractive;
+                M.qtypes.omerointeractive.QuestionEditorInteractive.prototype.constructor =
+                    M.qtypes.omerointeractive.QuestionEditorInteractive;
 
                 // local reference to the current prototype
-                var prototype = M.qtypes.omerocommon.QuestionEditorInteractive.prototype;
+                var prototype = M.qtypes.omerointeractive.QuestionEditorInteractive.prototype;
 
             }
         };

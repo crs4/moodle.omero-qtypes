@@ -23,14 +23,14 @@ define("qtype_omerointeractive/answer-group",
                 M.qtypes = M.qtypes || {};
 
                 // defines the specific package of this module
-                M.qtypes.omerocommon = M.qtypes.omerocommon || {};
+                M.qtypes.omerointeractive = M.qtypes.omerointeractive || {};
 
 
                 /**
                  * Defines MoodleFormUtils class
                  * @type {{}}
                  */
-                M.qtypes.omerocommon.AnswerGroup = function (answer_list_container_id) {
+                M.qtypes.omerointeractive.AnswerGroup = function (answer_list_container_id) {
 
                     // the reference to this scope
                     var me = this;
@@ -56,10 +56,10 @@ define("qtype_omerointeractive/answer-group",
 
 
                 // inherit
-                M.qtypes.omerocommon.AnswerGroup.prototype = new M.qtypes.omerocommon.AnswerBase();
+                M.qtypes.omerointeractive.AnswerGroup.prototype = new M.qtypes.omerocommon.AnswerBase();
 
                 // correct the constructor
-                M.qtypes.omerocommon.AnswerGroup.prototype.constructor = M.qtypes.omerocommon.AnswerGroup;
+                M.qtypes.omerointeractive.AnswerGroup.prototype.constructor = M.qtypes.omerointeractive.AnswerGroup;
             }
         };
     }
