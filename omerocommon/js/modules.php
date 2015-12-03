@@ -23,21 +23,25 @@ function init_js_modules($qtype_package)
     // Array containing name of modules
     $modules = array();
 
-    // include the $plugins definition
-    include $CFG->dirroot . "/question/type/omerocommon/jquery/plugins.php";
+    // checkes and load jquery dependencies
+    $jquery_plugings_declaration = $CFG->dirroot . "/question/type/$qtype_package/jquery/plugins.php";
+    if (file_exists($jquery_plugings_declaration)) {
+        // include the $plugins definition
+        include "$jquery_plugings_declaration";
 
-    // basic jquery requirements
-    $PAGE->requires->jquery();
-    $PAGE->requires->jquery_plugin('ui');
-    $PAGE->requires->jquery_plugin('ui-css');
+        // basic jquery requirements
+        $PAGE->requires->jquery();
+        $PAGE->requires->jquery_plugin('ui');
+        $PAGE->requires->jquery_plugin('ui-css');
 
-    // includes all plugin requirements
-    foreach ($plugins as $name => $module) {
+        // includes all plugin requirements
+        foreach ($plugins as $name => $module) {
 
-        if ($CFG->debug) {
-            $PAGE->requires->jquery_plugin($name, "qtype_omerocommon");
-        } else {
-            echo "TODO: set the JS production files!!!";
+            if ($CFG->debug) {
+                $PAGE->requires->jquery_plugin($name, "qtype_$qtype_package");
+            } else {
+                echo "TODO: set the JS production files!!!";
+            }
         }
     }
 
@@ -69,7 +73,7 @@ function init_js_modules($qtype_package)
     }
 
     // Call initialization function
-    foreach($modules as $module){
+    foreach ($modules as $module) {
         $PAGE->requires->js_call_amd("$module_prefix/$module", "initialize");
     }
 }
