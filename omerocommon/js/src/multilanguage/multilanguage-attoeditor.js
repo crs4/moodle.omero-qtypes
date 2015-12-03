@@ -23,7 +23,7 @@ define("qtype_omerocommon/multilanguage-attoeditor",
                  * Defines MoodleFormUtils class
                  * @type {{}}
                  */
-                M.qtypes.omerocommon.MultilanguageAttoEditor = function (element_id) {
+                M.qtypes.omerocommon.MultilanguageAttoEditor = function (element_id, avoid_initialization) {
 
                     // the reference to this scope
                     var me = this;
@@ -31,9 +31,13 @@ define("qtype_omerocommon/multilanguage-attoeditor",
                     // Call the parent constructor
                     M.qtypes.omerocommon.MultilanguageElement.call(this, element_id);
 
-
+                    // A new instance of MoodleAttoEditor
                     me._editor = new M.qtypes.omerocommon.MoodleAttoEditor(element_id);
-                    me._editor.init();
+
+                    // avoids YUI editor initialization
+                    // (useful when the editor already exists)
+                    if (!avoid_initialization)
+                        me._editor.init();
 
                     me.save = function(){
                         var text = me._editor.getText();
