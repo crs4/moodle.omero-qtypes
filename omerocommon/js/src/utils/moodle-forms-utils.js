@@ -152,28 +152,28 @@ define("qtype_omerocommon/moodle-forms-utils",
 
                         return s4() + s4() + '-' + s4() + '-' + s4() + '-' +
                             s4() + '-' + s4() + s4() + s4();
-                    }
+                    };
 
 
+                    me.initDropdown = function () {
+                        $('[data-toggle="popover"]').popover();
 
 
-                    $('[data-toggle="popover"]').popover();
+                        $("#enableModal").click(function () {
+                            $('#myModal').modal();
+                            //$('#myInput').focus();
+                        });
 
 
-                    $("#enableModal").click(function () {
-                        $('#myModal').modal();
-                        //$('#myInput').focus();
-                    });
+                        $(".dropdown-toggle").dropdown();
 
-
-                    $(".dropdown-toggle").dropdown();
-
-                    //$('#username').editable({
-                    //
-                    //    success: function (response, newValue) {
-                    //        alert("Changed: !!!");
-                    //    }
-                    //});
+                        //$('#username').editable({
+                        //
+                        //    success: function (response, newValue) {
+                        //        alert("Changed: !!!");
+                        //    }
+                        //});
+                    };
                 };
             }
         };
