@@ -160,7 +160,7 @@ abstract class qtype_omerocommon_edit_form extends qtype_multichoice_edit_form
         global $PAGE;
 
         // include
-        init_js_modules();
+        init_js_modules("omerocommon");
 
         $module = array(
             'name' => 'omero_multichoice_question_helper',
