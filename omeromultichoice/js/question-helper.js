@@ -200,7 +200,7 @@ me._initLanguageSelector = function () {
     }
 
     // handles the event 'language changed'
-    document.forms[0].elements["question_language"].onchange = me._updateCurrentLanguage;
+    //document.forms[0].elements["question_language"].onchange = me._updateCurrentLanguage;
 };
 
 
