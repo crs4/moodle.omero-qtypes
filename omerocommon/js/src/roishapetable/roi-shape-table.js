@@ -273,6 +273,6 @@ M.qtypes.omerocommon.RoiShapeTableBase = function(container_id, image_id) {
         }
         return me._name;
     }
-}
+};
 
 
