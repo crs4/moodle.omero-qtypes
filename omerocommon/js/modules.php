@@ -15,7 +15,7 @@ defined('MOODLE_INTERNAL') || die();
  */
 function init_js_modules($qtype_package)
 {
-    global $CFG, $PAGE, $plugins;
+    global $CFG, $PAGE, $plugins, $not_amd_modules;
 
     // Prefix of JS modules
     $module_prefix = "qtype_$qtype_package";
@@ -72,8 +72,17 @@ function init_js_modules($qtype_package)
         }
     }
 
-    // Call initialization function
+    // loads the module configuration file is exists
+    $modules_config_filename = $CFG->dirroot . "/question/type/$qtype_package/js/modules_config.php";
+    if(file_exists($modules_config_filename)) {
+        include "$modules_config_filename";
+    }
+
+    // Call initialization function for all AMD modules !!!
+    // Note that all modules (but those in the $not_amd_modules global variable
+    // are assumed to be AMD
     foreach ($modules as $module) {
-        $PAGE->requires->js_call_amd("$module_prefix/$module", "initialize");
+        if(!in_array("$module_prefix/$module", $not_amd_modules))
+            $PAGE->requires->js_call_amd("$module_prefix/$module", "initialize");
     }
 }
