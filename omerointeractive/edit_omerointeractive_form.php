@@ -118,15 +118,6 @@ class qtype_omerointeractive_edit_form extends qtype_omerocommon_edit_form
     </table>
   </div>
 </div>
-
-<script src="type/omeromultichoice/js/roi-shape-table.js" type="text/javascript"></script>
-<script type="text/javascript">
-var tc = new RoiShapeTableController(1);
-</script>
-
-<script type="text/javascript">
-tc.initTable("roiShapeInspectorTable");
-</script>
 ');
 
         $mform->addElement('html', '<div style="margin-top: 320px"></div>');
