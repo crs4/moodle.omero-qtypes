@@ -1,7 +1,6 @@
 /**
  * Created by kikkomep on 11/29/15.
  */
-
 // defines the basic package
 M.qtypes = M.qtypes || {};
 
@@ -38,9 +37,9 @@ M.qtypes.omerocommon.RoiShapeTableBase = function(container_id, image_id) {
 
 
         // Setup the responseHandler
-        me.table_container.attr("data-response-handler", me.getReferenceName() + ".responseHandler");
+        me.table_container.attr("data-response-handler", "M.qtypes.omerocommon.RoiShapeTableBase.responseHandler");
         // Register the detailsFormatter
-        me.table_container.attr("data-detail-formatter", me.getReferenceName() + ".detailFormatter");
+        me.table_container.attr("data-detail-formatter", "M.qtypes.omerocommon.RoiShapeTableBase.detailFormatter");
 
         // Initializes the bootstrap table
         me.table_container.bootstrapTable({
@@ -162,14 +161,14 @@ M.qtypes.omerocommon.RoiShapeTableBase = function(container_id, image_id) {
         });
     };
 
-    me.responseHandler = function (res) {
+    M.qtypes.omerocommon.RoiShapeTableBase.responseHandler = function (res) {
         $.each(res.rows, function (i, row) {
             row.state = $.inArray(row.id, me.selections) !== -1;
         });
         return res;
     };
 
-    me.detailFormatter = function (index, row) {
+    M.qtypes.omerocommon.RoiShapeTableBase .detailFormatter = function (index, row) {
         var html = [];
         $.each(row, function (key, value) {
             html.push('<p><b>' + key + ':</b> ' + value + '</p>');
@@ -260,19 +259,6 @@ M.qtypes.omerocommon.RoiShapeTableBase = function(container_id, image_id) {
     me.getHeight = function () {
         return $(window).height() - $('h1').outerHeight(true);
     };
-
-
-    me.getReferenceName = function () {
-        if (!me._name) {
-            for (var i in window) {
-                if (window[i] === me) {
-                    me._name = i;
-                    break;
-                }
-            }
-        }
-        return me._name;
-    }
 };
 
 
