@@ -50,9 +50,18 @@ define("qtype_omerointeractive/question-editor-interactive",
                 M.qtypes.omerointeractive.QuestionEditorInteractive.prototype.constructor =
                     M.qtypes.omerointeractive.QuestionEditorInteractive;
 
+                M.qtypes.omerointeractive.QuestionEditorInteractive.prototype.parent =
+                    M.qtypes.omerocommon.QuestionEditorBase.prototype;
+
                 // local reference to the current prototype
                 var prototype = M.qtypes.omerointeractive.QuestionEditorInteractive.prototype;
 
+                /**
+                 * Performs the initialization
+                 */
+                prototype.initialize = function () {
+                    this.parent.initialize.call(this);
+                }
             }
         };
     }
