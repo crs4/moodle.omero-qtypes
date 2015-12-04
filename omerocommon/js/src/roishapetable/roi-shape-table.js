@@ -2,7 +2,14 @@
  * Created by kikkomep on 11/29/15.
  */
 
-function RoiShapeTableController(image_id) {
+// defines the basic package
+M.qtypes = M.qtypes || {};
+
+// defines the specific package of this module
+M.qtypes.omerocommon = M.qtypes.omerocommon || {};
+
+// constructor
+M.qtypes.omerocommon.RoiShapeTableBase = function(container_id, image_id) {
 
     // Registers a reference to the current scope
     var me = this;
@@ -10,16 +17,20 @@ function RoiShapeTableController(image_id) {
     //
     me.selections = [];
 
+    var _image_id = image_id;
+
+    var _container_id = container_id;
+
     // Builds the URL to retrieve ROI data
     me.getRoiShapeDetailInfoUrl = function () {
         return "type/omeromultichoice/tests/data.json";
     };
 
     // table setup
-    me.initTable = function (container_id) {
+    me.initTable = function () {
 
         // Registers a reference to the table container
-        me.table_container = $("#" + container_id);
+        me.table_container = $("#" + _container_id);
         me.remove_container = $('#remove');
 
         // Sets the endpoint to get the ROI infos
