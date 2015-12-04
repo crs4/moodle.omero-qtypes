@@ -264,6 +264,23 @@ M.qtypes.omerocommon.RoiShapeTableBase = function(container_id) {
     me.getHeight = function () {
         return $(window).height() - $('h1').outerHeight(true);
     };
+prototype.getBootstrapTable = function () {
+    return this.table_container.bootstrapTable;
+};
+
+
+prototype.appendRoiShapeList = function (data) {
+    return this.table_container.bootstrapTable('append', data);
+};
+
+
+prototype.removeRoiShape = function (roi_shapes) {
+    roi_shapes = (roi_shapes instanceof Array) ? roi_shapes : [roi_shapes];
+    return this.table_container.bootstrapTable('remove', {field: 'id', values: roi_shapes});
+};
+
+prototype.removeAll = function () {
+    return this.table_container.bootstrapTable('removeAll');
 };
 
 
