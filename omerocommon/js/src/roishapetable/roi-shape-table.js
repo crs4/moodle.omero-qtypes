@@ -31,7 +31,6 @@ M.qtypes.omerocommon.RoiShapeTableBase = function (container_id) {
 };
 
 
-
 M.qtypes.omerocommon.RoiShapeTableBase.responseHandler = function (res) {
     $.each(res.rows, function (i, row) {
         row.state = $.inArray(row.id, this.selections) !== -1;
@@ -46,7 +45,6 @@ M.qtypes.omerocommon.RoiShapeTableBase.detailFormatter = function (index, row) {
     });
     return html.join('');
 };
-
 
 
 var prototype = M.qtypes.omerocommon.RoiShapeTableBase.prototype;
@@ -190,7 +188,6 @@ prototype.getIdSelections = function () {
 };
 
 
-
 prototype.answerClassFormatter = function (value, row, index) {
     return [
         '<select class="answer-class form-control">',
@@ -283,6 +280,19 @@ prototype.appendRoiShapeList = function (data) {
     return this.table_container.bootstrapTable('append', data);
 };
 
+prototype.setRoiShapeList = function (data) {
+    this.removeAll();
+    this.appendRoiShapeList(data);
+};
+
+
+prototype.getRoiShape = function (roi_shape_id) {
+    return this.table_container.bootstrapTable('getRowByUniqueId', roi_shape_id);
+};
+
+prototype.getRoiShapeList = function () {
+    return this.table_container.bootstrapTable('getData');
+};
 
 prototype.removeRoiShape = function (roi_shapes) {
     roi_shapes = (roi_shapes instanceof Array) ? roi_shapes : [roi_shapes];
