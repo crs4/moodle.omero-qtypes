@@ -8,7 +8,7 @@ M.qtypes = M.qtypes || {};
 M.qtypes.omerocommon = M.qtypes.omerocommon || {};
 
 // constructor
-M.qtypes.omerocommon.RoiShapeTableBase = function(container_id, image_id) {
+M.qtypes.omerocommon.RoiShapeTableBase = function(container_id) {
 
     // Registers a reference to the current scope
     var me = this;
