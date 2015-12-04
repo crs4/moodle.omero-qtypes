@@ -16,14 +16,19 @@ M.qtypes.omerocommon.RoiShapeTableBase = function(container_id) {
     //
     me.selections = [];
 
-    var _image_id = image_id;
-
     var _container_id = container_id;
 
     // Builds the URL to retrieve ROI data
-    me.getRoiShapeDetailInfoUrl = function () {
+
+    /**
+     *
+     * @returns {string}
+     * @private
+     */
+    function _getRoiShapeDetailInfoUrl() {
         return "type/omeromultichoice/tests/data.json";
-    };
+    }
+
 
     // table setup
     me.initTable = function () {
@@ -33,7 +38,7 @@ M.qtypes.omerocommon.RoiShapeTableBase = function(container_id) {
         me.remove_container = $('#remove');
 
         // Sets the endpoint to get the ROI infos
-        me.table_container.attr("data-url", me.getRoiShapeDetailInfoUrl());
+        me.table_container.attr("data-url", _getRoiShapeDetailInfoUrl());
 
 
         // Setup the responseHandler
