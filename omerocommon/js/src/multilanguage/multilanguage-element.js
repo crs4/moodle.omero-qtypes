@@ -16,10 +16,10 @@ define("qtype_omerocommon/multilanguage-element",
 
                 console.log("Initialized", this);
 
-                M.qtypes.omerocommon.MultilanguageElement = function (element_id) {
+                M.qtypes.omerocommon.MultilanguageElement = function (container_id) {
 
                     // registers the id of the container element
-                    this.element_id = element_id;
+                    this.container_id = container_id;
 
                     // initializes the map of localized strings
                     this._locale_text_map = {};

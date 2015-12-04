@@ -35,7 +35,7 @@ define("qtype_omerocommon/moodle-attoeditor",
                     // the reference to this scope
                     var me = this;
 
-                    me.element_id = element_id;
+                    me.container_id = element_id;
 
                     me.init = function () {
                         me._yuiEditor = Y.use(
@@ -52,7 +52,7 @@ define("qtype_omerocommon/moodle-attoeditor",
                             "moodle-atto_accessibilitychecker-button", "moodle-atto_accessibilityhelper-button",
                             "moodle-atto_html-button", function () {
                                 Y.M.editor_atto.Editor.init({
-                                    "elementid": me.element_id,
+                                    "elementid": me.container_id,
                                     "contextid": 1,
                                     "autosaveEnabled": true,
                                     "autosaveFrequency": "60",
@@ -203,13 +203,12 @@ define("qtype_omerocommon/moodle-attoeditor",
                     };
 
                     me.setText = function (text) {
-                        $("#" + me.element_id + "editable").html(text);
+                        $("#" + me.container_id + "editable").html(text);
                     };
 
                     me.getText = function () {
-                        return $("#" + me.element_id + "editable").html();
+                        return $("#" + me.container_id + "editable").html();
                     };
-
 
                     me.on = function (eventName, callback) {
                         me._yuiEditor.on(eventName, callback);
