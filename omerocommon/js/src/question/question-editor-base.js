@@ -138,6 +138,83 @@ define("qtype_omerocommon/question-editor-base",
                         this._editor[locale_string].onLanguageChanged(language);
                     }
                 };
+
+
+                /**
+                 * Updates the reference to the frame containing OmeroImageViewer
+                 *
+                 * @param frame_id
+                 * @returns {Element|*|omero_viewer_frame}
+                 * @private
+                 */
+                prototype.onViewerFrameLoaded = function (frame_id, visible_roi_list, frame_details) {
+                    var me = this;
+                    var omero_viewer_frame = document.getElementById(frame_id);
+                    if (!omero_viewer_frame) {
+                        throw ("Frame " + frame_id + " not found!!!");
+                    }
+                    // Registers a reference to the frame
+                    me._omero_viewer_frame = omero_viewer_frame;
+
+                    if (frame_details == undefined) {
+                        // Register the main listener for the 'omeroViewerInitialized' event
+                        me._omero_viewer_frame.contentWindow.addEventListener("omeroViewerInitialized", function (e) {
+                            me.onViewerFrameInitialized(frame_id, e.detail, visible_roi_list);
+                            console.log("OmeroImageViewer init loaded!!!");
+                        }, true);
+                    } else {
+                        me.onViewerFrameInitialized(frame_id, frame_details, visible_roi_list);
+                    }
+
+                    // Log message (for debugging)
+                    console.log("Frame Object Registered!!!");
+
+                    // enable chaining
+                    return me._omero_viewer_frame;
+                };
+
+
+                /**
+                 *
+                 * @param frame_id
+                 * @param frame_details
+                 * @param visible_roi_list
+                 */
+                prototype.onViewerFrameInitialized = function (frame_id, image_details, visible_roi_list) {
+                    var me = this;
+                    me.current_image_info = image_details;
+                    me._registerFrameWindowEventHandlers(frame_id);
+                    me._image_viewer_controller.getModel().addEventListener(me);
+                };
+
+
+                /**
+                 * Register listeners for events triggered
+                 * by the frame identified by 'frame_id'
+                 *
+                 * @param frame_id
+                 * @private
+                 */
+                prototype._registerFrameWindowEventHandlers = function (frame_id) {
+                    var me = this;
+                    var omero_viewer_frame = document.getElementById(frame_id);
+                    if (!omero_viewer_frame) {
+                        throw EventException("Frame " + frame_id + " not found!!!");
+                    }
+
+                    // Registers a reference to the frame
+                    me._omero_viewer_frame = omero_viewer_frame;
+
+                    // Register a reference to the Omero Repository Controller
+                    var frameWindow = me._omero_viewer_frame.contentWindow;
+                    me._image_viewer_controller = frameWindow.omero_repository_image_viewer_controller;
+
+                    // Adds listeners
+                    var frameWindow = omero_viewer_frame.contentWindow;
+                    frameWindow.addEventListener("roiShapeSelected", M.omero_multichoice_helper.roiShapeSelected);
+                    frameWindow.addEventListener("roiShapeDeselected", M.omero_multichoice_helper.roiShapeDeselected);
+                    frameWindow.addEventListener("roiVisibilityChanged", M.omero_multichoice_helper.roiVisibilityChanged);
+                };
             }
         };
     }
