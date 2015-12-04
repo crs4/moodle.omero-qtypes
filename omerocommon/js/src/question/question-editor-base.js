@@ -17,6 +17,31 @@ define("qtype_omerocommon/question-editor-base",
         // Private functions.
 
 
+        // A reference to the languageSelector
+        var language_selector = $("#id_question_language");
+
+        /**
+         * Initializes the list of supported languages
+         * and sets the currently selected language
+         *
+         * @private
+         */
+        var _supported_languages = function () {
+
+            // initializes the list of supported languages
+            var supported_languages = [];
+            var language_selector = document.forms[0].elements["question_language"];
+            var language_options = language_selector.options;
+            for (var i = 0; i < language_options.length; i++) {
+                supported_languages.push(language_options[i].value);
+            }
+
+            // handles the event 'language changed'
+            //document.forms[0].elements["question_language"].onchange = me._updateCurrentLanguage;
+            return supported_languages;
+        }();
+
+
         // Public functions
         return {
             initialize: function (str) {
