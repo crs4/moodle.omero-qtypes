@@ -79,6 +79,9 @@ class qtype_omerocommon_edit_form extends qtype_multichoice_edit_form
         // tags section
         $this->define_tags_section();
 
+        // hidden fields
+        $this->define_hidden_fields();
+
         // controls
         $this->define_update_and_preview_controls();
     }
@@ -395,6 +398,18 @@ class qtype_omerocommon_edit_form extends qtype_multichoice_edit_form
         }
     }
 
+
+    protected function define_hidden_fields(){
+        $mform = $this->_form;
+        // default hidden fields
+        $this->add_hidden_fields();
+
+        $mform->addElement('hidden', 'qtype');
+        $mform->setType('qtype', PARAM_ALPHA);
+
+        $mform->addElement('hidden', 'makecopy');
+        $mform->setType('makecopy', PARAM_INT);
+    }
 
     /**
      * Define the form for editing the question
