@@ -118,12 +118,6 @@ class qtype_omerocommon_edit_form extends qtype_multichoice_edit_form
             array('rows' => 15), $this->editoroptions);
         $mform->setType('questiontext', PARAM_RAW);
         $mform->addRule('questiontext', null, 'required', null, 'client');
-
-        // general feedback
-        $mform->addElement('editor', 'generalfeedback', get_string('generalfeedback', 'question'),
-            array('rows' => 10), $this->editoroptions);
-        $mform->setType('generalfeedback', PARAM_RAW);
-        $mform->addHelpButton('generalfeedback', 'generalfeedback', 'question');
     }
 
 
@@ -310,14 +304,51 @@ class qtype_omerocommon_edit_form extends qtype_multichoice_edit_form
 
 
     /**
-     * Defines a shared section to edit combined feedback
+     * Defines a shared section to edit general and combined feedback
      */
     protected function define_feedback_section(){
         $mform = $this->_form;
+
+        // header
+        $mform->addElement('header', 'feedbackheader', get_string('general_and_combined_feedback', 'qtype_omerocommon'));
+
+        // general feedback
+        $mform->addElement('editor', 'generalfeedback', get_string('generalfeedback', 'question'),
+            array('rows' => 10), $this->editoroptions);
+        $mform->setType('generalfeedback', PARAM_RAW);
+        $mform->addHelpButton('generalfeedback', 'generalfeedback', 'question');
+
+        // combined feedback
         $this->add_combined_feedback_fields(true);
         $mform->disabledIf('shownumcorrect', 'single', 'eq', 1);
     }
 
+    /**
+     * Overrides the corresponding method of the base class
+     * to hide delete the default section header
+     *
+     * @param bool|false $withshownumpartscorrect
+     * @throws coding_exception
+     */
+    protected function add_combined_feedback_fields($withshownumpartscorrect = false) {
+        $mform = $this->_form;
+        $fields = array('correctfeedback', 'partiallycorrectfeedback', 'incorrectfeedback');
+        foreach ($fields as $feedbackname) {
+            $element = $mform->addElement('editor', $feedbackname,
+                get_string($feedbackname, 'question'),
+                array('rows' => 5), $this->editoroptions);
+            $mform->setType($feedbackname, PARAM_RAW);
+            // Using setValue() as setDefault() does not work for the editor class.
+            $element->setValue(array('text' => get_string($feedbackname.'default', 'question')));
+
+            if ($withshownumpartscorrect && $feedbackname == 'partiallycorrectfeedback') {
+                $mform->addElement('advcheckbox', 'shownumcorrect',
+                    get_string('options', 'question'),
+                    get_string('shownumpartscorrectwhenfinished', 'question'));
+                $mform->setDefault('shownumcorrect', true);
+            }
+        }
+    }
         // Any questiontype specific fields.
         $this->definition_inner($mform);
 
