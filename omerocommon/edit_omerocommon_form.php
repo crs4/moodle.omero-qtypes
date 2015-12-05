@@ -63,10 +63,57 @@ class qtype_omerocommon_edit_form extends qtype_multichoice_edit_form
         $qtype = $this->qtype();
         $langfile = "qtype_{$qtype}";
 
+
+    /**
+     * Defines the general section of the question editor
+     *
+     * @throws coding_exception
+     */
+    protected function define_general_section()
+    {
+        global $COURSE, $CFG, $DB, $PAGE;
         $mform = $this->_form;
 
-        // Standard fields at the start of the form.
+        // header
         $mform->addElement('header', 'generalheader', get_string("general", 'form'));
+
+        // question category
+        $this->define_category_selector();
+
+        // language selector
+        $languages = array();
+        $languages += get_string_manager()->get_list_of_translations();
+        $mform->addElement('select', 'question_language',
+            get_string('language', 'qtype_omerocommon'), $languages,
+            array("class" => "question-language-selector"));
+        $mform->setDefault('lang', current_language());
+
+        // question name
+        $mform->addElement('text', 'name', get_string('questionname', 'question'),
+            array('size' => 50, 'maxlength' => 255));
+        $mform->setType('name', PARAM_TEXT);
+        $mform->addRule('name', null, 'required', null, 'client');
+
+        // question text
+        $mform->addElement('editor', 'questiontext', get_string('questiontext', 'question'),
+            array('rows' => 15), $this->editoroptions);
+        $mform->setType('questiontext', PARAM_RAW);
+        $mform->addRule('questiontext', null, 'required', null, 'client');
+
+        // default mark
+        $mform->addElement('text', 'defaultmark', get_string('defaultmark', 'question'),
+            array('size' => 7));
+        $mform->setType('defaultmark', PARAM_FLOAT);
+        $mform->setDefault('defaultmark', 1);
+        $mform->addRule('defaultmark', null, 'required', null, 'client');
+
+        // general feedback
+        $mform->addElement('editor', 'generalfeedback', get_string('generalfeedback', 'question'),
+            array('rows' => 10), $this->editoroptions);
+        $mform->setType('generalfeedback', PARAM_RAW);
+        $mform->addHelpButton('generalfeedback', 'generalfeedback', 'question');
+    }
+
 
     /**
      * Defines the category selector
