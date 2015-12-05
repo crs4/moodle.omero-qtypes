@@ -72,6 +72,9 @@ class qtype_omerocommon_edit_form extends qtype_multichoice_edit_form
 
         // feedback section
         $this->define_feedback_section();
+
+        // interactive settings
+        $this->add_interactive_settings(true, true);
     }
 
 
