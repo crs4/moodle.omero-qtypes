@@ -60,8 +60,9 @@ class qtype_omerocommon_edit_form extends qtype_multichoice_edit_form
     {
         global $COURSE, $CFG, $DB, $PAGE;
 
-        $qtype = $this->qtype();
-        $langfile = "qtype_{$qtype}";
+        // general section
+        $this->define_general_section();
+    }
 
 
     /**
