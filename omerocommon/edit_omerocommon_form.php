@@ -79,6 +79,8 @@ class qtype_omerocommon_edit_form extends qtype_multichoice_edit_form
         // tags section
         $this->define_tags_section();
 
+        // controls
+        $this->define_update_and_preview_controls();
     }
 
 
@@ -335,6 +337,15 @@ class qtype_omerocommon_edit_form extends qtype_multichoice_edit_form
         }
     }
 
+
+    /**
+     * Defines a set of controls to save the question
+     *
+     * @throws coding_exception
+     */
+    protected function define_update_and_preview_controls(){
+        global $DB, $PAGE;
+        $mform = $this->_form;
         if (!empty($this->question->id)) {
             $mform->addElement('header', 'createdmodifiedheader',
                 get_string('createdmodifiedheader', 'question'));
@@ -359,27 +370,23 @@ class qtype_omerocommon_edit_form extends qtype_multichoice_edit_form
             }
         }
 
-        $this->add_hidden_fields();
-
-        $mform->addElement('hidden', 'qtype');
-        $mform->setType('qtype', PARAM_ALPHA);
-
-        $mform->addElement('hidden', 'makecopy');
-        $mform->setType('makecopy', PARAM_INT);
-
-        $buttonarray = array();
-        $buttonarray[] = $mform->createElement('submit', 'updatebutton',
-            get_string('savechangesandcontinueediting', 'question'));
+        // if a preview is available generates the corresponding link
         if ($this->can_preview()) {
             $previewlink = $PAGE->get_renderer('core_question')->question_preview_link(
                 $this->question->id, $this->context, true);
             $buttonarray[] = $mform->createElement('static', 'previewlink', '', $previewlink);
+            $mform->addGroup($buttonarray, 'updatebuttonar', '', array(' '), false);
+            $mform->closeHeaderBefore('updatebuttonar');
         }
 
-        $mform->addGroup($buttonarray, 'updatebuttonar', '', array(' '), false);
-        $mform->closeHeaderBefore('updatebuttonar');
-
-        $this->add_action_buttons(true, get_string('savechanges'));
+        // defines the set of control buttons
+        $buttonarray=array();
+        $buttonarray[] = $mform->createElement('submit', 'updatebutton',
+            get_string('savechangesandcontinueediting', 'qtype_omerocommon'));
+        $buttonarray[] = &$mform->createElement('submit', 'submitbutton', get_string('savechangesandexit', "qtype_omerocommon"));
+        $buttonarray[] = &$mform->createElement('cancel');
+        $mform->addGroup($buttonarray, 'buttonar', '', array(' '), false);
+        $mform->closeHeaderBefore('buttonar');
 
         if ((!empty($this->question->id)) && (!($this->question->formoptions->canedit ||
                 $this->question->formoptions->cansaveasnew))
