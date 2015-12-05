@@ -202,7 +202,8 @@ class qtype_omerocommon_edit_form extends qtype_multichoice_edit_form
      *
      * @throws coding_exception
      */
-    protected function define_answer_options_properties_section(){
+    protected function define_answer_options_properties_section()
+    {
         global $PAGE, $OUTPUT;
         $mform = $this->_form;
 
@@ -266,7 +267,8 @@ class qtype_omerocommon_edit_form extends qtype_multichoice_edit_form
      * @throws coding_exception
      * @throws dml_exception
      */
-    protected function define_image_and_roi_viewer(){
+    protected function define_image_and_roi_viewer()
+    {
         $mform = $this->_form;
         // header
         $mform->addElement('header', 'omeroimageheader',
@@ -285,7 +287,8 @@ class qtype_omerocommon_edit_form extends qtype_multichoice_edit_form
     /**
      * Defines a shared section to edit general and combined feedback
      */
-    protected function define_feedback_section(){
+    protected function define_feedback_section()
+    {
         $mform = $this->_form;
 
         // header
@@ -309,7 +312,8 @@ class qtype_omerocommon_edit_form extends qtype_multichoice_edit_form
      * @param bool|false $withshownumpartscorrect
      * @throws coding_exception
      */
-    protected function add_combined_feedback_fields($withshownumpartscorrect = false) {
+    protected function add_combined_feedback_fields($withshownumpartscorrect = false)
+    {
         $mform = $this->_form;
         $fields = array('correctfeedback', 'partiallycorrectfeedback', 'incorrectfeedback');
         foreach ($fields as $feedbackname) {
@@ -318,7 +322,7 @@ class qtype_omerocommon_edit_form extends qtype_multichoice_edit_form
                 array('rows' => 5), $this->editoroptions);
             $mform->setType($feedbackname, PARAM_RAW);
             // Using setValue() as setDefault() does not work for the editor class.
-            $element->setValue(array('text' => get_string($feedbackname.'default', 'question')));
+            $element->setValue(array('text' => get_string($feedbackname . 'default', 'question')));
 
             if ($withshownumpartscorrect && $feedbackname == 'partiallycorrectfeedback') {
                 $mform->addElement('advcheckbox', 'shownumcorrect',
@@ -334,7 +338,8 @@ class qtype_omerocommon_edit_form extends qtype_multichoice_edit_form
      *
      * @throws coding_exception
      */
-    protected function define_tags_section(){
+    protected function define_tags_section()
+    {
         global $CFG;
         $mform = $this->_form;
         if (!empty($CFG->usetags)) {
@@ -350,7 +355,8 @@ class qtype_omerocommon_edit_form extends qtype_multichoice_edit_form
      *
      * @throws coding_exception
      */
-    protected function define_update_and_preview_controls(){
+    protected function define_update_and_preview_controls()
+    {
         global $DB, $PAGE;
         $mform = $this->_form;
         if (!empty($this->question->id)) {
@@ -387,7 +393,7 @@ class qtype_omerocommon_edit_form extends qtype_multichoice_edit_form
         }
 
         // defines the set of control buttons
-        $buttonarray=array();
+        $buttonarray = array();
         $buttonarray[] = $mform->createElement('submit', 'updatebutton',
             get_string('savechangesandcontinueediting', 'qtype_omerocommon'));
         $buttonarray[] = &$mform->createElement('submit', 'submitbutton', get_string('savechangesandexit', "qtype_omerocommon"));
@@ -403,7 +409,8 @@ class qtype_omerocommon_edit_form extends qtype_multichoice_edit_form
     }
 
 
-    protected function define_hidden_fields(){
+    protected function define_hidden_fields()
+    {
         $mform = $this->_form;
         // default hidden fields
         $this->add_hidden_fields();
@@ -441,8 +448,6 @@ class qtype_omerocommon_edit_form extends qtype_multichoice_edit_form
         // Set the initial number of answers to 0; add answers one by one
         $this->add_per_answer_fields($mform, get_string('choiceno', 'qtype_multichoice', '{no}'),
             question_bank::fraction_options_full(), 4, 1);
-
-
 
 
         // Set the editing mode
