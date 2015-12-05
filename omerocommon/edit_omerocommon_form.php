@@ -29,6 +29,7 @@ defined('MOODLE_INTERNAL') || die();
 require_once($CFG->dirroot . '/question/type/omerocommon/question.php');
 require_once($CFG->dirroot . '/question/type/omerocommon/questiontype_base.php');
 require_once($CFG->dirroot . '/question/type/multichoice/edit_multichoice_form.php');
+require_once($CFG->dirroot . '/question/type/omerocommon/js/modules.php');
 
 /**
  * omeromultichoice question editing form definition.
