@@ -88,11 +88,13 @@ class qtype_omerocommon_edit_form extends qtype_multichoice_edit_form
     }
 
 
-    protected function set_form_requirements(){
+    protected function set_form_requirements()
+    {
         global $CFG, $PAGE;
         // CSS
         $PAGE->requires->css(new moodle_url("$CFG->wwwroot/question/type/omerocommon/css/common-question-editor.css"));
         // Javascript
+        init_js_modules("omerocommon");
     }
 
 
