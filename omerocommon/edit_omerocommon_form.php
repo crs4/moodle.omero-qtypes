@@ -252,6 +252,9 @@ class qtype_omerocommon_edit_form extends qtype_multichoice_edit_form
             get_string('answernumbering', 'qtype_multichoice'),
             qtype_multichoice::get_numbering_styles());
         $mform->setDefault('answernumbering', 'abc');
+
+        // set as expanded by default
+        $mform->setExpanded('answeroptionspropertiesheader');
     }
 
         $mform->addElement('editor', 'generalfeedback', get_string('generalfeedback', 'question'),
