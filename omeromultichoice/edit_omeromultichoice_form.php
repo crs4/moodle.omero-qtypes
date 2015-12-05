@@ -58,23 +58,6 @@ class qtype_omeromultichoice_edit_form extends qtype_multichoice_edit_form
     {
         global $COURSE, $CFG, $DB, $PAGE;
 
-        $PAGE->requires->jquery();
-        $PAGE->requires->jquery_plugin('ui');
-        $PAGE->requires->jquery_plugin('ui-css');
-
-        $PAGE->requires->jquery_plugin("bootstrap", "qtype_omerocommon");
-        $PAGE->requires->jquery_plugin("bootstrap-table", "qtype_omerocommon");
-        $PAGE->requires->jquery_plugin("dragtable", "qtype_omerocommon");
-//        $PAGE->requires->jquery_plugin("dataTables", "qtype_omeromultichoice");
-
-
-        $module = array(
-            'name' => 'htmlt_utils',
-            'fullpath' => '/question/type/omerocommon/js/src/html-utils.js',
-            'requires' => array());
-        $PAGE->requires->js_init_call('M.omero_multichoice_html_utils.init', array(), true, $module);
-
-
         $qtype = $this->qtype();
         $langfile = "qtype_{$qtype}";
 
@@ -234,6 +217,27 @@ class qtype_omeromultichoice_edit_form extends qtype_multichoice_edit_form
     {
         global $PAGE, $OUTPUT;
 
+        $module = array(
+            'name' => 'omero_multichoice_helper',
+            'fullpath' => '/question/type/omeromultichoice/js/question-helper.js',
+            'requires' => array('omemultichoice_qtype', 'node', 'node-event-simulate', 'core_dndupload'));
+        $PAGE->requires->js_init_call('M.omero_multichoice_helper.init', array(), true, $module);
+
+
+        $mform->addElement('omerofilepicker', 'omeroimagefilereference', get_string('file'), null,
+            array('maxbytes' => 2048, 'accepted_types' => array('*'),
+                'return_types' => array(FILE_EXTERNAL),
+                'omero_image_server' => get_config('omero', 'omero_restendpoint'))
+        );
+
+        if ((isset($_REQUEST['answertype'])
+                && $_REQUEST['answertype'] == qtype_omeromultichoice::ROI_BASED_ANSWERS) ||
+            (isset($this->question->options)
+                && $this->question->options->answertype == qtype_omeromultichoice::ROI_BASED_ANSWERS)
+        ) {
+            $mform->addElement("button", "add-roi-answer",
+                get_string("add_roi_answer", "qtype_omeromultichoice"));
+        }
 
         $menu = array(
             get_string('answersingleno', 'qtype_omeromultichoice'),
@@ -264,38 +268,6 @@ class qtype_omeromultichoice_edit_form extends qtype_multichoice_edit_form
             get_string('answernumbering', 'qtype_multichoice'),
             qtype_multichoice::get_numbering_styles());
         $mform->setDefault('answernumbering', 'abc');
-
-
-
-        $mform->addElement('html', '<div style="margin-top: 50px"></div>');
-        $mform->addElement('header', 'omeroimageheader',
-            get_string('omero_image_and_rois', 'qtype_omeromultichoice'), '');
-        $mform->setExpanded('omeroimageheader', 1);
-
-
-
-        $module = array(
-            'name' => 'omero_multichoice_question_helper',
-            'fullpath' => '/question/type/omeromultichoice/js/question-helper.js',
-            'requires' => array('omemultichoice_qtype', 'node', 'node-event-simulate', 'core_dndupload'));
-        $PAGE->requires->js_init_call('M.omero_multichoice_helper.init', array(), true, $module);
-
-        $mform->addElement('omerofilepicker', 'omeroimagefilereference', " ", null,
-            array('maxbytes' => 2048, 'accepted_types' => array('*'),
-                'show_roi_table' => true,
-                'omero_image_server' => get_config('omero', 'omero_restendpoint'),
-                'return_types' => array(FILE_EXTERNAL)
-            )
-        );
-
-        if ((isset($_REQUEST['answertype'])
-                && $_REQUEST['answertype'] == qtype_omeromultichoice::ROI_BASED_ANSWERS) ||
-            (isset($this->question->options)
-                && $this->question->options->answertype == qtype_omeromultichoice::ROI_BASED_ANSWERS)
-        ) {
-            $mform->addElement("button", "add-roi-answer",
-                get_string("add_roi_answer", "qtype_omeromultichoice"));
-        }
 
         // Set the initial number of answers to 0; add answers one by one
         $this->add_per_answer_fields($mform, get_string('choiceno', 'qtype_multichoice', '{no}'),
@@ -600,7 +572,7 @@ class qtype_omeromultichoice_edit_form extends qtype_multichoice_edit_form
                         }
                         if (isset($answer_lang[$i]) && !empty($answer_lang[$i])) {
                             // removes YUI ids
-                            $txt = preg_replace('/id="([^"]+)"/i', "", $answer_lang[$i]);
+                            $txt = preg_replace('/id="([^"]+)"/i', "",  $answer_lang[$i]);
                             $answer[$i]["text"] .= '<span class="multilang" lang="' . $lang_id . '">' . $txt . '</span>';
                         }
                     }
@@ -678,9 +650,10 @@ class qtype_omeromultichoice_edit_form extends qtype_multichoice_edit_form
     private function DOMinnerHTML(DOMNode $element)
     {
         $innerHTML = "";
-        $children = $element->childNodes;
+        $children  = $element->childNodes;
 
-        foreach ($children as $child) {
+        foreach ($children as $child)
+        {
             $innerHTML .= $element->ownerDocument->saveHTML($child);
         }
 
@@ -999,4 +972,3 @@ class qtype_omeromultichoice_edit_form extends qtype_multichoice_edit_form
         return $repeats;
     }
 }
-

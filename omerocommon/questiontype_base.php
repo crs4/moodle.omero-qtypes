@@ -64,9 +64,9 @@ class qtype_omerocommon extends qtype_multichoice
     {
         question_bank::load_question_definition_classes($this->name());
         if ($questiondata->options->single) {
-            $class = 'qtype_omeromultichoice_single_question';
+            $class = 'qtype_omerocommon_single_question';
         } else {
-            $class = 'qtype_omeromultichoice_multi_question';
+            $class = 'qtype_omerocommon_multi_question';
         }
         return new $class();
     }
@@ -149,7 +149,7 @@ class qtype_omerocommon extends qtype_multichoice
         if (!$options) {
             $options = new stdClass();
             $options->questionid = $question->id;
-            $options->answertype = qtype_omeromultichoice::PLAIN_ANSWERS;
+            $options->answertype = qtype_omerocommon::PLAIN_ANSWERS;
             $options->omeroimageurl = '';
             $options->correctfeedback = '';
             $options->partiallycorrectfeedback = '';
@@ -218,7 +218,7 @@ class qtype_omerocommon extends qtype_multichoice
         if(!empty($questiondata->options->answertype)) {
             $question->answertype = $questiondata->options->answertype;
         } else {
-            $question->answertype = qtype_omeromultichoice::PLAIN_ANSWERS;
+            $question->answertype = qtype_omerocommon::PLAIN_ANSWERS;
         }
     }
 
@@ -239,6 +239,6 @@ class qtype_omerocommon extends qtype_multichoice
      * @return array
      */
     public static function get_question_types(){
-        return array(qtype_omeromultichoice::PLAIN_ANSWERS, qtype_omeromultichoice::ROI_BASED_ANSWERS);
+        return array(qtype_omerocommon::PLAIN_ANSWERS, qtype_omerocommon::ROI_BASED_ANSWERS);
     }
 }
