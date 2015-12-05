@@ -37,6 +37,8 @@ So the student can enter a numeric or short text answer or choose an answer or a
 
 $string['answer_options_properties'] = 'Properties of answer options';
 
+$string['general_and_combined_feedback'] = 'General and combined feedback';
+
 
 $string['add_roi_answer'] = 'Add new ROI answer';
 
