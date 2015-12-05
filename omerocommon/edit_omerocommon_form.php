@@ -75,6 +75,10 @@ class qtype_omerocommon_edit_form extends qtype_multichoice_edit_form
 
         // interactive settings
         $this->add_interactive_settings(true, true);
+
+        // tags section
+        $this->define_tags_section();
+
     }
 
 
@@ -355,10 +359,19 @@ class qtype_omerocommon_edit_form extends qtype_multichoice_edit_form
         // Any questiontype specific fields.
         $this->definition_inner($mform);
 
+    /**
+     * Defines the tags section
+     *
+     * @throws coding_exception
+     */
+    protected function define_tags_section(){
+        global $CFG;
+        $mform = $this->_form;
         if (!empty($CFG->usetags)) {
             $mform->addElement('header', 'tagsheader', get_string('tags'));
             $mform->addElement('tags', 'tags', get_string('tags'));
         }
+    }
 
         if (!empty($this->question->id)) {
             $mform->addElement('header', 'createdmodifiedheader',
