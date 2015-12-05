@@ -68,13 +68,23 @@ class qtype_omerocommon_edit_form extends qtype_multichoice_edit_form
         // Standard fields at the start of the form.
         $mform->addElement('header', 'generalheader', get_string("general", 'form'));
 
+    /**
+     * Defines the category selector
+     *
+     * @throws coding_exception
+     */
+    protected function define_category_selector()
+    {
+        global $COURSE, $CFG, $DB, $PAGE;
+        $mform = $this->_form;
+        $qtype = $this->qtype();
+
         if (!isset($this->question->id)) {
             if (!empty($this->question->formoptions->mustbeusable)) {
                 $contexts = $this->contexts->having_add_and_use();
             } else {
                 $contexts = $this->contexts->having_cap('moodle/question:add');
             }
-
             // Adding question.
             $mform->addElement('questioncategory', 'category', get_string('category', 'question'),
                 array('contexts' => $contexts));
@@ -116,6 +126,7 @@ class qtype_omerocommon_edit_form extends qtype_multichoice_edit_form
                 $mform->disabledIf('categorymoveto', 'usecurrentcat', 'checked');
             }
         }
+    }
 
         // Choose language section
         $languages = array();
