@@ -124,7 +124,7 @@ class qtype_omerocommon_edit_form extends qtype_multichoice_edit_form
 
         // question name
         $mform->addElement('text', 'name', get_string('questionname', 'question'),
-            array('size' => 50, 'maxlength' => 255));
+            array('size' => 50, 'maxlength' => 255, "style" => "width: 98%;"));
         $mform->setType('name', PARAM_TEXT);
         $mform->addRule('name', null, 'required', null, 'client');
 
