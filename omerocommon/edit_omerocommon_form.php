@@ -188,19 +188,7 @@ class qtype_omerocommon_edit_form extends qtype_multichoice_edit_form
         }
     }
 
-        // Choose language section
-        $languages = array();
-        $languages += get_string_manager()->get_list_of_translations();
-        $mform->addElement('select', 'question_language',
-            get_string('language', 'qtype_omerocommon'), $languages,
-            array("class" => "question-language-selector"));
-        $mform->setDefault('lang', current_language());
 
-        // Question Text
-        $mform->addElement('text', 'name', get_string('questionname', 'question'),
-            array('size' => 50, 'maxlength' => 255));
-        $mform->setType('name', PARAM_TEXT);
-        $mform->addRule('name', null, 'required', null, 'client');
     /**
      * Defines the section to set the properties of the answer options
      *
@@ -213,15 +201,6 @@ class qtype_omerocommon_edit_form extends qtype_multichoice_edit_form
         // header
         $mform->addElement('header', 'answeroptionspropertiesheader',
             get_string("answer_options_properties", 'qtype_omerocommon'));
-
-        if ((isset($_REQUEST['answertype'])
-                && $_REQUEST['answertype'] == qtype_omerocommon::ROI_BASED_ANSWERS) ||
-            (isset($this->question->options)
-                && $this->question->options->answertype == qtype_omerocommon::ROI_BASED_ANSWERS)
-        ) {
-            $mform->addElement("button", "add-roi-answer",
-                get_string("add_roi_answer", "qtype_omerocommon"));
-        }
 
         // selector to allow single or multi answers
         $menu = array(
@@ -270,25 +249,10 @@ class qtype_omerocommon_edit_form extends qtype_multichoice_edit_form
         );
         $mform->setDefault('answertype', qtype_omerocommon::PLAIN_ANSWERS);
 
-
-        $mform->addElement('advcheckbox', 'shuffleanswers',
-            get_string('shuffleanswers', 'qtype_multichoice'), null, null, array(0, 1));
-        $mform->addHelpButton('shuffleanswers', 'shuffleanswers', 'qtype_multichoice');
-        $mform->setDefault('shuffleanswers', 1);
-
-        $mform->addElement('select', 'answernumbering',
-            get_string('answernumbering', 'qtype_multichoice'),
-            qtype_multichoice::get_numbering_styles());
-        $mform->setDefault('answernumbering', 'abc');
-
         // set as expanded by default
         $mform->setExpanded('answeroptionspropertiesheader');
     }
 
-        $mform->addElement('editor', 'generalfeedback', get_string('generalfeedback', 'question'),
-            array('rows' => 10), $this->editoroptions);
-        $mform->setType('generalfeedback', PARAM_RAW);
-        $mform->addHelpButton('generalfeedback', 'generalfeedback', 'question');
 
     /**
      * @throws coding_exception
@@ -356,8 +320,6 @@ class qtype_omerocommon_edit_form extends qtype_multichoice_edit_form
             }
         }
     }
-        // Any questiontype specific fields.
-        $this->definition_inner($mform);
 
     /**
      * Defines the tags section
@@ -449,54 +411,13 @@ class qtype_omerocommon_edit_form extends qtype_multichoice_edit_form
                 'omero_image_server' => get_config('omero', 'omero_restendpoint'))
         );
 
-        if ((isset($_REQUEST['answertype'])
-                && $_REQUEST['answertype'] == qtype_omerocommon::ROI_BASED_ANSWERS) ||
-            (isset($this->question->options)
-                && $this->question->options->answertype == qtype_omerocommon::ROI_BASED_ANSWERS)
-        ) {
-            $mform->addElement("button", "add-roi-answer",
-                get_string("add_roi_answer", "qtype_omerocommon"));
-        }
-
-        $menu = array(
-            get_string('answersingleno', 'qtype_omerocommon'),
-            get_string('answersingleyes', 'qtype_omerocommon'),
-        );
-        $mform->addElement('select', 'single',
-            get_string('answerhowmany', 'qtype_omerocommon'), $menu);
-        $mform->setDefault('single', 1);
-
-        // Set answer types and the related selector
-        $answer_type_menu = array();
-        foreach (qtype_omerocommon::get_question_types() as $type) {
-            array_push($answer_type_menu, get_string("qtype_$type", 'qtype_omerocommon'));
-        }
-        $mform->addElement('select', 'answertype',
-            get_string('answer_type', 'qtype_omerocommon'), $answer_type_menu,
-            array("onchange" => "M.omero_multichoice_helper._on_question_type_changed()")
-        );
-        $mform->setDefault('answertype', qtype_omerocommon::PLAIN_ANSWERS);
-
-
-        $mform->addElement('advcheckbox', 'shuffleanswers',
-            get_string('shuffleanswers', 'qtype_multichoice'), null, null, array(0, 1));
-        $mform->addHelpButton('shuffleanswers', 'shuffleanswers', 'qtype_multichoice');
-        $mform->setDefault('shuffleanswers', 1);
-
-        $mform->addElement('select', 'answernumbering',
-            get_string('answernumbering', 'qtype_multichoice'),
-            qtype_multichoice::get_numbering_styles());
-        $mform->setDefault('answernumbering', 'abc');
 
         // Set the initial number of answers to 0; add answers one by one
         $this->add_per_answer_fields($mform, get_string('choiceno', 'qtype_multichoice', '{no}'),
             question_bank::fraction_options_full(), 4, 1);
 
-        $this->add_combined_feedback_fields(true);
-        $mform->disabledIf('shownumcorrect', 'single', 'eq', 1);
 
-        // default interactive settings
-        $this->add_interactive_settings(true, true);
+
 
         // Set the editing mode
         $mform->setType("editing_mode", PARAM_BOOL);
@@ -791,7 +712,7 @@ class qtype_omerocommon_edit_form extends qtype_multichoice_edit_form
                         }
                         if (isset($answer_lang[$i]) && !empty($answer_lang[$i])) {
                             // removes YUI ids
-                            $txt = preg_replace('/id="([^"]+)"/i', "",  $answer_lang[$i]);
+                            $txt = preg_replace('/id="([^"]+)"/i', "", $answer_lang[$i]);
                             $answer[$i]["text"] .= '<span class="multilang" lang="' . $lang_id . '">' . $txt . '</span>';
                         }
                     }
@@ -869,10 +790,9 @@ class qtype_omerocommon_edit_form extends qtype_multichoice_edit_form
     private function DOMinnerHTML(DOMNode $element)
     {
         $innerHTML = "";
-        $children  = $element->childNodes;
+        $children = $element->childNodes;
 
-        foreach ($children as $child)
-        {
+        foreach ($children as $child) {
             $innerHTML .= $element->ownerDocument->saveHTML($child);
         }
 
