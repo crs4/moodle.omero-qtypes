@@ -24,12 +24,12 @@ $plugins = array(
         )
     ),
 
-    'dragtable' => array(
-        'files' => array(
-            "dragtable/jquery.dragtable.js",
-            "dragtable/dragtable.css"
-        )
-    ),
+//    'dragtable' => array(
+//        'files' => array(
+//            "dragtable/jquery.dragtable.js",
+//            "dragtable/dragtable.css"
+//        )
+//    ),
 
     'bootstrap-table' => array(
         'files' => array(
