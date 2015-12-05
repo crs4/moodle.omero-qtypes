@@ -69,6 +69,9 @@ class qtype_omerocommon_edit_form extends qtype_multichoice_edit_form
 
         // image viewer and ROI inspector
         $this->define_image_and_roi_viewer();
+
+        // feedback section
+        $this->define_feedback_section();
     }
 
 
@@ -305,6 +308,15 @@ class qtype_omerocommon_edit_form extends qtype_multichoice_edit_form
         $mform->setExpanded('omeroimageheader');
     }
 
+
+    /**
+     * Defines a shared section to edit combined feedback
+     */
+    protected function define_feedback_section(){
+        $mform = $this->_form;
+        $this->add_combined_feedback_fields(true);
+        $mform->disabledIf('shownumcorrect', 'single', 'eq', 1);
+    }
 
         // Any questiontype specific fields.
         $this->definition_inner($mform);
