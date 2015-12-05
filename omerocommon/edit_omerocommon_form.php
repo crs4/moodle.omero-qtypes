@@ -116,13 +116,6 @@ class qtype_omerocommon_edit_form extends qtype_multichoice_edit_form
         $mform->setType('questiontext', PARAM_RAW);
         $mform->addRule('questiontext', null, 'required', null, 'client');
 
-        // default mark
-        $mform->addElement('text', 'defaultmark', get_string('defaultmark', 'question'),
-            array('size' => 7));
-        $mform->setType('defaultmark', PARAM_FLOAT);
-        $mform->setDefault('defaultmark', 1);
-        $mform->addRule('defaultmark', null, 'required', null, 'client');
-
         // general feedback
         $mform->addElement('editor', 'generalfeedback', get_string('generalfeedback', 'question'),
             array('rows' => 10), $this->editoroptions);
@@ -233,6 +226,13 @@ class qtype_omerocommon_edit_form extends qtype_multichoice_edit_form
         $mform->addElement('select', 'single',
             get_string('answerhowmany', 'qtype_omerocommon'), $menu);
         $mform->setDefault('single', 1);
+
+        // default mark
+        $mform->addElement('text', 'defaultmark', get_string('defaultmark', 'question'),
+            array('size' => 7));
+        $mform->setType('defaultmark', PARAM_FLOAT);
+        $mform->setDefault('defaultmark', 1);
+        $mform->addRule('defaultmark', null, 'required', null, 'client');
 
         // Set answer types and the related selector
         $answer_type_menu = array();
