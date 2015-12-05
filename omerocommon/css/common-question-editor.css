@@ -1,0 +1,5 @@
+
+
+body[id^=page-question-type-omero] fieldset[id*=id_]{
+    margin-top: 20px;
+}
