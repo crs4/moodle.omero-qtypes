@@ -199,7 +199,7 @@ class qtype_omerocommon_edit_form extends qtype_multichoice_edit_form
         $mform->addRule('name', null, 'required', null, 'client');
     /**
      * Defines the section to set the properties of the answer options
-     * 
+     *
      * @throws coding_exception
      */
     protected function define_answer_options_properties_section(){
@@ -219,6 +219,7 @@ class qtype_omerocommon_edit_form extends qtype_multichoice_edit_form
                 get_string("add_roi_answer", "qtype_omerocommon"));
         }
 
+        // selector to allow single or multi answers
         $menu = array(
             get_string('answersingleno', 'qtype_omerocommon'),
             get_string('answersingleyes', 'qtype_omerocommon'),
@@ -227,6 +228,12 @@ class qtype_omerocommon_edit_form extends qtype_multichoice_edit_form
             get_string('answerhowmany', 'qtype_omerocommon'), $menu);
         $mform->setDefault('single', 1);
 
+        // how to number answer options
+        $mform->addElement('select', 'answernumbering',
+            get_string('answernumbering', 'qtype_multichoice'),
+            qtype_multichoice::get_numbering_styles());
+        $mform->setDefault('answernumbering', 'abc');
+
         // default mark
         $mform->addElement('text', 'defaultmark', get_string('defaultmark', 'question'),
             array('size' => 7));
@@ -234,7 +241,21 @@ class qtype_omerocommon_edit_form extends qtype_multichoice_edit_form
         $mform->setDefault('defaultmark', 1);
         $mform->addRule('defaultmark', null, 'required', null, 'client');
 
+        // flag to set the shuffling of answer options
+        $mform->addElement('advcheckbox', 'shuffleanswers',
+            get_string('shuffleanswers', 'qtype_multichoice'), null, null, array(0, 1));
+        $mform->addHelpButton('shuffleanswers', 'shuffleanswers', 'qtype_multichoice');
+        $mform->setDefault('shuffleanswers', 1);
+
         // Set answer types and the related selector
+        if ((isset($_REQUEST['answertype'])
+                && $_REQUEST['answertype'] == qtype_omerocommon::ROI_BASED_ANSWERS) ||
+            (isset($this->question->options)
+                && $this->question->options->answertype == qtype_omerocommon::ROI_BASED_ANSWERS)
+        ) {
+            $mform->addElement("button", "add-roi-answer",
+                get_string("add_roi_answer", "qtype_omerocommon"));
+        }
         $answer_type_menu = array();
         foreach (qtype_omerocommon::get_question_types() as $type) {
             array_push($answer_type_menu, get_string("qtype_$type", 'qtype_omerocommon'));
