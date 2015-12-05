@@ -66,6 +66,9 @@ class qtype_omerocommon_edit_form extends qtype_multichoice_edit_form
 
         // answer properties
         $this->define_answer_options_properties_section();
+
+        // image viewer and ROI inspector
+        $this->define_image_and_roi_viewer();
     }
 
 
@@ -261,6 +264,26 @@ class qtype_omerocommon_edit_form extends qtype_multichoice_edit_form
             array('rows' => 10), $this->editoroptions);
         $mform->setType('generalfeedback', PARAM_RAW);
         $mform->addHelpButton('generalfeedback', 'generalfeedback', 'question');
+
+    /**
+     * @throws coding_exception
+     * @throws dml_exception
+     */
+    protected function define_image_and_roi_viewer(){
+        $mform = $this->_form;
+        // header
+        $mform->addElement('header', 'omeroimageheader',
+            get_string('omero_image_and_rois', 'qtype_omerocommon'));
+        // file picker
+        $mform->addElement('omerofilepicker', 'omeroimagefilereference', ' ', null,
+            array('maxbytes' => 2048, 'accepted_types' => array('*'),
+                'return_types' => array(FILE_EXTERNAL),
+                'omero_image_server' => get_config('omero', 'omero_restendpoint'))
+        );
+        // set as expanded by default
+        $mform->setExpanded('omeroimageheader');
+    }
+
 
         // Any questiontype specific fields.
         $this->definition_inner($mform);
