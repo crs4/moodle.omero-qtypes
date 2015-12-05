@@ -37,7 +37,7 @@ require_once($CFG->dirroot . '/question/type/omerocommon/js/modules.php');
  * @copyright  2015 CRS4
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later // FIXME: check the licence
  */
-class qtype_omerocommon_edit_form extends qtype_multichoice_edit_form
+abstract class qtype_omerocommon_edit_form extends qtype_multichoice_edit_form
 {
     private $localized_strings = array(
         "questiontext", "generalfeedback",
@@ -70,6 +70,9 @@ class qtype_omerocommon_edit_form extends qtype_multichoice_edit_form
 
         // image viewer and ROI inspector
         $this->define_image_and_roi_viewer();
+
+        // answer section
+        $this->define_answers_section();
 
         // feedback section
         $this->define_feedback_section();
@@ -283,6 +286,12 @@ class qtype_omerocommon_edit_form extends qtype_multichoice_edit_form
         $mform->setExpanded('omeroimageheader');
     }
 
+
+    /**
+     * Abstract method which defines the answers section
+     * @return mixed
+     */
+    protected abstract function define_answers_section();
 
     /**
      * Defines a shared section to edit general and combined feedback
