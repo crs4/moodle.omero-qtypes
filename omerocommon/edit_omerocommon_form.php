@@ -201,6 +201,11 @@ class qtype_omerocommon_edit_form extends qtype_multichoice_edit_form
             array('size' => 50, 'maxlength' => 255));
         $mform->setType('name', PARAM_TEXT);
         $mform->addRule('name', null, 'required', null, 'client');
+    /**
+     * Defines the section to set the properties of the answer options
+     * 
+     * @throws coding_exception
+     */
     protected function define_answer_options_properties_section(){
         global $PAGE, $OUTPUT;
         $mform = $this->_form;
