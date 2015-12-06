@@ -277,7 +277,7 @@ abstract class qtype_omerocommon_edit_form extends qtype_multichoice_edit_form
         $mform->addElement('header', 'omeroimageheader',
             get_string('omero_image_and_rois', 'qtype_omerocommon'));
         // file picker
-        $mform->addElement('omerofilepicker', 'omeroimagefilereference', ' ', null,
+        $mform->addElement('omerofilepicker', 'omeroimageurl', ' ', null,
             array('maxbytes' => 2048, 'accepted_types' => array('*'),
                 'return_types' => array(FILE_EXTERNAL),
                 'omero_image_server' => get_config('omero', 'omero_restendpoint'))
@@ -421,11 +421,12 @@ abstract class qtype_omerocommon_edit_form extends qtype_multichoice_edit_form
     protected function define_hidden_fields()
     {
         $mform = $this->_form;
+
         // default hidden fields
         $this->add_hidden_fields();
 
-        $mform->addElement('hidden', 'qtype');
-        $mform->setType('qtype', PARAM_ALPHA);
+        $mform->setType("visiblerois", PARAM_RAW);
+        $mform->addElement('hidden', 'visiblerois', 'none');
 
         $mform->addElement('hidden', 'makecopy');
         $mform->setType('makecopy', PARAM_INT);
