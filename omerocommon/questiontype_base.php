@@ -40,22 +40,7 @@ require_once($CFG->dirroot . '/question/type/multichoice/questiontype.php');
 abstract class qtype_omerocommon extends qtype_multichoice
 {
 
-    const PLAIN_ANSWERS = 0;
-    const ROI_BASED_ANSWERS = 1;
 
-//    public function move_files($questionid, $oldcontextid, $newcontextid) {
-//        parent::move_files($questionid, $oldcontextid, $newcontextid);
-//        $this->move_files_in_hints($questionid, $oldcontextid, $newcontextid);
-//    }
-//
-//    protected function delete_files($questionid, $contextid) {
-//        parent::delete_files($questionid, $contextid);
-//        $this->delete_files_in_hints($questionid, $contextid);
-//    }
-//
-//    public function save_question_options($question) {
-//        $this->save_hints($question);
-//    }
 
 
 
@@ -148,7 +133,6 @@ abstract class qtype_omerocommon extends qtype_multichoice
         if (!$options) {
             $options = new stdClass();
             $options->questionid = $question->id;
-            $options->answertype = qtype_omerocommon::PLAIN_ANSWERS;
             $options->omeroimageurl = '';
             $options->correctfeedback = '';
             $options->partiallycorrectfeedback = '';
@@ -161,13 +145,12 @@ abstract class qtype_omerocommon extends qtype_multichoice
         if (isset($question->layout)) {
             $options->layout = $question->layout;
         }
-        $options->answertype = $question->answertype;
-        $options->omeroimageurl = $question->omero_image_url;
+        $options->omeroimageurl = $question->omeroimageurl;
         $options->answernumbering = $question->answernumbering;
         $options->shuffleanswers = $question->shuffleanswers;
-        $options->visiblerois = $question->visible_rois;
+        $options->visiblerois = $question->visiblerois;
         $options = $this->save_combined_feedback_helper($options, $question, $context, true);
-        $DB->update_record('qtype_omemultichoice_options', $options);
+        $DB->update_record($this->get_table_name(), $options);
 
         $this->save_hints($question, true);
 
