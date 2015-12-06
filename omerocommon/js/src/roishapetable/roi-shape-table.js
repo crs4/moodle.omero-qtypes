@@ -178,6 +178,8 @@ prototype.initTable = function () {
             height: me.getHeight()
         });
     });
+
+    me._initialized = true;
 };
 
 
