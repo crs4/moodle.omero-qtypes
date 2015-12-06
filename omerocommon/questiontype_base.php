@@ -81,10 +81,11 @@ abstract class qtype_omerocommon extends qtype_multichoice
     protected function make_question_instance($questiondata)
     {
         question_bank::load_question_definition_classes($this->name());
+        $class = get_class($this);
         if ($questiondata->options->single) {
-            $class = 'qtype_omerocommon_single_question';
+            $class = $class . '_single_question';
         } else {
-            $class = 'qtype_omerocommon_multi_question';
+            $class = $class . '_multi_question';
         }
         return new $class();
     }
@@ -92,8 +93,8 @@ abstract class qtype_omerocommon extends qtype_multichoice
 
     public function get_question_options($question)
     {
-        global $DB, $OUTPUT;
-        $question->options = $DB->get_record('qtype_omemultichoice_options',
+        global $DB;
+        $question->options = $DB->get_record($this->get_table_name(),
             array('questionid' => $question->id), '*', MUST_EXIST);
         question_type::get_question_options($question);
     }
@@ -163,7 +164,7 @@ abstract class qtype_omerocommon extends qtype_multichoice
             $DB->delete_records('question_answers', array('id' => $oldanswer->id));
         }
 
-        $options = $DB->get_record('qtype_omemultichoice_options', array('questionid' => $question->id));
+        $options = $DB->get_record($this->get_table_name(), array('questionid' => $question->id));
         if (!$options) {
             $options = new stdClass();
             $options->questionid = $question->id;
@@ -172,7 +173,7 @@ abstract class qtype_omerocommon extends qtype_multichoice
             $options->partiallycorrectfeedback = '';
             $options->incorrectfeedback = '';
             $options->visiblerois = '';
-            $options->id = $DB->insert_record('qtype_omemultichoice_options', $options);
+            $options->id = $DB->insert_record($this->get_table_name(), $options);
         }
 
         $options->single = $question->single;
@@ -231,7 +232,7 @@ abstract class qtype_omerocommon extends qtype_multichoice
         $question->omeroimageurl = $questiondata->options->omeroimageurl;
         $question->visible_rois = $questiondata->options->visiblerois;
         // set the question answer type
-        if(!empty($questiondata->options->answertype)) {
+        if (!empty($questiondata->options->answertype)) {
             $question->answertype = $questiondata->options->answertype;
         } else {
             $question->answertype = qtype_omerocommon::PLAIN_ANSWERS;
@@ -242,19 +243,7 @@ abstract class qtype_omerocommon extends qtype_multichoice
     public function delete_question($questionid, $contextid)
     {
         global $DB;
-        $DB->delete_records('qtype_omemultichoice_options', array('questionid' => $questionid));
+        $DB->delete_records($this->get_table_name(), array('questionid' => $questionid));
         parent::delete_question($questionid, $contextid);
-    }
-
-
-    ///////////////////////////////////////////////////////////////////////////////
-
-    /**
-     * Returns the list of supported omero-question types
-     *
-     * @return array
-     */
-    public static function get_question_types(){
-        return array(qtype_omerocommon::PLAIN_ANSWERS, qtype_omerocommon::ROI_BASED_ANSWERS);
     }
 }
