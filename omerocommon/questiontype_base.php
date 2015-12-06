@@ -64,6 +64,18 @@ abstract class qtype_omerocommon extends qtype_multichoice
         return str_replace("omero", "ome", get_class($this)) . "_options";
     }
 
+    /**
+     * If your question type has a table that extends the question table, and
+     * you want the base class to automatically save, backup and restore the extra fields,
+     * override this method to return an array wherer the first element is the table name,
+     * and the subsequent entries are the column names (apart from id and questionid).
+     *
+     * @return mixed array as above, or null to tell the base class to do nothing.
+     */
+    public function extra_question_fields()
+    {
+        return array($this->get_table_name(), "omeroimageurl", "visiblerois");
+    }
 
 
     protected function make_question_instance($questiondata)
