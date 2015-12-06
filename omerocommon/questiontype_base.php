@@ -51,6 +51,19 @@ abstract class qtype_omerocommon extends qtype_multichoice
     }
 
 
+    /**
+     * Returns the name of the table to store questions
+     * represented by the subclasses of this base class.
+     * Note that we reduce the table name due to the
+     * limitation which imposes table names of 28 characters.
+     *
+     * @return mixed
+     */
+    protected function get_table_name()
+    {
+        return str_replace("omero", "ome", get_class($this)) . "_options";
+    }
+
 
 
     protected function make_question_instance($questiondata)
