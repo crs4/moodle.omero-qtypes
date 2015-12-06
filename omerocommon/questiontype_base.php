@@ -15,10 +15,10 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Question type class for the omeromultichoice question type.
+ * Question type class for the omerocommon question type.
  *
  * @package    qtype
- * @subpackage omeromultichoice
+ * @subpackage omerocommon
  * @copyright  2015 CRS4
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later //FIXME: check the licence
  */
