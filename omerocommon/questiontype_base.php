@@ -37,7 +37,7 @@ require_once($CFG->dirroot . '/question/type/multichoice/questiontype.php');
  * @copyright  2015 CRS4
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later // FIXME: check the licence
  */
-class qtype_omerocommon extends qtype_multichoice
+abstract class qtype_omerocommon extends qtype_multichoice
 {
 
     const PLAIN_ANSWERS = 0;
