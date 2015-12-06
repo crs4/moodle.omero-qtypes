@@ -40,6 +40,15 @@ require_once($CFG->dirroot . '/question/type/multichoice/questiontype.php');
 abstract class qtype_omerocommon extends qtype_multichoice
 {
 
+    /**
+     * Returns the name of the concrete class
+     * which this class subsumes.
+     *
+     * @return string
+     */
+    protected function get_qtype(){
+        return get_class($this);
+    }
 
 
 
