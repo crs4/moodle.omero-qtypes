@@ -123,8 +123,8 @@ abstract class qtype_omerocommon extends qtype_multichoice
         // Insert all the new answers.
         $totalfraction = 0;
         $maxfraction = -1;
-        foreach ($question->answer as $key => $answerdata) {
-            if (trim($answerdata['text']) == '') {
+        foreach ($question->answer as $key => $answertext) {
+            if (trim($answertext) == '') {
                 continue;
             }
 
@@ -138,14 +138,11 @@ abstract class qtype_omerocommon extends qtype_multichoice
                 $answer->id = $DB->insert_record('question_answers', $answer);
             }
 
-            // Doing an import.
-            $answer->answer = $this->import_or_save_files($answerdata,
-                $context, 'question', 'answer', $answer->id);
-            $answer->answerformat = $answerdata['format'];
+            $answer->answer = $answertext;
+            $answer->answerformat = $question->answerformat[$key];
             $answer->fraction = $question->fraction[$key];
-            $answer->feedback = $this->import_or_save_files($question->feedback[$key],
-                $context, 'question', 'answerfeedback', $answer->id);
-            $answer->feedbackformat = $question->feedback[$key]['format'];
+            $answer->feedback = $question->feedback[$key];
+            $answer->feedbackformat = $question->feedbackformat[$key];
 
             $DB->update_record('question_answers', $answer);
 
