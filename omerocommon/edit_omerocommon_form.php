@@ -269,10 +269,24 @@ abstract class qtype_omerocommon_edit_form extends qtype_multichoice_edit_form
 
 
     /**
-     * Abstract method which defines the answers section
+     * Defines the answers section:
+     * the default answer section has no header an
+     * a set of default hidden fields (see standard answer fields)
+     * to represent a single answer.
+     * It calls the <pre>add_per_answer_fields</pre> method
+     * to define the list of fields to represent an answer:
+     * such a method actually calls <pre>add_per_answer_fields</pre>.
+     *
+     *
      * @return mixed
      */
-    protected abstract function define_answers_section();
+    protected function define_answers_section()
+    {
+        // defines the list of params to represents the answer
+        $this->add_per_answer_fields($this->_form, "", question_bank::fraction_options_full(), 0);
+    }
+
+
     /**
      * Redefines the set of params to represent an answer
      *
