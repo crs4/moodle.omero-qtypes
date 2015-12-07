@@ -480,6 +480,41 @@ abstract class qtype_omerocommon_edit_form extends qtype_multichoice_edit_form
     }
 
 
+    /**
+     * Perform the necessary preprocessing for the fields added by
+     * {@link add_per_answer_fields()}.
+     * @param object $question the data being passed to the form.
+     * @return object $question the modified data.
+     */
+    protected function data_preprocessing_answers($question, $withanswerfiles = false)
+    {
+        if (empty($question->options->answers)) {
+            return $question;
+        }
+
+        $key = 0;
+        foreach ($question->options->answers as $answer) {
+            // answer content & format
+            $question->answer[$key] = htmlspecialchars($answer->answer);
+            $question->answerformat[$key] = $answer->answerformat;
+            // answer fraction
+            $question->fraction[$key] = 0 + $answer->fraction;
+            unset($this->_form->_defaultValues["fraction[{$key}]"]);
+            // answer feedback
+            $question->feedback[$key] = htmlspecialchars($answer->feedback);
+            $question->feedbackformat[$key] = $answer->feedbackformat;
+            $key++;
+        }
+
+        // Now process extra answer fields.
+        $extraanswerfields = question_bank::get_qtype($question->qtype)->extra_answer_fields();
+        if (is_array($extraanswerfields)) {
+            // Omit table name.
+            array_shift($extraanswerfields);
+            $question = $this->data_preprocessing_extra_answer_fields($question, $extraanswerfields);
+        }
+        return $question;
+    }
 
 
     public function validation($data, $files)
