@@ -273,6 +273,41 @@ abstract class qtype_omerocommon_edit_form extends qtype_multichoice_edit_form
      * @return mixed
      */
     protected abstract function define_answers_section();
+    /**
+     * Redefines the set of params to represent an answer
+     *
+     * @param object $mform
+     * @param the $label
+     * @param the $gradeoptions
+     * @param reference $repeatedoptions
+     * @param reference $answersoption
+     * @return array
+     */
+    protected function get_per_answer_fields($mform, $label, $gradeoptions,
+                                             &$repeatedoptions, &$answersoption)
+    {
+        $repeated = array();
+        $repeated[] = $mform->createElement('hidden', 'answer');
+        $repeated[] = $mform->createElement('hidden', 'fraction');
+        $repeated[] = $mform->createElement('hidden', 'feedback');
+        $repeated[] = $mform->createElement('hidden', 'answerformat');
+        $repeated[] = $mform->createElement('hidden', 'feedbackformat');
+
+        $mform->setType("answer", PARAM_TEXT);
+        $mform->setType("fraction", PARAM_RAW);
+        $mform->setType("feedback", PARAM_TEXT);
+        $mform->setType("answerformat", PARAM_RAW);
+        $mform->setType("feedbackformat", PARAM_RAW);
+
+        $mform->setDefault('answerformat', 1);
+        $mform->setDefault('feedbackformat', 1);
+
+        $repeatedoptions['answer']['type'] = PARAM_RAW;
+        $repeatedoptions['fraction']['default'] = 0;
+        $answersoption = 'answers';
+        return $repeated;
+    }
+
 
     /**
      * Defines a shared section to edit general and combined feedback
@@ -406,8 +441,8 @@ abstract class qtype_omerocommon_edit_form extends qtype_multichoice_edit_form
         // default hidden fields
         $this->add_hidden_fields();
 
-        $mform->setType("visiblerois", PARAM_RAW);
         $mform->addElement('hidden', 'visiblerois', 'none');
+        $mform->setType("visiblerois", PARAM_RAW);
 
         $mform->addElement('hidden', 'makecopy');
         $mform->setType('makecopy', PARAM_INT);
