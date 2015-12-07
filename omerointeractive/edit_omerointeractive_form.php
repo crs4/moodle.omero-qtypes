@@ -76,6 +76,7 @@ class qtype_omerointeractive_edit_form extends qtype_omerocommon_edit_form
         // header
         $mform->addElement('header', 'answergroupsheader',
             get_string('answer_groups', 'qtype_omerointeractive'));
-
+        // call default behaviour
+        parent::define_answers_section();
     }
 }

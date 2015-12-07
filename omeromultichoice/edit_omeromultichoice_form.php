@@ -73,8 +73,11 @@ class qtype_omeromultichoice_edit_form extends qtype_omerocommon_edit_form
     protected function define_answers_section()
     {
         $mform = $this->_form;
-        
-        $this->add_per_answer_fields($this->_form, get_string('choiceno', 'qtype_multichoice', '{no}'),
-            question_bank::fraction_options_full(), 4, 1);
+
+        // header
+        $mform->addElement('header', 'answergroupsheader',
+            get_string('answer_groups', 'qtype_omerointeractive'));
+        // call default behaviour
+        parent::define_answers_section();
     }
 }
