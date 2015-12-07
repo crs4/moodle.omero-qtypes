@@ -40,11 +40,11 @@ define("qtype_omerocommon/moodle-forms-utils",
                     me.appendElementByContainerId = function (container_id,
                                                               label, element) {
                         var element_obj = $(element);
-                        var existingContainer = $("#" + container_id + " div.fcontainer");
+                        var existingContainer = $("#" + editor_container_id + " div.fcontainer");
 
                         // Checks whether the fieldset exists or not
-                        if (!container_id.length) {
-                            console.error("FieldSet " + container_id + " not found!!!");
+                        if (!editor_container_id.length) {
+                            console.error("FieldSet " + editor_container_id + " not found!!!");
                         }
 
                         // checks the existing id (or generates it)
@@ -62,7 +62,9 @@ define("qtype_omerocommon/moodle-forms-utils",
                         newContainer.html([
                             '<div class="fitemtitle"><label for="' + element_obj.attr("id") + '">' + label + '</label></div>',
                             '<div class="felement">',
+                            '<div>',
                             element_obj.get(0).outerHTML,
+                            '</div>',
                             '</div>'
                         ].join(" "));
 
@@ -77,7 +79,7 @@ define("qtype_omerocommon/moodle-forms-utils",
 
 
                     me.appendElement = function (container,
-                                                 label, element) {
+                                                 label, element, append_loacale_map) {
                         var element_obj = $(element);
                         var elementContainer = $(container);
 
@@ -100,7 +102,12 @@ define("qtype_omerocommon/moodle-forms-utils",
                         newContainer.html([
                             '<div class="fitemtitle"><label for="' + element_obj.attr("id") + '">' + label + '</label></div>',
                             '<div class="felement">',
+                            '<div>',
                             element_obj.get(0).outerHTML,
+                            (append_loacale_map
+                                ? '<input type="hidden" name="' + element_obj.attr("name") + '_locale_map" value="{}" />'
+                                : ""),
+                            '</div>',
                             '</div>'
                         ].join(" "));
 
