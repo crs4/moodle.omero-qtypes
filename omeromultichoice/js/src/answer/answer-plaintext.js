@@ -2,7 +2,7 @@
  * Created by kikkomep on 12/2/15.
  */
 
-define("qtype_omerocommon/answer-plaintext",
+define("qtype_omeromultichoice/answer-plaintext",
     [
         'jquery',
         'qtype_omerocommon/moodle-forms-utils',
