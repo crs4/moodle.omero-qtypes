@@ -30,3 +30,11 @@ body[id^=page-question-type-omero] #answers_toolbar .panel-body{
     margin: 10px 0px;
     padding: 0px;
 }
+
+
+body[id^=page-question-type-omero] #roi-shape-inspector-table{
+    width: 95%;
+    margin-bottom: 300px;
+}
+
+}
