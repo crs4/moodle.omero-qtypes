@@ -552,10 +552,28 @@ abstract class qtype_omerocommon_edit_form extends qtype_multichoice_edit_form
     }
 
 
+    /**
+     * Specific data preprocessing
+     *
+     * @param object $question
+     * @return object
+     */
     protected function data_preprocessing($question)
     {
         $question = parent::data_preprocessing($question);
+
         // specific preprocessing
+        if (!empty($question->options)) {
+            $question->questiontext_locale_map = $question->questiontext["text"];
+            $question->generalfeedback_locale_map = $question->generalfeedback["text"];
+            $question->correctfeedback_locale_map = $question->options->correctfeedback;
+            $question->incorrectfeedback_locale_map = $question->options->incorrectfeedback;
+            $question->partiallycorrectfeedback_locale_map = $question->options->partiallycorrectfeedback;
+
+            $question->questiontext["text"] = "";
+            $question->generalfeedback["text"] = "";
+        }
+
         return $question;
     }
 
@@ -575,14 +593,18 @@ abstract class qtype_omerocommon_edit_form extends qtype_multichoice_edit_form
         $key = 0;
         foreach ($question->options->answers as $answer) {
             // answer content & format
-            $question->answer[$key] = htmlspecialchars($answer->answer);
+            $question->answer[$key] = ($answer->answer);
             $question->answerformat[$key] = $answer->answerformat;
             // answer fraction
             $question->fraction[$key] = 0 + $answer->fraction;
             unset($this->_form->_defaultValues["fraction[{$key}]"]);
             // answer feedback
-            $question->feedback[$key] = htmlspecialchars($answer->feedback);
+            $question->feedback[$key] = ($answer->feedback);
             $question->feedbackformat[$key] = $answer->feedbackformat;
+
+            $question->answer_locale_map[$key] = $answer->answer;
+            $question->feedback_locale_map[$key] = $answer->feedback;
+
             $key++;
         }
 
