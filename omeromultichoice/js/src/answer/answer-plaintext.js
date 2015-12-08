@@ -23,14 +23,14 @@ define("qtype_omeromultichoice/answer-plaintext",
                 M.qtypes = M.qtypes || {};
 
                 // defines the specific package of this module
-                M.qtypes.omerocommon = M.qtypes.omerocommon || {};
+                M.qtypes.omeromultichoice = M.qtypes.omeromultichoice || {};
 
 
                 /**
                  * Defines MoodleFormUtils class
                  * @type {{}}
                  */
-                M.qtypes.omerocommon.AnswerPlaintext = function (answer_list_container_id) {
+                M.qtypes.omeromultichoice.AnswerPlaintext = function (answer_list_container_id, answer_number, fraction_options) {
 
                     // the reference to this scope
                     var me = this;
@@ -51,7 +51,8 @@ define("qtype_omeromultichoice/answer-plaintext",
                         me._form_utils.appendElement(me._answer_container, "Text", "<textarea>xxx</textarea>");
                         me._form_utils.appendElement(me._answer_container, "Grade", "<select ><option>1</option></select>");
                         me._form_utils.appendElement(me._answer_container, "Feedback", "<textarea>xxx</textarea>");
-                    };
+                    M.qtypes.omerocommon.AnswerBase.call(this, answer_list_container_id, answer_number, fraction_options);
+
                 };
 
 
