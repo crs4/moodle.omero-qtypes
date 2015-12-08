@@ -19,7 +19,7 @@ function _getRoiShapeDetailInfoUrl() {
 
 
 // constructor
-M.qtypes.omerocommon.RoiShapeTableBase = function (container_id) {
+M.qtypes.omerocommon.RoiShapeTableBase = function (table_id, table_container_id, table_container_toolbar_id) {
 
     // Registers a reference to the current scope
     var me = this;
@@ -27,7 +27,11 @@ M.qtypes.omerocommon.RoiShapeTableBase = function (container_id) {
     //
     me.selections = [];
 
-    me._container_id = editor_container_id;
+    me._table_id = table_id;
+
+    me._table_container_toolbar_id = table_container_toolbar_id || (table_id + "-toolbar");
+
+    me._table_container_id = table_container_id || (table_id + "-container");
 };
 
 
@@ -50,25 +54,29 @@ M.qtypes.omerocommon.RoiShapeTableBase.detailFormatter = function (index, row) {
 var prototype = M.qtypes.omerocommon.RoiShapeTableBase.prototype;
 
 // table setup
-prototype.initTable = function () {
+prototype.initTable = function (hideToolbar) {
 
     var me = this;
 
     // Registers a reference to the table container
-    me.table_container = $("#" + me._container_id);
-    me.remove_container = $('#remove');
+    me.table_element = $("#" + me._table_id);
+    me.remove_element = $('#remove');
+    me.table_container_element = $("#" + me._table_container_id);
+    me.table_toolbar_container_element = $("#" + me._table_container_toolbar_id);
 
     // Sets the endpoint to get the ROI infos
     //me.table_container.attr("data-url", _getRoiShapeDetailInfoUrl());
 
+    if (!hideToolbar) me.showToolbar();
+    else me.hideToolbar();
 
     // Setup the responseHandler
-    me.table_container.attr("data-response-handler", "M.qtypes.omerocommon.RoiShapeTableBase.responseHandler");
+    me.table_element.attr("data-response-handler", "M.qtypes.omerocommon.RoiShapeTableBase.responseHandler");
     // Register the detailsFormatter
-    me.table_container.attr("data-detail-formatter", "M.qtypes.omerocommon.RoiShapeTableBase.detailFormatter");
+    me.table_element.attr("data-detail-formatter", "M.qtypes.omerocommon.RoiShapeTableBase.detailFormatter");
 
     // Initializes the bootstrap table
-    me.table_container.bootstrapTable({
+    me.table_element.bootstrapTable({
         height: "500",
         columns: [
             [
