@@ -262,11 +262,11 @@ define("qtype_omerocommon/question-editor-base",
                     if (frame_details == undefined) {
                         // Register the main listener for the 'omeroViewerInitialized' event
                         me._omero_viewer_frame.contentWindow.addEventListener("omeroViewerInitialized", function (e) {
-                            me.onViewerFrameInitialized(frame_id, e.detail, visible_roi_list);
+                            me.onViewerFrameInitialized(me, frame_id, e.detail, visible_roi_list);
                             console.log("OmeroImageViewer init loaded!!!");
                         }, true);
                     } else {
-                        me.onViewerFrameInitialized(frame_id, frame_details, visible_roi_list);
+                        me.onViewerFrameInitialized(me, frame_id, frame_details, visible_roi_list);
                     }
 
                     // Log message (for debugging)
@@ -283,13 +283,28 @@ define("qtype_omerocommon/question-editor-base",
                  * @param frame_details
                  * @param visible_roi_list
                  */
-                prototype.onViewerFrameInitialized = function (frame_id, image_details, visible_roi_list) {
-                    var me = this;
+                prototype.onViewerFrameInitialized = function (me, frame_id, image_details, visible_roi_list) {
                     me.current_image_info = image_details;
-                    me._registerFrameWindowEventHandlers(frame_id);
+                    me._registerFrameWindowEventHandlers(me, frame_id);
                     me._image_viewer_controller.getModel().addEventListener(me);
                 };
 
+
+                prototype.onImageModelRoiLoaded = function (e) {
+
+                    var roi_list = e.detail;
+                    console.log("Loaded ROIs", roi_list);
+
+
+                    if (!this._roi_shape_table) {
+                        this._roi_shape_table = new M.qtypes.omerocommon.RoiShapeTableBase("roiShapeInspectorTable");
+                        this._roi_shape_table.initTable();
+                    }
+
+
+                    this._roi_shape_table.appendRoiShapeList(e.detail);
+                    console.log("Updated ROI table!!!");
+                };
 
                 /**
                  * Register listeners for events triggered
@@ -298,8 +313,7 @@ define("qtype_omerocommon/question-editor-base",
                  * @param frame_id
                  * @private
                  */
-                prototype._registerFrameWindowEventHandlers = function (frame_id) {
-                    var me = this;
+                prototype._registerFrameWindowEventHandlers = function (me, frame_id) {
                     var omero_viewer_frame = document.getElementById(frame_id);
                     if (!omero_viewer_frame) {
                         throw EventException("Frame " + frame_id + " not found!!!");
@@ -314,9 +328,9 @@ define("qtype_omerocommon/question-editor-base",
 
                     // Adds listeners
                     var frameWindow = omero_viewer_frame.contentWindow;
-                    frameWindow.addEventListener("roiShapeSelected", M.omero_multichoice_helper.roiShapeSelected);
-                    frameWindow.addEventListener("roiShapeDeselected", M.omero_multichoice_helper.roiShapeDeselected);
-                    frameWindow.addEventListener("roiVisibilityChanged", M.omero_multichoice_helper.roiVisibilityChanged);
+                    //frameWindow.addEventListener("roiShapeSelected", M.omero_multichoice_helper.roiShapeSelected);
+                    //frameWindow.addEventListener("roiShapeDeselected", M.omero_multichoice_helper.roiShapeDeselected);
+                    //frameWindow.addEventListener("roiVisibilityChanged", M.omero_multichoice_helper.roiVisibilityChanged);
                 };
             }
         };
