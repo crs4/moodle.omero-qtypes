@@ -73,6 +73,10 @@ define("qtype_omerocommon/question-editor-base",
                         "generalfeedback",
                         "correctfeedback", "partiallycorrectfeedback", "incorrectfeedback"
                     ];
+
+                    $(document).ready(function(){
+                        M.qtypes.omerocommon.MoodleFormUtils.initDropdown();
+                    });
                 };
 
 
