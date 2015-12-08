@@ -29,21 +29,24 @@ define("qtype_omerocommon/answer-base",
                  * Defines MoodleFormUtils class
                  * @type {{}}
                  */
-                M.qtypes.omerocommon.AnswerBase = function (answer_list_container_id) {
+                M.qtypes.omerocommon.AnswerBase = function (answer_list_container_id, answer_number, fraction_options) {
 
                     // the reference to this scope
                     var me = this;
 
+                    // map of editors in use
+                    me._editors_map = {};
+
+                    me._fraction_options = fraction_options;
+
                     // reference to the container of all answers
-                    me._answer_list_container = $("#" + answer_list_container_id);
+                    me._answer_list_container = $("#" + answer_list_container_id + " .fcontainer");
 
                     //
                     me._form_utils = new M.qtypes.omerocommon.MoodleFormUtils();
 
                     // the id of this answerContainer
-                    me.answerContainerId = me._form_utils.generateGuid();
-
-
+                    me._answer_number = answer_number === undefined ? me._form_utils.generateGuid() : answer_number;
                 };
 
 
