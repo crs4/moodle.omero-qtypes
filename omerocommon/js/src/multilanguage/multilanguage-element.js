@@ -102,6 +102,12 @@ define("qtype_omerocommon/multilanguage-element",
                     document.forms[0].removeEventListener("submit", this._update_listener);
                 };
 
+                prototype.getLocaleTextMapElement = function () {
+                    var input_element = document.forms[0].elements[this.input_data_locale_map_name];
+                    console.log("Input element name", this.input_data_locale_map_name, input_element);
+                    return input_element;
+                };
+
                 /**
                  *
                  */
