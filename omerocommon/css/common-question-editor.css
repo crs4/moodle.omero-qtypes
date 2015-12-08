@@ -24,4 +24,9 @@ body[id^=page-question-type-omero] input[name=addanswers]{
     display: none;
 }
 
+
+body[id^=page-question-type-omero] #answers_toolbar .panel-body{
+    text-align: right;
+    margin: 10px 0px;
+    padding: 0px;
 }
