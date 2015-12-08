@@ -111,6 +111,8 @@ abstract class qtype_omerocommon_edit_form extends qtype_multichoice_edit_form
     {
         global $COURSE, $CFG, $DB, $PAGE;
         $mform = $this->_form;
+        $qtype = $this->qtype();
+        $langfile = "qtype_{$qtype}";
 
         // header
         $mform->addElement('header', 'generalheader', get_string("general", 'form'));
