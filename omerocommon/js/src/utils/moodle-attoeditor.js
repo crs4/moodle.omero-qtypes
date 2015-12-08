@@ -197,21 +197,25 @@ define("qtype_omerocommon/moodle-attoeditor",
                             });
                     };
 
-
                     me.clear = function () {
                         me.setText("");
                     };
 
                     me.setText = function (text) {
-                        $("#" + me.container_id + "editable").html(text);
+                        console.log("Setting text: " + me.input_data_element_name + "editable");
+                        var data_element = document.getElementById(me.input_data_element_name + "editable");
+                        data_element.innerHTML = text;
                     };
 
                     me.getText = function () {
-                        return $("#" + me.container_id + "editable").html();
+                        console.log("Getting text from " + "#" + me.input_data_element_name + "editable");
+                        var data_element = document.getElementById(me.input_data_element_name + "editable");
+                        return data_element.innerHTML;
                     };
 
                     me.on = function (eventName, callback) {
-                        me._yuiEditor.on(eventName, callback);
+                        if (me._yuiEditor)
+                            me._yuiEditor.on(eventName, callback);
                     };
                 };
             }
