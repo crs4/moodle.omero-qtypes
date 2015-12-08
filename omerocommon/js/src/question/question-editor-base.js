@@ -53,16 +53,20 @@ define("qtype_omerocommon/question-editor-base",
                 // defines the specific package of this module
                 M.qtypes.omerocommon = M.qtypes.omerocommon || {};
 
-
                 /**
                  * Builds a new instance
                  *
                  * @constructor
                  */
-                M.qtypes.omerocommon.QuestionEditorBase = function () {
+                M.qtypes.omerocommon.QuestionEditorBase = function (answers_section_id, fraction_options) {
 
                     // the reference to this scope
                     var me = this;
+
+                    // the ID of the answer serction
+                    me._answers_section_id = answers_section_id;
+
+                    me._fraction_options = fraction_options;
 
                     me._localized_string_names = [
                         "questiontext",
