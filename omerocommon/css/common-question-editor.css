@@ -33,7 +33,6 @@ body[id^=page-question-type-omero] #answers_toolbar .panel-body{
 
 
 body[id^=page-question-type-omero] #roi-shape-inspector-table{
-    width: 95%;
     margin-bottom: 300px;
 }
 
