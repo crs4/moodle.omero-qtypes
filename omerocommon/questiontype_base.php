@@ -212,11 +212,17 @@ abstract class qtype_omerocommon extends qtype_multichoice
         if (isset($question->layout)) {
             $options->layout = $question->layout;
         }
+
         $options->omeroimageurl = $question->omeroimageurl;
         $options->answernumbering = $question->answernumbering;
         $options->shuffleanswers = $question->shuffleanswers;
         $options->visiblerois = $question->visiblerois;
         $options = $this->save_combined_feedback_helper($options, $question, $context, true);
+
+        $options->correctfeedback = $question->correctfeedback_locale_map;
+        $options->partiallycorrectfeedback = $question->partiallycorrectfeedback_locale_map;
+        $options->incorrectfeedback = $question->incorrectfeedback_locale_map;
+
         $DB->update_record($this->get_table_name(), $options);
 
         $this->save_hints($question, true);
