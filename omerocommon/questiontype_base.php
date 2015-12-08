@@ -162,23 +162,30 @@ abstract class qtype_omerocommon extends qtype_multichoice
                 $answer = new stdClass();
                 $answer->question = $question->id;
                 $answer->answer = '';
+                $answer->answerformat = '';
                 $answer->feedback = '';
                 $answer->id = $DB->insert_record('question_answers', $answer);
             }
 
-            $answer->answer = $answertext;
-            $answer->answerformat = $question->answerformat[$key];
+            $answer->answer = $question->answer_locale_map[$key];
             $answer->fraction = $question->fraction[$key];
-            $answer->feedback = $question->feedback[$key];
-            $answer->feedbackformat = $question->feedbackformat[$key];
+            $answer->feedback = $question->feedback_locale_map[$key];
+
+            // Useless because such fields do not change
+            //$answer->answerformat = $question->answerformat[$key];
+            //$answer->feedbackformat = $question->feedbackformat[$key];
 
             $DB->update_record('question_answers', $answer);
 
             if ($question->fraction[$key] > 0) {
+                //echo "<br>$key: " . $question->fraction[$key] . " before: $totalfraction";
                 $totalfraction += $question->fraction[$key];
+                //echo "<br>$key: " . $question->fraction[$key] . " after: $totalfraction";
             }
             if ($question->fraction[$key] > $maxfraction) {
+                //echo "<br>$key: " . $question->fraction[$key];
                 $maxfraction = $question->fraction[$key];
+                //echo "<br>$key: " . $question->fraction[$key] . " before: $maxfraction";
             }
         }
 
