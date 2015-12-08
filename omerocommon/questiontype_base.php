@@ -230,21 +230,19 @@ abstract class qtype_omerocommon extends qtype_multichoice
         // Perform sanity checks on fractional grades.
         if ($options->single) {
             if ($maxfraction != 1) {
-                $result->noticeyesno = get_string('fractionsnomax', 'qtype_multichoice',
+                $result->notice = get_string('fractionsnomax', 'qtype_multichoice',
                     $maxfraction * 100);
                 return $result;
             }
         } else {
             $totalfraction = round($totalfraction, 2);
             if ($totalfraction != 1) {
-                $result->noticeyesno = get_string('fractionsaddwrong', 'qtype_multichoice',
+                $result->notice = get_string('fractionsaddwrong', 'qtype_multichoice',
                     $totalfraction * 100);
                 return $result;
             }
         }
     }
-
-
 
 //
 //    protected function initialise_question_instance(question_definition $question, $questiondata) {
