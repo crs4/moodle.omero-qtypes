@@ -295,12 +295,10 @@ define("qtype_omerocommon/question-editor-base",
                     var roi_list = e.detail;
                     console.log("Loaded ROIs", roi_list);
 
-
                     if (!this._roi_shape_table) {
-                        this._roi_shape_table = new M.qtypes.omerocommon.RoiShapeTableBase("roiShapeInspectorTable");
+                        this._roi_shape_table = new M.qtypes.omerocommon.RoiShapeTableBase("roi-shape-inspector-table");
                         this._roi_shape_table.initTable();
                     }
-
 
                     this._roi_shape_table.appendRoiShapeList(e.detail);
                     console.log("Updated ROI table!!!");
