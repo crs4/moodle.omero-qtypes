@@ -539,14 +539,16 @@ abstract class qtype_omerocommon_edit_form extends qtype_multichoice_edit_form
                 $mform->addElement('static', 'modified', get_string('modified', 'question'),
                     get_string('byandon', 'question', $a));
             }
+
+            $mform->closeHeaderBefore('createdmodifiedheader');
         }
 
-        // if a preview is available generates the corresponding link
+        //if a preview is available generates the corresponding link
         if ($this->can_preview()) {
             $previewlink = $PAGE->get_renderer('core_question')->question_preview_link(
                 $this->question->id, $this->context, true);
             $buttonarray[] = $mform->createElement('static', 'previewlink', '', $previewlink);
-            $mform->addGroup($buttonarray, 'updatebuttonar', '', array(' '), false);
+            $mform->addGroup($buttonarray, 'updatebuttonar', ' ', array(' '), false);
             $mform->closeHeaderBefore('updatebuttonar');
         }
 
@@ -554,9 +556,9 @@ abstract class qtype_omerocommon_edit_form extends qtype_multichoice_edit_form
         $buttonarray = array();
         $buttonarray[] = $mform->createElement('submit', 'updatebutton',
             get_string('savechangesandcontinueediting', 'qtype_omerocommon'));
-        $buttonarray[] = &$mform->createElement('submit', 'submitbutton', get_string('savechangesandexit', "qtype_omerocommon"));
-        $buttonarray[] = &$mform->createElement('cancel');
-        $mform->addGroup($buttonarray, 'buttonar', '', array(' '), false);
+        $buttonarray[] = $mform->createElement('submit', 'submitbutton', get_string('savechangesandexit', "qtype_omerocommon"));
+        $buttonarray[] = $mform->createElement('cancel');
+        $mform->addGroup($buttonarray, 'buttonar', ' ', array(' '), false);
         $mform->closeHeaderBefore('buttonar');
 
         if ((!empty($this->question->id)) && (!($this->question->formoptions->canedit ||
