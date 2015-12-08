@@ -37,4 +37,7 @@ body[id^=page-question-type-omero] #roi-shape-inspector-table{
     margin-bottom: 300px;
 }
 
+
+body[id^=page-question-type-omero] #page fieldset.hidden{
+    display: block !important;
 }
