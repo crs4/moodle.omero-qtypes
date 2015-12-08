@@ -289,6 +289,55 @@ abstract class qtype_omerocommon_edit_form extends qtype_multichoice_edit_form
         $this->add_per_answer_fields($this->_form, "", question_bank::fraction_options_full(), 0);
     }
 
+    /**
+     * Return an array containing the following info related to the answer section:
+     *  - ID
+     *  - label
+     *
+     * @return array
+     * @throws coding_exception
+     */
+    protected function define_answer_section_header()
+    {
+        return array(
+            "answerhdr",
+            get_string('answers', 'question')
+        );
+    }
+
+    /**
+     * Add a set of form fields, obtained from get_per_answer_fields, to the form,
+     * one for each existing answer, with some blanks for some new ones.
+     * @param object $mform the form being built.
+     * @param $label the label to use for each option.
+     * @param $gradeoptions the possible grades for each answer.
+     * @param $minoptions the minimum number of answer blanks to display.
+     *      Default QUESTION_NUMANS_START.
+     * @param $addoptions the number of answer blanks to add. Default QUESTION_NUMANS_ADD.
+     */
+    protected function add_per_answer_fields(&$mform, $label, $gradeoptions,
+                                             $minoptions = QUESTION_NUMANS_START, $addoptions = QUESTION_NUMANS_ADD)
+    {
+        $header_info = $this->define_answer_section_header();
+        $mform->addElement('header', $header_info[0], $header_info[1], '');
+        $mform->setExpanded($header_info[0], 1);
+
+        $answersoption = '';
+        $repeatedoptions = array();
+        $repeated = $this->get_per_answer_fields($mform, $label, $gradeoptions,
+            $repeatedoptions, $answersoption);
+
+        if (isset($this->question->options)) {
+            $repeatsatstart = count($this->question->options->$answersoption);
+        } else {
+            $repeatsatstart = $minoptions;
+        }
+
+        $this->repeat_elements($repeated, $repeatsatstart, $repeatedoptions,
+            'noanswers', 'addanswers', $addoptions,
+            $this->get_more_choices_string(), false);
+    }
+
 
     /**
      * Redefines the set of params to represent an answer
