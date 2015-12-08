@@ -61,6 +61,31 @@ define("qtype_omerocommon/multilanguage-element",
                 prototype.clear = function () {
                     console.warn("Not implemented at this level");
                 }
+                /**
+                 *
+                 */
+                M.qtypes.omerocommon.MultilanguageElement.serialize_text = function (mel) {
+                    try {
+                        console.log("Serializing " + mel.input_data_element_name);
+
+                        mel.save();
+
+                        var input_element = mel.getLocaleTextMapElement();
+
+                        console.log("Found input element", input_element);
+                        if (input_element) {
+                            var serialized_text = JSON.stringify(mel._locale_text_map);
+                            if (input_element.type === "textarea")
+                                input_element.innerHTML = serialized_text;
+                            else input_element.setAttribute("value", serialized_text);
+                        } else console.error("Error during the serialization: " +
+                            "element " + mel.input_data_element_name + " not found!!!");
+                    } catch (e) {
+                        console.error(e);
+                        alert("ERROR detected");
+                    }
+                };
+
             }
         };
     }
