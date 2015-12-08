@@ -46,7 +46,8 @@ define("qtype_omerocommon/answer-base",
                     me._form_utils = new M.qtypes.omerocommon.MoodleFormUtils();
 
                     // the id of this answerContainer
-                    me._answer_number = answer_number === undefined ? me._form_utils.generateGuid() : answer_number;
+                    me._answer_number = answer_number === undefined
+                        ? M.qtypes.omerocommon.MoodleFormUtils.generateGuid() : answer_number;
                 };
 
 
