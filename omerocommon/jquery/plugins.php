@@ -20,7 +20,7 @@ $plugins = array(
     'bootstrap' => array(
         'files' => array(
             "bootstrap/bower_components/bootstrap/dist/js/bootstrap.min.js",
-//            "bootstrap/bower_components/bootstrap/dist/css/bootstrap.min.css"
+            "bootstrap/bower_components/bootstrap/dist/css/bootstrap.min.css"
         )
     ),
 
