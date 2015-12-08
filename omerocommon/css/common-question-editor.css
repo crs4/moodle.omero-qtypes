@@ -18,3 +18,10 @@ body[id^=page-question-type-omero] div[id*=fgroup_id_buttonar]{
     padding-top: 50px;
     text-align: center;
 }
+
+/* hide the default addanswer button */
+body[id^=page-question-type-omero] input[name=addanswers]{
+    display: none;
+}
+
+}
