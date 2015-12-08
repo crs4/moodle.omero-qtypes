@@ -36,21 +36,6 @@ define("qtype_omeromultichoice/answer-plaintext",
                     var me = this;
 
                     // Call the parent constructor
-                    M.qtypes.omerocommon.AnswerBase.call(this, answer_list_container_id);
-
-
-                    /**
-                     * Builds the answer
-                     *
-                     * @private
-                     */
-                    me._build = function () {
-                        me._answer_container = $('<div class="fitem" id="' + me.answerContainerId + '"></div>');
-                        me._answer_list_container.append(me._answer_container);
-
-                        me._form_utils.appendElement(me._answer_container, "Text", "<textarea>xxx</textarea>");
-                        me._form_utils.appendElement(me._answer_container, "Grade", "<select ><option>1</option></select>");
-                        me._form_utils.appendElement(me._answer_container, "Feedback", "<textarea>xxx</textarea>");
                     M.qtypes.omerocommon.AnswerBase.call(this, answer_list_container_id, answer_number, fraction_options);
 
                 };
