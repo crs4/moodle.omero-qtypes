@@ -30,13 +30,15 @@ define("qtype_omerocommon/moodle-attoeditor",
                  * Defines MoodleFormUtils class
                  * @type {{}}
                  */
-                M.qtypes.omerocommon.MoodleAttoEditor = function (element_id) {
+                M.qtypes.omerocommon.MoodleAttoEditor = function (editor_container_id) {
 
                     // the reference to this scope
                     var me = this;
 
-                    me.container_id = element_id;
+                    // the input element containing data to edit
+                    me.input_data_element_name = editor_container_id;
 
+                    // initialization function
                     me.init = function () {
                         me._yuiEditor = Y.use(
                             "moodle-editor_atto-editor", "moodle-atto_collapse-button",
@@ -52,7 +54,7 @@ define("qtype_omerocommon/moodle-attoeditor",
                             "moodle-atto_accessibilitychecker-button", "moodle-atto_accessibilityhelper-button",
                             "moodle-atto_html-button", function () {
                                 Y.M.editor_atto.Editor.init({
-                                    "elementid": me.container_id,
+                                    "elementid": me.input_data_element_name,
                                     "contextid": 1,
                                     "autosaveEnabled": true,
                                     "autosaveFrequency": "60",

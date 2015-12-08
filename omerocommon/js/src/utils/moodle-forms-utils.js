@@ -79,7 +79,7 @@ define("qtype_omerocommon/moodle-forms-utils",
 
 
                     me.appendElement = function (container,
-                                                 label, element, append_loacale_map) {
+                                                 label, element, append_loacale_map_name) {
                         var element_obj = $(element);
                         var elementContainer = $(container);
 
@@ -104,8 +104,8 @@ define("qtype_omerocommon/moodle-forms-utils",
                             '<div class="felement">',
                             '<div>',
                             element_obj.get(0).outerHTML,
-                            (append_loacale_map
-                                ? '<input type="hidden" name="' + element_obj.attr("name") + '_locale_map" value="{}" />'
+                            ((append_loacale_map_name && append_loacale_map_name.length >0)
+                                ? '<input type="hidden" name="' + append_loacale_map_name + '" value="{}" />'
                                 : ""),
                             '</div>',
                             '</div>'
