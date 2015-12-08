@@ -64,7 +64,7 @@ define("qtype_omeromultichoice/answer-plaintext",
 
                     var panel_heading = $('<div class="panel-heading">' +
                         '<h4 class="panel-title">' +
-                        'Answer ' + this._answer_number +
+                        'Answer ' + (this._answer_number + 1) +
                         '</h4>' +
                         '</div>' +
                         '<div style="display: block; float: right; margin: 20px 30px;">' +
