@@ -577,7 +577,7 @@ me._initLocalizedStrings = function () {
                 var matches = pattern.exec("" + locale_textarea.id);
                 var answer_lang = matches[1];
                 var answer_number = matches[2];
-                var answer_name = "answer_" + answer_number;
+                var answer_name = "answer_" + _answer_number;
 
                 // Initializes array to host localized strings and textareas
                 if (me._localized_strings[answer_name] == undefined)
