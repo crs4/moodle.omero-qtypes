@@ -16,16 +16,23 @@ define("qtype_omerocommon/multilanguage-element",
 
                 console.log("Initialized", this);
 
-                M.qtypes.omerocommon.MultilanguageElement = function (container_id) {
+                M.qtypes.omerocommon.MultilanguageElement = function (input_data_element_name, locale_map_element_name) {
 
-                    // registers the id of the container element
-                    this.container_id = container_id;
+                    if (input_data_element_name) {
 
-                    // initializes the map of localized strings
-                    this._locale_text_map = {};
+                        // registers the id of the localized version of the element
+                        this.input_data_element_name = input_data_element_name;
 
-                    // instance
-                    this._form_utils = new M.qtypes.omerocommon.MoodleFormUtils();
+                        // id of the input element containing data
+                        this.input_data_locale_map_name = !locale_map_element_name
+                            ? input_data_element_name + "_locale_map"
+                            : locale_map_element_name;
+
+                        // instance
+                        this._form_utils = new M.qtypes.omerocommon.MoodleFormUtils();
+
+
+                    }
                 };
 
 
