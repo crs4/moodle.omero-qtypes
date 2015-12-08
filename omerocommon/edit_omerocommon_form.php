@@ -619,9 +619,17 @@ abstract class qtype_omerocommon_edit_form extends qtype_multichoice_edit_form
     }
 
 
+    /**
+     * Validate question data
+     *
+     * @param array $data
+     * @param array $files
+     * @return array
+     */
     public function validation($data, $files)
     {
-        return parent::validation($data, $files);
+        // TODO: define a validation procedure like the parent::validation($data, $files);
+        return array();
     }
 
 
