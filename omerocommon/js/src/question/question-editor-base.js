@@ -85,15 +85,45 @@ define("qtype_omerocommon/question-editor-base",
                  */
                 prototype.initialize = function () {
                     var me = this;
-                    me._editor = {};
-                    for (var i in me._localized_string_names) {
-                        var localized_string_name = me._localized_string_names[i];
-                        var editor = new M.qtypes.omerocommon.MultilanguageAttoEditor("id_" + localized_string_name, true);
-                        editor.init({}, "en");
-                        // registers a reference to the editor instance
-                        me._editor[localized_string_name] = editor;
-                    }
 
+
+                    $(document).ready(function () {
+
+
+                        me._build_answer_controls();
+
+
+                        me._editor = {};
+                        for (var i in me._localized_string_names) {
+                            var localized_string_name = me._localized_string_names[i];
+                            var editor = new M.qtypes.omerocommon.MultilanguageAttoEditor(localized_string_name, null, true);
+                            editor.init(language_selector.val());
+                            // registers a reference to the editor instance
+                            me._editor[localized_string_name] = editor;
+                        }
+
+                        me._answers_counter_element = document.forms[0].elements["noanswers"];
+                        if (!me._answers_counter_element) {
+                            var counter = document.createElement("input");
+                            counter.setAttribute("type", "hidden");
+                            counter.setAttribute("name", "noanswers");
+                            counter.setAttribute("value", "0");
+                            document.forms[0].appendElement(counter);
+                            me._answers_counter_element = counter;
+
+                        } else {
+
+                            var counter = me._answers_counter_element.getAttribute("value");
+                            if (counter) {
+                                counter = parseInt(counter);
+                                for (var i = 0; i < counter; i++) {
+                                    me.addAnswer();
+                                }
+                            }
+                        }
+                    });
+
+                    me._answers = [];
 
                     // registers the editor as listener of the 'LanguageChanged' event
                     language_selector.on("change",
