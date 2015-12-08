@@ -40,3 +40,8 @@ body[id^=page-question-type-omero] #roi-shape-inspector-table{
 body[id^=page-question-type-omero] #page fieldset.hidden{
     display: block !important;
 }
+
+
+body[id^=page-question-type-omero] > #fitem_id_omeroimageurl > div.fitemtitle{
+    display: none;
+}
