@@ -266,6 +266,66 @@ abstract class qtype_omerocommon_edit_form extends qtype_multichoice_edit_form
                 'return_types' => array(FILE_EXTERNAL),
                 'omero_image_server' => get_config('omero', 'omero_restendpoint'))
         );
+
+
+        $mform->addElement('header', 'roitableinspectorheader',
+            get_string('roi_shape_inspector', 'qtype_omeromultichoice'), '');
+        $mform->setExpanded('roitableinspectorheader', 1);
+
+        $mform->addElement('html', '
+            <div class="fitem" id="roi-shape-inspector-table-container" class="hidden">
+                <div class="fitemtitle"><label for="roi-shape-inspector-table"></label></div>
+                <div class="felement">
+
+                <!-- TOOLBAR -->
+                <div id="roi-shape-inspector-table-toolbar" class="hidden">
+
+                    <button id="add-new-roi" class="btn btn-success" disabled>
+                        <i class="lyphicon glyphicon-plus"></i> Add
+                    </button>
+
+                    <button id="edit-roi" class="btn btn-warning" disabled>
+                        <i class="glyphicon glyphicon-edit"></i> Edit
+                    </button>
+
+                    <button id="remove" class="btn btn-danger" disabled>
+                        <i class="glyphicon glyphicon-remove"></i> Delete
+                    </button>
+
+                    <!-- Single button -->
+                    <div class="btn-group">
+                      <button type="button" class="btn btn-info  dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Group <span class="caret"></span>
+                      </button>
+                      <ul class="dropdown-menu">
+                        <li><a href="#">0</a></li>
+                        <li><a href="#">1</a></li>
+                        <li role="separator" class="divider"></li>
+                        <li><a href="#">Add Group</a></li>
+                      </ul>
+                    </div>
+                </div>
+                <!-- ROI TABLE -->
+                <table id="roi-shape-inspector-table"
+                       data-toolbar="#toolbar"
+                       data-search="true"
+                       data-height="400"
+                       data-show-refresh="true"
+                       data-show-toggle="true"
+                       data-show-columns="true"
+                       data-show-export="true"
+                       data-detail-view="true"
+                       data-minimum-count-columns="2"
+                       data-show-pagination-switch="true"
+                       data-pagination="true"
+                       data-id-field="id"
+                       data-page-list="[10, 25, 50, 100, ALL]"
+                       data-show-footer="false"
+                       data-side-pagination="server">
+                </table>
+              </div>
+            </div>
+');
         // set as expanded by default
         $mform->setExpanded('omeroimageheader');
     }
