@@ -259,7 +259,7 @@ abstract class qtype_omerocommon_edit_form extends qtype_multichoice_edit_form
         $mform = $this->_form;
         // header
         $mform->addElement('header', 'omeroimageheader',
-            get_string('omero_image_and_rois', 'qtype_omerocommon'));
+            get_string('omero_image_viewer', 'qtype_omerocommon'));
         // file picker
         $mform->addElement('omerofilepicker', 'omeroimageurl', ' ', null,
             array('maxbytes' => 2048, 'accepted_types' => array('*'),
