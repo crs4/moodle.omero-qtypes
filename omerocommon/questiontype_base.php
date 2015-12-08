@@ -151,7 +151,7 @@ abstract class qtype_omerocommon extends qtype_multichoice
         // Insert all the new answers.
         $totalfraction = 0;
         $maxfraction = -1;
-        foreach ($question->answer as $key => $answertext) {
+        foreach ($question->answer_locale_map as $key => $answertext) {
             if (trim($answertext) == '') {
                 continue;
             }
