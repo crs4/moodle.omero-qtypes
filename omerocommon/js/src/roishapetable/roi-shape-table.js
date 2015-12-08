@@ -204,9 +204,9 @@ prototype.answerClassFormatter = function (value, row, index) {
 prototype.eventHandler = {
     'click .like': function (e, value, row, index) {
         if ($(e.target).attr("class").indexOf("glyphicon-plus-sign") !== -1)
-            $(e.target).attr("class", "red glyphicon glyphicon-minus-sign");
+            $(e.target).attr("class", "red glyphicon glyphicon-eye-close");
         else
-            $(e.target).attr("class", "green glyphicon glyphicon-plus-sign");
+            $(e.target).attr("class", "green glyphicon glyphicon-eye-open");
         alert('You click like action, row: ' + JSON.stringify(row));
     },
 
@@ -221,13 +221,13 @@ prototype.eventHandler = {
     'click .roi-shape-visibility': function (e, value, row, index) {
         row.visible = !row.visible;
         if (row.visible)
-            $(e.target).attr("class", "red glyphicon glyphicon-minus-sign");
+            $(e.target).attr("class", "red glyphicon glyphicon-eye-close");
         else
-            $(e.target).attr("class", "green glyphicon glyphicon-plus-sign");
+            $(e.target).attr("class", "green glyphicon glyphicon-eye-open");
     },
 
     'click .remove': function (e, value, row, index) {
-        me.table_container.bootstrapTable('remove', {
+        me.table_element.bootstrapTable('remove', {
             field: 'id',
             values: [row.id]
         });
@@ -281,8 +281,8 @@ prototype.visibilityFormatter = function (data) {
     return [
         '<a class="roi-shape-visibility" href="javascript:void(0)" title="Like">',
         (data ?
-            '<i class="red glyphicon glyphicon-minus-sign"></i>' :
-            '<i class="green glyphicon glyphicon-plus-sign"></i>'),
+            '<i class="red glyphicon glyphicon-eye-close"></i>' :
+            '<i class="green glyphicon glyphicon-eye-open"></i>'),
         '</a> '
     ].join(" ");
 };
