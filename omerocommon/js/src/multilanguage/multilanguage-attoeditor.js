@@ -23,46 +23,24 @@ define("qtype_omerocommon/multilanguage-attoeditor",
                  * Builds a new MultilanguageAttoEditor
                  *
                  * @param element_id
-                 * @param avoid_initialization
+                 * @param locale_map_element_name
                  * @constructor
                  */
-                M.qtypes.omerocommon.MultilanguageAttoEditor = function (element_id, avoid_initialization) {
+                M.qtypes.omerocommon.MultilanguageAttoEditor = function (element_id, locale_map_element_name, avoid_editor_init) {
 
                     // the reference to this scope
                     var me = this;
 
                     // Call the parent constructor
-                    M.qtypes.omerocommon.MultilanguageElement.call(this, element_id);
+                    M.qtypes.omerocommon.MultilanguageElement.call(this, element_id, locale_map_element_name);
 
                     // A new instance of MoodleAttoEditor
-                    me._editor = new M.qtypes.omerocommon.MoodleAttoEditor(element_id);
+                    me._editor = new M.qtypes.omerocommon.MoodleAttoEditor("id_" + me.input_data_element_name);
 
                     // avoids YUI editor initialization
                     // (useful when the editor already exists)
-                    if (!avoid_initialization)
+                    if (!avoid_editor_init)
                         me._editor.init();
-
-                    /**
-                     * Save the current string
-                     */
-                    me.save = function(){
-                        var text = me._editor.getText();
-                        me.setLocaleText(text, me._current_language);
-                    };
-
-                    /**
-                     * Updates the viewer to show the current localized text
-                     *
-                     * @param language the new language
-                     */
-                    me.changeLanguage = function (language) {
-                        // call the default behaviour
-                        this.parent.changeLanguage.call(me, language);
-
-                        // update the editor with the current locale text
-                        var text = me._locale_text_map[language] || "";
-                        me._editor.setText(text);
-                    };
 
 
                     /**
@@ -82,6 +60,32 @@ define("qtype_omerocommon/multilanguage-attoeditor",
 
                 // set the parent
                 M.qtypes.omerocommon.MultilanguageAttoEditor.prototype.parent = M.qtypes.omerocommon.MultilanguageElement.prototype;
+
+
+                var prototype = M.qtypes.omerocommon.MultilanguageAttoEditor.prototype;
+
+                /**
+                 * Save the current string
+                 */
+                prototype.save = function () {
+                    var text = this._editor.getText();
+                    this.setLocaleText(text, this._current_language);
+                };
+
+                /**
+                 * Updates the viewer to show the current localized text
+                 *
+                 * @param language the new language
+                 */
+                prototype.changeLanguage = function (language) {
+                    // call the default behaviour
+                    this.parent.changeLanguage.call(this, language);
+
+                    // update the editor with the current locale text
+                    var text = this._locale_text_map[language] || "";
+                    this._editor.setText(text);
+                };
+
             }
         };
     }
