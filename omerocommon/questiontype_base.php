@@ -46,7 +46,8 @@ abstract class qtype_omerocommon extends qtype_multichoice
      *
      * @return string
      */
-    protected function get_qtype(){
+    protected function get_qtype()
+    {
         return get_class($this);
     }
 
@@ -74,7 +75,9 @@ abstract class qtype_omerocommon extends qtype_multichoice
      */
     public function extra_question_fields()
     {
-        return array($this->get_table_name(), "omeroimageurl", "visiblerois");
+        return array($this->get_table_name(),
+            "omeroimageurl", "visiblerois"
+        );
     }
 
 
