@@ -27,7 +27,7 @@ M.qtypes.omerocommon.RoiShapeTableBase = function (container_id) {
     //
     me.selections = [];
 
-    me._container_id = container_id;
+    me._container_id = editor_container_id;
 };
 
 
