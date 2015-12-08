@@ -81,8 +81,10 @@ define("qtype_omerocommon/multilanguage-element",
                 };
 
                 prototype.changeLanguage = function (language) {
-                    this.save();
-                    this._current_language = language;
+                    if (this._current_language !== language) {
+                        this.save();
+                        this._current_language = language;
+                    }
                     console.info("Changing language to: " + language);
                 };
 
