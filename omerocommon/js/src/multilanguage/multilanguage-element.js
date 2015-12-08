@@ -37,11 +37,36 @@ define("qtype_omerocommon/multilanguage-element",
 
 
                 var prototype = M.qtypes.omerocommon.MultilanguageElement.prototype;
-                prototype.init = function (locale_text_map, current_language) {
+                prototype.init = function (current_language) {
+
+                    // initializes the map of localized strings
+                    this._locale_text_map = {};
+
                     this._current_language = current_language;
-                    if (locale_text_map && !this._locale_text_map) {
-                        this._locale_text_map = locale_text_map;
+                    var map_element = this.getLocaleTextMapElement();
+                    if (map_element) {
+                        var value = map_element.getAttribute("value");
+                        console.log(value);
+                        if (value && value.length > 0) {
+                            this._locale_text_map = JSON.parse(value);
+                        }
+                        var txt = this._locale_text_map[this._current_language];
+
+                        this.onLanguageChanged(this._current_language);
+                    } else {
+                        console.error("Map element for " + this.input_data_element_name + " not found!!!");
                     }
+
+
+                    // register the serialization
+                    var me = this;
+                    console.log("Registering onsubmit for " + me.input_data_element_name, me);
+                    me._update_listener = function () {
+                        M.qtypes.omerocommon.MultilanguageElement.serialize_text(me);
+                        console.log("Object before submission", me);
+                        //alert("Check: " + me.input_data_element_name);
+                    };
+                    document.forms[0].addEventListener("submit", me._update_listener);
                 };
 
                 prototype.setLocaleText = function (text, language) {
