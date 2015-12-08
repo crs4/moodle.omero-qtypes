@@ -120,7 +120,7 @@ prototype.initTable = function (hideToolbar) {
                                 return 'This field is required';
                             }
 
-                            var data = me.table_container.bootstrapTable('getData'),
+                            var data = me.table_element.bootstrapTable('getData'),
                                 index = $(this).parents('tr').data('index');
                             console.log(data[index]);
                             return '';
@@ -151,18 +151,18 @@ prototype.initTable = function (hideToolbar) {
     });
     // sometimes footer render error.
     setTimeout(function () {
-        me.table_container.bootstrapTable('resetView');
+        me.table_element.bootstrapTable('resetView');
     }, 200);
 
-    me.table_container.on('check.bs.table uncheck.bs.table ' +
+    me.table_element.on('check.bs.table uncheck.bs.table ' +
         'check-all.bs.table uncheck-all.bs.table', function () {
-        me.remove_container.prop('disabled', !me.table_container.bootstrapTable('getSelections').length);
+        me.remove_element.prop('disabled', !me.table_element.bootstrapTable('getSelections').length);
 
         // save your data, here just save the current page
         selections = me.getIdSelections();
         // push or splice the selections if you want to save all data selections
     });
-    me.table_container.on('expand-row.bs.table', function (e, index, row, $detail) {
+    me.table_element.on('expand-row.bs.table', function (e, index, row, $detail) {
         if (index % 2 == 1) {
             $detail.html('Loading from ajax request...');
             $.get('LICENSE', function (res) {
@@ -170,19 +170,19 @@ prototype.initTable = function (hideToolbar) {
             });
         }
     });
-    me.table_container.on('all.bs.table', function (e, name, args) {
+    me.table_element.on('all.bs.table', function (e, name, args) {
         console.log(name, args);
     });
-    me.remove_container.click(function () {
+    me.remove_element.click(function () {
         var ids = me.getIdSelections();
-        me.table_container.bootstrapTable('remove', {
+        me.table_element.bootstrapTable('remove', {
             field: 'id',
             values: ids
         });
-        me.remove_container.prop('disabled', true);
+        me.remove_element.prop('disabled', true);
     });
     $(window).resize(function () {
-        me.table_container.bootstrapTable('resetView', {
+        me.table_element.bootstrapTable('resetView', {
             height: me.getHeight()
         });
     });
@@ -192,7 +192,7 @@ prototype.initTable = function (hideToolbar) {
 
 
 prototype.getIdSelections = function () {
-    return $.map(this.table_container.bootstrapTable('getSelections'), function (row) {
+    return $.map(this.table_element.bootstrapTable('getSelections'), function (row) {
         return row.id
     });
 };
@@ -301,12 +301,12 @@ prototype.getHeight = function () {
 };
 
 prototype.getBootstrapTable = function () {
-    return this.table_container.bootstrapTable;
+    return this.table_element.bootstrapTable;
 };
 
 
 prototype.appendRoiShapeList = function (data) {
-    return this.table_container.bootstrapTable('append', data);
+    return this.table_element.bootstrapTable('append', data);
 };
 
 prototype.setRoiShapeList = function (data) {
@@ -316,20 +316,20 @@ prototype.setRoiShapeList = function (data) {
 
 
 prototype.getRoiShape = function (roi_shape_id) {
-    return this.table_container.bootstrapTable('getRowByUniqueId', roi_shape_id);
+    return this.table_element.bootstrapTable('getRowByUniqueId', roi_shape_id);
 };
 
 prototype.getRoiShapeList = function () {
-    return this.table_container.bootstrapTable('getData');
+    return this.table_element.bootstrapTable('getData');
 };
 
 prototype.removeRoiShape = function (roi_shapes) {
     roi_shapes = (roi_shapes instanceof Array) ? roi_shapes : [roi_shapes];
-    return this.table_container.bootstrapTable('remove', {field: 'id', values: roi_shapes});
+    return this.table_element.bootstrapTable('remove', {field: 'id', values: roi_shapes});
 };
 
 prototype.removeAll = function () {
-    return this.table_container.bootstrapTable('removeAll');
+    return this.table_element.bootstrapTable('removeAll');
 };
 
 
