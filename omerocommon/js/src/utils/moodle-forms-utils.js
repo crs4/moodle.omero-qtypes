@@ -104,7 +104,7 @@ define("qtype_omerocommon/moodle-forms-utils",
                             '<div class="felement">',
                             '<div>',
                             element_obj.get(0).outerHTML,
-                            ((append_loacale_map_name && append_loacale_map_name.length >0)
+                            ((append_loacale_map_name && append_loacale_map_name.length > 0)
                                 ? '<input type="hidden" name="' + append_loacale_map_name + '" value="{}" />'
                                 : ""),
                             '</div>',
@@ -144,44 +144,69 @@ define("qtype_omerocommon/moodle-forms-utils",
                     };
 
 
-                    /**
-                     * Private function to generate a UUID to identify HTML elements
-                     *
-                     * @returns {string}
-                     * @private
-                     */
-                    me.generateGuid = function () {
-                        function s4() {
-                            return Math.floor((1 + Math.random()) * 0x10000)
-                                .toString(16)
-                                .substring(1);
-                        }
-
-                        return s4() + s4() + '-' + s4() + '-' + s4() + '-' +
-                            s4() + '-' + s4() + s4() + s4();
-                    };
-
-
-                    me.initDropdown = function () {
-                        $('[data-toggle="popover"]').popover();
-
-
-                        $("#enableModal").click(function () {
-                            $('#myModal').modal();
-                            //$('#myInput').focus();
-                        });
-
-
-                        $(".dropdown-toggle").dropdown();
-
-                        //$('#username').editable({
-                        //
-                        //    success: function (response, newValue) {
-                        //        alert("Changed: !!!");
-                        //    }
-                        //});
-                    };
                 };
+
+                // reference to the 'class'
+                var formUtilsClass = M.qtypes.omerocommon.MoodleFormUtils;
+
+                /**
+                 * Generate a UUID to identify HTML elements
+                 *
+                 * @returns {string}
+                 * @private
+                 */
+                formUtilsClass.generateGuid = function () {
+                    function s4() {
+                        return Math.floor((1 + Math.random()) * 0x10000)
+                            .toString(16)
+                            .substring(1);
+                    }
+
+                    return s4() + s4() + '-' + s4() + '-' + s4() + '-' +
+                        s4() + '-' + s4() + s4() + s4();
+                };
+
+                /**
+                 * Initialize the dropdown menu
+                 */
+                formUtilsClass.initDropdown = function () {
+                    var dropdown = $(".dropdown-toggle");
+                    if (dropdown.length)
+                        dropdown.dropdown();
+                };
+
+
+                /**
+                 * Initialize
+                 */
+                formUtilsClass.iniPopupOver = function () {
+                    var popover = $('[data-toggle="popover"]');
+                    if (popover.length > 0) {
+                        popover.popover();
+                    }
+                };
+
+
+                formUtilsClass.initModelPanels = function (modal_panel_id) {
+
+                    $('#' + modal_panel_id).modal();
+                    
+                    //$('#myInput').focus();
+
+
+                    //$("#enableModal").click(function () {
+                    //    $('#myModal').modal();
+                    //    //$('#myInput').focus();
+                    //});
+
+
+                    //$('#username').editable({
+                    //
+                    //    success: function (response, newValue) {
+                    //        alert("Changed: !!!");
+                    //    }
+                    //});
+                }
             }
         };
     }
