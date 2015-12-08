@@ -45,7 +45,7 @@ define("qtype_omerointeractive/answer-group",
                      * @private
                      */
                     me._build = function () {
-                        me._answer_container = $('<div class="fitem" id="' + me.answerContainerId + '"></div>');
+                        me._answer_container = $('<div class="fitem" id="' + me._answer_number + '"></div>');
                         me._answer_list_container.append(me._answer_container);
 
                         me._form_utils.appendElement(me._answer_container, "Text", "<textarea>xxx</textarea>");
