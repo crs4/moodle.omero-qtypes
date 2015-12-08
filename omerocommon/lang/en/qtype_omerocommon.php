@@ -50,9 +50,9 @@ $string['add_roi_answer'] = 'Add a new ROI based answer';
 
 $string['answer_type'] = "Answer type";
 
-$string['roi_shape_inspector'] = "ROI Shape Inspector";
+$string['roi_shape_inspector'] = "ROI Shapes Inspector";
 
-
+$string['omero_image_viewer'] = "Omero Image Viewer";
 $string['omero_image_and_rois'] = "Omero Image and ROIs";
 
 $string['qtype_0'] = "Plaintext";
