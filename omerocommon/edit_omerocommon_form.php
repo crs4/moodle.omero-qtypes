@@ -507,11 +507,32 @@ abstract class qtype_omerocommon_edit_form extends qtype_multichoice_edit_form
         // default hidden fields
         $this->add_hidden_fields();
 
+        $mform->addElement('hidden', 'cmid');
+        $mform->setType('cmid', PARAM_INT);
+
+        $mform->addElement('hidden', 'qtype');
+        $mform->setType('qtype', PARAM_ALPHA);
+
         $mform->addElement('hidden', 'visiblerois', 'none');
         $mform->setType("visiblerois", PARAM_RAW);
 
         $mform->addElement('hidden', 'makecopy');
         $mform->setType('makecopy', PARAM_INT);
+
+        $mform->addElement("hidden", 'questiontext_locale_map');
+        $mform->setType('questiontext_locale_map', PARAM_RAW);
+
+        $mform->addElement("hidden", 'generalfeedback_locale_map');
+        $mform->setType('generalfeedback_locale_map', PARAM_RAW);
+
+        $mform->addElement("hidden", 'correctfeedback_locale_map');
+        $mform->setType('correctfeedback_locale_map', PARAM_RAW);
+
+        $mform->addElement("hidden", 'partiallycorrectfeedback_locale_map');
+        $mform->setType('partiallycorrectfeedback_locale_map', PARAM_RAW);
+
+        $mform->addElement("hidden", 'incorrectfeedback_locale_map');
+        $mform->setType('incorrectfeedback_locale_map', PARAM_RAW);
     }
 
 
