@@ -61,6 +61,13 @@ define("qtype_omerocommon/multilanguage-element",
                 prototype.clear = function () {
                     console.warn("Not implemented at this level");
                 }
+
+
+                prototype.destroy = function () {
+                    alert("removing");
+                    document.forms[0].removeEventListener("submit", this._update_listener);
+                };
+
                 /**
                  *
                  */
