@@ -242,6 +242,25 @@ prototype.eventHandler = {
     }
 };
 
+
+prototype.show = function () {
+    this.table_container_element.removeClass("hidden");
+};
+
+prototype.hide = function () {
+    this.table_container_element.addClass("hidden");
+};
+
+
+prototype.showToolbar = function () {
+    this.table_toolbar_container_element.removeClass("hidden");
+};
+
+prototype.hideToolbar = function () {
+    this.table_toolbar_container_element.addClass("hidden");
+};
+
+
 prototype.totalTextFormatter = function (data) {
     return 'Total';
 };
