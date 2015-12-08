@@ -174,6 +174,55 @@ define("qtype_omerocommon/question-editor-base",
                 };
 
 
+                prototype.buildAnswer = function (answer_number, fraction_options) {
+                    console.error("You need to implement this method!!!");
+                };
+
+                prototype.addAnswer = function () {
+                    var answer_number = this._answers.length;
+                    var answer = this.buildAnswer(answer_number, this._fraction_options);
+                    if (answer) {
+                        answer.show();
+                        var me = this;
+                        answer.remove = function () {
+                            me.removeAnswer(answer_number);
+                        };
+                        this._answers.push(answer);
+                        this.updateAnswerCounter();
+                        var editors = answer.getEditorsMap();
+                        for (var i in editors) {
+                            this._editor[i] = editors[i];
+                        }
+                    }
+                    return answer;
+                };
+
+
+                prototype.removeAnswer = function (answer_number) {
+                    if (answer_number >= 0) {
+                        var answer = this._answers[answer_number];
+                        if (answer) {
+                            answer.hide();
+                            this._answers.splice(answer_number, 1);
+                            this.updateAnswerCounter();
+                            var editors = answer.getEditorsMap();
+                            for (var i in editors) {
+                                var editor = editors[i];
+                                editor.destroy();
+                                delete this._editor[editor.input_data_element_name];
+                            }
+                            return true;
+                        }
+                    }
+                    return false;
+                };
+
+
+                prototype.updateAnswerCounter = function () {
+                    this._answers_counter_element.setAttribute("value", this._answers.length);
+                };
+
+
                 /**
                  * Updates the reference to the frame containing OmeroImageViewer
                  *
