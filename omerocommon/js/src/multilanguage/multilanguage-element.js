@@ -70,8 +70,8 @@ define("qtype_omerocommon/multilanguage-element",
                 };
 
                 prototype.setLocaleText = function (text, language) {
-                    language = language || this._current_language;
-                    console.log("Setting locale string: ", language, text);
+                    //language = language || this._current_language;
+                    console.log("Setting locale string: ", this.input_data_element_name, language, text);
                     this._locale_text_map[language] = text;
                 };
 
@@ -92,7 +92,7 @@ define("qtype_omerocommon/multilanguage-element",
 
                 prototype.clear = function () {
                     console.warn("Not implemented at this level");
-                }
+                };
 
 
                 prototype.destroy = function () {
