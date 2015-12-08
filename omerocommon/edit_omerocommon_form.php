@@ -96,6 +96,7 @@ abstract class qtype_omerocommon_edit_form extends qtype_multichoice_edit_form
         global $CFG, $PAGE;
         // CSS
         $PAGE->requires->css(new moodle_url("$CFG->wwwroot/question/type/omerocommon/css/common-question-editor.css"));
+        $PAGE->requires->css(new moodle_url("$CFG->wwwroot/question/type/omerocommon/css/bootstrap-panel.css"));
         // Javascript
         init_js_modules("omerocommon");
     }
