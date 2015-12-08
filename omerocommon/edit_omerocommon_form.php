@@ -359,11 +359,18 @@ abstract class qtype_omerocommon_edit_form extends qtype_multichoice_edit_form
         $repeated[] = $mform->createElement('hidden', 'answerformat');
         $repeated[] = $mform->createElement('hidden', 'feedbackformat');
 
+        // locale maps answer and feedback
+        $repeated[] = $mform->createElement('hidden', 'answer_locale_map');
+        $repeated[] = $mform->createElement('hidden', 'feedback_locale_map');
+
         $mform->setType("answer", PARAM_TEXT);
-        $mform->setType("fraction", PARAM_RAW);
+        $mform->setType("fraction", PARAM_FLOAT);
         $mform->setType("feedback", PARAM_TEXT);
         $mform->setType("answerformat", PARAM_RAW);
         $mform->setType("feedbackformat", PARAM_RAW);
+
+        $mform->setType("answer_locale_map", PARAM_RAW);
+        $mform->setType("feedback_locale_map", PARAM_RAW);
 
         $mform->setDefault('answerformat', 1);
         $mform->setDefault('feedbackformat', 1);
