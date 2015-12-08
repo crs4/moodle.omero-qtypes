@@ -110,7 +110,7 @@ abstract class qtype_omerocommon extends qtype_multichoice
 
         // Following hack to check at least two answers exist.
         $answercount = 0;
-        foreach ($question->answer as $key => $answer) {
+        foreach ($question->answer_locale_map as $key => $answer) {
             if ($answer != '') {
                 $answercount++;
             }
