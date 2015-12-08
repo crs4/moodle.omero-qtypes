@@ -60,7 +60,7 @@ define("qtype_omerocommon/answer-base",
                     _build: function () {
                         // the reference to this scope
                         var me = this;
-                        me._answer_container = $('<div class="fitem" id="' + me.answerContainerId + '"></div>');
+                        me._answer_container = $('<div class="fitem" id="' + me._answer_number + '"></div>');
                         me._answer_list_container.append(me._answer_container);
 
                         me._form_utils.appendElement(me._answer_container, "Grade", "<select ><option>1</option></select>");
