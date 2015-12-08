@@ -85,6 +85,17 @@ define("qtype_omerocommon/answer-base",
                         var me = this;
                         if (me._answer_container)
                             me._answer_container.remove();
+                    },
+
+
+                    /**
+                     * Returns the map <language, editor>
+                     * related to this question
+                     *
+                     * @returns {{}}
+                     */
+                    getEditorsMap: function () {
+                        return this._editors_map;
                     }
                 }
             }
