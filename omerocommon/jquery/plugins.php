@@ -11,11 +11,11 @@ defined('MOODLE_INTERNAL') || die();
 // file: theme/sometheme/jquery/plugins.php
 $plugins = array(
 
-    'angular' => array(
-        'files' => array(
-            "angular/angular.1.3.14.js"
-        )
-    ),
+//    'angular' => array(
+//        'files' => array(
+//            "angular/angular.1.3.14.js"
+//        )
+//    ),
 
     'bootstrap' => array(
         'files' => array(
@@ -37,6 +37,19 @@ $plugins = array(
             "bootstrap-toggle/css/bootstrap-toggle.min.css"
         )
     ),
+
+//    'bootstrap-switch' => array(
+//        'files' => array(
+//            "bootstrap-switch/js/bootstrap-switch.min.js",
+//            "bootstrap-switch/css/bootstrap2/bootstrap-switch.min.css"
+//        )
+//    ),
+
+//    'highlight' => array(
+//        'files' => array(
+//            "highlight/highlight.js"
+//        )
+//    ),
 
     'bootstrap-table' => array(
         'files' => array(
