@@ -209,44 +209,74 @@ prototype.answerClassFormatter = function (value, row, index) {
     ].join('');
 };
 
-prototype.eventHandler = {
-    'click .like': function (e, value, row, index) {
-        if ($(e.target).attr("class").indexOf("glyphicon-plus-sign") !== -1)
-            $(e.target).attr("class", "red glyphicon glyphicon-eye-close");
-        else
-            $(e.target).attr("class", "green glyphicon glyphicon-eye-open");
-        alert('You click like action, row: ' + JSON.stringify(row));
-    },
+/**
+ * Build an event handler
+ *
+ * @param table
+ * @returns {{[click .like]: 'click .like', [click .roi-shape-visibility]: 'click .roi-shape-visibility', [click .remove]: 'click .remove', [change .answer-class]: 'change .answer-class'}}
+ */
 
-    /**
-     * Handle the visibility change event !!!
-     *
-     * @param e
-     * @param value
-     * @param row
-     * @param index
-     */
-    'click .roi-shape-visibility': function (e, value, row, index) {
-        row.visible = !row.visible;
-        if (row.visible)
-            $(e.target).attr("class", "red glyphicon glyphicon-eye-close");
-        else
-            $(e.target).attr("class", "green glyphicon glyphicon-eye-open");
-    },
+prototype.eventHandler = function (table) {
+    return {
+        'click .like': function (e, value, row, index) {
+            if ($(e.target).attr("class").indexOf("glyphicon-plus-sign") !== -1)
+                $(e.target).attr("class", "red glyphicon glyphicon-eye-close");
+            else
+                $(e.target).attr("class", "green glyphicon glyphicon-eye-open");
+            alert('You click like action, row: ' + JSON.stringify(row));
+        },
 
-    'click .remove': function (e, value, row, index) {
-        me.table_element.bootstrapTable('remove', {
-            field: 'id',
-            values: [row.id]
-        });
-    },
+        /**
+         * Handle the visibility change event !!!
+         *
+         * @param e
+         * @param value
+         * @param row
+         * @param index
+         */
+        'click .roi-shape-visibility': function (e, value, row, index) {
+            row.visible = !row.visible;
+            if (row.visible)
+                $(e.target).attr("class", "red glyphicon glyphicon-eye-close");
+            else
+                $(e.target).attr("class", "green glyphicon glyphicon-eye-open");
+            console.log("THIS", table, e, row);
+            notifyListeners(table, {
+                type: "roiShapeVisibilityChanged",
+                shape: row,
+                event: value,
+                visible: row.visible
+            });
+        },
 
-    'change .answer-class': function (e, value, row, index) {
-        console.log(e, value, row, index);
-        console.log("ROW: ", row);
+        'click .remove': function (e, value, row, index) {
+            me.table_element.bootstrapTable('remove', {
+                field: 'id',
+                values: [row.id]
+            });
+        },
 
-        alert("Changed!!!");
+        'change .answer-class': function (e, value, row, index) {
+            console.log(e, value, row, index);
+            console.log("ROW: ", row);
+            alert("Changed!!!");
+        }
+    };
+};
 
+
+prototype.addEventListener = function (listener) {
+    if (listener) {
+        this._event_listener_list.push(listener);
+    }
+};
+
+prototype.removeEventListener = function (listener) {
+    if (listener) {
+        var index = this._event_listener_list.indexOf(listener);
+        if (index > -1) {
+            this._event_listener_list.splice(index, 1);
+        }
     }
 };
 
