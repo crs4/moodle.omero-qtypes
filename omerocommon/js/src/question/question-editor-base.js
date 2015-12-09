@@ -124,6 +124,10 @@ define("qtype_omerocommon/question-editor-base",
                             }
                         }
 
+
+                        me._image_locked_element = $("[name^=omeroimagelocked]");
+                        me._image_locked = me._image_locked_element.val() == "1";
+
                         me.initVisibleRoiList();
                     });
 
@@ -195,6 +199,31 @@ define("qtype_omerocommon/question-editor-base",
                     for (var locale_string in this._editor) {
                         this._editor[locale_string].onLanguageChanged(language);
                     }
+                };
+
+
+                prototype.isLockedImage = function () {
+                    return this._image_locked;
+                };
+
+
+                prototype.lockImage = function () {
+                    this._image_locked_element.val(true);
+                    this._image_locked = true;
+                };
+
+
+                prototype.unlockImage = function () {
+                    this._image_locked_element.val(false);
+                    this._image_locked = false;
+                };
+
+                prototype.onLockImageChanged = function (locked) {
+                    locked ? this.lockImage() : this.unlockImage();
+                };
+
+                prototype.updateViewCenter = function () {
+
                 };
 
 
