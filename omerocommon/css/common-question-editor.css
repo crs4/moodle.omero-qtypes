@@ -45,3 +45,17 @@ body[id^=page-question-type-omero] #page fieldset.hidden{
 body[id^=page-question-type-omero] > #fitem_id_omeroimageurl > div.fitemtitle{
     display: none;
 }
+
+
+body[id^=page-question-type-omero] > a > img.fp-repo-icon{
+    padding: 0px;
+}
+
+body[id^=page-question-type-omero] #omero-image-viewer-toolbar{
+    float: right;
+    margin-right: 0px;
+}
+
+body[id^=page-question-type-omero] #omero-image-view-lock{
+    margin-left: 5px;
+}
