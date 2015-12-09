@@ -374,6 +374,13 @@ define("qtype_omerocommon/question-editor-base",
                             visible.splice(index, 1);
                     }
                 };
+
+                prototype.onRoiShapeFocus = function (event) {
+                    this._image_viewer_controller.setFocusOnRoiShape.call(
+                        this._image_viewer_controller,
+                        event.shape.id
+                    );
+                };
             }
         };
     }
