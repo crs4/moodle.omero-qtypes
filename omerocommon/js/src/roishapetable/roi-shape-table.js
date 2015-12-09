@@ -168,6 +168,16 @@ prototype.initTable = function (hideToolbar) {
         me.table_element.bootstrapTable('resetView');
     }, 200);
 
+
+    me.table_element.on('click-cell.bs.table', function(table, field, e, row, index){
+        console.log("Click on a table ROW", e, row, index);
+        notifyListeners(me, {
+            type: "roiShapeFocus",
+            shape: row,
+            visible: row.visible
+        });
+    });
+
     me.table_element.on('check.bs.table uncheck.bs.table ' +
         'check-all.bs.table uncheck-all.bs.table', function () {
         me.remove_element.prop('disabled', !me.table_element.bootstrapTable('getSelections').length);
@@ -184,8 +194,8 @@ prototype.initTable = function (hideToolbar) {
             });
         }
     });
-    me.table_element.on('all.bs.table', function (e, name, args) {
-        console.log(name, args);
+    me.table_element.on('all.bs.table', function (e, row, args) {
+        console.log(row, args);
     });
     me.remove_element.click(function () {
         var ids = me.getIdSelections();
@@ -254,7 +264,7 @@ prototype.eventHandler = function (table) {
                 $(e.target).attr("class", "green glyphicon glyphicon-eye-open");
             else
                 $(e.target).attr("class", "red glyphicon glyphicon-eye-close");
-            console.log("THIS", table, e, row);
+
             notifyListeners(table, {
                 type: "roiShapeVisibilityChanged",
                 shape: row,
