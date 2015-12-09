@@ -267,6 +267,17 @@ abstract class qtype_omerocommon_edit_form extends qtype_multichoice_edit_form
                 'omero_image_server' => get_config('omero', 'omero_restendpoint'))
         );
 
+        $mform->addElement('html', '<div id="omero-image-viewer-toolbar" class="hidden">');
+        $mform->addElement('html', '
+            <div class="checkbox disabled">
+              <label for="omero-image-view-lock">
+                Lock the view
+              </label>
+              <input id="omero-image-view-lock" name="omero-image-view-lock" type="checkbox"data-toggle="toggle">
+            </div>
+        ');
+        $mform->addElement('html', '</div>');
+
 
         $mform->addElement('header', 'roitableinspectorheader',
             get_string('roi_shape_inspector', 'qtype_omeromultichoice'), '');
