@@ -291,6 +291,8 @@ define("qtype_omerocommon/question-editor-base",
                     me.current_image_info = image_details;
                     me._registerFrameWindowEventHandlers(me, frame_id);
                     me._image_viewer_controller.getModel().addEventListener(me);
+
+                    $("#" + frame_id + "-toolbar").removeClass("hidden");
                 };
 
 
