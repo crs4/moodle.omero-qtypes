@@ -382,6 +382,50 @@ define("qtype_omerocommon/question-editor-base",
                         event.shape.id
                     );
                 };
+
+
+                prototype._initImagePropertiesControls = function () {
+                    var me = this;
+                    me._image_properties_element = $("[name^=omeroimageproperties]");
+                    me._image_properties = me._image_properties_element.val();
+                    if (me._image_properties && me._image_properties.length !== 0) {
+                        try {
+                            me._image_properties = JSON.parse(me._image_properties);
+                        } catch (e) {
+                            console.error(e);
+                            me._image_properties = {};
+                        }
+                    } else me._image_properties = {};
+
+                    $("#omero-image-viewer-properties").html(me.getFormattedImageProperties());
+
+                    $("#omero-image-properties-update").click(function () {
+                        me.updateImageProperties();
+                    });
+                };
+
+
+                prototype.getImageProperties = function () {
+                    return this._image_properties;
+                };
+
+                prototype.getFormattedImageProperties = function () {
+                    var ip = this._image_properties;
+                    var result = "";
+                    if(ip.center) {
+                        result += ("center (x,y): " + ip.center.x + ", " + ip.center.y);
+                        result += (", zoom: " + ip.zoom_level);
+                        result += (", t: " + ip.t);
+                        result += (", z: " + ip.z);
+                    }
+                    return result;
+                };
+
+                prototype.updateImageProperties = function () {
+                    this._image_properties =  this._image_viewer_controller.getImageProperties();
+                    this._image_properties_element.val(JSON.stringify(this._image_properties));
+                    $("#omero-image-viewer-properties").html(this.getFormattedImageProperties());
+                };
             }
         };
     }
