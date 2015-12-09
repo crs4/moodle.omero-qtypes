@@ -1,61 +1,62 @@
 
-
-body[id^=page-question-type-omero] fieldset[id*=id_]{
+body[id^=page-question-type-omero] fieldset[id*=id_] {
     margin-top: 20px;
 }
 
-
-body[id^=page-question-type-omero] input[type=submit]{
+body[id^=page-question-type-omero] input[type=submit] {
     width: 150px;
 }
 
-
-body[id^=page-question-type-omero] fieldset.hidden{
+body[id^=page-question-type-omero] fieldset.hidden {
     margin-top: 30px;
 }
 
-body[id^=page-question-type-omero] div[id*=fgroup_id_buttonar]{
+body[id^=page-question-type-omero] div[id*=fgroup_id_buttonar] {
     padding-top: 50px;
     text-align: center;
 }
 
 /* hide the default addanswer button */
-body[id^=page-question-type-omero] input[name=addanswers]{
+body[id^=page-question-type-omero] input[name=addanswers] {
     display: none;
 }
 
-
-body[id^=page-question-type-omero] #answers_toolbar .panel-body{
+body[id^=page-question-type-omero] #answers_toolbar .panel-body {
     text-align: right;
     margin: 10px 0px;
     padding: 0px;
 }
 
-
-body[id^=page-question-type-omero] #roi-shape-inspector-table{
+body[id^=page-question-type-omero] #roi-shape-inspector-table {
     margin-bottom: 300px;
 }
 
-
-body[id^=page-question-type-omero] #page fieldset.hidden{
+body[id^=page-question-type-omero] #page fieldset.hidden {
     display: block !important;
 }
 
-
-body[id^=page-question-type-omero] > #fitem_id_omeroimageurl > div.fitemtitle{
+body[id^=page-question-type-omero] > #fitem_id_omeroimageurl > div.fitemtitle {
     display: none;
 }
 
-
-body[id^=page-question-type-omero] > a > img.fp-repo-icon{
+body[id^=page-question-type-omero] > a > img.fp-repo-icon {
     padding: 0px;
 }
 
-body[id^=page-question-type-omero] #omero-image-viewer-toolbar{
-    float: right;
+body[id^=page-question-type-omero] #omero-image-viewer-toolbar {
+    /*float: right;*/
     margin-right: 0px;
 }
 
-body[id^=page-question-type-omero] #omero-image-view-lock{
+body[id^=page-question-type-omero] #omero-image-view-lock-container {
+    float: right;
+}
+
+body[id^=page-question-type-omero] #omero-image-view-lock {
     margin-left: 5px;
+}
+
+body[id^=page-question-type-omero] #omero-image-viewer-properties {
+    font-size: small;
+    margin-left: 3px;
 }
