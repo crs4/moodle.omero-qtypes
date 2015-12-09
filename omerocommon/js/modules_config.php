@@ -7,5 +7,6 @@
  */
 
 $not_amd_modules = array(
+    "qtype_omerocommon/main",
     "qtype_omerocommon/roi-shape-table"
 );
