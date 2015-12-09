@@ -140,7 +140,7 @@ prototype.initTable = function (hideToolbar) {
                             return '';
                         }
                     },
-                    footerFormatter: me.descriptionFormatter
+                    formatter: me.descriptionFormatter
                 },
                 {
                     field: 'visible',
@@ -326,7 +326,7 @@ prototype.totalNameFormatter = function (data) {
 };
 
 prototype.descriptionFormatter = function (data) {
-    return data;
+    return data || " ";
 };
 
 prototype.visibilityFormatter = function (data) {
