@@ -74,7 +74,7 @@ define("qtype_omerocommon/question-editor-base",
                         "correctfeedback", "partiallycorrectfeedback", "incorrectfeedback"
                     ];
 
-                    $(document).ready(function(){
+                    $(document).ready(function () {
                         M.qtypes.omerocommon.MoodleFormUtils.initDropdown();
                     });
                 };
@@ -125,6 +125,22 @@ define("qtype_omerocommon/question-editor-base",
                                 }
                             }
                         }
+
+                        var roi_list = null;
+                        me._visible_roi_list = [];
+                        var visible_roi_list = $("[name=visiblerois]").val();
+                        if (visible_roi_list && visible_roi_list != "none") {
+                            roi_list = visible_roi_list.split(",");
+                            for (var i in roi_list) {
+                                me._visible_roi_list[i] = parseInt(roi_list[i]);
+                            }
+                        }
+
+                        document.forms[0].addEventListener("submit", function () {
+                            $("[name=visiblerois]").val(me._visible_roi_list.join(","));
+                        });
+
+                        console.log(me._visible_roi_list);
                     });
 
                     me._answers = [];
@@ -296,15 +312,17 @@ define("qtype_omerocommon/question-editor-base",
 
                 prototype.onImageModelRoiLoaded = function (e) {
 
-                    var roi_list = e.detail;
-                    console.log("Loaded ROIs", roi_list);
+                    var roi_list = M.qtypes.omerocommon.RoiShapeModel.toRoiShapeModel(e.detail,
+                        this._visible_roi_list);
+                    console.log("Loaded ROI Shapes Models", roi_list);
 
                     if (!this._roi_shape_table) {
                         this._roi_shape_table = new M.qtypes.omerocommon.RoiShapeTableBase("roi-shape-inspector-table");
                         this._roi_shape_table.initTable();
+                        this._roi_shape_table.addEventListener(this);
                     }
 
-                    this._roi_shape_table.appendRoiShapeList(e.detail);
+                    this._roi_shape_table.appendRoiShapeList(roi_list);
                     console.log("Updated ROI table!!!");
                 };
 
