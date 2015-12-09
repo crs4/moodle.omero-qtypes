@@ -31,6 +31,13 @@ $plugins = array(
 //        )
 //    ),
 
+    'bootstrap-toggle' => array(
+        'files' => array(
+            "bootstrap-toggle/js/bootstrap-toggle.min.js",
+            "bootstrap-toggle/css/bootstrap-toggle.min.css"
+        )
+    ),
+
     'bootstrap-table' => array(
         'files' => array(
             "bootstrap-table/bower_components/bootstrap-table/dist/bootstrap-table-min.js",
