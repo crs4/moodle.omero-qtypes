@@ -305,7 +305,6 @@ define("qtype_omerocommon/question-editor-base",
                         this._roi_shape_table.initTable();
                         this._roi_shape_table.addEventListener(this);
                     }
-
                     this._roi_shape_table.appendRoiShapeList(roi_list);
                     this._image_viewer_controller.showRoiShapes(this._visible_roi_list);
 
@@ -340,7 +339,7 @@ define("qtype_omerocommon/question-editor-base",
                 };
 
 
-                prototype.initVisibleRoiList = function(){
+                prototype.initVisibleRoiList = function () {
                     var me = this;
                     var roi_list = null;
                     me._visible_roi_list = [];
