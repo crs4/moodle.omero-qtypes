@@ -322,6 +322,11 @@ define("qtype_omerocommon/question-editor-base",
                     me._image_viewer_controller.getModel().addEventListener(me);
 
                     $("#" + frame_id + "-toolbar").removeClass("hidden");
+
+                    me._image_viewer_controller.onViewerInitialized(function(){
+                        me._initImagePropertiesControls();
+                        me._image_viewer_controller.updateViewFromProperties(me._image_properties);
+                    });
                 };
 
 
