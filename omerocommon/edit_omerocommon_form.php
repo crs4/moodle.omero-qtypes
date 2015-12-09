@@ -613,6 +613,12 @@ abstract class qtype_omerocommon_edit_form extends qtype_multichoice_edit_form
 
         $mform->addElement("hidden", 'incorrectfeedback_locale_map');
         $mform->setType('incorrectfeedback_locale_map', PARAM_RAW);
+
+        $mform->addElement("hidden", 'omeroimagelocked');
+        $mform->setType('omeroimagelocked', PARAM_INT);
+
+        $mform->addElement("hidden", 'omeroimageproperties');
+        $mform->setType('omeroimageproperties', PARAM_RAW);
     }
 
 
