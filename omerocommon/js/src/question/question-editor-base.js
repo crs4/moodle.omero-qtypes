@@ -58,15 +58,11 @@ define("qtype_omerocommon/question-editor-base",
                  *
                  * @constructor
                  */
-                M.qtypes.omerocommon.QuestionEditorBase = function (answers_section_id, fraction_options) {
+                M.qtypes.omerocommon.QuestionEditorBase = function () {
 
                     // the reference to this scope
                     var me = this;
 
-                    // the ID of the answer serction
-                    me._answers_section_id = answers_section_id;
-
-                    me._fraction_options = fraction_options;
 
                     me._localized_string_names = [
                         "questiontext",
@@ -74,11 +70,15 @@ define("qtype_omerocommon/question-editor-base",
                         "correctfeedback", "partiallycorrectfeedback", "incorrectfeedback"
                     ];
 
-                    $(document).ready(function () {
-                        M.qtypes.omerocommon.MoodleFormUtils.initDropdown();
-                    });
+                    //$(document).ready(function () {
+                    //    //M.qtypes.omerocommon.MoodleFormUtils.initDropdown();
+                    //});
                 };
 
+
+                M.qtypes.omerocommon.QuestionEditorBase.getInstance = function () {
+                    return M.qtypes.omerocommon.QuestionEditorBase.instance;
+                };
 
                 // A local reference to the prototype
                 var prototype = M.qtypes.omerocommon.QuestionEditorBase.prototype;
@@ -87,9 +87,13 @@ define("qtype_omerocommon/question-editor-base",
                 /**
                  * Initializes this questionEditor controller
                  */
-                prototype.initialize = function () {
+                prototype.initialize = function (answers_section_id, fraction_options) {
                     var me = this;
 
+                    // the ID of the answer serction
+                    me._answers_section_id = answers_section_id;
+
+                    me._fraction_options = fraction_options;
 
                     $(document).ready(function () {
 
@@ -114,7 +118,6 @@ define("qtype_omerocommon/question-editor-base",
                             me._answers_counter_element = counter;
 
                         } else {
-
                             var counter = me._answers_counter_element.getAttribute("value");
                             if (counter) {
                                 counter = parseInt(counter);
@@ -144,11 +147,16 @@ define("qtype_omerocommon/question-editor-base",
                     var frame_id = "omero-image-viewer";
                     var visible_roi_list = [];
 
+
+
+
                     // register the frame when loaded
                     document.addEventListener("frameLoaded", function (e) {
                         me.onViewerFrameLoaded(e.detail.frame_id, visible_roi_list, e.detail);
                     }, true);
                 };
+
+
 
 
                 prototype._build_answer_controls = function () {
