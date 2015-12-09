@@ -93,9 +93,7 @@ define("qtype_omerocommon/question-editor-base",
 
                     $(document).ready(function () {
 
-
                         me._build_answer_controls();
-
 
                         me._editor = {};
                         for (var i in me._localized_string_names) {
@@ -126,21 +124,7 @@ define("qtype_omerocommon/question-editor-base",
                             }
                         }
 
-                        var roi_list = null;
-                        me._visible_roi_list = [];
-                        var visible_roi_list = $("[name=visiblerois]").val();
-                        if (visible_roi_list && visible_roi_list != "none") {
-                            roi_list = visible_roi_list.split(",");
-                            for (var i in roi_list) {
-                                me._visible_roi_list[i] = parseInt(roi_list[i]);
-                            }
-                        }
-
-                        document.forms[0].addEventListener("submit", function () {
-                            $("[name=visiblerois]").val(me._visible_roi_list.join(","));
-                        });
-
-                        console.log(me._visible_roi_list);
+                        me.initVisibleRoiList();
                     });
 
                     me._answers = [];
@@ -323,6 +307,8 @@ define("qtype_omerocommon/question-editor-base",
                     }
 
                     this._roi_shape_table.appendRoiShapeList(roi_list);
+                    this._image_viewer_controller.showRoiShapes(this._visible_roi_list);
+
                     console.log("Updated ROI table!!!");
                 };
 
@@ -354,6 +340,25 @@ define("qtype_omerocommon/question-editor-base",
                 };
 
 
+                prototype.initVisibleRoiList = function(){
+                    var me = this;
+                    var roi_list = null;
+                    me._visible_roi_list = [];
+                    var visible_roi_list = $("[name=visiblerois]").val();
+                    if (visible_roi_list && visible_roi_list != "none") {
+                        roi_list = visible_roi_list.split(",");
+                        for (var i in roi_list) {
+                            me._visible_roi_list[i] = parseInt(roi_list[i]);
+                        }
+                    }
+
+                    document.forms[0].addEventListener("submit", function () {
+                        $("[name=visiblerois]").val(me._visible_roi_list.join(","));
+                    });
+
+                    console.log("Initialized Visible ROI list", me._visible_roi_list);
+                };
+
                 prototype.onRoiShapeVisibilityChanged = function (event) {
                     console.log(event);
 
@@ -369,10 +374,7 @@ define("qtype_omerocommon/question-editor-base",
                             visible.splice(index, 1);
                     }
                 };
-
             }
-
-
         };
     }
 );
