@@ -61,7 +61,16 @@ define("qtype_omerointeractive/question-editor-interactive",
                  */
                 prototype.initialize = function () {
                     this.parent.initialize.call(this);
-                }
+                };
+
+
+                M.qtypes.omerointeractive.QuestionEditorInteractive.getInstance = function () {
+                    if (!M.qtypes.omerocommon.QuestionEditorBase.instance) {
+                        M.qtypes.omerocommon.QuestionEditorBase.instance =
+                            new M.qtypes.omerointeractive.QuestionEditorInteractive();
+                    }
+                    return M.qtypes.omerocommon.QuestionEditorBase.instance;
+                };
             }
         };
     }

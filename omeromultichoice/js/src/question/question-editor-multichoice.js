@@ -34,16 +34,13 @@ define("qtype_omeromultichoice/question-editor-multichoice",
                  *
                  * @constructor
                  */
-                M.qtypes.omeromultichoice.QuestionEditorMultichoice = function (answers_section_id, fraction_options) {
+                M.qtypes.omeromultichoice.QuestionEditorMultichoice = function () {
 
                     // parent constructor
-                    M.qtypes.omerocommon.QuestionEditorBase.call(this, answers_section_id, fraction_options);
+                    M.qtypes.omerocommon.QuestionEditorBase.call(this);
 
                     // the reference to this scope
                     var me = this;
-
-                    // section id
-                    me._answers_section_id = answers_section_id;
                 };
 
                 // inherit
@@ -61,21 +58,54 @@ define("qtype_omeromultichoice/question-editor-multichoice",
 
                 prototype.buildAnswer = function (answer_number, fraction_options) {
                     return new M.qtypes.omeromultichoice.AnswerPlaintext(this._answers_section_id, answer_number, fraction_options);
-                }
+                };
+
+
+                M.qtypes.omeromultichoice.QuestionEditorMultichoice.getInstance = function () {
+                    if (!M.qtypes.omerocommon.QuestionEditorBase.instance) {
+                        M.qtypes.omerocommon.QuestionEditorBase.instance =
+                            new M.qtypes.omeromultichoice.QuestionEditorMultichoice();
+                    }
+                    return M.qtypes.omerocommon.QuestionEditorBase.instance;
+                };
             },
 
 
-            main: function (answers_section_id, fraction_options, question) {
+            main: function (answers_section_id, fraction_options) {
 
                 console.log(fraction_options);
-                console.log(question);
-                $(document).ready(function () {
-                        var instance = new M.qtypes.omeromultichoice.QuestionEditorMultichoice(
-                            answers_section_id,
-                            fraction_options
-                        );
-                        instance.initialize();
+                $(document).ready(
+                    function () {
+                        var instance = M.qtypes.omeromultichoice.QuestionEditorMultichoice.getInstance();
+                        instance.initialize(answers_section_id, fraction_options);
                         window.qem = instance;
+
+                        //var myFunc = function(){
+                        //
+                        //    console.log("Checking ....", jQuery().bootstrapToggle);
+                        //    if(jQuery().bootstrapToggle){
+                        //        console.log("Found");
+                        //
+                        //        clearInterval(myFuc);
+                        //    }
+                        //};
+
+                        //setInterval(myFunc, 1000);
+
+                        //$('#omero-image-view-lock').bootstrapToggle();
+
+                        console.log($("#omero-image-view-lock"), document.getElementById("omero-image-view-lock"));
+                        //console.log( $("#omero-image-view-lock").bootstrapToggle);
+                        //alert("Check");
+
+
+                        $(function () {
+                            //$('#omero-image-view-lock').bootstrapToggle();
+                        });
+                        //$("#omero-image-view-lock").bootstrapToggle('on');
+                        document.getElementById("omero-image-view-lock").addEventListener("change", function () {
+                            alert("Changed!!!");
+                        });
                     }
                 );
             }
