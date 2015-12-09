@@ -17,6 +17,18 @@ function _getRoiShapeDetailInfoUrl() {
     return "type/omeromultichoice/tests/data.json";
 }
 
+function notifyListeners(table, event) {
+    for (var i in table._event_listener_list) {
+        var callback_name = "on" + event.type.charAt(0).toUpperCase() + event.type.slice(1);
+        console.log("Listener", i, table._event_listener_list[i], callback_name);
+        var callback = table._event_listener_list[i][callback_name];
+        if (callback) {
+            console.log("Calling ", callback);
+            callback.call(table._event_listener_list[i], event);
+        }
+    }
+}
+
 
 // constructor
 M.qtypes.omerocommon.RoiShapeTableBase = function (table_id, table_container_id, table_container_toolbar_id) {
@@ -32,6 +44,8 @@ M.qtypes.omerocommon.RoiShapeTableBase = function (table_id, table_container_id,
     me._table_container_toolbar_id = table_container_toolbar_id || (table_id + "-toolbar");
 
     me._table_container_id = table_container_id || (table_id + "-container");
+
+    me._event_listener_list = [];
 };
 
 
@@ -134,7 +148,7 @@ prototype.initTable = function (hideToolbar) {
                     width: "20px",
                     align: 'center',
                     valign: 'middle',
-                    events: me.eventHandler,
+                    events: me.eventHandler(me),
                     formatter: me.visibilityFormatter
                 },
                 {
@@ -143,7 +157,7 @@ prototype.initTable = function (hideToolbar) {
                     align: 'center',
                     valign: 'middle',
                     width: "40px",
-                    events: me.eventHandler,
+                    events: me.eventHandler(me),
                     formatter: me.answerClassFormatter
                 }
             ]
