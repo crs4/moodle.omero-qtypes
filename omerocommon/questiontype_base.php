@@ -76,7 +76,7 @@ abstract class qtype_omerocommon extends qtype_multichoice
     public function extra_question_fields()
     {
         return array($this->get_table_name(),
-            "omeroimageurl", "visiblerois"
+            "omeroimageurl", "visiblerois", "omeroimagelocked", "omeroimageproperties"
         );
     }
 
@@ -205,6 +205,8 @@ abstract class qtype_omerocommon extends qtype_multichoice
             $options->partiallycorrectfeedback = '';
             $options->incorrectfeedback = '';
             $options->visiblerois = '';
+            $options->omeroimagelocked = 0;
+            $options->omeroimageproperties = "";
             $options->id = $DB->insert_record($this->get_table_name(), $options);
         }
 
@@ -214,6 +216,8 @@ abstract class qtype_omerocommon extends qtype_multichoice
         }
 
         $options->omeroimageurl = $question->omeroimageurl;
+        $options->omeroimagelocked = $question->omeroimagelocked;
+        $options->omeroimageproperties = $question->omeroimageproperties;
         $options->answernumbering = $question->answernumbering;
         $options->shuffleanswers = $question->shuffleanswers;
         $options->visiblerois = $question->visiblerois;
