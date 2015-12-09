@@ -334,7 +334,27 @@ define("qtype_omerocommon/question-editor-base",
                     //frameWindow.addEventListener("roiShapeDeselected", M.omero_multichoice_helper.roiShapeDeselected);
                     //frameWindow.addEventListener("roiVisibilityChanged", M.omero_multichoice_helper.roiVisibilityChanged);
                 };
+
+
+                prototype.onRoiShapeVisibilityChanged = function (event) {
+                    console.log(event);
+
+                    var visible = this._visible_roi_list;
+                    if (event.shape.visible) {
+                        this._image_viewer_controller.showRoiShapes([event.shape.id]);
+                        if (visible.indexOf(event.shape.id) === -1)
+                            visible.push(event.shape.id);
+                    } else {
+                        this._image_viewer_controller.hideRoiShapes([event.shape.id]);
+                        var index = visible.indexOf(event.shape.id);
+                        if (index > -1)
+                            visible.splice(index, 1);
+                    }
+                };
+
             }
+
+
         };
     }
 );
