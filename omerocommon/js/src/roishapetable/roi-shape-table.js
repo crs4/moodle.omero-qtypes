@@ -234,9 +234,9 @@ prototype.eventHandler = function (table) {
     return {
         'click .like': function (e, value, row, index) {
             if ($(e.target).attr("class").indexOf("glyphicon-plus-sign") !== -1)
-                $(e.target).attr("class", "red glyphicon glyphicon-eye-close");
-            else
                 $(e.target).attr("class", "green glyphicon glyphicon-eye-open");
+            else
+                $(e.target).attr("class", "red glyphicon glyphicon-eye-close");
             alert('You click like action, row: ' + JSON.stringify(row));
         },
 
@@ -251,9 +251,9 @@ prototype.eventHandler = function (table) {
         'click .roi-shape-visibility': function (e, value, row, index) {
             row.visible = !row.visible;
             if (row.visible)
-                $(e.target).attr("class", "red glyphicon glyphicon-eye-close");
-            else
                 $(e.target).attr("class", "green glyphicon glyphicon-eye-open");
+            else
+                $(e.target).attr("class", "red glyphicon glyphicon-eye-close");
             console.log("THIS", table, e, row);
             notifyListeners(table, {
                 type: "roiShapeVisibilityChanged",
@@ -333,8 +333,8 @@ prototype.visibilityFormatter = function (data) {
     return [
         '<a class="roi-shape-visibility" href="javascript:void(0)" title="Like">',
         (data ?
-            '<i class="red glyphicon glyphicon-eye-close"></i>' :
-            '<i class="green glyphicon glyphicon-eye-open"></i>'),
+            '<i class="green glyphicon glyphicon-eye-open"></i>' :
+            '<i class="red glyphicon glyphicon-eye-close"></i>'),
         '</a> '
     ].join(" ");
 };
