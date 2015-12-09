@@ -9,6 +9,8 @@
         <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
         <FIELD NAME="questionid" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false" COMMENT="Foreign key references question.id"/>
         <FIELD NAME="omeroimageurl" TYPE="text" NOTNULL="true" SEQUENCE="false" COMMENT="OMERO image URL."/>
+        <FIELD NAME="omeroimagelocked" TYPE="int" NOTNULL="true" LENGTH="1" DEFAULT="0" SEQUENCE="false" COMMENT="OMERO image URL."/>
+        <FIELD NAME="omeroimageproperties" TYPE="text" NOTNULL="false" SEQUENCE="false" COMMENT="OMERO image URL."/>
         <FIELD NAME="visiblerois" TYPE="text" NOTNULL="true" SEQUENCE="false" COMMENT="List of ROI shapes to display."/>
         <FIELD NAME="layout" TYPE="int" LENGTH="4" NOTNULL="true" DEFAULT="0" SEQUENCE="false" COMMENT="Not used. Was intended for a vertical/horizontal layout option. See MDL-18445."/>
         <FIELD NAME="single" TYPE="int" LENGTH="4" NOTNULL="true" DEFAULT="0" SEQUENCE="false" COMMENT="If 0 it multiple response (checkboxes). Otherwise it is radio buttons."/>
