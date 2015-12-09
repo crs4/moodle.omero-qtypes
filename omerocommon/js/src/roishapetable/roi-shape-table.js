@@ -109,7 +109,7 @@ prototype.initTable = function (hideToolbar) {
                     valign: 'middle',
                     width: '30px',
                     sortable: true,
-                    footerFormatter: me.totalTextFormatter
+                    formatter: me.idFormatter
                 },
                 {
                     title: 'ROI Shape Details',
@@ -313,8 +313,10 @@ prototype.hideToolbar = function () {
 };
 
 
-prototype.totalTextFormatter = function (data) {
-    return 'Total';
+prototype.idFormatter = function (data) {
+    return [
+        '<span class="highlight-roi">', data, '</span>'
+    ].join(" ");
 };
 
 prototype.totalNameFormatter = function (data) {
