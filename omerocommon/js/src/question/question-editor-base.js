@@ -21,25 +21,33 @@ define("qtype_omerocommon/question-editor-base",
         var language_selector = $("#id_question_language");
 
         /**
+         * List of supported languages
+         *
+         * @private
+         */
+        var _supported_languages = null;
+
+        /**
          * Initializes the list of supported languages
          * and sets the currently selected language
          *
          * @private
          */
-        var _supported_languages = function () {
+        function initializeSupportedLanguages() {
 
             // initializes the list of supported languages
-            var supported_languages = [];
-            var language_selector = document.forms[0].elements["question_language"];
-            var language_options = language_selector.options;
-            for (var i = 0; i < language_options.length; i++) {
-                supported_languages.push(language_options[i].value);
+            if(!_supported_languages) {
+                _supported_languages = [];
+                var language_selector = document.forms[0].elements["question_language"];
+                var language_options = language_selector.options;
+                for (var i = 0; i < language_options.length; i++) {
+                    _supported_languages.push(language_options[i].value);
+                }
             }
 
             // handles the event 'language changed'
-            //document.forms[0].elements["question_language"].onchange = me._updateCurrentLanguage;
-            return supported_languages;
-        }();
+            return _supported_languages;
+        }
 
 
         // Public functions
@@ -89,6 +97,8 @@ define("qtype_omerocommon/question-editor-base",
                  */
                 prototype.initialize = function (answers_section_id, fraction_options) {
                     var me = this;
+
+                    initializeSupportedLanguages();
 
                     // the ID of the answer serction
                     me._answers_section_id = answers_section_id;
