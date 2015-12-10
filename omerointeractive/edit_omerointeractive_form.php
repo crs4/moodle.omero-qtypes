@@ -36,10 +36,6 @@ require_once($CFG->dirroot . '/question/type/omerocommon/edit_omerocommon_form.p
  */
 class qtype_omerointeractive_edit_form extends qtype_omerocommon_edit_form
 {
-    private $localized_strings = array(
-        "questiontext", "generalfeedback",
-        "correctfeedback", "partiallycorrectfeedback", "incorrectfeedback"
-    );
 
     public function qtype()
     {
@@ -57,27 +53,30 @@ class qtype_omerointeractive_edit_form extends qtype_omerocommon_edit_form
 
     protected function definition()
     {
-        global $PAGE;
+        global $CFG, $PAGE;
         parent::definition();
 
 
         //--------------------------------------------------------------------------------------------
         //FIXME: just for debugging
-        global $CFG, $PAGE;
-        $PAGE->requires->js(new moodle_url("$CFG->wwwroot/repository/omero/viewer/viewer-model.js"));
-
-        $PAGE->requires->js_call_amd("qtype_omerointeractive/main", "test", array("question" => $this->question));
+        //$PAGE->requires->js(new moodle_url("$CFG->wwwroot/repository/omero/viewer/viewer-model.js"));
         //--------------------------------------------------------------------------------------------
+
+        global $PAGE;
+        $PAGE->requires->js_call_amd("qtype_omerointeractive/question-editor-interactive", "main",
+            array(
+                "id_answergroupsheader",
+                question_bank::fraction_options_full()
+            )
+        );
     }
 
-    protected function define_answers_section()
+    protected function define_answer_section_header()
     {
-        $mform = $this->_form;
-        // header
-        $mform->addElement('header', 'answergroupsheader',
-            get_string('answer_groups', 'qtype_omerointeractive'));
-        // call default behaviour
-        parent::define_answers_section();
+        return array(
+            "answergroupsheader",
+            get_string('answer_groups', 'qtype_omerointeractive')
+        );
     }
 
 
