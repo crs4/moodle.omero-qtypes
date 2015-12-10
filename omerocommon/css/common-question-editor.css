@@ -60,3 +60,7 @@ body[id^=page-question-type-omero] #omero-image-viewer-properties {
     font-size: small;
     margin-left: 3px;
 }
+
+body[id^=page-question-type-omero] .file-picker .fp-list .fp-repo-icon{
+    padding: 0px;
+}
