@@ -58,16 +58,14 @@ class qtype_omeromultichoice_edit_form extends qtype_omerocommon_edit_form
 
     protected function definition()
     {
-        global $PAGE;
+        global $CFG, $PAGE;
         parent::definition();
 
         //--------------------------------------------------------------------------------------------
         //FIXME: just for debugging
-        global $CFG, $PAGE;
         $PAGE->requires->js(new moodle_url("$CFG->wwwroot/repository/omero/viewer/viewer-model.js"));
         //--------------------------------------------------------------------------------------------
 
-        global $PAGE;
         $PAGE->requires->js_call_amd("qtype_omeromultichoice/question-editor-multichoice", "main",
             array(
                 "id_answerhdr",
