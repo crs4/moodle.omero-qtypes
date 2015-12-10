@@ -98,7 +98,7 @@ define("qtype_omerocommon/multilanguage-element",
 
 
                 prototype.destroy = function () {
-                    alert("removing");
+                    console.log("destroying multilang element", this);
                     document.forms[0].removeEventListener("submit", this._update_listener);
                 };
 
