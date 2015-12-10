@@ -13,7 +13,7 @@ defined('MOODLE_INTERNAL') || die();
  *
  * @param $qtype_package the name of the qtype package
  */
-function init_js_modules($qtype_package)
+function init_js_modules($qtype_package, $header=false)
 {
     global $CFG, $PAGE, $plugins, $not_amd_modules;
 
@@ -65,7 +65,7 @@ function init_js_modules($qtype_package)
             foreach (scandir($foldername) as $filename) {
                 $fileinfo = pathinfo($filename);
                 if (isset($fileinfo['extension']) && $fileinfo['extension'] === 'js') {
-                    $PAGE->requires->js(new moodle_url("$CFG->wwwroot/question/type/$qtype_package/js/src/$foldername/$filename"));
+                    $PAGE->requires->js(new moodle_url("$CFG->wwwroot/question/type/$qtype_package/js/src/$foldername/$filename"), $header);
                     array_push($modules, $fileinfo['filename']);
                 }
             }

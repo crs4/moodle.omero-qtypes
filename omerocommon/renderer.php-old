@@ -138,7 +138,7 @@ class qtype_omeromultichoice_multi_renderer extends qtype_multichoice_multi_rend
 }
 
 
-abstract class qtype_omeromultichoice_base_renderer extends qtype_multichoice_renderer_base
+abstract class qtype_omerocommon_base_renderer extends qtype_multichoice_renderer_base
 {
 
     public static function impl_formulation_and_controls(qtype_multichoice_renderer_base $renderer,
