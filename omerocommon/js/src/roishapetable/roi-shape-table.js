@@ -89,9 +89,8 @@ prototype.initTable = function (hideToolbar) {
     // Register the detailsFormatter
     me.table_element.attr("data-detail-formatter", "M.qtypes.omerocommon.RoiShapeTableBase.detailFormatter");
 
-    // Initializes the bootstrap table
-    me.table_element.bootstrapTable({
-        height: "500",
+    var bootstrap_config = {
+        height: "400",
         columns: [
             [
                 {
@@ -162,7 +161,12 @@ prototype.initTable = function (hideToolbar) {
                 }
             ]
         ]
-    });
+    };
+
+    bootstrap_config.columns[1].splice(2, 1);
+
+    // Initializes the bootstrap table
+    me.table_element.bootstrapTable(bootstrap_config);
     // sometimes footer render error.
     setTimeout(function () {
         me.table_element.bootstrapTable('resetView');
