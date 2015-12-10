@@ -269,14 +269,14 @@ abstract class qtype_omerocommon extends qtype_multichoice
     {
         parent::initialise_question_instance($question, $questiondata);
         // set the omero image url
-        $question->omeroimageurl = $questiondata->options->omeroimageurl;
-        $question->visible_rois = $questiondata->options->visiblerois;
-        // set the question answer type
-        if (!empty($questiondata->options->answertype)) {
-            $question->answertype = $questiondata->options->answertype;
-        } else {
-            $question->answertype = qtype_omerocommon::PLAIN_ANSWERS;
-        }
+//        $question->omeroimageurl = $questiondata->options->omeroimageurl;
+//        $question->visible_rois = $questiondata->options->visiblerois;
+//        // set the question answer type
+//        if (!empty($questiondata->options->answertype)) {
+//            $question->answertype = $questiondata->options->answertype;
+//        } else {
+//            $question->answertype = qtype_omerocommon::PLAIN_ANSWERS;
+//        }
     }
 
 

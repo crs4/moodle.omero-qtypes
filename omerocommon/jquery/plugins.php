@@ -11,6 +11,13 @@ defined('MOODLE_INTERNAL') || die();
 // file: theme/sometheme/jquery/plugins.php
 $plugins = array(
 
+//    'jquery' => array(
+//        'files' => array(
+//            "jquery/dist/jquery-1.11.3.min.js"
+//        )
+//    ),
+
+
 //    'angular' => array(
 //        'files' => array(
 //            "angular/angular.1.3.14.js"
