@@ -144,9 +144,14 @@ define("qtype_omerocommon/question-editor-base",
                             }
                         }
 
-
+                        var $ = jQuery;
                         me._image_locked_element = $("[name^=omeroimagelocked]");
                         me._image_locked = me._image_locked_element.val() == "1";
+
+                        $('#omero-image-view-lock').bootstrapToggle(me._image_locked ? 'on' : 'off');
+                        $('#omero-image-view-lock').change(function () {
+                            me._image_locked_element.val($(this).prop('checked') ? 1 : 0);
+                        });
 
                         me.initVisibleRoiList();
                     });
