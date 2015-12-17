@@ -194,26 +194,57 @@ define("qtype_omerocommon/question-editor-base",
                 };
 
 
-
-
-                prototype._build_answer_controls = function () {
-                    try {
-                        this._toolbar_container = $('<div id="answers_toolbar" class="panel"></div>');
-                        this._toolbar_container_body = $('<div class="panel-body"></div>');
-                        this._add_answer_btn = $('<button id="add-answer-btn" type="button" class="btn btn-info">Add answer</button>');
-
-                        $("#" + this._answers_section_id).prepend(this._toolbar_container);
-                        this._toolbar_container.prepend(this._toolbar_container_body);
-                        this._toolbar_container_body.prepend(this._add_answer_btn);
-
-                        var me = this;
-                        this._add_answer_btn.on("click", function () {
-                            me.addAnswer();
-                        });
-
-                    } catch (e) {
-                        console.error("Error while creating the toolbar", e);
+                /**
+                 * Validate data before submission
+                 * @returns {boolean}
+                 */
+                prototype.validate = function () {
+                    var result = true;
+                    if (this._answers.length < 1) {
+                        this._showDialogMessage("Answers are less than 1 !!!");
+                        result = false;
                     }
+
+                    if (!this._image_viewer_controller
+                        || this._image_viewer_controller._image_id === null
+                        || this._image_viewer_controller._image_id === undefined) {
+                        this._showDialogMessage("No image selected !!!");
+                        result = false;
+                    }
+
+                    var single_correct_answer = this.hasSingleCorrectAnswer();
+                    var max_fraction = 0;
+                    var total_fraction = 0;
+                    var found_max = 0;
+
+                    for (var i in this._answers) {
+                        var data = this._answers[i].getDataToSubmit();
+                        var fraction = parseFloat(data.fraction);
+                        if (fraction > max_fraction)
+                            max_fraction = fraction;
+                        if (fraction == 1)
+                            found_max += 1;
+                        if (fraction > 0) // only positive matter
+                            total_fraction += fraction;
+                    }
+
+                    if (single_correct_answer) {
+                        if (found_max == 0) {
+                            this._showDialogMessage("One of the choices should have grade 100% !!!");
+                            result = false;
+                        } else if (found_max > 1) {
+                            this._showDialogMessage("At most one answer should have grade 100% !!!");
+                            result = false;
+                        }
+                    } else {
+                        if (total_fraction != 1) {
+                            this._showDialogMessage("The sum of grades should be equal to 100% !!!");
+                            result = false;
+                        }
+                    }
+
+                    return result;
+                };
                 };
 
                 /**
