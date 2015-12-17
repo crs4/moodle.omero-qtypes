@@ -678,7 +678,7 @@ me._html_entity_decode = function (string, quote_style) {
         entity = '';
     tmp_str = string.toString();
 
-    if (false === (hash_map = me._get_html_translation_table('HTML_ENTITIES', quote_style))) {
+    if (false === (hash_map = me.getHtmlTranslationTable('HTML_ENTITIES', quote_style))) {
         return false;
     }
 
@@ -698,7 +698,7 @@ me._html_entity_decode = function (string, quote_style) {
     return tmp_str;
 };
 
-me._get_html_translation_table = function (table, quote_style) {
+me.getHtmlTranslationTable = function (table, quote_style) {
     //  discuss at: http://phpjs.org/functions/get_html_translation_table/
     // original by: Philip Peterson
     //  revised by: Kevin van Zonneveld (http://kevin.vanzonneveld.net)
