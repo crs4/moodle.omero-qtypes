@@ -128,6 +128,13 @@ define("qtype_omerocommon/answer-base",
                     notifyListeners(this, event);
                 };
 
+                prototype.getDataToSubmit = function () {
+                    var data = {};
+                    for (var n in this._data)
+                        data[n] = this._data[n];
+                    return data;
+                };
+
                 /**
                  * Returns the map <language, editor>
                  * related to this question
