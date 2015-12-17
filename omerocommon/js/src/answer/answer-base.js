@@ -142,7 +142,10 @@ define("qtype_omerocommon/answer-base",
                  * @returns {{}}
                  */
                 prototype.getEditorsMap = function () {
-                    return this._editors_map;
+                    var result = {};
+                    for (var i in this._editors_map)
+                        result[this._answer_number + "_" + i] = this._editors_map[i];
+                    return result;
                 };
 
 
