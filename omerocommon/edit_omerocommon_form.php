@@ -150,7 +150,6 @@ abstract class qtype_omerocommon_edit_form extends qtype_multichoice_edit_form
     {
         global $COURSE, $CFG, $DB, $PAGE;
         $mform = $this->_form;
-        $qtype = $this->qtype();
 
         if (!isset($this->question->id)) {
             if (!empty($this->question->formoptions->mustbeusable)) {
@@ -523,11 +522,9 @@ abstract class qtype_omerocommon_edit_form extends qtype_multichoice_edit_form
         // default hidden fields
         $this->add_hidden_fields();
 
-        $mform->addElement('hidden', 'cmid');
-        $mform->setType('cmid', PARAM_INT);
-
         $mform->addElement('hidden', 'qtype');
         $mform->setType('qtype', PARAM_ALPHA);
+        $mform->setDefault('qtype', $this->qtype());
 
         $mform->addElement('hidden', 'visiblerois', 'none');
         $mform->setType("visiblerois", PARAM_RAW);
