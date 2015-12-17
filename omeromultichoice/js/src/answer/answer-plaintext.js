@@ -64,12 +64,14 @@ define("qtype_omeromultichoice/answer-plaintext",
 
                     var panel_heading = $('<div class="panel-heading">' +
                         '<h4 class="panel-title">' +
-                        'Answer ' + (this._answer_number + 1) +
+                        '<span id="head-answer-' + this._answer_number + '">Answer ' + (this._answer_number + 1) + '</span>'+
+                        '<div style="display: inline-block; float: right; text-align: right;">' +
+                        '<a href="javascript:void(0)" id="delete-answer-' + me._answer_number + '" >' +
+                        '<i class="red glyphicon glyphicon-remove-sign" style="font-size: 2m;"></i></a>' +
                         '</h4>' +
                         '</div>' +
                         '<div style="display: block; float: right; margin: 20px 30px;">' +
-                        '<button type="button" id="delete-answer-' + me._answer_number + '" ' +
-                        'class="btn btn-danger delete-answer">Delete</button></div>');
+                        '</div>');
                     panel.append(panel_heading);
 
                     var panel_body = $('<div class="panel-body"></div>');
@@ -92,6 +94,9 @@ define("qtype_omeromultichoice/answer-plaintext",
 
                     // answer format
                     me._build_hidden_of("feedbackformat", "1");
+
+                    // reference to the head
+                    me._answer_head = $('#head-answer-' + this._answer_number);
 
                     // register the delete event
                     $("#delete-answer-" + me._answer_number).on("click", function () {
