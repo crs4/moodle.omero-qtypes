@@ -8,7 +8,8 @@ define("qtype_omerocommon/question-player-base",
         'qtype_omerocommon/moodle-forms-utils',
         'qtype_omerocommon/answer-base',
         'qtype_omerocommon/multilanguage-element',
-        'qtype_omerocommon/multilanguage-attoeditor'
+        'qtype_omerocommon/multilanguage-attoeditor',
+        'qtype_omerocommon/image-viewer'
     ],
     function (jQ, Editor, FormUtils) {
         // Private functions.
@@ -52,12 +53,26 @@ define("qtype_omerocommon/question-player-base",
                 /**
                  * Initialization
                  */
-                prototype.initialize = function(){}
+                prototype.initialize = function (config) {
+                    // set tht configuration
+                    this._config = config;
+                    console.log("Configuration", config);
+
+                    // build the ImaveViewer controller
+                    var viewer_ctrl = new M.qtypes.omerocommon.ImageViewer(
+                        config.image_id, config.image_properties,
+                        config.image_server, config.image_viewer_container);
+                    this._image_viewer_controller = viewer_ctrl;
+                };
 
                 /**
                  * Start the question player
                  */
-                prototype.start = function(){}
+                prototype.start = function () {
+                    this._image_viewer_controller.open(true, function(){
+                        console.log("ImageViewer initialized!!!");
+                    });
+                };
             }
         };
     }
