@@ -34,18 +34,25 @@ defined('MOODLE_INTERNAL') || die();
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later //FIXME: check the licence
  */
 
+require_once($CFG->dirroot . '/question/type/omerocommon/js/viewer_config.php');
 require_once($CFG->dirroot . '/question/type/multichoice/renderer.php');
+require_once($CFG->dirroot . '/question/type/omerocommon/js/modules.php');
 
 
 class qtype_omeromultichoice_single_renderer extends qtype_multichoice_single_renderer
 {
+
+    public function head_code(question_attempt $qa)
+    {
+        parent::head_code($qa);
+        qtype_omeromultichoice_base_renderer::configure_requirements($qa);
+    }
 
     public function formulation_and_controls(question_attempt $qa,
                                              question_display_options $options)
     {
         return qtype_omeromultichoice_base_renderer::impl_formulation_and_controls($this, $qa, $options);
     }
-
 
     public function get_input_type()
     {
@@ -87,6 +94,13 @@ class qtype_omeromultichoice_single_renderer extends qtype_multichoice_single_re
 
 class qtype_omeromultichoice_multi_renderer extends qtype_multichoice_multi_renderer
 {
+    public function head_code(question_attempt $qa)
+    {
+        parent::head_code($qa);
+        qtype_omeromultichoice_base_renderer::configure_requirements($qa);
+    }
+
+
     public function formulation_and_controls(question_attempt $qa,
                                              question_display_options $options)
     {
@@ -141,44 +155,73 @@ class qtype_omeromultichoice_multi_renderer extends qtype_multichoice_multi_rend
 abstract class qtype_omeromultichoice_base_renderer extends qtype_multichoice_renderer_base
 {
 
+    const IMAGE_VIEWER_CONTAINER = "image-viewer-container";
+    const IMAGE_ADD_MARKER_CTRL = "enable_add_makers_id";
+    const IMAGE_EDIT_MARKER_CTRL = "enable_edit_markers_ctrl_id";
+    const IMAGE_DEL_MARKER_CTRL = "remove_marker_ctrl_id";
+    const IMAGE_CLEAR_MARKER_CTRL = "clear_marker_ctrl_id";
+    const MARKER_REMOVERS_CONTAINER = "marker_removers_container";
+
+
     public static function impl_formulation_and_controls(qtype_multichoice_renderer_base $renderer,
                                                          question_attempt $qa,
                                                          question_display_options $options)
     {
-        global $CFG, $PAGE, $OUTPUT;
+        global $CFG, $PAGE;
 
         // get the current question
         $question = $qa->get_question();
+
+        // get the response
+        $response = $question->get_response($qa);
+
+        // answer prefix
+        $answer_input_name = $qa->get_qt_field_name('answer');
+
+        // set the ID of the OmeroImageViewer
+        $omero_frame_id = "omero-image-viewer-" . str_replace(".", "-", uniqid('', true));
+
+        $question_answer_container = "omero-interactive-question-container-" . str_replace(".", "-", uniqid('', true));
 
         // the OMERO image URL
         $omero_image_url = $question->omeroimageurl;
 
         // extract the omero server
-        $OMERO_SERVER = substr($omero_image_url, 0, strpos($omero_image_url, "/webgateway"));
+        $OMERO_SERVER = get_config('omero', 'omero_restendpoint');
 
         // parse the URL to get the image ID and its related params
         $matches = array();
-        $pattern = '/\/([0123456789]+)(\?.*)/';
+        $pattern = '/\/([0123456789]+)(\?.*)?/';
         if (preg_match($pattern, $omero_image_url, $matches)) {
             $omero_image = $matches[1];
-            $omero_image_params = $matches[2];
+            $omero_image_params = count($matches) === 3 ? $matches[2] : "";
         }
 
+        $no_max_markers = 0;
+        $available_answers = array();
+        foreach ($question->get_order($qa) as $ans_idx => $ansid) {
+            $ans = $question->answers[$ansid];
+            $value = $ans->answer;
+            array_push($available_answers, $value);
+            if ($ans->fraction > 0 && !empty($value)) {
+                $shape_group = explode(",", $ans->answer);
+                $no_max_markers += count($shape_group);
+            }
+        }
 
-        // set question controls
-        $response = $question->get_response($qa);
+        $multi_correct_answer = ($question instanceof qtype_omerointeractive_multi_question);
+        if (!$multi_correct_answer) $no_max_markers = 1;
 
         $inputname = $qa->get_qt_field_name('answer');
         $inputattributes = array(
             'type' => $renderer->get_input_type(),
-            'name' => $inputname
+            'name' => $inputname,
         );
 
         if ($options->readonly) {
             $inputattributes['disabled'] = 'disabled';
         }
 
-        $roi_id_list = array();
         $radiobuttons = array();
         $feedbackimg = array();
         $feedback = array();
@@ -187,7 +230,7 @@ abstract class qtype_omeromultichoice_base_renderer extends qtype_multichoice_re
             $ans = $question->answers[$ansid];
             $inputattributes['name'] = $renderer->get_input_name($qa, $value);
             $inputattributes['value'] = $renderer->get_input_value($value);
-            $inputattributes['id'] = $renderer->get_input_id($qa, $value);
+            $inputattributes['id'] = $renderer->get_input_id($qa, $value . "XXX");
             $isselected = $question->is_choice_selected($response, $value);
             if ($isselected) {
                 $inputattributes['checked'] = 'checked';
@@ -202,34 +245,13 @@ abstract class qtype_omeromultichoice_base_renderer extends qtype_multichoice_re
                     'value' => 0,
                 ));
             }
-
-            $answer_content = "";
-            if ($question->answertype == qtype_omeromultichoice::ROI_BASED_ANSWERS) {
-//                $answer_content = html_writer::tag("img", "", array(
-//                    "src" => "$OMERO_SERVER/webgateway/render_shape_thumbnail/" . $ans->answer . "/?color=f00",
-//                    "onclick" => "M.omero_multichoice_helper.moveToRoiShape($ans->answer)"
-//                ));
-
-                $inputattributes['onclick'] = "M.omero_multichoice_helper.moveToRoiShape($ans->answer)";
-
-            } else {
-                $formatoptions = new stdClass();
-                $formatoptions->noclean = false;
-                $formatoptions->para = false;
-                $ans_text = $question->answers[$ansid]->answer;
-                $ans_text = format_text($ans_text, $question->questiontextformat, $formatoptions);
-                $ans_text = html_writer::tag('span', $ans_text,
-                    array('class' => 'qtext'));
-                $answer_content = '<div style="display: inline-block">' . $ans_text . '</div>';
-            }
-
-            $nis = $renderer->number_in_style($value, $question->answernumbering);
-            if ($question->answertype == qtype_omeromultichoice::ROI_BASED_ANSWERS)
-                $nis = str_replace(".", "", $nis);
             $radiobuttons[] = $hidden . html_writer::empty_tag('input', $inputattributes) .
                 html_writer::tag('label',
-                    "<b>" . $nis . "</b>" . $answer_content
-                );
+                    $renderer->number_in_style($value, $question->answernumbering) .
+                    $question->make_html_inline($question->format_text(
+                        $ans->answer, $ans->answerformat,
+                        $qa, 'question', 'answer', $ansid)),
+                    array('for' => $inputattributes['id']));
 
             // Param $options->suppresschoicefeedback is a hack specific to the
             // oumultiresponse question type. It would be good to refactor to
@@ -253,67 +275,44 @@ abstract class qtype_omeromultichoice_base_renderer extends qtype_multichoice_re
                 $feedbackimg[] = '';
             }
             $classes[] = $class;
-
-            // If the question type is ROI based, add the question to
-            // the list of ROIs to display
-            if ($question->answertype == qtype_omeromultichoice::ROI_BASED_ANSWERS) {
-                array_push($roi_id_list, $ans->answer);
-            }
         }
 
-        // Completes the list of ROIs to show with ROIs explicitly
-        // selected by the teacher as ROI to display
-        foreach (explode(",", $question->visible_rois) as $rtd) {
-            if (!in_array($rtd, $roi_id_list))
-                array_push($roi_id_list, $rtd);
-        }
 
         /**
          * Render the question
          */
         $result = '';
+
+        // main question_answer_container
+        $result .= html_writer::start_tag('div', array('id' => $question_answer_container, 'class' => 'ablock'));
+
         // question text
-        $result .= html_writer::tag('div', $question->format_questiontext($qa),
-            array('class' => 'qtext'));
+        $result .= html_writer::tag('div', $question->format_questiontext($qa), array('class' => 'qtext'));
 
         // viewer of the question image
+        $result .= '<div class="panel image-viewer-with-controls-container">';
 
-        // set the ID of the OmeroImageViewer
-        $omero_frame_id = "omero-image-viewer-" . uniqid('', true);
 
-        // load the script for handling the OmeroImageViewer
-        $omero_image_wrapper = '<script type="text/javascript" ' .
-            'src="/moodle/question/type/omeromultichoice/omero_multichoice_helper.js" ' .
-            '></script>';
+        $result .= '<div id="graphics_container" class="image-viewer-container" style="position: relative;" >
+            <div id="' . self::IMAGE_VIEWER_CONTAINER . '" style="position: absolute; width: 100%; height: 500px; margin: auto;"></div>
+            <canvas id="annotations_canvas" style="position: absolute; width: 100%; height: 500px; margin: auto;"></canvas>
+        </div>';
 
-        // build the iframe element for wrapping the OmeroImageViewer
-        $omero_image_wrapper .= html_writer::tag('iframe', "",
-            array(
-                "src" => "/moodle/repository/omero/viewer/viewer.php" .
-                    "?id=$omero_image" .
-                    "&width=" . urlencode("100%") .
-                    "&height=500px" .
-                    "&frame=$omero_frame_id" .
-                    "&showRoiTable=false" .
-                    "&$omero_image_params" .
-                    "&visibleRois=" . implode(",", $roi_id_list),
-                "width" => "100%",
-                "height" => "500px",
-                "class" => "omero-image-viewer",
-                //"style" => "border: none",
-                "id" => $omero_frame_id //,
-                //"onload" => 'M.omero_multichoice_helper.init();'
-            )
-        );
-        $result .= $omero_image_wrapper;
 
-        // TODO: use the question->visible_rois
-        $script_args = "[" . implode(",", $roi_id_list) . "]"; // list of ROIs to display
-        $result .= html_writer::script(
-            "M.omero_multichoice_helper.init('omero_multichoice_helper', " .
-            "'$omero_frame_id', $script_args)");
+        $image_properties = null;
+        if ($question->omeroimageproperties) {
+            $image_properties = json_decode($question->omeroimageproperties);
+            $result .= '<div class="panel image_position_button">' .
+                '<span class="pull-right sm">' .
+                '(x,y): ' . $image_properties->center->x . ", " . $image_properties->center->y .
+                '<i class="restore-image-center-btn pull-right glyphicon glyphicon-screenshot" style="margin-left: 10px;">' .
+                '</i></span></div>';
+        }
 
-        $result .= html_writer::start_tag('div', array('class' => 'ablock'));
+        $result .= '</div>';
+
+
+        $result .= html_writer::start_tag('div', array('class' => 'multichoice-options-container'));
         $result .= html_writer::tag('div', $renderer->prompt(), array('class' => 'prompt'));
 
         $result .= html_writer::start_tag('div', array('class' => 'answer'));
@@ -331,7 +330,34 @@ abstract class qtype_omeromultichoice_base_renderer extends qtype_multichoice_re
                 array('class' => 'validationerror'));
         }
 
+
+        $PAGE->requires->js_call_amd(
+            "qtype_omeromultichoice/question-player-multichoice",
+            "start", array(
+                array(
+                    "image_id" => $omero_image,
+                    "image_properties" => json_decode($question->omeroimageproperties),
+                    "image_frame_id" => $omero_frame_id,
+                    "image_annotations_canvas_id" => "annotations_canvas",
+                    "image_server" => $OMERO_SERVER,
+                    "image_viewer_container" => self::IMAGE_VIEWER_CONTAINER,
+                    "image_navigation_locked" => (bool)$question->omeroimagelocked,
+                    "question_answer_container" => $question_answer_container,
+                    "visible_rois" => explode(",", $question->visiblerois)
+                )
+            )
+        );
+
         return $result;
+    }
+
+    public static function configure_requirements(question_attempt $qa)
+    {
+        global $CFG, $PAGE;
+        init_js_modules("omerocommon");
+        init_js_modules("omeromultichoice");
+        init_js_imageviewer(get_config('omero', 'omero_restendpoint'));
+        $PAGE->requires->css("/question/type/omerocommon/css/question-player-base.css");
     }
 
 
