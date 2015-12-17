@@ -15,6 +15,42 @@ define("qtype_omeromultichoice/question-player-multichoice",
         // Private functions.
         var $ = jQuery;
 
+        var initialized = false;
+
+        var markers_config = {
+            'fill_color': "#ffffff",
+            'fill_alpha': '0.4',
+            'stroke_width': 10
+        };
+
+        /**
+         * Starts the question player
+         */
+        function start(player) {
+            var me = player;
+            var config = me._config;
+            me._image_viewer_controller.open(true, function () {
+                console.log("Question Player initialized!!!", config);
+
+                var img_size = me._image_viewer_controller.getImageSize();
+                var markers_size = ((img_size.width + img_size.height) / 2) * 0.0025;
+                markers_config.markers_size = markers_size;
+                console.log(markers_size);
+
+                me._image_viewer_controller
+                    .configureMarkingTool(markers_config, 0);
+
+                player._image_viewer_controller.setNavigationLock(config.image_navigation_locked);
+
+                if (!config.correction_mode) {
+                    me._image_viewer_controller.showRoiShapes(config.visible_rois, true);
+                } else {
+                    console.log("Answers: ", config.answers);
+                    showResults(me);
+                }
+            });
+        }
+
         // Public functions
         return {
             initialize: function (str) {
@@ -64,15 +100,26 @@ define("qtype_omeromultichoice/question-player-multichoice",
                 /**
                  * Performs the initialization
                  */
-                prototype.initialize = function () {
-                    this.parent.initialize.call(this);
-                };
+                prototype.initialize = function (config) {
+                    var me = this;
 
-                /**
-                 * Starts the question player
-                 */
-                prototype.start = function () {
-                    this.parent.start.call(this);
+                    if (initialized) console.log("Already Initialized");
+                    else {
+
+                        this.parent.initialize.call(this, config);
+
+                        me._answer_input_name = config.answer_input_name;
+                        console.log("Setted the answer prefix", me._answer_input_name);
+
+                        // initialize image positioning control
+                        $("#" + config.question_answer_container + " .restore-image-center-btn").click(function () {
+                            me._image_viewer_controller.updateViewFromProperties(config.image_properties);
+                        });
+
+                        initialized = true;
+
+                        start(me);
+                    }
                 };
             },
 
@@ -81,14 +128,13 @@ define("qtype_omeromultichoice/question-player-multichoice",
              *
              *
              */
-            start: function () {
+            start: function (config) {
 
                 $(document).ready(
                     function () {
                         var instance = M.qtypes.omeromultichoice.QuestionPlayerMultichoice.getInstance();
-                        instance.initialize();
+                        instance.initialize(config);
                         window.qpm = instance;
-
                         console.log("Question multichoice player initialized!!!");
                     }
                 );
