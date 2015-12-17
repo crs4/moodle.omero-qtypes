@@ -136,9 +136,8 @@ abstract class qtype_omerocommon_edit_form extends qtype_multichoice_edit_form
 
         // question text
         $mform->addElement('editor', 'questiontext', get_string('questiontext', 'question'),
-            array('rows' => 15), $this->editoroptions);
+            array('rows' => 5), $this->editoroptions);
         $mform->setType('questiontext', PARAM_RAW);
-        $mform->addRule('questiontext', null, 'required', null, 'client');
     }
 
 
