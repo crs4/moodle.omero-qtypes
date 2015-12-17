@@ -62,22 +62,7 @@ $string['qtype_1'] = "ROI answer";
 $string['savechangesandcontinueediting'] = "Save";
 $string['savechangesandexit'] = "Save and Exit";
 
-/** ROI description
-/* subset of a JSON ROI
- *   "height" : 603,
-     "id" : 11,
-     "strokeAlpha" : 0.765625,
-     "strokeColor" : "#c4c4c4",
-     "strokeWidth" : 1,
-     "textValue" : "<br/>Comment ROI1",
-     "theT" : 0,
-     "theZ" : 0,
-     "transform" : "none",
-     "type" : "Rectangle",
-     "width" : 604,
-     "x" : 24019,
-     "y" : 14605
- */
+
 $string['roi_id'] = 'Identifier';
 $string['roi_comment'] = 'Comment';
 $string['roi_type'] = 'Type';
