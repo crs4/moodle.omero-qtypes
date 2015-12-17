@@ -251,6 +251,9 @@ define("qtype_omerocommon/question-editor-base",
                 };
 
 
+                prototype.hasSingleCorrectAnswer = function () {
+                    return $("[name=single]").val() == 1;
+                };
                 };
 
                 /**
