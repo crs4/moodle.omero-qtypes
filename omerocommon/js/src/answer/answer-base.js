@@ -12,6 +12,15 @@ define("qtype_omerocommon/answer-base",
     function ($, Editor, FormUtils) {
         // Private functions.
 
+        function notifyListeners(answer, event) {
+            console.log("notifying event...", event);
+            for (var i in answer._listeners) {
+                var listener = answer._listeners[i];
+                var callbackName = "on" + event.name.charAt(0).toUpperCase() + event.name.substr(1);
+                if (listener && listener[callbackName])
+                    listener[callbackName](event);
+            }
+        }
 
         // Public functions
         return {
@@ -41,6 +50,9 @@ define("qtype_omerocommon/answer-base",
 
                     // reference to the container of all answers
                     me._answer_list_container = $("#" + answer_list_container_id + " .fcontainer");
+
+                    // listeners
+                    me._listeners = [];
 
                     //
                     me._form_utils = new M.qtypes.omerocommon.MoodleFormUtils();
@@ -88,6 +100,20 @@ define("qtype_omerocommon/answer-base",
                     var me = this;
                     if (me._answer_container)
                         me._answer_container.remove();
+                };
+
+                prototype.addListener = function (listener) {
+                    this._listeners.push(listener);
+                };
+
+                prototype.removeListener = function (listener) {
+                    var index = this._listeners.indexOf(listener);
+                    if (index !== -1)
+                        this._listeners.splice(index, 1);
+                };
+
+                prototype._notifyListeners = function (event) {
+                    notifyListeners(this, event);
                 };
 
                 /**
