@@ -1,0 +1,74 @@
+.image-viewer-with-controls-container {
+    width: 800px;
+    height: 500px;
+}
+
+.interactive-player-toolbar {
+    margin: 5px 0;
+    padding: 0;
+
+}
+
+.interactive-player-toolbar a {
+    width: 100px;
+    padding: 0;
+    margin: 0;
+}
+
+.image_position_button {
+    padding: 0;
+    margin: 530px 0 0;
+    /*width: 100px;*/
+    height: auto;
+}
+
+.marker_removers_container{
+    margin-bottom: 40px;
+}
+
+.remove_marker_button_group {
+    padding: 0;
+    margin: 18px 0 0;
+    /*width: 100px;*/
+    height: auto;
+}
+
+.remove_marker_button_group div {
+    margin: 0 5px;
+    /*width: 60px;*/
+    /*color: darkred;*/
+}
+
+div[id*=graphics_container] {
+    margin-top: 30px;
+}
+
+div.qtext {
+    margin-bottom: 50px;
+}
+
+div.question-summary {
+    margin: 120px 0 40px;
+    min-height: 80px;
+}
+
+div.answer-summary-fixed-text{
+    margin: 10px 0;
+}
+
+span.yourmarkers-text{
+    float: left;
+    margin-right: 5px;
+}
+
+div[id*=remove_marker_ctrl]{
+    display: inline-block;
+}
+
+div.multichoice-options-container{
+    margin: 70px 10px 40px;
+}
+
+div.outcome{
+    margin-top: 40px;
+}
