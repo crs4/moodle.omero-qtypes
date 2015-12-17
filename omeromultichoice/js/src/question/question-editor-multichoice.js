@@ -46,6 +46,14 @@ define("qtype_omeromultichoice/question-editor-multichoice",
                 // inherit
                 M.qtypes.omeromultichoice.QuestionEditorMultichoice.prototype = new M.qtypes.omerocommon.QuestionEditorBase();
 
+                M.qtypes.omeromultichoice.QuestionEditorMultichoice.getInstance = function () {
+                    if (!M.qtypes.omerocommon.QuestionEditorBase.instance) {
+                        M.qtypes.omerocommon.QuestionEditorBase.instance =
+                            new M.qtypes.omeromultichoice.QuestionEditorMultichoice();
+                    }
+                    return M.qtypes.omerocommon.QuestionEditorBase.instance;
+                };
+
                 // A local reference to the prototype
                 var prototype = M.qtypes.omeromultichoice.QuestionEditorMultichoice.prototype;
 
@@ -61,12 +69,24 @@ define("qtype_omeromultichoice/question-editor-multichoice",
                 };
 
 
-                M.qtypes.omeromultichoice.QuestionEditorMultichoice.getInstance = function () {
-                    if (!M.qtypes.omerocommon.QuestionEditorBase.instance) {
-                        M.qtypes.omerocommon.QuestionEditorBase.instance =
-                            new M.qtypes.omeromultichoice.QuestionEditorMultichoice();
+                prototype._build_answer_controls = function () {
+                    try {
+                        this._toolbar_container = $('<div id="answers_toolbar" class="panel"></div>');
+                        this._toolbar_container_body = $('<div class="panel-body"></div>');
+                        this._add_answer_btn = $('<button id="add-answer-btn" type="button" class="btn btn-info">Add answer</button>');
+
+                        $("#" + this._answers_section_id).prepend(this._toolbar_container);
+                        this._toolbar_container.prepend(this._toolbar_container_body);
+                        this._toolbar_container_body.prepend(this._add_answer_btn);
+
+                        var me = this;
+                        this._add_answer_btn.on("click", function () {
+                            me.addAnswer();
+                        });
+
+                    } catch (e) {
+                        console.error("Error while creating the toolbar", e);
                     }
-                    return M.qtypes.omerocommon.QuestionEditorBase.instance;
                 };
             },
 
