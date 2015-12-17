@@ -16,7 +16,6 @@ define("qtype_omerocommon/question-editor-base",
     function ($, Editor, FormUtils) {
         // Private functions.
 
-
         // A reference to the languageSelector
         var language_selector = $("#id_question_language");
 
@@ -36,7 +35,7 @@ define("qtype_omerocommon/question-editor-base",
         function initializeSupportedLanguages() {
 
             // initializes the list of supported languages
-            if(!_supported_languages) {
+            if (!_supported_languages) {
                 _supported_languages = [];
                 var language_selector = document.forms[0].elements["question_language"];
                 var language_options = language_selector.options;
