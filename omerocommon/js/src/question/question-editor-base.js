@@ -161,6 +161,7 @@ define("qtype_omerocommon/question-editor-base",
                     });
 
                     me._answers = [];
+                    me._answer_ids = {};
 
                     // registers the editor as listener of the 'LanguageChanged' event
                     language_selector.on("change",
