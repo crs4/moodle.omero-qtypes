@@ -154,6 +154,10 @@ define("qtype_omerocommon/question-editor-base",
                         });
 
                         me.initVisibleRoiList();
+
+                        $('html, body').animate({
+                            scrollTop: $("#" + document.forms[0].getAttribute("id")).offset().top - 200
+                        }, 500);
                     });
 
                     me._answers = [];
