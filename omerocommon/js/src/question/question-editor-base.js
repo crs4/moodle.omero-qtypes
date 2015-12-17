@@ -323,7 +323,32 @@ define("qtype_omerocommon/question-editor-base",
                 };
 
                 prototype.updateViewCenter = function () {
+                };
 
+
+                prototype.saveMultilanguageElements = function () {
+                    console.log("Saving multi language elements...");
+                    for (var element_name in this._editor) {
+
+                        var editor = this._editor[element_name];
+                        var locale_map_name = element_name + "_locale_map";
+                        var id = 'id_' + locale_map_name;
+                        console.log("Saving editor data...", id, locale_map_name);
+
+                        var hidden = document.forms[0].elements[locale_map_name];
+                        if (!hidden) //hidden.val(value);
+                        {
+                            hidden = '<input ' +
+                                'id="' + id + '" ' + 'name="' + locale_map_name + '" type="hidden" >';
+                            console.log("Creating the hidden field", id, name, locale_map_name);
+                            M.qtypes.omerocommon.MoodleFormUtils.appendHiddenElement(document.forms[0], hidden);
+                            console.log("Created the hidden field", id, name, locale_map_name);
+                        } else {
+                            console.log("Found hidden field to save editor data...", id, name, locale_map_name);
+                        }
+
+                        editor.saveDataToFormInputs(locale_map_name);
+                    }
                 };
 
 
