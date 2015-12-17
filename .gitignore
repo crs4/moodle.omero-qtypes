@@ -47,4 +47,27 @@ com_crashlytics_export_strings.xml
 crashlytics.properties
 crashlytics-build.properties
 
+# default qtypes
+calculated/
+calculatedmulti/
+calculatedsimple/
+description/
+edit_question_form.php
+essay/
+match/
+missingtype/
+multianswer/
+multichoice/
+numerical/
+questionbase.php
+questiontypebase.php
+random/
+randomsamatch/
+rendererbase.php
+shortanswer/
+tests/
+truefalse/
+upgrade.txt
+
+
 

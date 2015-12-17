@@ -1,0 +1,125 @@
+
+body[id^=page-question-type-omero] fieldset[id*=id_] {
+    margin-top: 20px;
+}
+
+body[id^=page-question-type-omero] input[type=submit] {
+    width: 150px;
+}
+
+body[id^=page-question-type-omero] fieldset.hidden {
+    margin-top: 30px;
+}
+
+body[id^=page-question-type-omero] div[id*=fgroup_id_buttonar] {
+    padding-top: 50px;
+    text-align: center;
+}
+
+/* hide the default addanswer button */
+body[id^=page-question-type-omero] input[name=addanswers] {
+    display: none;
+}
+
+body[id^=page-question-type-omero] #answers_toolbar .panel-body {
+    text-align: right;
+    margin: 10px 0px;
+    padding: 0px;
+}
+
+body[id^=page-question-type-omero] #roi-shape-inspector-table {
+    margin-bottom: 300px;
+}
+
+body[id^=page-question-type-omero] #page fieldset.hidden {
+    display: block !important;
+}
+
+body[id^=page-question-type-omero] > #fitem_id_omeroimageurl > div.fitemtitle {
+    display: none;
+}
+
+body[id^=page-question-type-omero] > a > img.fp-repo-icon {
+    padding: 0px;
+}
+
+body[id^=page-question-type-omero] #omero-image-viewer-toolbar {
+    /*float: right;*/
+    margin-right: 0px;
+}
+
+body[id^=page-question-type-omero] #omero-image-view-lock-container {
+    float: right;
+}
+
+body[id^=page-question-type-omero] #omero-image-view-lock {
+    margin-left: 5px;
+}
+
+body[id^=page-question-type-omero] #omero-image-viewer-properties {
+    font-size: small;
+    margin-left: 3px;
+}
+
+body[id^=page-question-type-omero] .file-picker .fp-list .fp-repo-icon {
+    padding: 0px;
+}
+
+.modal-title {
+    margin: 0;
+}
+
+.modal-dialog {
+    widht: 100%;
+    height: auto;
+    margin: 0;
+    top: auto;
+    bottom: 0;
+    padding: 0;
+}
+
+.modal.fade.in {
+    top: 30%;
+    height: 160px;
+}
+
+@media (min-width: 768px) {
+    .modal-dialog {
+        width: auto;
+        max-height: 250px;
+        top: auto;
+        padding: 0;
+    }
+}
+
+.modal-backdrop, .modal-backdrop.fade.in {
+    opacity: 0.6;
+    max-height: 100%;
+    padding: 0;
+}
+
+/*#modal-frame-text{*/
+    /*min-height: 150px;*/
+/*}*/
+
+/*.autoModal.modal .modal-body {*/
+    /*!*max-height: 100%;*!*/
+/*}*/
+
+.modal-body{
+    min-height: 100%;
+}
+
+/* fixes the size of textfields when bootstrap library is loaded */
+textarea, input[type="text"], input[type="password"], input[type="datetime"], input[type="datetime-local"], input[type="date"], input[type="month"], input[type="time"], input[type="week"], input[type="number"], input[type="email"], input[type="url"], input[type="search"], input[type="tel"], input[type="color"], .uneditable-input {
+    height: 30px;
+}
+
+/* fixes the size of textfields when bootstrap library is loaded */
+body#page-question-type-omerointeractive input[type="text"] {
+    height: 30px;
+}
+
+body#page-question-type-omerointeractive table td {
+    vertical-align: middle;
+}
