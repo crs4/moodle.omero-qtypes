@@ -107,8 +107,8 @@ define("qtype_omerocommon/question-editor-base",
 
                     // the ID of the answer serction
                     me._answers_section_id = answers_section_id;
-
                     me._fraction_options = fraction_options;
+                    me._show_roishape_column_group = false;
 
                     $(document).ready(function () {
 
