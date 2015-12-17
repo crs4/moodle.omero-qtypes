@@ -206,13 +206,17 @@ define("qtype_omerocommon/moodle-attoeditor",
                     me.setText = function (text) {
                         console.log("Setting text: " + me.input_data_element_name + "editable");
                         var data_element = document.getElementById(me.input_data_element_name + "editable");
-                        data_element.innerHTML = text;
+                        if(!data_element) console.warn("AttoEditor of " + me.input_data_element_name + " seems not initialized!");
+                        else data_element.innerHTML = text;
                     };
 
                     me.getText = function () {
                         console.log("Getting text from " + "#" + me.input_data_element_name + "editable");
                         var data_element = document.getElementById(me.input_data_element_name + "editable");
-                        return data_element.innerHTML;
+                        if(!data_element) {
+                            console.warn("AttoEditor of " + me.input_data_element_name + " seems not initialized!");
+                            return undefined;
+                        }else return data_element.innerHTML;
                     };
 
                     me.on = function (eventName, callback) {
