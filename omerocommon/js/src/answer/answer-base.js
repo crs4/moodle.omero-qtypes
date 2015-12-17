@@ -43,8 +43,12 @@ define("qtype_omerocommon/answer-base",
                     // the reference to this scope
                     var me = this;
 
+                    me._inputs = {};
+
                     // map of editors in use
                     me._editors_map = {};
+
+                    me._data = {};
 
                     me._fraction_options = fraction_options;
 
@@ -62,7 +66,15 @@ define("qtype_omerocommon/answer-base",
                         ? M.qtypes.omerocommon.MoodleFormUtils.generateGuid() : answer_number;
                 };
 
+
                 var prototype = M.qtypes.omerocommon.AnswerBase.prototype;
+
+                prototype.getId = function () {
+                    return this._answer_number;
+                };
+
+
+                prototype._answer_properties = ["answer", "fraction", "feedback"];
 
                 /**
                  * Builds the answer
