@@ -20,6 +20,9 @@ function init_js_modules($qtype_package, $header=false)
     // Prefix of JS modules
     $module_prefix = "qtype_$qtype_package";
 
+    // TODO: replace with no-debug mode
+    $isdebug = true; // $CFG->debug
+
     // Array containing name of modules
     $modules = array();
 
@@ -37,7 +40,7 @@ function init_js_modules($qtype_package, $header=false)
         // includes all plugin requirements
         foreach ($plugins as $name => $module) {
 
-            if ($CFG->debug) {
+            if ($isdebug) {
                 $PAGE->requires->jquery_plugin($name, "qtype_$qtype_package");
             } else {
                 echo "TODO: set the JS production files!!!";
@@ -46,7 +49,8 @@ function init_js_modules($qtype_package, $header=false)
     }
 
     // Detect whether use 'src' or 'dist' folder
-    if ($CFG->debug) {
+    $isdebug = true; // $CFG->debug
+    if ($isdebug) {
         $source_folder = $CFG->dirroot . "/question/type/$qtype_package/js/src";
     } else {
         echo "TODO: set the JS production files!!!";
