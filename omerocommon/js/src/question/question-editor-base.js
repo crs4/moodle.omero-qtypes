@@ -117,8 +117,10 @@ define("qtype_omerocommon/question-editor-base",
                         me._editor = {};
                         for (var i in me._localized_string_names) {
                             var localized_string_name = me._localized_string_names[i];
-                            var editor = new M.qtypes.omerocommon.MultilanguageAttoEditor(localized_string_name, null, true);
-                            editor.init(language_selector.val());
+                            var editor = new M.qtypes.omerocommon.MultilanguageAttoEditor(localized_string_name, localized_string_name + "_locale_map", true);
+                            editor.init(language_selector.val(), localized_string_name + "_locale_map");
+                            editor.loadDataFromFormInputs(localized_string_name + "_locale_map");
+                            editor.onLanguageChanged(language_selector.val());
                             // registers a reference to the editor instance
                             me._editor[localized_string_name] = editor;
                         }
