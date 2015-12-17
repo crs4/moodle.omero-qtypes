@@ -36,9 +36,6 @@ M.qtypes.omerocommon.RoiShapeTableBase = function (table_id, table_container_id,
     // Registers a reference to the current scope
     var me = this;
 
-    //
-    me.selections = [];
-
     me._table_id = table_id;
 
     me._table_container_toolbar_id = table_container_toolbar_id || (table_id + "-toolbar");
@@ -68,7 +65,7 @@ M.qtypes.omerocommon.RoiShapeTableBase.detailFormatter = function (index, row) {
 var prototype = M.qtypes.omerocommon.RoiShapeTableBase.prototype;
 
 // table setup
-prototype.initTable = function (hideToolbar) {
+prototype.initTable = function (hideToolbar, showColumnSelector) {
 
     var me = this;
 
@@ -122,23 +119,23 @@ prototype.initTable = function (hideToolbar) {
                     title: 'Description',
                     //sortable: true,
                     align: 'left',
-                    editable: {
-                        type: 'textarea',
-                        title: 'ROI Shape Description',
-                        width: '200px',
-                        resize: 'none',
-                        validate: function (value) {
-                            value = $.trim(value);
-                            if (!value) {
-                                return 'This field is required';
-                            }
-
-                            var data = me.table_element.bootstrapTable('getData'),
-                                index = $(this).parents('tr').data('index');
-                            console.log(data[index]);
-                            return '';
-                        }
-                    },
+                    //editable: {
+                    //    type: 'textarea',
+                    //    title: 'ROI Shape Description',
+                    //    width: '200px',
+                    //    resize: 'none',
+                    //    validate: function (value) {
+                    //        value = $.trim(value);
+                    //        if (!value) {
+                    //            return 'This field is required';
+                    //        }
+                    //
+                    //        var data = me.table_element.bootstrapTable('getData'),
+                    //            index = $(this).parents('tr').data('index');
+                    //        console.log(data[index]);
+                    //        return '';
+                    //    }
+                    //},
                     formatter: me.descriptionFormatter
                 },
                 {
@@ -163,6 +160,7 @@ prototype.initTable = function (hideToolbar) {
         ]
     };
 
+    //if (!showColumnSelector)
     bootstrap_config.columns[1].splice(2, 1);
 
     // Initializes the bootstrap table
@@ -173,7 +171,7 @@ prototype.initTable = function (hideToolbar) {
     }, 200);
 
 
-    me.table_element.on('click-cell.bs.table', function(table, field, e, row, index){
+    me.table_element.on('click-cell.bs.table', function (table, field, e, row, index) {
         console.log("Click on a table ROW", e, row, index);
         notifyListeners(me, {
             type: "roiShapeFocus",
@@ -187,8 +185,12 @@ prototype.initTable = function (hideToolbar) {
         me.remove_element.prop('disabled', !me.table_element.bootstrapTable('getSelections').length);
 
         // save your data, here just save the current page
-        selections = me.getIdSelections();
-        // push or splice the selections if you want to save all data selections
+        var selections = me.getIdSelections();
+
+        notifyListeners(me, {
+            type: "roiShapesSelected",
+            shapes: selections
+        });
     });
     me.table_element.on('expand-row.bs.table', function (e, index, row, $detail) {
         if (index % 2 == 1) {
@@ -225,17 +227,14 @@ prototype.getIdSelections = function () {
     });
 };
 
-
-prototype.answerClassFormatter = function (value, row, index) {
-    return [
-        '<select class="answer-class form-control">',
-        '<option>1</option>',
-        '<option>2</option>',
-        '<option>3</option>',
-        '<option>4</option>',
-        '</select>'
-    ].join('');
+prototype.selectAll = function () {
+    this.table_element.bootstrapTable('checkAll');
 };
+
+prototype.deselectAll = function () {
+    this.table_element.bootstrapTable('uncheckAll');
+};
+
 
 /**
  * Build an event handler
@@ -355,6 +354,16 @@ prototype.visibilityFormatter = function (data) {
     ].join(" ");
 };
 
+prototype.answerClassFormatter = function (value, row, index) {
+    return [
+        '<select class="answer-class form-control">',
+        '<option>1</option>',
+        '<option>2</option>',
+        '<option>3</option>',
+        '<option>4</option>',
+        '</select>'
+    ].join('');
+};
 
 prototype.getHeight = function () {
     return $(window).height() - $('h1').outerHeight(true);
