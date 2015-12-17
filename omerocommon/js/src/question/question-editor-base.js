@@ -245,6 +245,12 @@ define("qtype_omerocommon/question-editor-base",
 
                     return result;
                 };
+
+                prototype._showDialogMessage = function (message) {
+                    showDialogMessage(message);
+                };
+
+
                 };
 
                 /**
