@@ -549,6 +549,7 @@ abstract class qtype_omerocommon_edit_form extends qtype_multichoice_edit_form
 
         $mform->addElement("hidden", 'omeroimagelocked');
         $mform->setType('omeroimagelocked', PARAM_INT);
+        $mform->setDefault('omeroimagelocked', 0);
 
         $mform->addElement("hidden", 'omeroimageproperties');
         $mform->setType('omeroimageproperties', PARAM_RAW);
