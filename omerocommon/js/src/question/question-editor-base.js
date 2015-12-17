@@ -356,39 +356,74 @@ define("qtype_omerocommon/question-editor-base",
                     console.error("You need to implement this method!!!");
                 };
 
-                prototype.addAnswer = function () {
-                    var answer_number = this._answers.length;
-                    var answer = this.buildAnswer(answer_number, this._fraction_options);
+                prototype.addAnswer = function (answer_index, disable_animiation) {
+                    var me = this;
+                    var answer_uuid = M.qtypes.omerocommon.MoodleFormUtils.generateGuid();
+                    var answer = this.buildAnswer(answer_uuid, this._fraction_options);
+
                     if (answer) {
-                        answer.show();
-                        var me = this;
-                        answer.remove = function () {
-                            me.removeAnswer(answer_number);
-                        };
                         this._answers.push(answer);
+                        this._answer_ids[answer_uuid] = answer;
+                        answer.show();
+                        if (typeof answer_index !== 'undefined') {
+                            answer.loadDataFromFormInputs(answer_index, true);
+                        }
+                        answer.remove = function () {
+                            me.removeAnswer(this._answer_number);
+                        };
                         this.updateAnswerCounter();
                         var editors = answer.getEditorsMap();
                         for (var i in editors) {
                             this._editor[i] = editors[i];
                         }
+                        for (var i in this._answers) {
+                            this._answers[i].updateHeader((parseInt(i) + 1));
+                        }
                     }
+
+                    if (!disable_animiation)
+                        $('html, body').animate({
+                            scrollTop: $("#" + answer_uuid).offset().top - 125
+                        }, 1000);
+
+                    // callback for the event onAddAnswer
+                    if (this["onAddAnswer"]) this["onAddAnswer"](answer);
+
                     return answer;
                 };
 
 
-                prototype.removeAnswer = function (answer_number) {
-                    if (answer_number >= 0) {
-                        var answer = this._answers[answer_number];
+                prototype.removeAnswer = function (answer_id) {
+                    console.log(this._answers);
+                    if (answer_id in this._answer_ids) {
+                        var answer = this._answer_ids[answer_id];
                         if (answer) {
                             answer.hide();
-                            this._answers.splice(answer_number, 1);
+                            this._answers.splice(answer_id, 1);
+                            delete this._answer_ids[answer_id];
                             this.updateAnswerCounter();
                             var editors = answer.getEditorsMap();
                             for (var i in editors) {
                                 var editor = editors[i];
                                 editor.destroy();
-                                delete this._editor[editor.input_data_element_name];
+                                delete this._editor[i];
                             }
+
+                            var last_answer_header = null;
+
+                            for (var i in this._answers) {
+                                this._answers[i].updateHeader((parseInt(i) + 1));
+                                last_answer_header = this._answers[i]._answer_head;
+                            }
+
+                            if (last_answer_header !== null)
+                                $('html, body').animate({
+                                    scrollTop: last_answer_header.offset().top - 125
+                                }, 1000);
+
+                            // callback for the event onRemoveAnswer
+                            if (this["onRemoveAnswer"]) this["onRemoveAnswer"](answer);
+
                             return true;
                         }
                     }
