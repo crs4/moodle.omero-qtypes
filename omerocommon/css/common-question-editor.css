@@ -61,6 +61,65 @@ body[id^=page-question-type-omero] #omero-image-viewer-properties {
     margin-left: 3px;
 }
 
-body[id^=page-question-type-omero] .file-picker .fp-list .fp-repo-icon{
+body[id^=page-question-type-omero] .file-picker .fp-list .fp-repo-icon {
     padding: 0px;
+}
+
+.modal-title {
+    margin: 0;
+}
+
+.modal-dialog {
+    widht: 100%;
+    height: auto;
+    margin: 0;
+    top: auto;
+    bottom: 0;
+    padding: 0;
+}
+
+.modal.fade.in {
+    top: 30%;
+    height: 160px;
+}
+
+@media (min-width: 768px) {
+    .modal-dialog {
+        width: auto;
+        max-height: 250px;
+        top: auto;
+        padding: 0;
+    }
+}
+
+.modal-backdrop, .modal-backdrop.fade.in {
+    opacity: 0.6;
+    max-height: 100%;
+    padding: 0;
+}
+
+/*#modal-frame-text{*/
+    /*min-height: 150px;*/
+/*}*/
+
+/*.autoModal.modal .modal-body {*/
+    /*!*max-height: 100%;*!*/
+/*}*/
+
+.modal-body{
+    min-height: 100%;
+}
+
+/* fixes the size of textfields when bootstrap library is loaded */
+textarea, input[type="text"], input[type="password"], input[type="datetime"], input[type="datetime-local"], input[type="date"], input[type="month"], input[type="time"], input[type="week"], input[type="number"], input[type="email"], input[type="url"], input[type="search"], input[type="tel"], input[type="color"], .uneditable-input {
+    height: 30px;
+}
+
+/* fixes the size of textfields when bootstrap library is loaded */
+body#page-question-type-omerointeractive input[type="text"] {
+    height: 30px;
+}
+
+body#page-question-type-omerointeractive table td {
+    vertical-align: middle;
 }
