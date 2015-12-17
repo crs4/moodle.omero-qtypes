@@ -83,9 +83,9 @@ define("qtype_omerocommon/question-editor-base",
                         "correctfeedback", "partiallycorrectfeedback", "incorrectfeedback"
                     ];
 
-                    //$(document).ready(function () {
-                    //    //M.qtypes.omerocommon.MoodleFormUtils.initDropdown();
-                    //});
+                    $(document).ready(function () {
+                        M.qtypes.omerocommon.MoodleFormUtils.initDropdown();
+                    });
                 };
 
 
