@@ -36,3 +36,49 @@ So the student can enter a numeric or short text answer or choose an answer or a
 
 
 $string['answer_groups'] = "Answer Groups";
+
+
+
+
+$string['answer_options_properties'] = 'Properties of answer options';
+
+$string['general_and_combined_feedback'] = 'General and combined feedback';
+
+
+$string['add_roi_answer'] = 'Add new ROI answer';
+
+$string['choiceno'] = '{$a}';
+
+$string['roi_choiceno'] = 'ROI choice {$a}';
+
+$string['add_roi_answer'] = 'Add a new ROI based answer';
+
+$string['answer_type'] = "Answer type";
+
+$string['roi_shape_inspector'] = "ROI Shapes Inspector";
+
+$string['omero_image_viewer'] = "Omero Image Viewer";
+$string['omero_image_and_rois'] = "Omero Image and ROIs";
+
+$string['qtype_0'] = "Plaintext";
+$string['qtype_1'] = "ROI answer";
+
+
+$string['savechangesandcontinueediting'] = "Save";
+$string['savechangesandexit'] = "Save and Exit";
+
+
+$string['roi_id'] = 'Identifier';
+$string['roi_comment'] = 'Comment';
+$string['roi_type'] = 'Type';
+$string['roi_width'] = 'Width';
+$string['roi_height'] = 'Height';
+
+$string['language'] = "Language";
+
+$string['answerassociatedroi'] = 'The sets of ROIs <em>(Region Of Interest)</em> of this question is: ';
+$string['answerassociatedrois'] = 'The sets of ROIs <em>(Region Of Interest)</em> of this question are: ';
+$string['correctansweris'] = 'The only correct answer is: ';
+$string['correctanswerare'] = 'The correct answers are only: ';
+
+$string['yourmarkers'] = 'Your markers: ';
