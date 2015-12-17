@@ -512,6 +512,34 @@ abstract class qtype_omerocommon_edit_form extends qtype_multichoice_edit_form
         ) {
             $mform->hardFreezeAllVisibleExcept(array('categorymoveto', 'buttonar', 'currentgrp'));
         }
+        // Modal frame to show dialog messages
+        $this->add_modal_frame();
+    }
+
+
+    // definition of the modal frame
+    protected function add_modal_frame()
+    {
+        return $this->_form->addElement("html", '
+
+     <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">
+            <li class="warning glyphicon glyphicon-warning-sign"></li> Warning
+        </h4>
+      </div>
+      <div class="modal-body text-center">
+        <span id="modal-frame-text"></span>
+      </div>
+      <div class="modal-footer text-center">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>');
     }
 
 
