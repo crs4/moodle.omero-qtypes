@@ -254,6 +254,14 @@ define("qtype_omerocommon/question-editor-base",
                 prototype.hasSingleCorrectAnswer = function () {
                     return $("[name=single]").val() == 1;
                 };
+
+                prototype.saveAll = function () {
+                    this.saveMultilanguageElements();
+                    for (var i in this._answers) {
+                        this._answers[i].saveDataToFormInputs(i);
+                    }
+                };
+
                 };
 
                 /**
