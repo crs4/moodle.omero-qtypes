@@ -139,7 +139,7 @@ define("qtype_omerocommon/question-editor-base",
                             if (counter) {
                                 counter = parseInt(counter);
                                 for (var i = 0; i < counter; i++) {
-                                    me.addAnswer();
+                                    me.addAnswer(i, true);
                                 }
                             }
                         }
