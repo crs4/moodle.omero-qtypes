@@ -262,6 +262,13 @@ define("qtype_omerocommon/question-editor-base",
                     }
                 };
 
+
+                prototype._build_answer_controls = function () {
+                };
+
+                prototype.getSelectedROIIds = function () {
+                    return this._roi_shape_table ?
+                        this._roi_shape_table.getIdSelections() : [];
                 };
 
                 /**
@@ -289,8 +296,8 @@ define("qtype_omerocommon/question-editor-base",
                  * @param language
                  */
                 prototype.onLanguageChanged = function (language) {
-                    for (var locale_string in this._editor) {
-                        this._editor[locale_string].onLanguageChanged(language);
+                    for (var editor_name in this._editor) {
+                        this._editor[editor_name].onLanguageChanged(language);
                     }
                 };
 
