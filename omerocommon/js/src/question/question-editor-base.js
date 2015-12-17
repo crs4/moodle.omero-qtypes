@@ -483,7 +483,7 @@ define("qtype_omerocommon/question-editor-base",
 
                     $("#" + frame_id + "-toolbar").removeClass("hidden");
 
-                    me._image_viewer_controller.onViewerInitialized(function(){
+                    me._image_viewer_controller.onViewerInitialized(function () {
                         me._initImagePropertiesControls();
                         me._image_viewer_controller.updateViewFromProperties(me._image_properties);
                     });
@@ -497,8 +497,9 @@ define("qtype_omerocommon/question-editor-base",
                     console.log("Loaded ROI Shapes Models", roi_list);
 
                     if (!this._roi_shape_table) {
-                        this._roi_shape_table = new M.qtypes.omerocommon.RoiShapeTableBase("roi-shape-inspector-table");
-                        this._roi_shape_table.initTable();
+                        this._roi_shape_table = new M.qtypes.omerocommon.RoiShapeTableBase(
+                            "roi-shape-inspector-table");
+                        this._roi_shape_table.initTable(false, this._show_roishape_column_group);
                         this._roi_shape_table.addEventListener(this);
                     }
                     this._roi_shape_table.appendRoiShapeList(roi_list);
@@ -606,7 +607,7 @@ define("qtype_omerocommon/question-editor-base",
                 prototype.getFormattedImageProperties = function () {
                     var ip = this._image_properties;
                     var result = "";
-                    if(ip.center) {
+                    if (ip.center) {
                         result += ("center (x,y): " + ip.center.x + ", " + ip.center.y);
                         result += (", zoom: " + ip.zoom_level);
                         result += (", t: " + ip.t);
@@ -616,7 +617,7 @@ define("qtype_omerocommon/question-editor-base",
                 };
 
                 prototype.updateImageProperties = function () {
-                    this._image_properties =  this._image_viewer_controller.getImageProperties();
+                    this._image_properties = this._image_viewer_controller.getImageProperties();
                     this._image_properties_element.val(JSON.stringify(this._image_properties));
                     $("#omero-image-viewer-properties").html(this.getFormattedImageProperties());
                 };
