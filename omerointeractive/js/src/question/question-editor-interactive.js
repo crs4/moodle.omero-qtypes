@@ -14,6 +14,42 @@ define("qtype_omerointeractive/question-editor-interactive",
     function ($, Editor, FormUtils) {
         // Private functions.
 
+        function onSelectROIGroup(group) {
+            console.log("Selected ROI group", group);
+            alert("....");
+        }
+
+        function updateGroupButton(editor, selected_shapes) {
+            if (!selected_shapes)
+                selected_shapes = editor.getSelectedROIIds();
+
+            var toEnable = selected_shapes.length > 0;
+            if (toEnable) {
+                var button = editor._add_to_group_list_element;
+                button.html(""); // clear
+                toEnable = false;
+                for (var i in editor._answers) {
+                    var group = editor._answers[i];
+                    if (group.containsROIs(editor.getSelectedROIIds())) break;
+                    var option = $('<li value="' + i + '"><a href="#">' + (parseInt(i) + 1) + '</a></li>');
+                    toEnable = true;
+                    button.append(option);
+                    option.click(function () {
+                        var group_id = $(this).attr("value");
+                        console.log("Selected ROI GROUP: " + group_id);
+                        var selected_rois = editor.getSelectedROIIds();
+                        if (selected_rois && selected_rois.length > 0) {
+                            editor._answers[group_id].addROIsToGroup(selected_rois);
+                        }
+                    });
+                }
+            }
+
+            toEnable ?
+                editor._add_to_group_element.removeClass("disabled") :
+                editor._add_to_group_element.addClass("disabled");
+        }
+
 
         // Public functions
         return {
@@ -53,13 +89,6 @@ define("qtype_omerointeractive/question-editor-interactive",
                 // local reference to the current prototype
                 var prototype = M.qtypes.omerointeractive.QuestionEditorInteractive.prototype;
 
-                /**
-                 * Performs the initialization
-                 */
-                prototype.initialize = function () {
-                    this.parent.initialize.call(this);
-                };
-
 
                 M.qtypes.omerointeractive.QuestionEditorInteractive.getInstance = function () {
                     if (!M.qtypes.omerocommon.QuestionEditorBase.instance) {
@@ -68,27 +97,111 @@ define("qtype_omerointeractive/question-editor-interactive",
                     }
                     return M.qtypes.omerocommon.QuestionEditorBase.instance;
                 };
+
+
+                /**
+                 * Performs the initialization
+                 */
+                prototype.initialize = function (answers_section_id, fraction_options,
+                                                 add_to_group_element_id, add_to_group_list_element_id) {
+
+                    this.parent.initialize.call(this, answers_section_id, fraction_options);
+                    this._show_roishape_column_group = true;
+                    this._add_to_group_element_id = add_to_group_element_id;
+                    this._add_to_group_element = $("#" + add_to_group_element_id);
+                    this._add_to_group_list_element_id = add_to_group_list_element_id;
+                    this._add_to_group_list_element = $("#" + add_to_group_list_element_id);
+
+                    this._add_to_group_list_element.dropdown();
+
+
+                };
+
+                /**
+                 *
+                 * @param answer_number
+                 * @param fraction_options
+                 * @returns {M.qtypes.omeromultichoice.AnswerPlaintext}
+                 */
+                prototype.buildAnswer = function (answer_number, fraction_options, answer_index) {
+                    return new M.qtypes.omerointeractive.AnswerGroup(this._answers_section_id, answer_number, fraction_options, answer_index);
+                };
+
+
+                prototype._build_answer_controls = function () {
+                    try {
+                        this._toolbar_container = $('<div id="answers_toolbar" class="panel"></div>');
+                        this._toolbar_container_body = $('<div class="panel-body"></div>');
+                        this._add_answer_btn = $('<button id="add-answer-btn" type="button" class="btn btn-info">Add ROI Group</button>');
+
+                        $("#" + this._answers_section_id).prepend(this._toolbar_container);
+                        this._toolbar_container.prepend(this._toolbar_container_body);
+                        this._toolbar_container_body.prepend(this._add_answer_btn);
+
+                        var me = this;
+                        this._add_answer_btn.on("click", function () {
+                            me.addAnswer();
+                        });
+
+                    } catch (e) {
+                        console.error("Error while creating the toolbar", e);
+                    }
+                };
+
+
+                prototype.onAddAnswer = function (answer) {
+                    console.log("Added answer", answer);
+                    answer._init_roi_list();
+                    answer.updateROIList();
+                    answer.addListener(this);
+                    updateGroupButton(this);
+                };
+
+
+                prototype.onRemoveAnswer = function (answer) {
+                    console.log("Removed answer", answer);
+                    answer.removeListener(this);
+                    updateGroupButton(this);
+                };
+
+                prototype.onRoiShapesSelected = function (event) {
+                    console.log("ROI Shape selected...", event);
+                    updateGroupButton(this, event.shapes);
+                };
+
+                prototype.onAnswerROIsAdded = function (e) {
+                    console.log("Added new ROIs ", e);
+                    this._roi_shape_table.deselectAll();
+                };
+
+                prototype.onAnswerROIsRemoved = function (e) {
+                    console.log("Removed new ROIs ", e);
+                    updateGroupButton(this);
+                };
             },
 
 
-            main: function (answers_section_id, fraction_options) {
+            main: function (answers_section_id, fraction_options, add_to_group_element_id, add_to_group_list_element_id) {
 
                 console.log(fraction_options);
                 $(document).ready(
                     function () {
                         var instance = M.qtypes.omerointeractive.QuestionEditorInteractive.getInstance();
-                        instance.initialize(answers_section_id, fraction_options);
-                        window.qem = instance;
+                        instance.initialize(
+                            answers_section_id, fraction_options,
+                            add_to_group_element_id, add_to_group_list_element_id
+                        );
+                        window.qei = instance;
 
                         console.log($("#omero-image-view-lock"), document.getElementById("omero-image-view-lock"));
 
-                        $(function () {
-                            //$('#omero-image-view-lock').bootstrapToggle();
-                        });
+                        //$(function () {
+                        //    //$('#omero-image-view-lock').bootstrapToggle();
+                        //});
                         //$("#omero-image-view-lock").bootstrapToggle('on');
-                        document.getElementById("omero-image-view-lock").addEventListener("change", function () {
-                            alert("Changed!!!");
-                        });
+                        //document.getElementById("omero-image-view-lock").addEventListener("change", function () {
+                        //    alert("Changed!!!");
+                        //});
                     }
                 );
             }
