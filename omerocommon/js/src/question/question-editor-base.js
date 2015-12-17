@@ -175,12 +175,22 @@ define("qtype_omerocommon/question-editor-base",
                     var visible_roi_list = [];
 
 
-
-
                     // register the frame when loaded
                     document.addEventListener("frameLoaded", function (e) {
                         me.onViewerFrameLoaded(e.detail.frame_id, visible_roi_list, e.detail);
                     }, true);
+
+
+                    document.forms[0].onsubmit = function () {
+                        try {
+                            me.saveAll();
+                            if (!me.validate()) return false;
+                        } catch (e) {
+                            console.error(e);
+                            me._showDialogMessage(e.message);
+                            return false;
+                        }
+                    };
                 };
 
 
