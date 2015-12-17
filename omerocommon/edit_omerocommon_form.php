@@ -605,11 +605,11 @@ abstract class qtype_omerocommon_edit_form extends qtype_multichoice_edit_form
 
         // specific preprocessing
         if (!empty($question->options)) {
-            $question->questiontext_locale_map = $question->questiontext["text"];
-            $question->generalfeedback_locale_map = $question->generalfeedback["text"];
-            $question->correctfeedback_locale_map = $question->options->correctfeedback;
-            $question->incorrectfeedback_locale_map = $question->options->incorrectfeedback;
-            $question->partiallycorrectfeedback_locale_map = $question->options->partiallycorrectfeedback;
+            $question->questiontext_locale_map = json_encode(qtype_omerocommon::serialize_to_json_from($question->questiontext["text"]));
+            $question->generalfeedback_locale_map = json_encode(qtype_omerocommon::serialize_to_json_from($question->generalfeedback["text"]));
+            $question->correctfeedback_locale_map = json_encode(qtype_omerocommon::serialize_to_json_from($question->options->correctfeedback));
+            $question->incorrectfeedback_locale_map = json_encode(qtype_omerocommon::serialize_to_json_from($question->options->incorrectfeedback));
+            $question->partiallycorrectfeedback_locale_map = json_encode(qtype_omerocommon::serialize_to_json_from($question->options->partiallycorrectfeedback));
 
             $question->questiontext["text"] = "";
             $question->generalfeedback["text"] = "";
@@ -634,17 +634,17 @@ abstract class qtype_omerocommon_edit_form extends qtype_multichoice_edit_form
         $key = 0;
         foreach ($question->options->answers as $answer) {
             // answer content & format
-            $question->answer[$key] = ($answer->answer);
+            $question->answer[$key] = json_encode(qtype_omerocommon::serialize_to_json_from($answer->answer));
             $question->answerformat[$key] = $answer->answerformat;
             // answer fraction
             $question->fraction[$key] = 0 + $answer->fraction;
             unset($this->_form->_defaultValues["fraction[{$key}]"]);
             // answer feedback
-            $question->feedback[$key] = ($answer->feedback);
+            $question->feedback[$key] = json_encode(qtype_omerocommon::serialize_to_json_from($answer->feedback));
             $question->feedbackformat[$key] = $answer->feedbackformat;
 
-            $question->answer_locale_map[$key] = $answer->answer;
-            $question->feedback_locale_map[$key] = $answer->feedback;
+            $question->answer_locale_map[$key] = json_encode(qtype_omerocommon::serialize_to_json_from($answer->answer));
+            $question->feedback_locale_map[$key] = json_encode(qtype_omerocommon::serialize_to_json_from($answer->feedback));
 
             $key++;
         }
