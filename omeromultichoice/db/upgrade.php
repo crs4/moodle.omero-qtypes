@@ -92,5 +92,84 @@ function xmldb_qtype_omeromultichoice_upgrade($oldversion)
         upgrade_plugin_savepoint(true, 2015112400, 'qtype', 'omeromultichoice');
     }
 
+
+    if ($oldversion < 2015121700) {
+
+        $table_name = "qtype_omemultichoice_options";
+        $transaction = $DB->start_delegated_transaction();
+
+        try {
+
+            if (!$dbman->field_exists($table_name, "omeroimagelocked")) {
+                $DB->execute("ALTER TABLE  mdl_qtype_omemultichoice_options ADD omeroimagelocked TINYINT(1) NOT NULL DEFAULT 0");
+            }
+
+            if (!$dbman->field_exists($table_name, "omeroimageproperties")) {
+                $DB->execute("ALTER TABLE  mdl_qtype_omemultichoice_options ADD omeroimageproperties LONGTEXT NULL DEFAULT NULL");
+            }
+
+            if ($dbman->field_exists($table_name, "answertype")) {
+                $DB->execute("ALTER TABLE  mdl_qtype_omemultichoice_options DROP answertype");
+            }
+
+            // Find duplicate rows before they break the 2013092304 step below.
+            $questions = $DB->get_records("qtype_omemultichoice_options");
+            foreach ($questions as $question) {
+
+                $match = null;
+                preg_match('/\/([0-9]+)(\?.*)?/', $question->omeroimageurl, $match);
+
+                if (!$match)
+                    throw new Exception("Unable to detect the image_id");
+
+                // image_id
+                $image_id = $match[1];
+                $params = null;
+
+                // Parse parameters
+                $query = parse_url($question->omeroimageurl, PHP_URL_QUERY);
+                parse_str($query, $params);
+
+                $image_properties = null;
+                if ($params && count($params) > 0) {
+                    $image_properties = array(
+                        "id" => isset($params["id"]) ? (int)$params["id"] : $image_id,
+                        "center" => array(
+                            "x" => isset($params["x"]) ? (double)$params["x"] : 0.0,
+                            "y" => isset($params["y"]) ? (double)$params["y"] : 0.0,
+                        ),
+                        "t" => 1,
+                        "z" => 1,
+                        "zoom_level" => isset($params["zm"]) ? (double)$params["zm"] : 0.0
+                    );
+
+                    $image_properties = json_encode($image_properties);
+                }
+
+                $question->omeroimageurl = "/omero-image-repository/$image_id";
+                $question->omeroimagelocked = 0;
+                if ($image_properties)
+                    $question->omeroimageproperties = $image_properties;
+
+                // try to update the record
+                if (!$DB->update_record("qtype_omemultichoice_options", $question)) {
+                    throw new Exception("Error during question update: " . $question->id);
+                }
+            }
+
+            // Assuming that all updates are OK!!!.
+            $transaction->allow_commit();
+
+        } catch (Exception $e) {
+            // abort the current transaction
+            $transaction->rollback($e);
+            error_log($e->getMessage());
+            return false;
+        }
+
+        // Shortanswer savepoint reached.
+        upgrade_plugin_savepoint(true, 2015121700, 'qtype', 'omeromultichoice');
+    }
+
     return true;
 }
