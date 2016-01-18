@@ -181,6 +181,7 @@ abstract class qtype_omerointeractive_base_renderer extends qtype_multichoice_re
     const IMAGE_DEL_MARKER_CTRL = "remove_marker_ctrl_id";
     const IMAGE_CLEAR_MARKER_CTRL = "clear_marker_ctrl_id";
     const MARKER_REMOVERS_CONTAINER = "marker_removers_container";
+    const FOCUS_AREAS_CONTAINER = "focus_areas_container";
 
 
     public static function configure_requirements(question_attempt $qa)
@@ -366,7 +367,12 @@ abstract class qtype_omerointeractive_base_renderer extends qtype_multichoice_re
 
         $result .= '<div id="' . self::MARKER_REMOVERS_CONTAINER . '" ' .
             ' class="panel remove_marker_button_group">' .
-            '<span class="yourmarkers-text">' . get_string("yourmarkers", "qtype_omerointeractive") . '</span> ' . '</div>';
+            '<span class="yourmarkers-text">* ' . get_string("yourmarkers", "qtype_omerointeractive") . '</span> ' . '</div>';
+
+        $result .= '<div id="' . self::FOCUS_AREAS_CONTAINER . '" ' .
+            ' class="focus_areas_container">' .
+            '<span class="yourmarkers-text">* ' . get_string("focusareas", "qtype_omerointeractive") . '</span> ' . '</div>';
+
 
         $result .= '</div>';
 
@@ -428,6 +434,7 @@ abstract class qtype_omerointeractive_base_renderer extends qtype_multichoice_re
                     "remove_marker_ctrl_id" => self::IMAGE_DEL_MARKER_CTRL,
                     "clear_marker_ctrl_id" => self::IMAGE_CLEAR_MARKER_CTRL,
                     "marker_removers_container" => self::MARKER_REMOVERS_CONTAINER,
+                    "focus_areas_container" => self::FOCUS_AREAS_CONTAINER,
                     "answer_input_name" => $answer_input_name,
                     "available_shapes" => ($available_shapes),
                     "shape_groups" => $shape_groups,
