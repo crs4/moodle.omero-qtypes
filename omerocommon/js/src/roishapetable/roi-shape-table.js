@@ -211,11 +211,11 @@ prototype.initTable = function (hideToolbar, showColumnSelector) {
         });
         me.remove_element.prop('disabled', true);
     });
-    $(window).resize(function () {
-        me.table_element.bootstrapTable('resetView', {
-            height: me.getHeight()
-        });
-    });
+    //$(window).resize(function () {
+    //    me.table_element.bootstrapTable('resetView', {
+    //        height: me.getHeight()
+    //    });
+    //});
 
     me._initialized = true;
 };
