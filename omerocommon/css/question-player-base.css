@@ -65,6 +65,20 @@ div[id*=remove_marker_ctrl]{
     display: inline-block;
 }
 
+.focus_areas_container {
+    padding: 20px 0px;
+    margin: 18px 0 0;
+    /*width: 100px;*/
+    /*height: auto;*/
+    display: block;
+}
+
+
+div[id*=goto_marker_ctrl_id]{
+    display: inline-block;
+    margin-left: 10px;
+}
+
 div.multichoice-options-container{
     margin: 70px 10px 40px;
 }
