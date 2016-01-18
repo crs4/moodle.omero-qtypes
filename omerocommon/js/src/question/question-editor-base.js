@@ -243,6 +243,20 @@ define("qtype_omerocommon/question-editor-base",
                         }
                     }
 
+                    try {
+                        for (var i in this._answers) {
+                            var answer = this._answers[i];
+                            if (answer && answer._roi_id_list == 0) {
+                                this._showDialogMessage("Every answer group must have at least one ROI!!!");
+                                result = false;
+                                break;
+                            }
+                        }
+                    } catch (e) {
+                        console.error(e);
+                        result = false;
+                    }
+
                     return result;
                 };
 
