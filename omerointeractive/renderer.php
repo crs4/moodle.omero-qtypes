@@ -366,7 +366,7 @@ abstract class qtype_omerointeractive_base_renderer extends qtype_multichoice_re
             '</span></div>';
 
         $result .= '<div id="' . self::MARKER_REMOVERS_CONTAINER . '" ' .
-            ' class="panel remove_marker_button_group">' .
+            ' class="remove_marker_button_group">' .
             '<span class="yourmarkers-text">* ' . get_string("yourmarkers", "qtype_omerointeractive") . '</span> ' . '</div>';
 
         $result .= '<div id="' . self::FOCUS_AREAS_CONTAINER . '" ' .
