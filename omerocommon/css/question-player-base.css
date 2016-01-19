@@ -1,6 +1,7 @@
 .image-viewer-with-controls-container {
     width: 800px;
     height: 700px;
+    background: transparent;
 }
 
 .interactive-player-toolbar {
