@@ -42,12 +42,18 @@ define("qtype_omerocommon/question-player-base",
                 };
 
 
-                /* Statics methods */
+                // list of player instances
+                M.qtypes.omerocommon.QuestionPlayerBase.instances = [];
 
-                M.qtypes.omerocommon.QuestionPlayerBase.getInstance = function () {
-                    return M.qtypes.omerocommon.QuestionPlayerBase.instance;
+                /* Static methods */
+
+                /**
+                 * Returns the list of player instances
+                 * @returns {Array}
+                 */
+                M.qtypes.omerocommon.QuestionPlayerBase.getInstances = function () {
+                    return M.qtypes.omerocommon.QuestionPlayerBase.instances;
                 };
-
 
                 // local reference to the current prototype
                 var prototype = M.qtypes.omerocommon.QuestionPlayerBase.prototype;
@@ -73,7 +79,7 @@ define("qtype_omerocommon/question-player-base",
                  * Start the question player
                  */
                 prototype.start = function () {
-                    this._image_viewer_controller.open(true, function(){
+                    this._image_viewer_controller.open(true, function () {
                         console.log("ImageViewer initialized!!!");
                     });
                 };
