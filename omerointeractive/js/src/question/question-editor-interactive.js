@@ -167,16 +167,6 @@ define("qtype_omerointeractive/question-editor-interactive",
                             add_to_group_element_id, add_to_group_list_element_id
                         );
                         window.qei = instance;
-
-                        console.log($("#omero-image-view-lock"), document.getElementById("omero-image-view-lock"));
-
-                        //$(function () {
-                        //    //$('#omero-image-view-lock').bootstrapToggle();
-                        //});
-                        //$("#omero-image-view-lock").bootstrapToggle('on');
-                        //document.getElementById("omero-image-view-lock").addEventListener("change", function () {
-                        //    alert("Changed!!!");
-                        //});
                     }
                 );
             }
