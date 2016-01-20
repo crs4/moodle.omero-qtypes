@@ -418,10 +418,8 @@ define("qtype_omerocommon/image-viewer",
                  * Set focus on a given ROI shape
                  * @param shape_id
                  */
-                prototype.setFocusOnRoiShape = function (shape_id) {
-                    var shape_position = this._annotations_controller.getShapeCenter(shape_id);
-                    shape_position = this._viewer_controller.getViewportCoordinates(shape_position.x, shape_position.y);
-                    this._viewer_controller.jumpToPoint(shape_position.x, shape_position.y);
+                prototype.setFocusOnRoiShape = function (shape_id, zoom_to_shape) {
+                    this._viewer_controller.jumpToShape(shape_id, zoom_to_shape || false);
                     this._annotations_controller.selectShape(shape_id, true, true);
                 };
 
