@@ -278,6 +278,26 @@ define("qtype_omerocommon/question-editor-base",
 
 
                 prototype._build_answer_controls = function () {
+                    var me = this;
+                    try {
+                        $("#add_answer_button li").click(
+                            function (e) {
+                                var no_answers = $(e.target).attr("value");
+                                console.log("Click on ADD Answer no.", no_answers);
+                                window.last = e.target;
+                                if (!no_answers)
+                                    console.warn("The number of answer to add seems to be undefined!!!");
+                                else {
+                                    no_answers = parseInt(no_answers);
+                                    for (var i = 1; i <= no_answers; i++) {
+                                        me.addAnswer(i!==1);
+                                    }
+                                }
+                            }
+                        );
+                    } catch (e) {
+                        console.error("Error while creating the toolbar", e);
+                    }
                 };
 
                 prototype.getSelectedROIIds = function () {

@@ -127,28 +127,6 @@ define("qtype_omerointeractive/question-editor-interactive",
                     return new M.qtypes.omerointeractive.AnswerGroup(this._answers_section_id, answer_number, fraction_options, answer_index);
                 };
 
-
-                prototype._build_answer_controls = function () {
-                    try {
-                        this._toolbar_container = $('<div id="answers_toolbar" class="panel"></div>');
-                        this._toolbar_container_body = $('<div class="panel-body"></div>');
-                        this._add_answer_btn = $('<button id="add-answer-btn" type="button" class="btn btn-info">Add ROI Group</button>');
-
-                        $("#" + this._answers_section_id).prepend(this._toolbar_container);
-                        this._toolbar_container.prepend(this._toolbar_container_body);
-                        this._toolbar_container_body.prepend(this._add_answer_btn);
-
-                        var me = this;
-                        this._add_answer_btn.on("click", function () {
-                            me.addAnswer();
-                        });
-
-                    } catch (e) {
-                        console.error("Error while creating the toolbar", e);
-                    }
-                };
-
-
                 prototype.onAddAnswer = function (answer) {
                     console.log("Added answer", answer);
                     answer._init_roi_list();

@@ -67,27 +67,6 @@ define("qtype_omeromultichoice/question-editor-multichoice",
                 prototype.buildAnswer = function (answer_number, fraction_options) {
                     return new M.qtypes.omeromultichoice.AnswerPlaintext(this._answers_section_id, answer_number, fraction_options);
                 };
-
-
-                prototype._build_answer_controls = function () {
-                    try {
-                        this._toolbar_container = $('<div id="answers_toolbar" class="panel"></div>');
-                        this._toolbar_container_body = $('<div class="panel-body"></div>');
-                        this._add_answer_btn = $('<button id="add-answer-btn" type="button" class="btn btn-info">Add answer</button>');
-
-                        $("#" + this._answers_section_id).prepend(this._toolbar_container);
-                        this._toolbar_container.prepend(this._toolbar_container_body);
-                        this._toolbar_container_body.prepend(this._add_answer_btn);
-
-                        var me = this;
-                        this._add_answer_btn.on("click", function () {
-                            me.addAnswer();
-                        });
-
-                    } catch (e) {
-                        console.error("Error while creating the toolbar", e);
-                    }
-                };
             },
 
 
