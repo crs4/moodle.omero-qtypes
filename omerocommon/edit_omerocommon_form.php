@@ -575,6 +575,9 @@ abstract class qtype_omerocommon_edit_form extends qtype_multichoice_edit_form
         $mform->addElement('hidden', 'visiblerois', 'none');
         $mform->setType("visiblerois", PARAM_RAW);
 
+        $mform->addElement('hidden', 'focusablerois', 'none');
+        $mform->setType("focusablerois", PARAM_RAW);
+
         $mform->addElement('hidden', 'makecopy');
         $mform->setType('makecopy', PARAM_INT);
 
