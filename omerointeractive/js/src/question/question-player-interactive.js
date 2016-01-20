@@ -118,21 +118,22 @@ define("qtype_omerointeractive/question-player-interactive",
 
         function addMarkerInfo(player, marker_id, editable, color) {
             var me = player;
-            var marker_info_container = CONTROL_KEYS.DEL + marker_id + '_container';
+            var config = player._config;
+            var marker_info_container = cid(config, CONTROL_KEYS.DEL) + "-" + marker_id + '_container';
             var label = marker_id.replace("_", " ");
             label = label.charAt(0).toUpperCase() + label.substring(1);
             color = color ? 'style="color: ' + color + ';"' : '';
             var $delm_btn = $('<div id="' + marker_info_container + '">' +
-                '<i id="' + CONTROL_KEYS.GOTO + marker_id + '_btn" ' +
+                '<i id="' + cid(config, CONTROL_KEYS.GOTO) + "-" + marker_id + '_btn" ' +
                 ' class="glyphicon glyphicon-map-marker" ' + color + '></i> ' +
                 label +
-                (editable ? ' <i id="' + CONTROL_KEYS.DEL + marker_id + '_btn" ' +
+                (editable ? ' <i id="' + cid(config, CONTROL_KEYS.DEL) + "-" + marker_id + '_btn" ' +
                 ' class="red glyphicon glyphicon-remove"></i> ' : "") +
                 "</div>");
             me._remove_markers_container.append($delm_btn);
 
 
-            $("#" + CONTROL_KEYS.DEL + marker_id + '_btn').bind(
+            $("#" + cid(config, CONTROL_KEYS.DEL) + "-" + marker_id + '_btn').bind(
                 'click', {
                     'marker_id': marker_id,
                     'btn_id': 'del_' + marker_id,
@@ -144,7 +145,7 @@ define("qtype_omerointeractive/question-player-interactive",
                 }
             );
 
-            $("#" + CONTROL_KEYS.GOTO + marker_id + '_btn').bind(
+            $("#" + cid(config, CONTROL_KEYS.GOTO) + "-" + marker_id + '_btn').bind(
                 'click', {'marker_id': marker_id},
                 function (event) {
                     me._image_viewer_controller.setFocusOnRoiShape(event.data.marker_id);
@@ -157,29 +158,29 @@ define("qtype_omerointeractive/question-player-interactive",
             var me = player;
             var config = me._config;
 
-            for(var i in config.visible_rois){
+            for (var i in config.visible_rois) {
                 // as a intial assumption, we consider every ROI to show as a focus area
                 var focus_area_id = config.visible_rois[i];
                 var focus_area_details = me._image_viewer_controller.getShape(focus_area_id);
-                if(focus_area_details) {
+                if (focus_area_details) {
                     var color = focus_area_details.toJSON()["stroke_color"];
-                    var marker_info_container = CONTROL_KEYS.GOTO + focus_area_id + '_container';
+                    var marker_info_container = cid(config, CONTROL_KEYS.GOTO) + focus_area_id + '_container';
                     var label = focus_area_id.replace("_", " ");
                     label = label.charAt(0).toUpperCase() + label.substring(1);
                     color = color ? 'style="color: ' + color + ';"' : '';
                     var focus_area_info_el = $('<div id="' + marker_info_container + '">' +
-                        '<i id="' + CONTROL_KEYS.GOTO + focus_area_id + '_btn" ' +
+                        '<i id="' + cid(config, CONTROL_KEYS.GOTO) + focus_area_id + '_btn" ' +
                         ' class="glyphicon glyphicon-map-marker" ' + color + '></i>' +
                             //label +
-                        (i !== config.visible_rois.length ? ", " : " ") +
+                        ((i + 1) != config.visible_rois.length ? ", " : " ") +
                         "</div>");
                     me._focus_areas_container.append(focus_area_info_el);
 
                     // register the listener for the 'jump to'
-                    $("#" + CONTROL_KEYS.GOTO + focus_area_id + '_btn').bind(
+                    $("#" + cid(config, CONTROL_KEYS.GOTO) + focus_area_id + '_btn').bind(
                         'click', {'marker_id': focus_area_id},
                         function (event) {
-                            me._image_viewer_controller.setFocusOnRoiShape(event.data.marker_id);
+                            me._image_viewer_controller.setFocusOnRoiShape(event.data.marker_id, true);
                         }
                     );
                 }
@@ -373,8 +374,8 @@ define("qtype_omerointeractive/question-player-interactive",
                                 });
                             }
 
-                            $(document).on('marker_created', function (event, marker_id) {
-                                console.log('A new marker with ID ' + marker_id + ' was created');
+                            $("#" + config.image_annotations_canvas_id).on('marker_created', function (event, marker_id) {
+                                console.log('A new marker with ID ' + marker_id + ' was created', event);
                                 if (isMaxMarkerNumber(me)) {
                                     console.log("Reached max number of markers: " + config.max_markers);
                                     setEnabledMarkerControl(me, CONTROL_KEYS.ADD, false);
@@ -386,15 +387,15 @@ define("qtype_omerointeractive/question-player-interactive",
                                 addMarkerInfo(me, marker_id, !config.correction_mode);
                             });
 
-                            $(document).on('marker_deleted', function (event, marker_id) {
-                                console.log("Remove marker with ID '" + marker_id + "'");
+                            $("#" + config.image_annotations_canvas_id).on('marker_deleted', function (event, marker_id) {
+                                console.log("Remove marker with ID '" + marker_id + "'", event);
                                 if (!isMaxMarkerNumber(me))
                                     setEnabledMarkerControl(me, CONTROL_KEYS.ADD, true);
                                 if (me._image_viewer_controller.getMarkers().length === 0) {
                                     setEnabledMarkerControl(me, CONTROL_KEYS.EDIT, false);
                                     setEnabledMarkerControl(me, CONTROL_KEYS.CLEAR, false);
                                 }
-                                $("#" + CONTROL_KEYS.DEL + marker_id + '_container').remove();
+                                $("#" + cid(config, CONTROL_KEYS.DEL) + "-" + marker_id + '_container').remove();
                             });
                         }
                     }
