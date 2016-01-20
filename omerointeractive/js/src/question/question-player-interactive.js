@@ -326,7 +326,7 @@ define("qtype_omerointeractive/question-player-interactive",
 
                     var me = this;
 
-                    if (initialized) console.log("Already Initialized");
+                    if (me.initialized) console.log("Already Initialized");
                     else {
 
                         this.parent.initialize.call(this, config);
@@ -400,7 +400,7 @@ define("qtype_omerointeractive/question-player-interactive",
                         }
                     }
 
-                    initialized = true;
+                    me.initialized = true;
 
                     start(me);
                 };
