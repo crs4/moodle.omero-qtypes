@@ -40,11 +40,16 @@ define("qtype_omerointeractive/question-player-interactive",
         };
 
 
+        function cid(config, control) {
+            return config.answer_input_name.replace(":", "-") + "-" + control;
+        }
+
         function setEnabledMarkerControl(player, control, enabled) {
             var config = player._config;
             if (enabled)
                 $("#" + config[control]).removeClass("disabled");
             else $("#" + config[control]).addClass("disabled");
+            console.log("Changing the " + control + " controller!!", $("#" + config[control]));
         }
 
         function switchToActive(control) {
