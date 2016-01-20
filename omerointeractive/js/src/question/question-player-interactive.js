@@ -172,7 +172,7 @@ define("qtype_omerointeractive/question-player-interactive",
                         '<i id="' + cid(config, CONTROL_KEYS.GOTO) + focus_area_id + '_btn" ' +
                         ' class="glyphicon glyphicon-map-marker" ' + color + '></i>' +
                             //label +
-                        ((i + 1) != config.visible_rois.length ? ", " : " ") +
+                        ((parseInt(i) + 1) != config.visible_rois.length ? ", " : " ") +
                         "</div>");
                     me._focus_areas_container.append(focus_area_info_el);
 
