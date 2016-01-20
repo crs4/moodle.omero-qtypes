@@ -312,6 +312,20 @@ abstract class qtype_omerocommon_edit_form extends qtype_multichoice_edit_form
     }
 
     /**
+     * @return mixed
+     */
+    protected function define_answer_section_commons_top()
+    {
+    }
+
+    /**
+     * @return mixed
+     */
+    protected function define_answer_section_commons_bottom()
+    {
+    }
+
+    /**
      * Add a set of form fields, obtained from get_per_answer_fields, to the form,
      * one for each existing answer, with some blanks for some new ones.
      * @param object $mform the form being built.
@@ -328,6 +342,8 @@ abstract class qtype_omerocommon_edit_form extends qtype_multichoice_edit_form
         $mform->addElement('header', $header_info[0], $header_info[1], '');
         $mform->setExpanded($header_info[0], 1);
 
+        $this->define_answer_section_commons_top();
+
         $answersoption = '';
         $repeatedoptions = array();
         $repeated = $this->get_per_answer_fields($mform, $label, $gradeoptions,
@@ -342,6 +358,8 @@ abstract class qtype_omerocommon_edit_form extends qtype_multichoice_edit_form
         $this->repeat_elements($repeated, $repeatsatstart, $repeatedoptions,
             'noanswers', 'addanswers', $addoptions,
             $this->get_more_choices_string(), false);
+
+        $this->define_answer_section_commons_bottom();
     }
 
 
