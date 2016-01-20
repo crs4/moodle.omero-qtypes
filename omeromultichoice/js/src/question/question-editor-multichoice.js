@@ -78,33 +78,6 @@ define("qtype_omeromultichoice/question-editor-multichoice",
                         var instance = M.qtypes.omeromultichoice.QuestionEditorMultichoice.getInstance();
                         instance.initialize(answers_section_id, fraction_options);
                         window.qem = instance;
-
-                        //var myFunc = function(){
-                        //
-                        //    console.log("Checking ....", jQuery().bootstrapToggle);
-                        //    if(jQuery().bootstrapToggle){
-                        //        console.log("Found");
-                        //
-                        //        clearInterval(myFuc);
-                        //    }
-                        //};
-
-                        //setInterval(myFunc, 1000);
-
-                        //$('#omero-image-view-lock').bootstrapToggle();
-
-                        console.log($("#omero-image-view-lock"), document.getElementById("omero-image-view-lock"));
-                        //console.log( $("#omero-image-view-lock").bootstrapToggle);
-                        //alert("Check");
-
-
-                        $(function () {
-                            //$('#omero-image-view-lock').bootstrapToggle();
-                        });
-                        //$("#omero-image-view-lock").bootstrapToggle('on');
-                        document.getElementById("omero-image-view-lock").addEventListener("change", function () {
-                            alert("Changed!!!");
-                        });
                     }
                 );
             }
