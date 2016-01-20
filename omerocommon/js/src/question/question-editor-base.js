@@ -153,7 +153,11 @@ define("qtype_omerocommon/question-editor-base",
                             me._image_locked_element.val($(this).prop('checked') ? 1 : 0);
                         });
 
-                        me.initVisibleRoiList();
+                        me._visible_roi_list = [];
+                        me.initElementList("visiblerois", me._visible_roi_list);
+
+                        me._focusable_roi_list = [];
+                        me.initElementList("focusablerois", me._focusable_roi_list);
 
                         $('html, body').animate({
                             scrollTop: $("#" + document.forms[0].getAttribute("id")).offset().top - 200
@@ -573,30 +577,37 @@ define("qtype_omerocommon/question-editor-base",
                 };
 
 
-                prototype.initVisibleRoiList = function () {
+                prototype.initElementList = function (list_name, list) {
                     var me = this;
-                    var roi_list = null;
-                    me._visible_roi_list = [];
-                    var visible_roi_list = $("[name=visiblerois]").val();
-                    if (visible_roi_list && visible_roi_list != "none") {
-                        roi_list = visible_roi_list.split(",");
-                        for (var i in roi_list) {
-                            me._visible_roi_list[i] = parseInt(roi_list[i]);
+                    var input_list = $("[name=" + list_name + "]").val();
+                    if (input_list && input_list != "none") {
+                        var temp_list = input_list.split(",");
+                        for (var i in temp_list) {
+                            list[i] = parseInt(temp_list[i]);
                         }
                     }
 
                     document.forms[0].addEventListener("submit", function () {
-                        $("[name=visiblerois]").val(me._visible_roi_list.join(","));
+                        $("[name=" + list_name + "]").val(list.join(","));
                     });
 
-                    console.log("Initialized Visible ROI list", me._visible_roi_list);
+                    console.log("Initialized list", list);
                 };
+
 
                 prototype.onRoiShapeVisibilityChanged = function (event) {
                     console.log(event);
+                    this.onRoiShapePropertyChanged(event, "visible", this._visible_roi_list);
+                };
 
-                    var visible = this._visible_roi_list;
-                    if (event.shape.visible) {
+
+                prototype.onRoiShapeFocusabilityChanged = function (event) {
+                    console.log(event);
+                    this.onRoiShapePropertyChanged(event, "focusable", this._focusable_roi_list);
+                };
+
+                prototype.onRoiShapePropertyChanged = function (event, property, visible) {
+                    if (event.shape[property]) {
                         this._image_viewer_controller.showRoiShapes([event.shape.id]);
                         if (visible.indexOf(event.shape.id) === -1)
                             visible.push(event.shape.id);
@@ -607,6 +618,7 @@ define("qtype_omerocommon/question-editor-base",
                             visible.splice(index, 1);
                     }
                 };
+
 
                 prototype.onRoiShapeFocus = function (event) {
                     this._image_viewer_controller.setFocusOnRoiShape.call(
