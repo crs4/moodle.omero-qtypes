@@ -139,7 +139,7 @@ define("qtype_omerocommon/question-editor-base",
                             if (counter) {
                                 counter = parseInt(counter);
                                 for (var i = 0; i < counter; i++) {
-                                    me.addAnswer(i, true);
+                                    me.addAnswer(true, i);
                                 }
                             }
                         }
@@ -370,7 +370,7 @@ define("qtype_omerocommon/question-editor-base",
                     console.error("You need to implement this method!!!");
                 };
 
-                prototype.addAnswer = function (answer_index, disable_animiation) {
+                prototype.addAnswer = function (disable_animiation, answer_index) {
                     var me = this;
                     var answer_uuid = M.qtypes.omerocommon.MoodleFormUtils.generateGuid();
                     var answer = this.buildAnswer(answer_uuid, this._fraction_options);
