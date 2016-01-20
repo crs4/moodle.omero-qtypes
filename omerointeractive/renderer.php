@@ -194,6 +194,12 @@ abstract class qtype_omerointeractive_base_renderer extends qtype_multichoice_re
     }
 
 
+    private static function to_unique_identifier(question_attempt $qa, $identifier)
+    {
+        return $identifier . "-" . $qa->get_database_id();
+    }
+
+
     public static function impl_formulation_and_controls(qtype_multichoice_renderer_base $renderer,
                                                          question_attempt $qa,
                                                          question_display_options $options)
