@@ -184,7 +184,7 @@ define("qtype_omerocommon/question-editor-base",
                     }, true);
 
                     // procedure for pre-processing and validating data to submit
-                    var submit_function = function(e) {
+                    var submit_function = function (e) {
                         try {
                             me.saveAll();
                             if (!me.validate()) return false;
@@ -297,7 +297,7 @@ define("qtype_omerocommon/question-editor-base",
                                 else {
                                     no_answers = parseInt(no_answers);
                                     for (var i = 1; i <= no_answers; i++) {
-                                        me.addAnswer(i!==1);
+                                        me.addAnswer(i !== 1);
                                     }
                                 }
                             }
