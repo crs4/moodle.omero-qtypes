@@ -361,10 +361,10 @@ abstract class qtype_omerointeractive_base_renderer extends qtype_multichoice_re
         $image_properties = null;
         $image_properties = json_decode($question->omeroimageproperties);
         $result .= '<div class="image_position_button">' .
-            '<span class="pull-right sm">' .
+            '<span class="sm">' .
             (($question->omeroimageproperties) ?
                 '<b>(x,y):</b> ' . $image_properties->center->x . ", " . $image_properties->center->y .
-                '<i class="restore-image-center-btn pull-right glyphicon glyphicon-screenshot" style="margin-left: 10px;"></i>' :
+                '<i class="restore-image-center-btn glyphicon glyphicon-screenshot" style="margin-left: 10px;"></i>' :
                 ""
             ) .
             '</span></div>';

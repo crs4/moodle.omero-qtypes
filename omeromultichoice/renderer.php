@@ -294,7 +294,7 @@ abstract class qtype_omeromultichoice_base_renderer extends qtype_multichoice_re
         $result .= html_writer::tag('div', $question->format_questiontext($qa), array('class' => 'qtext'));
 
         // viewer of the question image
-        $result .= '<div class="panel image-viewer-with-controls-container">';
+        $result .= '<div class="image-viewer-with-controls-container">';
 
 
         $result .= '<div id="' . self::to_unique_identifier($qa, "graphics_container") . '" class="image-viewer-container" style="position: relative;" >
@@ -306,10 +306,10 @@ abstract class qtype_omeromultichoice_base_renderer extends qtype_multichoice_re
         $image_properties = null;
         if ($question->omeroimageproperties) {
             $image_properties = json_decode($question->omeroimageproperties);
-            $result .= '<div class="panel image_position_button">' .
-                '<span class="pull-right sm">' .
+            $result .= '<div class="image_position_button">' .
+                '<span class="sm">' .
                 '<b>(x,y):</b> ' . $image_properties->center->x . ", " . $image_properties->center->y .
-                '<i class="restore-image-center-btn pull-right glyphicon glyphicon-screenshot" style="margin-left: 10px;">' .
+                '<i class="restore-image-center-btn glyphicon glyphicon-screenshot" style="margin-left: 10px;">' .
                 '</i></span></div>';
         }
 
