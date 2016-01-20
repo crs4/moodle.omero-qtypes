@@ -438,17 +438,9 @@ define("qtype_omerointeractive/question-player-interactive",
              *
              */
             start: function (config) {
-
-                $(document).ready(
-                    function () {
-                        var instance = M.qtypes.omerointeractive.QuestionPlayerInteractive.getInstance();
-                        window.qpi = instance;
-
-                        instance.initialize(config);
-
-                        console.log("Question interactive player initialized!!!");
-                    }
-                );
+                var instance = new M.qtypes.omerointeractive.QuestionPlayerInteractive();
+                instance.initialize(config);
+                console.log("Question interactive player initialized!!!");
             }
         };
     }
