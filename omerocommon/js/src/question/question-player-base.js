@@ -35,6 +35,10 @@ define("qtype_omerocommon/question-player-base",
 
                     // the reference to this scope
                     var me = this;
+
+                    // register the current instance
+                    if (me.constructor != M.qtypes.omerocommon.QuestionPlayerBase)
+                        M.qtypes.omerocommon.QuestionPlayerBase.instances.push(me);
                 };
 
 
