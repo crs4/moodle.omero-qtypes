@@ -111,10 +111,7 @@ define("qtype_omerointeractive/question-editor-interactive",
                     this._add_to_group_element = $("#" + add_to_group_element_id);
                     this._add_to_group_list_element_id = add_to_group_list_element_id;
                     this._add_to_group_list_element = $("#" + add_to_group_list_element_id);
-
                     this._add_to_group_list_element.dropdown();
-
-
                 };
 
                 /**
