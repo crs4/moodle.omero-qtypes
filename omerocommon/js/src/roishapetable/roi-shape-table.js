@@ -109,7 +109,7 @@ prototype.initTable = function (hideToolbar, showColumnSelector) {
                 },
                 {
                     title: 'ROI Shape Details',
-                    colspan: 3,
+                    colspan: 4,
                     align: 'center'
                 }
             ],
@@ -148,6 +148,15 @@ prototype.initTable = function (hideToolbar, showColumnSelector) {
                     formatter: me.visibilityFormatter
                 },
                 {
+                    field: 'focusable',
+                    title: 'Focus',
+                    width: "20px",
+                    align: 'center',
+                    valign: 'middle',
+                    events: me.eventHandler(me),
+                    formatter: me.focusAreaFormatter
+                },
+                {
                     field: 'answerGroup',
                     title: 'Group',
                     align: 'center',
@@ -161,7 +170,7 @@ prototype.initTable = function (hideToolbar, showColumnSelector) {
     };
 
     //if (!showColumnSelector)
-    bootstrap_config.columns[1].splice(2, 1);
+    bootstrap_config.columns[1].splice(3, 1);
 
     // Initializes the bootstrap table
     me.table_element.bootstrapTable(bootstrap_config);
@@ -276,6 +285,29 @@ prototype.eventHandler = function (table) {
             });
         },
 
+        /**
+         * Handle the focus change event !!!
+         *
+         * @param e
+         * @param value
+         * @param row
+         * @param index
+         */
+        'click .roi-shape-focusability': function (e, value, row, index) {
+            row.focusable = !row.focusable;
+            if (row.focusable)
+                $(e.target).attr("class", "green glyphicon glyphicon-eye-open");
+            else
+                $(e.target).attr("class", "red glyphicon glyphicon-eye-close");
+            console.log("FOCUSability changed: " + row.focusable);
+            notifyListeners(table, {
+                type: "roiShapeFocusabilityChanged",
+                shape: row,
+                event: value,
+                focusable: row.focusable
+            });
+        },
+
         'click .remove': function (e, value, row, index) {
             me.table_element.bootstrapTable('remove', {
                 field: 'id',
@@ -346,7 +378,17 @@ prototype.descriptionFormatter = function (data) {
 
 prototype.visibilityFormatter = function (data) {
     return [
-        '<a class="roi-shape-visibility" href="javascript:void(0)" title="Like">',
+        '<a class="roi-shape-visibility" href="javascript:void(0)" title="Visibility">',
+        (data ?
+            '<i class="green glyphicon glyphicon-eye-open"></i>' :
+            '<i class="red glyphicon glyphicon-eye-close"></i>'),
+        '</a> '
+    ].join(" ");
+};
+
+prototype.focusAreaFormatter = function (data) {
+    return [
+        '<a class="roi-shape-focusability" href="javascript:void(0)" title="Focusability">',
         (data ?
             '<i class="green glyphicon glyphicon-eye-open"></i>' :
             '<i class="red glyphicon glyphicon-eye-close"></i>'),
