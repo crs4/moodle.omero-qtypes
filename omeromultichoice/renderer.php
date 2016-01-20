@@ -162,6 +162,10 @@ abstract class qtype_omeromultichoice_base_renderer extends qtype_multichoice_re
     const IMAGE_CLEAR_MARKER_CTRL = "clear_marker_ctrl_id";
     const MARKER_REMOVERS_CONTAINER = "marker_removers_container";
 
+    private static function to_unique_identifier(question_attempt $qa, $identifier)
+    {
+        return $identifier . "-" . $qa->get_database_id();
+    }
 
     public static function impl_formulation_and_controls(qtype_multichoice_renderer_base $renderer,
                                                          question_attempt $qa,
@@ -179,9 +183,9 @@ abstract class qtype_omeromultichoice_base_renderer extends qtype_multichoice_re
         $answer_input_name = $qa->get_qt_field_name('answer');
 
         // set the ID of the OmeroImageViewer
-        $omero_frame_id = "omero-image-viewer-" . str_replace(".", "-", uniqid('', true));
+        $omero_frame_id = self::to_unique_identifier($qa, "omero-image-viewer");
 
-        $question_answer_container = "omero-interactive-question-container-" . str_replace(".", "-", uniqid('', true));
+        $question_answer_container = self::to_unique_identifier($qa, "omero-multichoice-question-container");
 
         // the OMERO image URL
         $omero_image_url = $question->omeroimageurl;
@@ -293,9 +297,9 @@ abstract class qtype_omeromultichoice_base_renderer extends qtype_multichoice_re
         $result .= '<div class="panel image-viewer-with-controls-container">';
 
 
-        $result .= '<div id="graphics_container" class="image-viewer-container" style="position: relative;" >
-            <div id="' . self::IMAGE_VIEWER_CONTAINER . '" style="position: absolute; width: 100%; height: 500px; margin: auto;"></div>
-            <canvas id="annotations_canvas" style="position: absolute; width: 100%; height: 500px; margin: auto;"></canvas>
+        $result .= '<div id="' . self::to_unique_identifier($qa, "graphics_container") . '" class="image-viewer-container" style="position: relative;" >
+            <div id="' . self::to_unique_identifier($qa, self::IMAGE_VIEWER_CONTAINER) . '" style="position: absolute; width: 100%; height: 500px; margin: auto;"></div>
+            <canvas id="' . self::to_unique_identifier($qa, 'annotations_canvas') . '" style="position: absolute; width: 100%; height: 500px; margin: auto;"></canvas>
         </div>';
 
 
@@ -330,7 +334,6 @@ abstract class qtype_omeromultichoice_base_renderer extends qtype_multichoice_re
                 array('class' => 'validationerror'));
         }
 
-
         $PAGE->requires->js_call_amd(
             "qtype_omeromultichoice/question-player-multichoice",
             "start", array(
@@ -338,12 +341,13 @@ abstract class qtype_omeromultichoice_base_renderer extends qtype_multichoice_re
                     "image_id" => $omero_image,
                     "image_properties" => json_decode($question->omeroimageproperties),
                     "image_frame_id" => $omero_frame_id,
-                    "image_annotations_canvas_id" => "annotations_canvas",
+                    "image_annotations_canvas_id" => self::to_unique_identifier($qa, "annotations_canvas"),
                     "image_server" => $OMERO_SERVER,
-                    "image_viewer_container" => self::IMAGE_VIEWER_CONTAINER,
+                    "image_viewer_container" =>  self::to_unique_identifier($qa, self::IMAGE_VIEWER_CONTAINER),
                     "image_navigation_locked" => (bool)$question->omeroimagelocked,
                     "question_answer_container" => $question_answer_container,
-                    "visible_rois" => explode(",", $question->visiblerois)
+                    "visible_rois" => explode(",", $question->visiblerois),
+                    "answer_input_name" => $answer_input_name
                 )
             )
         );
