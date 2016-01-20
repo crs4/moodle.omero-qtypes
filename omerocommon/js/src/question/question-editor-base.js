@@ -534,7 +534,7 @@ define("qtype_omerocommon/question-editor-base",
                 prototype.onImageModelRoiLoaded = function (e) {
 
                     var roi_list = M.qtypes.omerocommon.RoiShapeModel.toRoiShapeModel(e.detail,
-                        this._visible_roi_list);
+                        this._visible_roi_list, this._focusable_roi_list);
                     console.log("Loaded ROI Shapes Models", roi_list);
 
                     if (!this._roi_shape_table) {
