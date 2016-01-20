@@ -16,6 +16,50 @@ define("qtype_omerocommon/question-player-base",
 
         var $ = jQuery;
 
+        var CONTROL_KEYS = {
+            GOTO: "goto_marker_ctrl_id"
+        };
+
+        function cid(config, control) {
+            return config.answer_input_name.replace(":", "-") + "-" + control;
+        }
+
+        function addFocusAreasInfo(player) {
+            var me = player;
+            var config = me._config;
+
+
+            for (var i in config.focusable_rois) {
+                // as a intial assumption, we consider every ROI to show as a focus area
+                var focus_area_id = config.focusable_rois[i];
+                var focus_area_details = me._image_viewer_controller.getShape(focus_area_id);
+                if (focus_area_details) {
+                    var color = focus_area_details.toJSON()["stroke_color"];
+                    var marker_info_container = cid(config, CONTROL_KEYS.GOTO) + focus_area_id + '_container';
+                    var label = focus_area_id.replace("_", " ");
+                    label = label.charAt(0).toUpperCase() + label.substring(1);
+                    color = color ? 'style="color: ' + color + ';"' : '';
+                    var focus_area_info_el = $('<div id="' + marker_info_container + '">' +
+                        '<i id="' + cid(config, CONTROL_KEYS.GOTO) + focus_area_id + '_btn" ' +
+                        ' class="glyphicon glyphicon-map-marker" ' + color + '></i>' +
+                            //label +
+                        ((parseInt(i) + 1) != config.focusable_rois.length ? ", " : " ") +
+                        "</div>");
+                    me._focus_areas_container.append(focus_area_info_el);
+
+                    // register the listener for the 'jump to'
+                    $("#" + cid(config, CONTROL_KEYS.GOTO) + focus_area_id + '_btn').bind(
+                        'click', {'marker_id': focus_area_id},
+                        function (event) {
+                            me._image_viewer_controller.setFocusOnRoiShape(event.data.marker_id, true);
+                        }
+                    );
+                }
+            }
+
+            me._image_viewer_controller.showRoiShapes(config.focusable_rois, true);
+        }
+
         // Public functions
         return {
             initialize: function (str) {
@@ -68,6 +112,9 @@ define("qtype_omerocommon/question-player-base",
                     this._config = config;
                     console.log("Configuration", config);
 
+                    // identifier of the focus area container
+                    this._focus_areas_container = $("#" + config["focus_areas_container"]);
+
                     // build the ImaveViewer controller
                     var viewer_ctrl = new M.qtypes.omerocommon.ImageViewer(
                         config.image_id, config.image_properties,
@@ -83,6 +130,14 @@ define("qtype_omerocommon/question-player-base",
                         console.log("ImageViewer initialized!!!");
                     });
                 };
+
+
+                /**
+                 *
+                 */
+                prototype.showFocusAreas = function () {
+                   addFocusAreasInfo(this);
+                }
             }
         };
     }

@@ -154,40 +154,6 @@ define("qtype_omerointeractive/question-player-interactive",
         }
 
 
-        function addFocusAreasInfo(player) {
-            var me = player;
-            var config = me._config;
-
-            for (var i in config.visible_rois) {
-                // as a intial assumption, we consider every ROI to show as a focus area
-                var focus_area_id = config.visible_rois[i];
-                var focus_area_details = me._image_viewer_controller.getShape(focus_area_id);
-                if (focus_area_details) {
-                    var color = focus_area_details.toJSON()["stroke_color"];
-                    var marker_info_container = cid(config, CONTROL_KEYS.GOTO) + focus_area_id + '_container';
-                    var label = focus_area_id.replace("_", " ");
-                    label = label.charAt(0).toUpperCase() + label.substring(1);
-                    color = color ? 'style="color: ' + color + ';"' : '';
-                    var focus_area_info_el = $('<div id="' + marker_info_container + '">' +
-                        '<i id="' + cid(config, CONTROL_KEYS.GOTO) + focus_area_id + '_btn" ' +
-                        ' class="glyphicon glyphicon-map-marker" ' + color + '></i>' +
-                            //label +
-                        ((parseInt(i) + 1) != config.visible_rois.length ? ", " : " ") +
-                        "</div>");
-                    me._focus_areas_container.append(focus_area_info_el);
-
-                    // register the listener for the 'jump to'
-                    $("#" + cid(config, CONTROL_KEYS.GOTO) + focus_area_id + '_btn').bind(
-                        'click', {'marker_id': focus_area_id},
-                        function (event) {
-                            me._image_viewer_controller.setFocusOnRoiShape(event.data.marker_id, true);
-                        }
-                    );
-                }
-            }
-        }
-
-
         function showResults(player) {
             if (!player) {
                 console.warn("You have to provide the player object");
@@ -268,7 +234,7 @@ define("qtype_omerointeractive/question-player-interactive",
                 }
 
                 // show focus areas
-                addFocusAreasInfo(me);
+                me.showFocusAreas();
             });
         }
 
@@ -351,7 +317,6 @@ define("qtype_omerointeractive/question-player-interactive",
                         });
 
                         me._remove_markers_container = $("#" + config["marker_removers_container"]);
-                        me._focus_areas_container = $("#" + config["focus_areas_container"]);
 
                         // initialize controls
                         setEnabledMarkerControl(this, CONTROL_KEYS.ADD, !config.correction_mode);

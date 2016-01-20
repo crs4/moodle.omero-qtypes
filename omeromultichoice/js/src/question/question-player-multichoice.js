@@ -48,6 +48,9 @@ define("qtype_omeromultichoice/question-player-multichoice",
                     console.log("Answers: ", config.answers);
                     showResults(me);
                 }
+
+                // show focus areas
+                me.showFocusAreas();
             });
         }
 
