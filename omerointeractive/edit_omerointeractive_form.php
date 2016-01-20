@@ -89,6 +89,27 @@ class qtype_omerointeractive_edit_form extends qtype_omerocommon_edit_form
         );
     }
 
+    protected function define_answer_section_commons_top()
+    {
+        $mform = $this->_form;
+
+        $options = array();
+        for ($i = 1; $i <= 10; $i++)
+            array_push($options, "<li><a value=\"$i\" href=\"#\">$i</a></li>");
+
+        $mform->addElement('html', '
+            <div id="answers_toolbar" class="panel" style="text-align: right;">
+            <div id="add_answer_button" class="btn-group" style="margin-bottom: 20px;">
+              <button type="button" class="btn btn-info dropdown-toggle"
+                      data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">' .
+            get_string('add_answers', 'qtype_omerointeractive') .
+            ' <span class="caret"></span>
+              </button>
+              <ul class="dropdown-menu">' . implode($options) . '</ul>' .
+            '</div></div>'
+        );
+    }
+
     protected function define_answers_section()
     {
         parent::define_answers_section();
