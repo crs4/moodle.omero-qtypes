@@ -83,4 +83,4 @@ $string['correctanswerare'] = 'The correct answers are only: ';
 
 $string['yourmarkers'] = 'Your markers: ';
 
-$string['focusareas'] = 'Relevant Region of Interest: ';
+$string['focusareas'] = 'Focus Areas: ';
