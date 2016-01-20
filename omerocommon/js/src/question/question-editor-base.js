@@ -174,14 +174,13 @@ define("qtype_omerocommon/question-editor-base",
                     var frame_id = "omero-image-viewer";
                     var visible_roi_list = [];
 
-
                     // register the frame when loaded
                     document.addEventListener("frameLoaded", function (e) {
                         me.onViewerFrameLoaded(e.detail.frame_id, visible_roi_list, e.detail);
                     }, true);
 
-
-                    document.forms[0].onsubmit = function () {
+                    // procedure for pre-processing and validating data to submit
+                    var submit_function = function(e) {
                         try {
                             me.saveAll();
                             if (!me.validate()) return false;
@@ -191,6 +190,10 @@ define("qtype_omerocommon/question-editor-base",
                             return false;
                         }
                     };
+
+                    // attach the the pre-submit procedure
+                    $("input[name=updatebutton]").on("click", submit_function);
+                    $("input[name=submitbutton]").on("click", submit_function);
                 };
 
 
