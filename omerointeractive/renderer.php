@@ -308,8 +308,6 @@ abstract class qtype_omerointeractive_base_renderer extends qtype_multichoice_re
                 $class = 'r' . ($value % 2);
 
                 // Switch to determine whether to show correct answer or not
-                //foreach (explode(",", $ans->answer) as $shape_id) {
-
                 $isselected = $question->is_choice_selected($response, $shape_id);
                 if ($isselected) {
                     $answer_options_attributes['checked'] = 'checked';
