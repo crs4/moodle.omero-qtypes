@@ -53,21 +53,44 @@ define("qtype_omerointeractive/question-player-interactive",
 
         function setEnabledMarkerControl(player, control, enabled) {
             var config = player._config;
-            if (enabled)
-                $("#" + config[control]).removeClass("disabled");
-            else $("#" + config[control]).addClass("disabled");
+            var ctrl = $("#" + config[control]);
+            if (enabled) {
+                ctrl.removeClass("disabled");
+                if (control === CONTROL_KEYS.CLEAR) {
+                    ctrl.removeClass("btn-default");
+                    ctrl.addClass("btn-danger");
+                }
+            } else {
+                ctrl.addClass("disabled");
+                ctrl.removeClass(getControlColorClass(player._config, control));
+                ctrl.addClass("btn-default");
+            }
             console.log("Changing the " + control + " controller!!", $("#" + config[control]));
         }
 
-        function switchToActive(control) {
-            if (last_control !== null) {
-                last_control.removeClass("active");
-                last_control = null;
+        function switchToActive(config, control) {
+
+            if (control != last_control) {
+                var last_ctrl = $("#" + last_control);
+                last_ctrl.removeClass(getControlColorClass(config, last_control));
+                last_ctrl.addClass("btn-default");
+                last_ctrl.removeClass("active");
             }
+
             if (control) {
-                last_control = $("#" + control);
-                last_control.addClass("active");
+                var ctrl = $("#" + control);
+                var color_class = getControlColorClass(config, control);
+                if (!ctrl.hasClass("active")) {
+                    ctrl.removeClass("btn-default");
+                    ctrl.addClass(color_class);
+                    last_control = control;
+                    return true;
+                } else {
+                    ctrl.removeClass(color_class);
+                    ctrl.addClass("btn-default");
+                }
             }
+            return false;
         }
 
         function isMaxMarkerNumber(player) {
@@ -148,7 +171,6 @@ define("qtype_omerointeractive/question-player-interactive",
                 },
                 function (event) {
                     me._image_viewer_controller.removeMarker(event.data.marker_id);
-                    switchToActive();
                 }
             );
 
@@ -308,19 +330,21 @@ define("qtype_omerointeractive/question-player-interactive",
                         console.log("Setted the answer prefix", me._answer_input_name);
 
                         $("#" + config[CONTROL_KEYS.ADD]).click(function () {
-                            switchToActive(config[CONTROL_KEYS.ADD]);
-                            me._image_viewer_controller.enableAddMarkers();
+                            if (switchToActive(config, config[CONTROL_KEYS.ADD]))
+                                me._image_viewer_controller.enableAddMarkers();
+                            else me._image_viewer_controller.disableMarkingTool();
                         });
 
                         $("#" + config[CONTROL_KEYS.EDIT]).click(function () {
-                            switchToActive(config[CONTROL_KEYS.EDIT]);
-                            me._image_viewer_controller.enableMoveMarkers();
+                            if (switchToActive(config, config[CONTROL_KEYS.EDIT]))
+                                me._image_viewer_controller.enableMoveMarkers();
+                            else me._image_viewer_controller.disableMarkingTool();
                         });
 
                         $("#" + config[CONTROL_KEYS.CLEAR]).click(function () {
-                            switchToActive();
-                            me._image_viewer_controller.disableMarkingTool();
                             me._image_viewer_controller.removeMarkers();
+                            me._image_viewer_controller.disableMarkingTool();
+                            switchToActive(config);
                         });
 
                         me._remove_markers_container = $("#" + config["marker_removers_container"]);
