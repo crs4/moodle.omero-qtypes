@@ -316,6 +316,8 @@ prototype.eventHandler = function (table) {
                 event: value,
                 focusable: row.focusable
             });
+
+            onRoiShapeVisibilityChanged($(e.target).parents("tr").find(".roi-shape-visibility i")[0], value, row);
         },
 
         'click .remove': function (e, value, row, index) {
