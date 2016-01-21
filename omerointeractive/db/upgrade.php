@@ -92,5 +92,41 @@ function xmldb_qtype_omerointeractive_upgrade($oldversion)
         upgrade_plugin_savepoint(true, 2015112400, 'qtype', 'omerointeractive');
     }
 
+    if ($oldversion < 2016012101) {
+
+        $table_name = "qtype_omeinteractive_options";
+        $transaction = $DB->start_delegated_transaction();
+
+        try {
+
+            if (!$dbman->field_exists($table_name, "focusablerois")) {
+                $DB->execute("ALTER TABLE  mdl_qtype_omeinteractive_options ADD focusablerois LONGTEXT NOT NULL");
+            }
+
+            // Find duplicate rows before they break the 2013092304 step below.
+            $questions = $DB->get_records("qtype_omeinteractive_options");
+            foreach ($questions as $question) {
+                $question->focusablerois = "";
+
+                // try to update the record
+                if (!$DB->update_record("qtype_omeinteractive_options", $question)) {
+                    throw new Exception("Error during question update: " . $question->id);
+                }
+            }
+
+            // Assuming that all updates are OK!!!.
+            $transaction->allow_commit();
+
+        } catch (Exception $e) {
+            // abort the current transaction
+            $transaction->rollback($e);
+            error_log($e->getMessage());
+            return false;
+        }
+
+        // Shortanswer savepoint reached.
+        upgrade_plugin_savepoint(true, 2016012101, 'qtype', 'omerointeractive');
+    }
+
     return true;
 }
