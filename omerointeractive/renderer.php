@@ -153,7 +153,7 @@ class qtype_omerointeractive_multi_renderer extends qtype_multichoice_multi_rend
                     $right_shape_set[] .= '<i roi-shape-id="' . $shape_id . '" class="glyphicon glyphicon-map-marker roi-shape-info"></i> ' .
                         '[' . $shape_id . "]";
                 if (!empty($right_shape_set))
-                    $right[] .= ("{" . implode(' - ', $right_shape_set) . "}");
+                    $right[] .= (implode(' - ', $right_shape_set));
             }
             $counter++;
         }
@@ -289,6 +289,9 @@ abstract class qtype_omerointeractive_base_renderer extends qtype_multichoice_re
             }
 
             foreach (explode(",", $ans->answer) as $shape_id) {
+                // Switch to determine whether to show correct answer or not
+                $isselected = $question->is_choice_selected($response, $shape_id);
+
                 $answer_options[] = $hidden .
                     html_writer::empty_tag('li', $answer_options_attributes) .
                     html_writer::tag('label',
@@ -298,17 +301,18 @@ abstract class qtype_omerointeractive_base_renderer extends qtype_multichoice_re
                                 "roi-shape-id" => $shape_id
                             )
                         )
-                        . " [" . $shape_id . "] " . $question->make_html_inline($question->format_text(
-                            $ans->feedback, $ans->answerformat,
-                            $qa, 'question', 'answer', $ansid)),
+                        . " [" . $shape_id . "] " .
+                        $question->make_html_inline($question->format_text(
+                            $ans->feedback, $ans->answerformat, $qa, 'question', 'answer', $ansid)
+                        ) . ($isselected ?
+                            ('<span class="pull-right">' .$renderer->feedback_image($renderer->is_right($ans)) . '</span>')
+                            : ""),
                         array('for' => $answer_options_attributes['id'])
                     );
 
 
                 $class = 'r' . ($value % 2);
 
-                // Switch to determine whether to show correct answer or not
-                $isselected = $question->is_choice_selected($response, $shape_id);
                 if ($isselected) {
                     $answer_options_attributes['checked'] = 'checked';
                 } else {
@@ -394,14 +398,13 @@ abstract class qtype_omerointeractive_base_renderer extends qtype_multichoice_re
 
         if ($options->correctness) {
             $result .= html_writer::start_tag('div', array('class' => 'question-summary hidden'));
-            $result .= html_writer::tag('div', get_string(
-                (count($answer_options) == 1 ? "answerassociatedroi" : "answerassociatedrois"),
-                "qtype_omerointeractive"), array("class" => "answer-summary-fixed-text"));
+            $result .= html_writer::tag('div',
+                get_string("answerassociatedrois", "qtype_omerointeractive"),
+                array("class" => "answer-summary-fixed-text"));
 
             $result .= html_writer::start_tag('ul', array('class' => 'answer'));
             foreach ($answer_options as $key => $answer_option) {
-                $result .= html_writer::tag('div', $answer_option . ' ' . $feedbackimg[$key],
-                        array('class' => $classes[$key])) . "\n";
+                $result .= html_writer::tag('div', $answer_option, array('class' => $classes[$key])) . "\n";
             }
             $result .= html_writer::end_tag('ul'); // Answer.
             $result .= html_writer::end_tag('div'); // Answer.
