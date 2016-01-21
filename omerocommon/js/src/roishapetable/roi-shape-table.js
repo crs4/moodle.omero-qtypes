@@ -296,9 +296,10 @@ prototype.eventHandler = function (table) {
         'click .roi-shape-focusability': function (e, value, row, index) {
             row.focusable = !row.focusable;
             if (row.focusable)
-                $(e.target).attr("class", "green glyphicon glyphicon-eye-open");
+                $(e.target).attr("class", "green glyphicon glyphicon-record");
             else
-                $(e.target).attr("class", "red glyphicon glyphicon-eye-close");
+                $(e.target).attr("class", "#E9E9E9 glyphicon glyphicon-record");
+
             console.log("FOCUSability changed: " + row.focusable);
             notifyListeners(table, {
                 type: "roiShapeFocusabilityChanged",
@@ -381,7 +382,7 @@ prototype.visibilityFormatter = function (data) {
         '<a class="roi-shape-visibility" href="javascript:void(0)" title="Visibility">',
         (data ?
             '<i class="green glyphicon glyphicon-eye-open"></i>' :
-            '<i class="red glyphicon glyphicon-eye-close"></i>'),
+            '<i class="#E9E9E9 glyphicon glyphicon-eye-close"></i>'),
         '</a> '
     ].join(" ");
 };
@@ -390,8 +391,8 @@ prototype.focusAreaFormatter = function (data) {
     return [
         '<a class="roi-shape-focusability" href="javascript:void(0)" title="Focusability">',
         (data ?
-            '<i class="green glyphicon glyphicon-eye-open"></i>' :
-            '<i class="red glyphicon glyphicon-eye-close"></i>'),
+            '<i class="green glyphicon glyphicon-record"></i>' :
+            '<i class="#E9E9E9 glyphicon glyphicon-record"></i>'),
         '</a> '
     ].join(" ");
 };
