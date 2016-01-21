@@ -29,7 +29,7 @@ define("qtype_omerointeractive/question-player-interactive",
 
         var markers_config = {
             'fill_color': "#ffffff",
-            'fill_alpha': '0.4',
+            'fill_alpha': 0.4,
             'stroke_width': 10
         };
 
