@@ -161,6 +161,7 @@ abstract class qtype_omeromultichoice_base_renderer extends qtype_multichoice_re
     const IMAGE_DEL_MARKER_CTRL = "remove_marker_ctrl_id";
     const IMAGE_CLEAR_MARKER_CTRL = "clear_marker_ctrl_id";
     const MARKER_REMOVERS_CONTAINER = "marker_removers_container";
+    const FOCUS_AREAS_CONTAINER = "focus_areas_container";
 
     private static function to_unique_identifier(question_attempt $qa, $identifier)
     {
@@ -315,6 +316,11 @@ abstract class qtype_omeromultichoice_base_renderer extends qtype_multichoice_re
 
         $result .= '</div>';
 
+        $result .= '<div id="' . self::to_unique_identifier($qa, self::FOCUS_AREAS_CONTAINER) . '" ' .
+            ' class="focus_areas_container">' .
+            '<span class="focus-areas-text">* ' . get_string("focusareas", "qtype_omerointeractive") . '</span> ' . '</div>';
+
+
 
         $result .= html_writer::start_tag('div', array('class' => 'multichoice-options-container'));
         $result .= html_writer::tag('div', $renderer->prompt(), array('class' => 'prompt'));
@@ -346,7 +352,9 @@ abstract class qtype_omeromultichoice_base_renderer extends qtype_multichoice_re
                     "image_viewer_container" =>  self::to_unique_identifier($qa, self::IMAGE_VIEWER_CONTAINER),
                     "image_navigation_locked" => (bool)$question->omeroimagelocked,
                     "question_answer_container" => $question_answer_container,
+                    "focus_areas_container" => self::to_unique_identifier($qa, self::FOCUS_AREAS_CONTAINER),
                     "visible_rois" => explode(",", $question->visiblerois),
+                    "focusable_rois" => explode(",", $question->focusablerois),
                     "answer_input_name" => $answer_input_name
                 )
             )
