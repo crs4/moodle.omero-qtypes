@@ -39,6 +39,13 @@ define("qtype_omerointeractive/question-player-interactive",
             partially_correct: "#F9A125"
         };
 
+        function getControlColorClass(config, control) {
+            if (config[CONTROL_KEYS.ADD] === control || CONTROL_KEYS.ADD === control) return "btn-success";
+            else if (config[CONTROL_KEYS.EDIT] === control || CONTROL_KEYS.EDIT === control) return "btn-warning";
+            else if (config[CONTROL_KEYS.CLEAR] === control || CONTROL_KEYS.CLEAR === control) return "btn-danger";
+            else return "btn-default";
+        }
+
 
         function cid(config, control) {
             return config.answer_input_name.replace(":", "-") + "-" + control;
