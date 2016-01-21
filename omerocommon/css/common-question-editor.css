@@ -123,3 +123,7 @@ body#page-question-type-omerointeractive input[type="text"] {
 body#page-question-type-omerointeractive table td {
     vertical-align: middle;
 }
+
+#roi-shape-inspector-table a{
+    color: lightgrey;
+}
