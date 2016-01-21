@@ -466,7 +466,7 @@ abstract class qtype_omerocommon_edit_form extends qtype_multichoice_edit_form
         $mform = $this->_form;
         if (!empty($CFG->usetags)) {
             $mform->addElement('header', 'tagsheader', get_string('tags'));
-            $mform->addElement('tags', 'tags', get_string('tags'));
+            $mform->addElement('tags', 'tags', get_string('tags'), array("display" => "onlyofficial"));
             $mform->setExpanded('tagsheader');
         }
     }
