@@ -252,10 +252,10 @@ abstract class qtype_omeromultichoice_base_renderer extends qtype_multichoice_re
             }
             $radiobuttons[] = $hidden . html_writer::empty_tag('input', $inputattributes) .
                 html_writer::tag('label',
-                    $renderer->number_in_style($value, $question->answernumbering) .
-                    $question->make_html_inline($question->format_text(
-                        $ans->answer, $ans->answerformat,
-                        $qa, 'question', 'answer', $ansid)),
+                    $question->format_text(
+                        $renderer->number_in_style($value, $question->answernumbering) .
+                        preg_replace('/<p[^>]*>(.*)<\/p[^>]*>/i', '$1', $ans->answer), $ans->answerformat,
+                        $qa, 'question', 'answer', $ansid),
                     array('for' => $inputattributes['id']));
 
             // Param $options->suppresschoicefeedback is a hack specific to the
@@ -328,7 +328,7 @@ abstract class qtype_omeromultichoice_base_renderer extends qtype_multichoice_re
         $result .= html_writer::start_tag('div', array('class' => 'answer'));
         foreach ($radiobuttons as $key => $radio) {
             $result .= html_writer::tag('div', $radio . ' ' . $feedbackimg[$key] . $feedback[$key],
-                    array('class' => $classes[$key])) . "\n";
+                    array('class' => $classes[$key]));
         }
         $result .= html_writer::end_tag('div'); // Answer.
 
