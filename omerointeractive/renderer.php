@@ -338,17 +338,18 @@ abstract class qtype_omerointeractive_base_renderer extends qtype_multichoice_re
 
         // viewer of the question image
         $result .= '<div class="image-viewer-with-controls-container">';
-
         $result .= '<!-- TOOLBAR -->
-                <div class="btn-group interactive-player-toolbar pull-right" data-toggle="buttons">
-                    <a href="#" id="' . self::to_unique_identifier($qa, self::IMAGE_ADD_MARKER_CTRL) . '" class="btn btn-success disabled"  aria-label="Left Align">
+                <div class="btn-group interactive-player-toolbar pull-right" style="margin-left: 5px;" data-toggle="buttons" aria-pressed="false" autocomplete="true">
+                    <a href="#" id="' . self::to_unique_identifier($qa, self::IMAGE_CLEAR_MARKER_CTRL) . '" class="btn btn-default disabled" aria-label="Left Align">
+                        <i class="glyphicon glyphicon-remove"></i> Clear
+                    </a>
+                </div>
+                <div class="btn-group interactive-player-toolbar pull-right" data-toggle="buttons" aria-pressed="false" autocomplete="off">
+                    <a href="#" id="' . self::to_unique_identifier($qa, self::IMAGE_ADD_MARKER_CTRL) . '" class="btn btn-default disabled"  aria-label="Left Align">
                         <i class="glyphicon glyphicon-plus"></i> Add
                     </a>
-                    <a href="#" id="' . self::to_unique_identifier($qa, self::IMAGE_EDIT_MARKER_CTRL) . '" class="btn btn-warning disabled" aria-label="Left Align">
+                    <a href="#" id="' . self::to_unique_identifier($qa, self::IMAGE_EDIT_MARKER_CTRL) . '" class="btn btn-default disabled" aria-label="Left Align">
                         <i class="glyphicon glyphicon-edit"></i> Edit
-                    </a>
-                    <a href="#" id="' . self::to_unique_identifier($qa, self::IMAGE_CLEAR_MARKER_CTRL) . '" class="btn btn-danger disabled" aria-label="Left Align">
-                        <i class="glyphicon glyphicon-remove"></i> Clear
                     </a>
                 </div>';
 
