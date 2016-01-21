@@ -443,6 +443,7 @@ abstract class qtype_omerointeractive_base_renderer extends qtype_multichoice_re
                     "available_shapes" => ($available_shapes),
                     "shape_groups" => $shape_groups,
                     "visible_rois" => explode(",", $question->visiblerois),
+                    "focusable_rois" => explode(",", $question->focusablerois),
                     "correction_mode" => (bool)$options->correctness,
                     "response" => $response,
                     "answers" => $response,
