@@ -608,11 +608,11 @@ define("qtype_omerocommon/question-editor-base",
 
                 prototype.onRoiShapePropertyChanged = function (event, property, visible) {
                     if (event.shape[property]) {
-                        this._image_viewer_controller.showRoiShapes([event.shape.id]);
+                        if (property === "visible") this._image_viewer_controller.showRoiShapes([event.shape.id]);
                         if (visible.indexOf(event.shape.id) === -1)
                             visible.push(event.shape.id);
                     } else {
-                        this._image_viewer_controller.hideRoiShapes([event.shape.id]);
+                        if (property === "visible") this._image_viewer_controller.hideRoiShapes([event.shape.id]);
                         var index = visible.indexOf(event.shape.id);
                         if (index > -1)
                             visible.splice(index, 1);
