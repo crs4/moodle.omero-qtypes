@@ -126,7 +126,7 @@ abstract class qtype_omerocommon_edit_form extends qtype_multichoice_edit_form
         $mform->addElement('select', 'question_language',
             get_string('language', 'qtype_omerocommon'), $languages,
             array("class" => "question-language-selector"));
-        $mform->setDefault('lang', current_language());
+        $mform->setDefault('question_language', current_language());
 
         // question name
         $mform->addElement('text', 'name', get_string('questionname', 'question'),
