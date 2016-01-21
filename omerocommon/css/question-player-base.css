@@ -79,7 +79,11 @@ div[id*=goto_marker_ctrl_id]{
 }
 
 div.multichoice-options-container{
-    margin: 40px 10px 40px;
+    margin: 20px 10px 20px;
+}
+
+div.multichoice-options-container .prompt{
+    margin-bottom: 20px;
 }
 
 div.outcome{
