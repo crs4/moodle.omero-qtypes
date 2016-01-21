@@ -253,6 +253,26 @@ prototype.deselectAll = function () {
  */
 
 prototype.eventHandler = function (table) {
+
+    // Reusable function to handle visibility change
+    function onRoiShapeVisibilityChanged(target, value, row) {
+        // if focus is active then visibility cannot be changed
+        if(row.visible && row.focusable) return;
+
+        row.visible = !row.visible;
+        if (row.visible)
+            $(target).attr("class", "green glyphicon glyphicon-eye-open");
+        else
+            $(target).attr("class", "#E9E9E9 glyphicon glyphicon-eye-close");
+
+        notifyListeners(table, {
+            type: "roiShapeVisibilityChanged",
+            shape: row,
+            event: value,
+            visible: row.visible
+        });
+    }
+
     return {
         'click .like': function (e, value, row, index) {
             if ($(e.target).attr("class").indexOf("glyphicon-plus-sign") !== -1)
@@ -271,18 +291,7 @@ prototype.eventHandler = function (table) {
          * @param index
          */
         'click .roi-shape-visibility': function (e, value, row, index) {
-            row.visible = !row.visible;
-            if (row.visible)
-                $(e.target).attr("class", "green glyphicon glyphicon-eye-open");
-            else
-                $(e.target).attr("class", "red glyphicon glyphicon-eye-close");
-
-            notifyListeners(table, {
-                type: "roiShapeVisibilityChanged",
-                shape: row,
-                event: value,
-                visible: row.visible
-            });
+            onRoiShapeVisibilityChanged(e.target, value, row);
         },
 
         /**
