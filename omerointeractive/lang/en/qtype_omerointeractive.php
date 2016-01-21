@@ -77,10 +77,10 @@ $string['roi_height'] = 'Height';
 
 $string['language'] = "Language";
 
-$string['answerassociatedroi'] = 'The sets of ROIs <em>(Region Of Interest)</em> of this question is: ';
-$string['answerassociatedrois'] = 'The sets of ROIs <em>(Region Of Interest)</em> of this question are: ';
-$string['correctansweris'] = 'The only correct answer is: ';
-$string['correctanswerare'] = 'The correct answers are only: ';
+$string['answerassociatedroi'] = 'The set of ROIs <em>(Region Of Interest)</em> of this question is: ';
+$string['answerassociatedrois'] = 'The set of ROIs <em>(Region Of Interest)</em> of this question are: ';
+$string['correctansweris'] = 'To correctly answer you have to select one of the following ROIs: ';
+$string['correctanswerare'] = 'To correctly and completely answer you have to select the following ROIs: ';
 
 $string['yourmarkers'] = 'Your markers: ';
 

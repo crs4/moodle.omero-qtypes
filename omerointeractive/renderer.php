@@ -159,7 +159,7 @@ class qtype_omerointeractive_multi_renderer extends qtype_multichoice_multi_rend
         }
 
         if (!empty($right)) {
-            return get_string('correctansweris', 'qtype_omerointeractive') .
+            return get_string('correctanswerare', 'qtype_omerointeractive') .
             implode(' + ', $right);
         }
         return '';
