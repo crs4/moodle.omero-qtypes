@@ -247,7 +247,8 @@ define("qtype_omerocommon/image-viewer",
 
                 prototype.removeMarkers = function () {
                     var marker_ids = this.getMarkerIds();
-                    for (var i in marker_ids) {
+                    // TODO: check whether the annotation_controller remove is correct or not
+                    for (var i = marker_ids.length - 1; i >= 0; i--) {
                         this.removeMarker(marker_ids[i]);
                     }
                 };
