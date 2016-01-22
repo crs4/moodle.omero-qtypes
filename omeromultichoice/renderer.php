@@ -265,9 +265,13 @@ abstract class qtype_omeromultichoice_base_renderer extends qtype_multichoice_re
                 $isselected && trim($ans->feedback)
             ) {
                 $feedback[] = html_writer::tag('div',
-                    $question->make_html_inline($question->format_text(
+                    $question->format_text(
                         $ans->feedback, $ans->feedbackformat,
-                        $qa, 'question', 'answerfeedback', $ansid)),
+                        $qa, 'question', 'answerfeedback', $ansid) .
+                    ($isselected ?
+                        ('<span class="pull-right">' . $renderer->feedback_image($renderer->is_right($ans)) . '</span>')
+                        : "")
+                    ,
                     array('class' => 'specificfeedback'));
             } else {
                 $feedback[] = '';
@@ -321,14 +325,13 @@ abstract class qtype_omeromultichoice_base_renderer extends qtype_multichoice_re
             '<span class="focus-areas-text">* ' . get_string("focusareas", "qtype_omerointeractive") . '</span> ' . '</div>';
 
 
-
         $result .= html_writer::start_tag('div', array('class' => 'multichoice-options-container'));
         $result .= html_writer::tag('div', $renderer->prompt(), array('class' => 'prompt'));
 
         $result .= html_writer::start_tag('div', array('class' => 'answer'));
         foreach ($radiobuttons as $key => $radio) {
-            $result .= html_writer::tag('div', $radio . ' ' . $feedbackimg[$key] . $feedback[$key],
-                    array('class' => $classes[$key]));
+            $result .= html_writer::tag('div', $radio . ' ' . $feedbackimg[$key],
+                array('class' => $classes[$key]));
         }
         $result .= html_writer::end_tag('div'); // Answer.
 
@@ -349,7 +352,7 @@ abstract class qtype_omeromultichoice_base_renderer extends qtype_multichoice_re
                     "image_frame_id" => $omero_frame_id,
                     "image_annotations_canvas_id" => self::to_unique_identifier($qa, "annotations_canvas"),
                     "image_server" => $OMERO_SERVER,
-                    "image_viewer_container" =>  self::to_unique_identifier($qa, self::IMAGE_VIEWER_CONTAINER),
+                    "image_viewer_container" => self::to_unique_identifier($qa, self::IMAGE_VIEWER_CONTAINER),
                     "image_navigation_locked" => (bool)$question->omeroimagelocked,
                     "question_answer_container" => $question_answer_container,
                     "focus_areas_container" => self::to_unique_identifier($qa, self::FOCUS_AREAS_CONTAINER),
