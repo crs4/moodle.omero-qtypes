@@ -543,6 +543,7 @@ define("qtype_omerocommon/question-editor-base",
                         this._roi_shape_table.initTable(false, this._show_roishape_column_group);
                         this._roi_shape_table.addEventListener(this);
                     }
+                    this._roi_shape_table.removeAll();
                     this._roi_shape_table.appendRoiShapeList(roi_list);
                     this._image_viewer_controller.showRoiShapes(this._visible_roi_list);
 
