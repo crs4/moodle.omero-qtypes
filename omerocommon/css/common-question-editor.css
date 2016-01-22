@@ -127,3 +127,11 @@ body#page-question-type-omerointeractive table td {
 #roi-shape-inspector-table a{
     color: lightgrey;
 }
+
+body#page-question-type-omerointeractive img.iconsmall{
+    padding: 0;
+}
+
+body#page-question-type-omeromultichoice img.iconsmall{
+    padding: 0;
+}
