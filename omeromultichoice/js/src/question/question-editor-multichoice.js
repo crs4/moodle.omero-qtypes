@@ -67,27 +67,6 @@ define("qtype_omeromultichoice/question-editor-multichoice",
                 prototype.buildAnswer = function (answer_number, fraction_options) {
                     return new M.qtypes.omeromultichoice.AnswerPlaintext(this._answers_section_id, answer_number, fraction_options);
                 };
-
-
-                prototype._build_answer_controls = function () {
-                    try {
-                        this._toolbar_container = $('<div id="answers_toolbar" class="panel"></div>');
-                        this._toolbar_container_body = $('<div class="panel-body"></div>');
-                        this._add_answer_btn = $('<button id="add-answer-btn" type="button" class="btn btn-info">Add answer</button>');
-
-                        $("#" + this._answers_section_id).prepend(this._toolbar_container);
-                        this._toolbar_container.prepend(this._toolbar_container_body);
-                        this._toolbar_container_body.prepend(this._add_answer_btn);
-
-                        var me = this;
-                        this._add_answer_btn.on("click", function () {
-                            me.addAnswer();
-                        });
-
-                    } catch (e) {
-                        console.error("Error while creating the toolbar", e);
-                    }
-                };
             },
 
 
@@ -99,33 +78,6 @@ define("qtype_omeromultichoice/question-editor-multichoice",
                         var instance = M.qtypes.omeromultichoice.QuestionEditorMultichoice.getInstance();
                         instance.initialize(answers_section_id, fraction_options);
                         window.qem = instance;
-
-                        //var myFunc = function(){
-                        //
-                        //    console.log("Checking ....", jQuery().bootstrapToggle);
-                        //    if(jQuery().bootstrapToggle){
-                        //        console.log("Found");
-                        //
-                        //        clearInterval(myFuc);
-                        //    }
-                        //};
-
-                        //setInterval(myFunc, 1000);
-
-                        //$('#omero-image-view-lock').bootstrapToggle();
-
-                        console.log($("#omero-image-view-lock"), document.getElementById("omero-image-view-lock"));
-                        //console.log( $("#omero-image-view-lock").bootstrapToggle);
-                        //alert("Check");
-
-
-                        $(function () {
-                            //$('#omero-image-view-lock').bootstrapToggle();
-                        });
-                        //$("#omero-image-view-lock").bootstrapToggle('on');
-                        document.getElementById("omero-image-view-lock").addEventListener("change", function () {
-                            alert("Changed!!!");
-                        });
                     }
                 );
             }

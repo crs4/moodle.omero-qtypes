@@ -35,6 +35,7 @@ So the student can enter a numeric or short text answer or choose an answer or a
  using a select box, check boxes or radio boxes.';
 
 
+$string['add_answers'] = "Add answer groups";
 $string['answer_groups'] = "Answer Groups";
 
 
@@ -76,9 +77,11 @@ $string['roi_height'] = 'Height';
 
 $string['language'] = "Language";
 
-$string['answerassociatedroi'] = 'The sets of ROIs <em>(Region Of Interest)</em> of this question is: ';
-$string['answerassociatedrois'] = 'The sets of ROIs <em>(Region Of Interest)</em> of this question are: ';
-$string['correctansweris'] = 'The only correct answer is: ';
-$string['correctanswerare'] = 'The correct answers are only: ';
+$string['answerassociatedrois'] = 'The set of ROIs <em>(Regions Of Interest)</em> of this question is: ';
+
+$string['correctansweris'] = 'To correctly answer you have to select one of the following ROIs: ';
+$string['correctanswerare'] = 'To correctly and completely answer you have to select the following ROIs: ';
 
 $string['yourmarkers'] = 'Your markers: ';
+
+$string['focusareas'] = 'Focus Areas: ';

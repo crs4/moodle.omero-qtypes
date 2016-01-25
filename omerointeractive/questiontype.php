@@ -114,6 +114,7 @@ class qtype_omerointeractive extends qtype_omerocommon
             $options->partiallycorrectfeedback = '';
             $options->incorrectfeedback = '';
             $options->visiblerois = '';
+            $options->focusablerois = '';
             $options->omeroimagelocked = 0;
             $options->omeroimageproperties = "";
             $options->id = $DB->insert_record($this->get_table_name(), $options);
@@ -130,6 +131,7 @@ class qtype_omerointeractive extends qtype_omerocommon
         $options->answernumbering = $question->answernumbering;
         $options->shuffleanswers = $question->shuffleanswers;
         $options->visiblerois = $question->visiblerois;
+        $options->focusablerois = $question->focusablerois;
         $options = $this->save_combined_feedback_helper($options, $question, $context, true);
 
         $options->correctfeedback = qtype_omerocommon::serialize_to_multilang_form($question->correctfeedback_locale_map);

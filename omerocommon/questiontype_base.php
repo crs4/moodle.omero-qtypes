@@ -76,7 +76,7 @@ abstract class qtype_omerocommon extends qtype_multichoice
     public function extra_question_fields()
     {
         return array($this->get_table_name(),
-            "omeroimageurl", "visiblerois", "omeroimagelocked", "omeroimageproperties"
+            "omeroimageurl", "visiblerois", "focusablerois", "omeroimagelocked", "omeroimageproperties"
         );
     }
 

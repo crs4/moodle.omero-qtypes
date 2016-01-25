@@ -1,6 +1,7 @@
 .image-viewer-with-controls-container {
-    width: 800px;
-    height: 500px;
+    width: 650px;
+    background: transparent;
+    border: 1px solid transparent;
 }
 
 .interactive-player-toolbar {
@@ -16,31 +17,35 @@
 }
 
 .image_position_button {
-    padding: 0;
-    margin: 530px 0 0;
-    /*width: 100px;*/
-    height: auto;
+    background: transparent;
+    text-align: right;
 }
 
-.marker_removers_container{
-    margin-bottom: 40px;
+div[id*=marker_removers_container]{
+    display: block;
+    padding-bottom: 40px;
+}
+
+span.yourmarkers-text{
+    font-weight: bold;
+}
+
+span.focus-areas-text{
+    font-weight: bold;
 }
 
 .remove_marker_button_group {
     padding: 0;
-    margin: 18px 0 0;
-    /*width: 100px;*/
     height: auto;
 }
 
 .remove_marker_button_group div {
     margin: 0 5px;
-    /*width: 60px;*/
-    /*color: darkred;*/
 }
 
 div[id*=graphics_container] {
     margin-top: 30px;
+    height: 500px;
 }
 
 div.qtext {
@@ -48,7 +53,7 @@ div.qtext {
 }
 
 div.question-summary {
-    margin: 120px 0 40px;
+    margin: 30px 0 40px;
     min-height: 80px;
 }
 
@@ -56,19 +61,34 @@ div.answer-summary-fixed-text{
     margin: 10px 0;
 }
 
-span.yourmarkers-text{
-    float: left;
-    margin-right: 5px;
-}
-
 div[id*=remove_marker_ctrl]{
     display: inline-block;
 }
 
+.focus_areas_container {
+    margin: 0px 0 0;
+    padding: 20px 0 10px;
+    display: block;
+    position: relative;
+}
+
+div[id*=goto_marker_ctrl_id]{
+    display: inline-block;
+    margin-left: 10px;
+}
+
 div.multichoice-options-container{
-    margin: 70px 10px 40px;
+    margin: 20px 10px 40px;
+}
+
+div.multichoice-options-container .prompt{
+    margin-bottom: 10px;
 }
 
 div.outcome{
     margin-top: 40px;
+}
+
+.content .formulation{
+    padding: 8px 14px 8px 14px;
 }

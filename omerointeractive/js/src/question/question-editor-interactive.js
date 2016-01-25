@@ -111,10 +111,7 @@ define("qtype_omerointeractive/question-editor-interactive",
                     this._add_to_group_element = $("#" + add_to_group_element_id);
                     this._add_to_group_list_element_id = add_to_group_list_element_id;
                     this._add_to_group_list_element = $("#" + add_to_group_list_element_id);
-
                     this._add_to_group_list_element.dropdown();
-
-
                 };
 
                 /**
@@ -126,28 +123,6 @@ define("qtype_omerointeractive/question-editor-interactive",
                 prototype.buildAnswer = function (answer_number, fraction_options, answer_index) {
                     return new M.qtypes.omerointeractive.AnswerGroup(this._answers_section_id, answer_number, fraction_options, answer_index);
                 };
-
-
-                prototype._build_answer_controls = function () {
-                    try {
-                        this._toolbar_container = $('<div id="answers_toolbar" class="panel"></div>');
-                        this._toolbar_container_body = $('<div class="panel-body"></div>');
-                        this._add_answer_btn = $('<button id="add-answer-btn" type="button" class="btn btn-info">Add ROI Group</button>');
-
-                        $("#" + this._answers_section_id).prepend(this._toolbar_container);
-                        this._toolbar_container.prepend(this._toolbar_container_body);
-                        this._toolbar_container_body.prepend(this._add_answer_btn);
-
-                        var me = this;
-                        this._add_answer_btn.on("click", function () {
-                            me.addAnswer();
-                        });
-
-                    } catch (e) {
-                        console.error("Error while creating the toolbar", e);
-                    }
-                };
-
 
                 prototype.onAddAnswer = function (answer) {
                     console.log("Added answer", answer);
@@ -192,16 +167,6 @@ define("qtype_omerointeractive/question-editor-interactive",
                             add_to_group_element_id, add_to_group_list_element_id
                         );
                         window.qei = instance;
-
-                        console.log($("#omero-image-view-lock"), document.getElementById("omero-image-view-lock"));
-
-                        //$(function () {
-                        //    //$('#omero-image-view-lock').bootstrapToggle();
-                        //});
-                        //$("#omero-image-view-lock").bootstrapToggle('on');
-                        //document.getElementById("omero-image-view-lock").addEventListener("change", function () {
-                        //    alert("Changed!!!");
-                        //});
                     }
                 );
             }

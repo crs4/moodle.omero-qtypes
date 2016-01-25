@@ -139,7 +139,7 @@ define("qtype_omerocommon/question-editor-base",
                             if (counter) {
                                 counter = parseInt(counter);
                                 for (var i = 0; i < counter; i++) {
-                                    me.addAnswer(i, true);
+                                    me.addAnswer(true, i);
                                 }
                             }
                         }
@@ -153,7 +153,11 @@ define("qtype_omerocommon/question-editor-base",
                             me._image_locked_element.val($(this).prop('checked') ? 1 : 0);
                         });
 
-                        me.initVisibleRoiList();
+                        me._visible_roi_list = [];
+                        me.initElementList("visiblerois", me._visible_roi_list);
+
+                        me._focusable_roi_list = [];
+                        me.initElementList("focusablerois", me._focusable_roi_list);
 
                         $('html, body').animate({
                             scrollTop: $("#" + document.forms[0].getAttribute("id")).offset().top - 200
@@ -174,14 +178,13 @@ define("qtype_omerocommon/question-editor-base",
                     var frame_id = "omero-image-viewer";
                     var visible_roi_list = [];
 
-
                     // register the frame when loaded
                     document.addEventListener("frameLoaded", function (e) {
                         me.onViewerFrameLoaded(e.detail.frame_id, visible_roi_list, e.detail);
                     }, true);
 
-
-                    document.forms[0].onsubmit = function () {
+                    // procedure for pre-processing and validating data to submit
+                    var submit_function = function (e) {
                         try {
                             me.saveAll();
                             if (!me.validate()) return false;
@@ -191,6 +194,10 @@ define("qtype_omerocommon/question-editor-base",
                             return false;
                         }
                     };
+
+                    // attach the the pre-submit procedure
+                    $("input[name=updatebutton]").on("click", submit_function);
+                    $("input[name=submitbutton]").on("click", submit_function);
                 };
 
 
@@ -243,6 +250,20 @@ define("qtype_omerocommon/question-editor-base",
                         }
                     }
 
+                    try {
+                        for (var i in this._answers) {
+                            var answer = this._answers[i];
+                            if (answer && answer._roi_id_list == 0) {
+                                this._showDialogMessage("Every answer group must have at least one ROI!!!");
+                                result = false;
+                                break;
+                            }
+                        }
+                    } catch (e) {
+                        console.error(e);
+                        result = false;
+                    }
+
                     return result;
                 };
 
@@ -264,6 +285,26 @@ define("qtype_omerocommon/question-editor-base",
 
 
                 prototype._build_answer_controls = function () {
+                    var me = this;
+                    try {
+                        $("#add_answer_button li").click(
+                            function (e) {
+                                var no_answers = $(e.target).attr("value");
+                                console.log("Click on ADD Answer no.", no_answers);
+                                window.last = e.target;
+                                if (!no_answers)
+                                    console.warn("The number of answer to add seems to be undefined!!!");
+                                else {
+                                    no_answers = parseInt(no_answers);
+                                    for (var i = 1; i <= no_answers; i++) {
+                                        me.addAnswer(i !== 1);
+                                    }
+                                }
+                            }
+                        );
+                    } catch (e) {
+                        console.error("Error while creating the toolbar", e);
+                    }
                 };
 
                 prototype.getSelectedROIIds = function () {
@@ -356,7 +397,7 @@ define("qtype_omerocommon/question-editor-base",
                     console.error("You need to implement this method!!!");
                 };
 
-                prototype.addAnswer = function (answer_index, disable_animiation) {
+                prototype.addAnswer = function (disable_animiation, answer_index) {
                     var me = this;
                     var answer_uuid = M.qtypes.omerocommon.MoodleFormUtils.generateGuid();
                     var answer = this.buildAnswer(answer_uuid, this._fraction_options);
@@ -493,7 +534,7 @@ define("qtype_omerocommon/question-editor-base",
                 prototype.onImageModelRoiLoaded = function (e) {
 
                     var roi_list = M.qtypes.omerocommon.RoiShapeModel.toRoiShapeModel(e.detail,
-                        this._visible_roi_list);
+                        this._visible_roi_list, this._focusable_roi_list);
                     console.log("Loaded ROI Shapes Models", roi_list);
 
                     if (!this._roi_shape_table) {
@@ -502,6 +543,7 @@ define("qtype_omerocommon/question-editor-base",
                         this._roi_shape_table.initTable(false, this._show_roishape_column_group);
                         this._roi_shape_table.addEventListener(this);
                     }
+                    this._roi_shape_table.removeAll();
                     this._roi_shape_table.appendRoiShapeList(roi_list);
                     this._image_viewer_controller.showRoiShapes(this._visible_roi_list);
 
@@ -536,40 +578,48 @@ define("qtype_omerocommon/question-editor-base",
                 };
 
 
-                prototype.initVisibleRoiList = function () {
+                prototype.initElementList = function (list_name, list) {
                     var me = this;
-                    var roi_list = null;
-                    me._visible_roi_list = [];
-                    var visible_roi_list = $("[name=visiblerois]").val();
-                    if (visible_roi_list && visible_roi_list != "none") {
-                        roi_list = visible_roi_list.split(",");
-                        for (var i in roi_list) {
-                            me._visible_roi_list[i] = parseInt(roi_list[i]);
+                    var input_list = $("[name=" + list_name + "]").val();
+                    if (input_list && input_list != "none") {
+                        var temp_list = input_list.split(",");
+                        for (var i in temp_list) {
+                            list[i] = parseInt(temp_list[i]);
                         }
                     }
 
                     document.forms[0].addEventListener("submit", function () {
-                        $("[name=visiblerois]").val(me._visible_roi_list.join(","));
+                        $("[name=" + list_name + "]").val(list.join(","));
                     });
 
-                    console.log("Initialized Visible ROI list", me._visible_roi_list);
+                    console.log("Initialized list", list);
                 };
+
 
                 prototype.onRoiShapeVisibilityChanged = function (event) {
                     console.log(event);
+                    this.onRoiShapePropertyChanged(event, "visible", this._visible_roi_list);
+                };
 
-                    var visible = this._visible_roi_list;
-                    if (event.shape.visible) {
-                        this._image_viewer_controller.showRoiShapes([event.shape.id]);
+
+                prototype.onRoiShapeFocusabilityChanged = function (event) {
+                    console.log(event);
+                    this.onRoiShapePropertyChanged(event, "focusable", this._focusable_roi_list);
+                };
+
+                prototype.onRoiShapePropertyChanged = function (event, property, visible) {
+                    if (event.shape[property]) {
+                        if (property === "visible") this._image_viewer_controller.showRoiShapes([event.shape.id]);
                         if (visible.indexOf(event.shape.id) === -1)
                             visible.push(event.shape.id);
                     } else {
-                        this._image_viewer_controller.hideRoiShapes([event.shape.id]);
+                        if (property === "visible") this._image_viewer_controller.hideRoiShapes([event.shape.id]);
                         var index = visible.indexOf(event.shape.id);
                         if (index > -1)
                             visible.splice(index, 1);
                     }
                 };
+
 
                 prototype.onRoiShapeFocus = function (event) {
                     this._image_viewer_controller.setFocusOnRoiShape.call(

@@ -126,7 +126,7 @@ abstract class qtype_omerocommon_edit_form extends qtype_multichoice_edit_form
         $mform->addElement('select', 'question_language',
             get_string('language', 'qtype_omerocommon'), $languages,
             array("class" => "question-language-selector"));
-        $mform->setDefault('lang', current_language());
+        $mform->setDefault('question_language', current_language());
 
         // question name
         $mform->addElement('text', 'name', get_string('questionname', 'question'),
@@ -312,6 +312,20 @@ abstract class qtype_omerocommon_edit_form extends qtype_multichoice_edit_form
     }
 
     /**
+     * @return mixed
+     */
+    protected function define_answer_section_commons_top()
+    {
+    }
+
+    /**
+     * @return mixed
+     */
+    protected function define_answer_section_commons_bottom()
+    {
+    }
+
+    /**
      * Add a set of form fields, obtained from get_per_answer_fields, to the form,
      * one for each existing answer, with some blanks for some new ones.
      * @param object $mform the form being built.
@@ -328,6 +342,8 @@ abstract class qtype_omerocommon_edit_form extends qtype_multichoice_edit_form
         $mform->addElement('header', $header_info[0], $header_info[1], '');
         $mform->setExpanded($header_info[0], 1);
 
+        $this->define_answer_section_commons_top();
+
         $answersoption = '';
         $repeatedoptions = array();
         $repeated = $this->get_per_answer_fields($mform, $label, $gradeoptions,
@@ -342,6 +358,8 @@ abstract class qtype_omerocommon_edit_form extends qtype_multichoice_edit_form
         $this->repeat_elements($repeated, $repeatsatstart, $repeatedoptions,
             'noanswers', 'addanswers', $addoptions,
             $this->get_more_choices_string(), false);
+
+        $this->define_answer_section_commons_bottom();
     }
 
 
@@ -447,8 +465,10 @@ abstract class qtype_omerocommon_edit_form extends qtype_multichoice_edit_form
         global $CFG;
         $mform = $this->_form;
         if (!empty($CFG->usetags)) {
-            $mform->addElement('header', 'tagsheader', get_string('tags'));
-            $mform->addElement('tags', 'tags', get_string('tags'));
+            $mform->addElement('header', 'tagsheader', get_string('questionclassifiers', "qtype_omerocommon"));
+            $mform->addElement('omeroquestiontags', 'tags',
+                "", get_string('selectquestionclassifiers', "qtype_omerocommon"),
+                get_string('editquestionclassifiers', "qtype_omerocommon"), array("display" => "onlyofficial"));
             $mform->setExpanded('tagsheader');
         }
     }
@@ -556,6 +576,9 @@ abstract class qtype_omerocommon_edit_form extends qtype_multichoice_edit_form
 
         $mform->addElement('hidden', 'visiblerois', 'none');
         $mform->setType("visiblerois", PARAM_RAW);
+
+        $mform->addElement('hidden', 'focusablerois', 'none');
+        $mform->setType("focusablerois", PARAM_RAW);
 
         $mform->addElement('hidden', 'makecopy');
         $mform->setType('makecopy', PARAM_INT);

@@ -153,13 +153,13 @@ class qtype_omerointeractive_multi_renderer extends qtype_multichoice_multi_rend
                     $right_shape_set[] .= '<i roi-shape-id="' . $shape_id . '" class="glyphicon glyphicon-map-marker roi-shape-info"></i> ' .
                         '[' . $shape_id . "]";
                 if (!empty($right_shape_set))
-                    $right[] .= ("{" . implode(' - ', $right_shape_set) . "}");
+                    $right[] .= (implode(' - ', $right_shape_set));
             }
             $counter++;
         }
 
         if (!empty($right)) {
-            return get_string('correctansweris', 'qtype_omerointeractive') .
+            return get_string('correctanswerare', 'qtype_omerointeractive') .
             implode(' + ', $right);
         }
         return '';
@@ -181,6 +181,7 @@ abstract class qtype_omerointeractive_base_renderer extends qtype_multichoice_re
     const IMAGE_DEL_MARKER_CTRL = "remove_marker_ctrl_id";
     const IMAGE_CLEAR_MARKER_CTRL = "clear_marker_ctrl_id";
     const MARKER_REMOVERS_CONTAINER = "marker_removers_container";
+    const FOCUS_AREAS_CONTAINER = "focus_areas_container";
 
 
     public static function configure_requirements(question_attempt $qa)
@@ -190,6 +191,12 @@ abstract class qtype_omerointeractive_base_renderer extends qtype_multichoice_re
         init_js_modules("omerointeractive");
         init_js_imageviewer(get_config('omero', 'omero_restendpoint'));
         $PAGE->requires->css("/question/type/omerocommon/css/question-player-base.css");
+    }
+
+
+    private static function to_unique_identifier(question_attempt $qa, $identifier)
+    {
+        return $identifier . "-" . $qa->get_database_id();
     }
 
 
@@ -209,9 +216,9 @@ abstract class qtype_omerointeractive_base_renderer extends qtype_multichoice_re
         $answer_input_name = $qa->get_qt_field_name('answer');
 
         // set the ID of the OmeroImageViewer
-        $omero_frame_id = "omero-image-viewer-" . str_replace(".", "-", uniqid('', true));
-
-        $question_answer_container = "omero-interactive-question-container-" . str_replace(".", "-", uniqid('', true));
+        $omero_frame_id = self::to_unique_identifier($qa, "omero-image-viewer");
+        // ID of the question answer container
+        $question_answer_container = self::to_unique_identifier($qa, "omero-interactive-question-container");
 
         // the OMERO image URL
         $omero_image_url = $question->omeroimageurl;
@@ -282,6 +289,9 @@ abstract class qtype_omerointeractive_base_renderer extends qtype_multichoice_re
             }
 
             foreach (explode(",", $ans->answer) as $shape_id) {
+                // Switch to determine whether to show correct answer or not
+                $isselected = $question->is_choice_selected($response, $shape_id);
+
                 $answer_options[] = $hidden .
                     html_writer::empty_tag('li', $answer_options_attributes) .
                     html_writer::tag('label',
@@ -291,19 +301,18 @@ abstract class qtype_omerointeractive_base_renderer extends qtype_multichoice_re
                                 "roi-shape-id" => $shape_id
                             )
                         )
-                        . " [" . $shape_id . "] " . $question->make_html_inline($question->format_text(
-                            $ans->feedback, $ans->answerformat,
-                            $qa, 'question', 'answer', $ansid)),
+                        . " [" . $shape_id . "] " .
+                        $question->make_html_inline($question->format_text(
+                            $ans->feedback, $ans->answerformat, $qa, 'question', 'answer', $ansid)
+                        ) . ($isselected ?
+                            ('<span class="pull-right">' .$renderer->feedback_image($renderer->is_right($ans)) . '</span>')
+                            : ""),
                         array('for' => $answer_options_attributes['id'])
                     );
 
 
                 $class = 'r' . ($value % 2);
 
-                // Switch to determine whether to show correct answer or not
-                //foreach (explode(",", $ans->answer) as $shape_id) {
-
-                $isselected = $question->is_choice_selected($response, $shape_id);
                 if ($isselected) {
                     $answer_options_attributes['checked'] = 'checked';
                 } else {
@@ -332,40 +341,47 @@ abstract class qtype_omerointeractive_base_renderer extends qtype_multichoice_re
         $result .= html_writer::tag('div', $question->format_questiontext($qa), array('class' => 'qtext'));
 
         // viewer of the question image
-        $result .= '<div class="panel image-viewer-with-controls-container">';
-
+        $result .= '<div class="image-viewer-with-controls-container">';
         $result .= '<!-- TOOLBAR -->
-                <div class="btn-group interactive-player-toolbar pull-right" data-toggle="buttons">
-                    <a href="#" id="' . self::IMAGE_ADD_MARKER_CTRL . '" class="btn btn-success disabled"  aria-label="Left Align">
+                <div class="btn-group interactive-player-toolbar pull-right" style="margin-left: 5px;" data-toggle="buttons" aria-pressed="false" autocomplete="true">
+                    <a href="#" id="' . self::to_unique_identifier($qa, self::IMAGE_CLEAR_MARKER_CTRL) . '" class="btn btn-default disabled" aria-label="Left Align">
+                        <i class="glyphicon glyphicon-remove"></i> Clear
+                    </a>
+                </div>
+                <div class="btn-group interactive-player-toolbar pull-right" data-toggle="buttons" aria-pressed="false" autocomplete="off">
+                    <a href="#" id="' . self::to_unique_identifier($qa, self::IMAGE_ADD_MARKER_CTRL) . '" class="btn btn-default disabled"  aria-label="Left Align">
                         <i class="glyphicon glyphicon-plus"></i> Add
                     </a>
-                    <a href="#" id="' . self::IMAGE_EDIT_MARKER_CTRL . '" class="btn btn-warning disabled" aria-label="Left Align">
+                    <a href="#" id="' . self::to_unique_identifier($qa, self::IMAGE_EDIT_MARKER_CTRL) . '" class="btn btn-default disabled" aria-label="Left Align">
                         <i class="glyphicon glyphicon-edit"></i> Edit
-                    </a>
-                    <a href="#" id="' . self::IMAGE_CLEAR_MARKER_CTRL . '" class="btn btn-danger disabled" aria-label="Left Align">
-                        <i class="glyphicon glyphicon-remove"></i> Clear
                     </a>
                 </div>';
 
-        $result .= '<div id="graphics_container" class="image-viewer-container" style="position: relative;" >
-            <div id="' . self::IMAGE_VIEWER_CONTAINER . '" style="position: absolute; width: 100%; height: 500px; margin: auto;"></div>
-            <canvas id="annotations_canvas" style="position: absolute; width: 100%; height: 500px; margin: auto;"></canvas>
+        $result .= '<div id="' . self::to_unique_identifier($qa, "graphics_container") . '" class="image-viewer-container" style="position: relative;" >
+            <div id="' . self::to_unique_identifier($qa, self::IMAGE_VIEWER_CONTAINER) . '" style="position: absolute; width: 100%; height: 500px; margin: auto;"></div>
+            <canvas id="' . self::to_unique_identifier($qa, 'annotations_canvas') . '" style="position: absolute; width: 100%; height: 500px; margin: auto;"></canvas>
         </div>';
 
 
         $image_properties = null;
-        if ($question->omeroimageproperties) {
-            $image_properties = json_decode($question->omeroimageproperties);
-            $result .= '<div class="panel image_position_button">' .
-                '<span class="pull-right sm">' .
-                '(x,y): ' . $image_properties->center->x . ", " . $image_properties->center->y .
-                '<i class="restore-image-center-btn pull-right glyphicon glyphicon-screenshot" style="margin-left: 10px;">' .
-                '</i></span></div>';
-        }
+        $image_properties = json_decode($question->omeroimageproperties);
+        $result .= '<div class="image_position_button">' .
+            '<span class="sm">' .
+            (($question->omeroimageproperties) ?
+                '<b>(x,y):</b> ' . $image_properties->center->x . ", " . $image_properties->center->y .
+                '<i class="restore-image-center-btn glyphicon glyphicon-screenshot" style="margin-left: 10px;"></i>' :
+                ""
+            ) .
+            '</span></div>';
 
-        $result .= '<div id="' . self::MARKER_REMOVERS_CONTAINER . '" ' .
-            ' class="panel remove_marker_button_group">' .
-            '<span class="yourmarkers-text">' . get_string("yourmarkers", "qtype_omerointeractive") . '</span> ' . '</div>';
+        $result .= '<div id="' . self::to_unique_identifier($qa, self::FOCUS_AREAS_CONTAINER) . '" ' .
+            ' class="focus_areas_container">' .
+            '<span class="focus-areas-text">* ' . get_string("focusareas", "qtype_omerointeractive") . '</span> ' . '</div>';
+
+        $result .= '<div id="' . self::to_unique_identifier($qa, self::MARKER_REMOVERS_CONTAINER) . '" ' .
+            ' class="remove_marker_button_group">' .
+            '<span class="yourmarkers-text">* ' . get_string("yourmarkers", "qtype_omerointeractive") . '</span> ' . '</div>';
+
 
         $result .= '</div>';
 
@@ -382,14 +398,13 @@ abstract class qtype_omerointeractive_base_renderer extends qtype_multichoice_re
 
         if ($options->correctness) {
             $result .= html_writer::start_tag('div', array('class' => 'question-summary hidden'));
-            $result .= html_writer::tag('div', get_string(
-                (count($answer_options) == 1 ? "answerassociatedroi" : "answerassociatedrois"),
-                "qtype_omerointeractive"), array("class" => "answer-summary-fixed-text"));
+            $result .= html_writer::tag('div',
+                get_string("answerassociatedrois", "qtype_omerointeractive"),
+                array("class" => "answer-summary-fixed-text"));
 
             $result .= html_writer::start_tag('ul', array('class' => 'answer'));
             foreach ($answer_options as $key => $answer_option) {
-                $result .= html_writer::tag('div', $answer_option . ' ' . $feedbackimg[$key],
-                        array('class' => $classes[$key])) . "\n";
+                $result .= html_writer::tag('div', $answer_option, array('class' => $classes[$key])) . "\n";
             }
             $result .= html_writer::end_tag('ul'); // Answer.
             $result .= html_writer::end_tag('div'); // Answer.
@@ -417,20 +432,22 @@ abstract class qtype_omerointeractive_base_renderer extends qtype_multichoice_re
                     "image_id" => $omero_image,
                     "image_properties" => json_decode($question->omeroimageproperties),
                     "image_frame_id" => $omero_frame_id,
-                    "image_annotations_canvas_id" => "annotations_canvas",
+                    "image_annotations_canvas_id" => self::to_unique_identifier($qa, "annotations_canvas"),
                     "image_server" => $OMERO_SERVER,
-                    "image_viewer_container" => self::IMAGE_VIEWER_CONTAINER,
+                    "image_viewer_container" => self::to_unique_identifier($qa, self::IMAGE_VIEWER_CONTAINER),
                     "image_navigation_locked" => (bool)$question->omeroimagelocked,
                     "question_answer_container" => $question_answer_container,
-                    "enable_add_makers_ctrl_id" => self::IMAGE_ADD_MARKER_CTRL,
-                    "enable_edit_markers_ctrl_id" => self::IMAGE_EDIT_MARKER_CTRL,
-                    "remove_marker_ctrl_id" => self::IMAGE_DEL_MARKER_CTRL,
-                    "clear_marker_ctrl_id" => self::IMAGE_CLEAR_MARKER_CTRL,
-                    "marker_removers_container" => self::MARKER_REMOVERS_CONTAINER,
+                    "enable_add_makers_ctrl_id" => self::to_unique_identifier($qa, self::IMAGE_ADD_MARKER_CTRL),
+                    "enable_edit_markers_ctrl_id" => self::to_unique_identifier($qa, self::IMAGE_EDIT_MARKER_CTRL),
+                    "remove_marker_ctrl_id" => self::to_unique_identifier($qa, self::IMAGE_DEL_MARKER_CTRL),
+                    "clear_marker_ctrl_id" => self::to_unique_identifier($qa, self::IMAGE_CLEAR_MARKER_CTRL),
+                    "marker_removers_container" => self::to_unique_identifier($qa, self::MARKER_REMOVERS_CONTAINER),
+                    "focus_areas_container" => self::to_unique_identifier($qa, self::FOCUS_AREAS_CONTAINER),
                     "answer_input_name" => $answer_input_name,
                     "available_shapes" => ($available_shapes),
                     "shape_groups" => $shape_groups,
                     "visible_rois" => explode(",", $question->visiblerois),
+                    "focusable_rois" => explode(",", $question->focusablerois),
                     "correction_mode" => (bool)$options->correctness,
                     "response" => $response,
                     "answers" => $response,
