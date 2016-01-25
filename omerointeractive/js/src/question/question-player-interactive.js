@@ -29,7 +29,7 @@ define("qtype_omerointeractive/question-player-interactive",
 
         var markers_config = {
             'fill_color': "#ffffff",
-            'fill_alpha': '0.4',
+            'fill_alpha': 0.4,
             'stroke_width': 10
         };
 
@@ -39,23 +39,58 @@ define("qtype_omerointeractive/question-player-interactive",
             partially_correct: "#F9A125"
         };
 
+        function getControlColorClass(config, control) {
+            if (config[CONTROL_KEYS.ADD] === control || CONTROL_KEYS.ADD === control) return "btn-success";
+            else if (config[CONTROL_KEYS.EDIT] === control || CONTROL_KEYS.EDIT === control) return "btn-warning";
+            else if (config[CONTROL_KEYS.CLEAR] === control || CONTROL_KEYS.CLEAR === control) return "btn-danger";
+            else return "btn-default";
+        }
+
+
+        function cid(config, control) {
+            return config.answer_input_name.replace(":", "-") + "-" + control;
+        }
 
         function setEnabledMarkerControl(player, control, enabled) {
             var config = player._config;
-            if (enabled)
-                $("#" + config[control]).removeClass("disabled");
-            else $("#" + config[control]).addClass("disabled");
+            var ctrl = $("#" + config[control]);
+            if (enabled) {
+                ctrl.removeClass("disabled");
+                if (control === CONTROL_KEYS.CLEAR) {
+                    ctrl.removeClass("btn-default");
+                    ctrl.addClass("btn-danger");
+                }
+            } else {
+                ctrl.addClass("disabled");
+                ctrl.removeClass(getControlColorClass(player._config, control));
+                ctrl.addClass("btn-default");
+            }
+            console.log("Changing the " + control + " controller!!", $("#" + config[control]));
         }
 
-        function switchToActive(control) {
-            if (last_control !== null) {
-                last_control.removeClass("active");
-                last_control = null;
+        function switchToActive(config, control) {
+
+            if (control != last_control) {
+                var last_ctrl = $("#" + last_control);
+                last_ctrl.removeClass(getControlColorClass(config, last_control));
+                last_ctrl.addClass("btn-default");
+                last_ctrl.removeClass("active");
             }
+
             if (control) {
-                last_control = $("#" + control);
-                last_control.addClass("active");
+                var ctrl = $("#" + control);
+                var color_class = getControlColorClass(config, control);
+                if (!ctrl.hasClass("active")) {
+                    ctrl.removeClass("btn-default");
+                    ctrl.addClass(color_class);
+                    last_control = control;
+                    return true;
+                } else {
+                    ctrl.removeClass(color_class);
+                    ctrl.addClass("btn-default");
+                }
             }
+            return false;
         }
 
         function isMaxMarkerNumber(player) {
@@ -113,21 +148,22 @@ define("qtype_omerointeractive/question-player-interactive",
 
         function addMarkerInfo(player, marker_id, editable, color) {
             var me = player;
-            var marker_info_container = CONTROL_KEYS.DEL + marker_id + '_container';
+            var config = player._config;
+            var marker_info_container = cid(config, CONTROL_KEYS.DEL) + "-" + marker_id + '_container';
             var label = marker_id.replace("_", " ");
             label = label.charAt(0).toUpperCase() + label.substring(1);
             color = color ? 'style="color: ' + color + ';"' : '';
             var $delm_btn = $('<div id="' + marker_info_container + '">' +
-                '<i id="' + CONTROL_KEYS.GOTO + marker_id + '_btn" ' +
+                '<i id="' + cid(config, CONTROL_KEYS.GOTO) + "-" + marker_id + '_btn" ' +
                 ' class="glyphicon glyphicon-map-marker" ' + color + '></i> ' +
                 label +
-                (editable ? ' <i id="' + CONTROL_KEYS.DEL + marker_id + '_btn" ' +
+                (editable ? ' <i id="' + cid(config, CONTROL_KEYS.DEL) + "-" + marker_id + '_btn" ' +
                 ' class="red glyphicon glyphicon-remove"></i> ' : "") +
                 "</div>");
             me._remove_markers_container.append($delm_btn);
 
 
-            $("#" + CONTROL_KEYS.DEL + marker_id + '_btn').bind(
+            $("#" + cid(config, CONTROL_KEYS.DEL) + "-" + marker_id + '_btn').bind(
                 'click', {
                     'marker_id': marker_id,
                     'btn_id': 'del_' + marker_id,
@@ -135,11 +171,10 @@ define("qtype_omerointeractive/question-player-interactive",
                 },
                 function (event) {
                     me._image_viewer_controller.removeMarker(event.data.marker_id);
-                    switchToActive();
                 }
             );
 
-            $("#" + CONTROL_KEYS.GOTO + marker_id + '_btn').bind(
+            $("#" + cid(config, CONTROL_KEYS.GOTO) + "-" + marker_id + '_btn').bind(
                 'click', {'marker_id': marker_id},
                 function (event) {
                     me._image_viewer_controller.setFocusOnRoiShape(event.data.marker_id);
@@ -226,6 +261,9 @@ define("qtype_omerointeractive/question-player-interactive",
                     console.log("Answers: ", config.answers);
                     showResults(me);
                 }
+
+                // show focus areas
+                me.showFocusAreas();
             });
         }
 
@@ -283,7 +321,7 @@ define("qtype_omerointeractive/question-player-interactive",
 
                     var me = this;
 
-                    if (initialized) console.log("Already Initialized");
+                    if (me.initialized) console.log("Already Initialized");
                     else {
 
                         this.parent.initialize.call(this, config);
@@ -292,19 +330,21 @@ define("qtype_omerointeractive/question-player-interactive",
                         console.log("Setted the answer prefix", me._answer_input_name);
 
                         $("#" + config[CONTROL_KEYS.ADD]).click(function () {
-                            switchToActive(config[CONTROL_KEYS.ADD]);
-                            me._image_viewer_controller.enableAddMarkers();
+                            if (switchToActive(config, config[CONTROL_KEYS.ADD]))
+                                me._image_viewer_controller.enableAddMarkers();
+                            else me._image_viewer_controller.disableMarkingTool();
                         });
 
                         $("#" + config[CONTROL_KEYS.EDIT]).click(function () {
-                            switchToActive(config[CONTROL_KEYS.EDIT]);
-                            me._image_viewer_controller.enableMoveMarkers();
+                            if (switchToActive(config, config[CONTROL_KEYS.EDIT]))
+                                me._image_viewer_controller.enableMoveMarkers();
+                            else me._image_viewer_controller.disableMarkingTool();
                         });
 
                         $("#" + config[CONTROL_KEYS.CLEAR]).click(function () {
-                            switchToActive();
-                            me._image_viewer_controller.disableMarkingTool();
                             me._image_viewer_controller.removeMarkers();
+                            me._image_viewer_controller.disableMarkingTool();
+                            switchToActive(config);
                         });
 
                         me._remove_markers_container = $("#" + config["marker_removers_container"]);
@@ -330,8 +370,8 @@ define("qtype_omerointeractive/question-player-interactive",
                                 });
                             }
 
-                            $(document).on('marker_created', function (event, marker_id) {
-                                console.log('A new marker with ID ' + marker_id + ' was created');
+                            $("#" + config.image_annotations_canvas_id).on('marker_created', function (event, marker_id) {
+                                console.log('A new marker with ID ' + marker_id + ' was created', event);
                                 if (isMaxMarkerNumber(me)) {
                                     console.log("Reached max number of markers: " + config.max_markers);
                                     setEnabledMarkerControl(me, CONTROL_KEYS.ADD, false);
@@ -343,20 +383,20 @@ define("qtype_omerointeractive/question-player-interactive",
                                 addMarkerInfo(me, marker_id, !config.correction_mode);
                             });
 
-                            $(document).on('marker_deleted', function (event, marker_id) {
-                                console.log("Remove marker with ID '" + marker_id + "'");
+                            $("#" + config.image_annotations_canvas_id).on('marker_deleted', function (event, marker_id) {
+                                console.log("Remove marker with ID '" + marker_id + "'", event);
                                 if (!isMaxMarkerNumber(me))
                                     setEnabledMarkerControl(me, CONTROL_KEYS.ADD, true);
                                 if (me._image_viewer_controller.getMarkers().length === 0) {
                                     setEnabledMarkerControl(me, CONTROL_KEYS.EDIT, false);
                                     setEnabledMarkerControl(me, CONTROL_KEYS.CLEAR, false);
                                 }
-                                $("#" + CONTROL_KEYS.DEL + marker_id + '_container').remove();
+                                $("#" + cid(config, CONTROL_KEYS.DEL) + "-" + marker_id + '_container').remove();
                             });
                         }
                     }
 
-                    initialized = true;
+                    me.initialized = true;
 
                     start(me);
                 };
@@ -400,17 +440,9 @@ define("qtype_omerointeractive/question-player-interactive",
              *
              */
             start: function (config) {
-
-                $(document).ready(
-                    function () {
-                        var instance = M.qtypes.omerointeractive.QuestionPlayerInteractive.getInstance();
-                        window.qpi = instance;
-
-                        instance.initialize(config);
-
-                        console.log("Question interactive player initialized!!!");
-                    }
-                );
+                var instance = new M.qtypes.omerointeractive.QuestionPlayerInteractive();
+                instance.initialize(config);
+                console.log("Question interactive player initialized!!!");
             }
         };
     }

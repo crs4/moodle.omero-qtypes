@@ -39,9 +39,11 @@ define("qtype_omerocommon/image-viewer",
                  */
                 M.qtypes.omerocommon.ImageViewer = function (image_id, image_properties,
                                                              image_server, image_viewer_container_id,
+                                                             image_viewer_annotations_canvas_id,
                                                              viewer_config) {
                     this._image_server = image_server;
                     this._image_viewer_container_id = image_viewer_container_id;
+                    this._image_viewer_annotations_canvas_id = image_viewer_annotations_canvas_id;
                     this._image_id = image_id;
                     this._image_properties = image_properties;
                     this._listeners = [];
@@ -103,7 +105,7 @@ define("qtype_omerocommon/image-viewer",
                         me._viewer_controller.setMinDZILevel(8);
 
                         // Adds the annotation controller
-                        me._annotations_controller = new AnnotationsController('annotations_canvas');
+                        me._annotations_controller = new AnnotationsController(me._image_viewer_annotations_canvas_id);
                         window.annotation_canvas = me._annotations_controller;
                         me._annotations_controller.buildAnnotationsCanvas(me._viewer_controller);
                         me._viewer_controller.addAnnotationsController(me._annotations_controller, true);
@@ -245,7 +247,8 @@ define("qtype_omerocommon/image-viewer",
 
                 prototype.removeMarkers = function () {
                     var marker_ids = this.getMarkerIds();
-                    for (var i in marker_ids) {
+                    // TODO: check whether the annotation_controller remove is correct or not
+                    for (var i = marker_ids.length - 1; i >= 0; i--) {
                         this.removeMarker(marker_ids[i]);
                     }
                 };
@@ -416,10 +419,8 @@ define("qtype_omerocommon/image-viewer",
                  * Set focus on a given ROI shape
                  * @param shape_id
                  */
-                prototype.setFocusOnRoiShape = function (shape_id) {
-                    var shape_position = this._annotations_controller.getShapeCenter(shape_id);
-                    shape_position = this._viewer_controller.getViewportCoordinates(shape_position.x, shape_position.y);
-                    this._viewer_controller.jumpToPoint(shape_position.x, shape_position.y);
+                prototype.setFocusOnRoiShape = function (shape_id, zoom_to_shape) {
+                    this._viewer_controller.jumpToShape(shape_id, zoom_to_shape || false);
                     this._annotations_controller.selectShape(shape_id, true, true);
                 };
 

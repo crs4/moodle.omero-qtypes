@@ -161,7 +161,12 @@ abstract class qtype_omeromultichoice_base_renderer extends qtype_multichoice_re
     const IMAGE_DEL_MARKER_CTRL = "remove_marker_ctrl_id";
     const IMAGE_CLEAR_MARKER_CTRL = "clear_marker_ctrl_id";
     const MARKER_REMOVERS_CONTAINER = "marker_removers_container";
+    const FOCUS_AREAS_CONTAINER = "focus_areas_container";
 
+    private static function to_unique_identifier(question_attempt $qa, $identifier)
+    {
+        return $identifier . "-" . $qa->get_database_id();
+    }
 
     public static function impl_formulation_and_controls(qtype_multichoice_renderer_base $renderer,
                                                          question_attempt $qa,
@@ -179,9 +184,9 @@ abstract class qtype_omeromultichoice_base_renderer extends qtype_multichoice_re
         $answer_input_name = $qa->get_qt_field_name('answer');
 
         // set the ID of the OmeroImageViewer
-        $omero_frame_id = "omero-image-viewer-" . str_replace(".", "-", uniqid('', true));
+        $omero_frame_id = self::to_unique_identifier($qa, "omero-image-viewer");
 
-        $question_answer_container = "omero-interactive-question-container-" . str_replace(".", "-", uniqid('', true));
+        $question_answer_container = self::to_unique_identifier($qa, "omero-multichoice-question-container");
 
         // the OMERO image URL
         $omero_image_url = $question->omeroimageurl;
@@ -247,10 +252,10 @@ abstract class qtype_omeromultichoice_base_renderer extends qtype_multichoice_re
             }
             $radiobuttons[] = $hidden . html_writer::empty_tag('input', $inputattributes) .
                 html_writer::tag('label',
-                    $renderer->number_in_style($value, $question->answernumbering) .
-                    $question->make_html_inline($question->format_text(
-                        $ans->answer, $ans->answerformat,
-                        $qa, 'question', 'answer', $ansid)),
+                    $question->format_text(
+                        $renderer->number_in_style($value, $question->answernumbering) .
+                        preg_replace('/<p[^>]*>(.*)<\/p[^>]*>/i', '$1', $ans->answer), $ans->answerformat,
+                        $qa, 'question', 'answer', $ansid),
                     array('for' => $inputattributes['id']));
 
             // Param $options->suppresschoicefeedback is a hack specific to the
@@ -260,9 +265,13 @@ abstract class qtype_omeromultichoice_base_renderer extends qtype_multichoice_re
                 $isselected && trim($ans->feedback)
             ) {
                 $feedback[] = html_writer::tag('div',
-                    $question->make_html_inline($question->format_text(
+                    $question->format_text(
                         $ans->feedback, $ans->feedbackformat,
-                        $qa, 'question', 'answerfeedback', $ansid)),
+                        $qa, 'question', 'answerfeedback', $ansid) .
+                    ($isselected ?
+                        ('<span class="pull-right">' . $renderer->feedback_image($renderer->is_right($ans)) . '</span>')
+                        : "")
+                    ,
                     array('class' => 'specificfeedback'));
             } else {
                 $feedback[] = '';
@@ -290,26 +299,30 @@ abstract class qtype_omeromultichoice_base_renderer extends qtype_multichoice_re
         $result .= html_writer::tag('div', $question->format_questiontext($qa), array('class' => 'qtext'));
 
         // viewer of the question image
-        $result .= '<div class="panel image-viewer-with-controls-container">';
+        $result .= '<div class="image-viewer-with-controls-container">';
 
 
-        $result .= '<div id="graphics_container" class="image-viewer-container" style="position: relative;" >
-            <div id="' . self::IMAGE_VIEWER_CONTAINER . '" style="position: absolute; width: 100%; height: 500px; margin: auto;"></div>
-            <canvas id="annotations_canvas" style="position: absolute; width: 100%; height: 500px; margin: auto;"></canvas>
+        $result .= '<div id="' . self::to_unique_identifier($qa, "graphics_container") . '" class="image-viewer-container" style="position: relative;" >
+            <div id="' . self::to_unique_identifier($qa, self::IMAGE_VIEWER_CONTAINER) . '" style="position: absolute; width: 100%; height: 500px; margin: auto;"></div>
+            <canvas id="' . self::to_unique_identifier($qa, 'annotations_canvas') . '" style="position: absolute; width: 100%; height: 500px; margin: auto;"></canvas>
         </div>';
 
 
         $image_properties = null;
         if ($question->omeroimageproperties) {
             $image_properties = json_decode($question->omeroimageproperties);
-            $result .= '<div class="panel image_position_button">' .
-                '<span class="pull-right sm">' .
-                '(x,y): ' . $image_properties->center->x . ", " . $image_properties->center->y .
-                '<i class="restore-image-center-btn pull-right glyphicon glyphicon-screenshot" style="margin-left: 10px;">' .
+            $result .= '<div class="image_position_button">' .
+                '<span class="sm">' .
+                '<b>(x,y):</b> ' . $image_properties->center->x . ", " . $image_properties->center->y .
+                '<i class="restore-image-center-btn glyphicon glyphicon-screenshot" style="margin-left: 10px;">' .
                 '</i></span></div>';
         }
 
         $result .= '</div>';
+
+        $result .= '<div id="' . self::to_unique_identifier($qa, self::FOCUS_AREAS_CONTAINER) . '" ' .
+            ' class="focus_areas_container">' .
+            '<span class="focus-areas-text">* ' . get_string("focusareas", "qtype_omerointeractive") . '</span> ' . '</div>';
 
 
         $result .= html_writer::start_tag('div', array('class' => 'multichoice-options-container'));
@@ -317,8 +330,8 @@ abstract class qtype_omeromultichoice_base_renderer extends qtype_multichoice_re
 
         $result .= html_writer::start_tag('div', array('class' => 'answer'));
         foreach ($radiobuttons as $key => $radio) {
-            $result .= html_writer::tag('div', $radio . ' ' . $feedbackimg[$key] . $feedback[$key],
-                    array('class' => $classes[$key])) . "\n";
+            $result .= html_writer::tag('div', $radio . ' ' . $feedbackimg[$key],
+                array('class' => $classes[$key]));
         }
         $result .= html_writer::end_tag('div'); // Answer.
 
@@ -330,7 +343,6 @@ abstract class qtype_omeromultichoice_base_renderer extends qtype_multichoice_re
                 array('class' => 'validationerror'));
         }
 
-
         $PAGE->requires->js_call_amd(
             "qtype_omeromultichoice/question-player-multichoice",
             "start", array(
@@ -338,12 +350,15 @@ abstract class qtype_omeromultichoice_base_renderer extends qtype_multichoice_re
                     "image_id" => $omero_image,
                     "image_properties" => json_decode($question->omeroimageproperties),
                     "image_frame_id" => $omero_frame_id,
-                    "image_annotations_canvas_id" => "annotations_canvas",
+                    "image_annotations_canvas_id" => self::to_unique_identifier($qa, "annotations_canvas"),
                     "image_server" => $OMERO_SERVER,
-                    "image_viewer_container" => self::IMAGE_VIEWER_CONTAINER,
+                    "image_viewer_container" => self::to_unique_identifier($qa, self::IMAGE_VIEWER_CONTAINER),
                     "image_navigation_locked" => (bool)$question->omeroimagelocked,
                     "question_answer_container" => $question_answer_container,
-                    "visible_rois" => explode(",", $question->visiblerois)
+                    "focus_areas_container" => self::to_unique_identifier($qa, self::FOCUS_AREAS_CONTAINER),
+                    "visible_rois" => explode(",", $question->visiblerois),
+                    "focusable_rois" => explode(",", $question->focusablerois),
+                    "answer_input_name" => $answer_input_name
                 )
             )
         );

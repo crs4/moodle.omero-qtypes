@@ -12,6 +12,7 @@
         <FIELD NAME="omeroimagelocked" TYPE="int" NOTNULL="true" LENGTH="1" DEFAULT="0" SEQUENCE="false" COMMENT="OMERO image URL."/>
         <FIELD NAME="omeroimageproperties" TYPE="text" NOTNULL="false" SEQUENCE="false" COMMENT="OMERO image URL."/>
         <FIELD NAME="visiblerois" TYPE="text" NOTNULL="true" SEQUENCE="false" COMMENT="List of ROI shapes to display."/>
+        <FIELD NAME="focusablerois" TYPE="text" NOTNULL="true" SEQUENCE="false" COMMENT="List of ROI shapes to show as focus areas."/>
         <FIELD NAME="layout" TYPE="int" LENGTH="4" NOTNULL="true" DEFAULT="0" SEQUENCE="false" COMMENT="Not used. Was intended for a vertical/horizontal layout option. See MDL-18445."/>
         <FIELD NAME="single" TYPE="int" LENGTH="4" NOTNULL="true" DEFAULT="0" SEQUENCE="false" COMMENT="If 0 it multiple response (checkboxes). Otherwise it is radio buttons."/>
         <FIELD NAME="shuffleanswers" TYPE="int" LENGTH="4" NOTNULL="true" DEFAULT="1" SEQUENCE="false" COMMENT="Whether the choices can be randomly shuffled."/>

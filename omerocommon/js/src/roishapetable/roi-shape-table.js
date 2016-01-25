@@ -109,7 +109,7 @@ prototype.initTable = function (hideToolbar, showColumnSelector) {
                 },
                 {
                     title: 'ROI Shape Details',
-                    colspan: 3,
+                    colspan: 4,
                     align: 'center'
                 }
             ],
@@ -148,6 +148,15 @@ prototype.initTable = function (hideToolbar, showColumnSelector) {
                     formatter: me.visibilityFormatter
                 },
                 {
+                    field: 'focusable',
+                    title: 'Focus',
+                    width: "20px",
+                    align: 'center',
+                    valign: 'middle',
+                    events: me.eventHandler(me),
+                    formatter: me.focusAreaFormatter
+                },
+                {
                     field: 'answerGroup',
                     title: 'Group',
                     align: 'center',
@@ -161,7 +170,7 @@ prototype.initTable = function (hideToolbar, showColumnSelector) {
     };
 
     //if (!showColumnSelector)
-    bootstrap_config.columns[1].splice(2, 1);
+    bootstrap_config.columns[1].splice(3, 1);
 
     // Initializes the bootstrap table
     me.table_element.bootstrapTable(bootstrap_config);
@@ -211,11 +220,11 @@ prototype.initTable = function (hideToolbar, showColumnSelector) {
         });
         me.remove_element.prop('disabled', true);
     });
-    $(window).resize(function () {
-        me.table_element.bootstrapTable('resetView', {
-            height: me.getHeight()
-        });
-    });
+    //$(window).resize(function () {
+    //    me.table_element.bootstrapTable('resetView', {
+    //        height: me.getHeight()
+    //    });
+    //});
 
     me._initialized = true;
 };
@@ -244,6 +253,26 @@ prototype.deselectAll = function () {
  */
 
 prototype.eventHandler = function (table) {
+
+    // Reusable function to handle visibility change
+    function onRoiShapeVisibilityChanged(target, value, row) {
+        // if focus is active then visibility cannot be changed
+        if(row.visible && row.focusable) return;
+
+        row.visible = !row.visible;
+        if (row.visible)
+            $(target).attr("class", "green glyphicon glyphicon-eye-open");
+        else
+            $(target).attr("class", "#E9E9E9 glyphicon glyphicon-eye-close");
+
+        notifyListeners(table, {
+            type: "roiShapeVisibilityChanged",
+            shape: row,
+            event: value,
+            visible: row.visible
+        });
+    }
+
     return {
         'click .like': function (e, value, row, index) {
             if ($(e.target).attr("class").indexOf("glyphicon-plus-sign") !== -1)
@@ -262,18 +291,33 @@ prototype.eventHandler = function (table) {
          * @param index
          */
         'click .roi-shape-visibility': function (e, value, row, index) {
-            row.visible = !row.visible;
-            if (row.visible)
-                $(e.target).attr("class", "green glyphicon glyphicon-eye-open");
-            else
-                $(e.target).attr("class", "red glyphicon glyphicon-eye-close");
+            onRoiShapeVisibilityChanged(e.target, value, row);
+        },
 
+        /**
+         * Handle the focus change event !!!
+         *
+         * @param e
+         * @param value
+         * @param row
+         * @param index
+         */
+        'click .roi-shape-focusability': function (e, value, row, index) {
+            row.focusable = !row.focusable;
+            if (row.focusable)
+                $(e.target).attr("class", "green glyphicon glyphicon-record");
+            else
+                $(e.target).attr("class", "#E9E9E9 glyphicon glyphicon-record");
+
+            console.log("FOCUSability changed: " + row.focusable);
             notifyListeners(table, {
-                type: "roiShapeVisibilityChanged",
+                type: "roiShapeFocusabilityChanged",
                 shape: row,
                 event: value,
-                visible: row.visible
+                focusable: row.focusable
             });
+
+            onRoiShapeVisibilityChanged($(e.target).parents("tr").find(".roi-shape-visibility i")[0], value, row);
         },
 
         'click .remove': function (e, value, row, index) {
@@ -346,10 +390,20 @@ prototype.descriptionFormatter = function (data) {
 
 prototype.visibilityFormatter = function (data) {
     return [
-        '<a class="roi-shape-visibility" href="javascript:void(0)" title="Like">',
+        '<a class="roi-shape-visibility" href="javascript:void(0)" title="Visibility">',
         (data ?
             '<i class="green glyphicon glyphicon-eye-open"></i>' :
-            '<i class="red glyphicon glyphicon-eye-close"></i>'),
+            '<i class="#E9E9E9 glyphicon glyphicon-eye-close"></i>'),
+        '</a> '
+    ].join(" ");
+};
+
+prototype.focusAreaFormatter = function (data) {
+    return [
+        '<a class="roi-shape-focusability" href="javascript:void(0)" title="Focusability">',
+        (data ?
+            '<i class="green glyphicon glyphicon-record"></i>' :
+            '<i class="#E9E9E9 glyphicon glyphicon-record"></i>'),
         '</a> '
     ].join(" ");
 };

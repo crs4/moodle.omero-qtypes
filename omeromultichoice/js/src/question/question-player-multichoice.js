@@ -48,6 +48,9 @@ define("qtype_omeromultichoice/question-player-multichoice",
                     console.log("Answers: ", config.answers);
                     showResults(me);
                 }
+
+                // show focus areas
+                me.showFocusAreas();
             });
         }
 
@@ -86,14 +89,6 @@ define("qtype_omeromultichoice/question-player-multichoice",
                 M.qtypes.omeromultichoice.QuestionPlayerMultichoice.prototype.parent =
                     M.qtypes.omerocommon.QuestionPlayerBase.prototype;
 
-                M.qtypes.omeromultichoice.QuestionPlayerMultichoice.getInstance = function () {
-                    if (!M.qtypes.omerocommon.QuestionPlayerBase.instance) {
-                        M.qtypes.omerocommon.QuestionPlayerBase.instance =
-                            new M.qtypes.omeromultichoice.QuestionPlayerMultichoice();
-                    }
-                    return M.qtypes.omerocommon.QuestionPlayerBase.instance;
-                };
-
                 // local reference to the current prototype
                 var prototype = M.qtypes.omeromultichoice.QuestionPlayerMultichoice.prototype;
 
@@ -103,7 +98,7 @@ define("qtype_omeromultichoice/question-player-multichoice",
                 prototype.initialize = function (config) {
                     var me = this;
 
-                    if (initialized) console.log("Already Initialized");
+                    if (me.initialized) console.log("Already Initialized");
                     else {
 
                         this.parent.initialize.call(this, config);
@@ -116,8 +111,10 @@ define("qtype_omeromultichoice/question-player-multichoice",
                             me._image_viewer_controller.updateViewFromProperties(config.image_properties);
                         });
 
-                        initialized = true;
+                        me.initialized = true;
+                        console.log("Question multichoice player initialized!!!");
 
+                        // automatically start the player
                         start(me);
                     }
                 };
@@ -132,10 +129,8 @@ define("qtype_omeromultichoice/question-player-multichoice",
 
                 $(document).ready(
                     function () {
-                        var instance = M.qtypes.omeromultichoice.QuestionPlayerMultichoice.getInstance();
+                        var instance = new M.qtypes.omeromultichoice.QuestionPlayerMultichoice();
                         instance.initialize(config);
-                        window.qpm = instance;
-                        console.log("Question multichoice player initialized!!!");
                     }
                 );
             }
