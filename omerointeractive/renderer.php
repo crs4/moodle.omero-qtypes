@@ -305,7 +305,7 @@ abstract class qtype_omerointeractive_base_renderer extends qtype_multichoice_re
                         $question->make_html_inline($question->format_text(
                             $ans->feedback, $ans->answerformat, $qa, 'question', 'answer', $ansid)
                         ) . ($isselected ?
-                            ('<span class="pull-right">' .$renderer->feedback_image($renderer->is_right($ans)) . '</span>')
+                            ('<span class="pull-right">' . $renderer->feedback_image($renderer->is_right($ans)) . '</span>')
                             : ""),
                         array('for' => $answer_options_attributes['id'])
                     );
