@@ -320,10 +320,11 @@ abstract class qtype_omeromultichoice_base_renderer extends qtype_multichoice_re
 
         $result .= '</div>';
 
-        $result .= '<div id="' . self::to_unique_identifier($qa, self::FOCUS_AREAS_CONTAINER) . '" ' .
-            ' class="focus_areas_container">' .
-            '<span class="focus-areas-text">* ' . get_string("focusareas", "qtype_omerointeractive") . '</span> ' . '</div>';
-
+        if(!empty($question->focusablerois)) {
+            $result .= '<div id="' . self::to_unique_identifier($qa, self::FOCUS_AREAS_CONTAINER) . '" ' .
+                ' class="focus_areas_container">' .
+                '<span class="focus-areas-text">* ' . get_string("focusareas", "qtype_omerointeractive") . '</span> ' . '</div>';
+        }
 
         $result .= html_writer::start_tag('div', array('class' => 'multichoice-options-container'));
         $result .= html_writer::tag('div', $renderer->prompt(), array('class' => 'prompt'));
