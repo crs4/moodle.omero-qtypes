@@ -305,7 +305,7 @@ abstract class qtype_omerointeractive_base_renderer extends qtype_multichoice_re
                         $question->make_html_inline($question->format_text(
                             $ans->feedback, $ans->answerformat, $qa, 'question', 'answer', $ansid)
                         ) . ($isselected ?
-                            ('<span class="pull-right">' .$renderer->feedback_image($renderer->is_right($ans)) . '</span>')
+                            ('<span class="pull-right">' . $renderer->feedback_image($renderer->is_right($ans)) . '</span>')
                             : ""),
                         array('for' => $answer_options_attributes['id'])
                     );
@@ -374,9 +374,11 @@ abstract class qtype_omerointeractive_base_renderer extends qtype_multichoice_re
             ) .
             '</span></div>';
 
-        $result .= '<div id="' . self::to_unique_identifier($qa, self::FOCUS_AREAS_CONTAINER) . '" ' .
-            ' class="focus_areas_container">' .
-            '<span class="focus-areas-text">* ' . get_string("focusareas", "qtype_omerointeractive") . '</span> ' . '</div>';
+        if (!empty($question->focusablerois)) {
+            $result .= '<div id="' . self::to_unique_identifier($qa, self::FOCUS_AREAS_CONTAINER) . '" ' .
+                ' class="focus_areas_container">' .
+                '<span class="focus-areas-text">* ' . get_string("focusareas", "qtype_omerointeractive") . '</span> ' . '</div>';
+        }
 
         $result .= '<div id="' . self::to_unique_identifier($qa, self::MARKER_REMOVERS_CONTAINER) . '" ' .
             ' class="remove_marker_button_group">' .
@@ -446,8 +448,8 @@ abstract class qtype_omerointeractive_base_renderer extends qtype_multichoice_re
                     "answer_input_name" => $answer_input_name,
                     "available_shapes" => ($available_shapes),
                     "shape_groups" => $shape_groups,
-                    "visible_rois" => explode(",", $question->visiblerois),
-                    "focusable_rois" => explode(",", $question->focusablerois),
+                    "visible_rois" => empty($question->visiblerois) ? [] : explode(",", $question->visiblerois),
+                    "focusable_rois" => empty($question->focusablerois) ? [] : explode(",", $question->focusablerois),
                     "correction_mode" => (bool)$options->correctness,
                     "response" => $response,
                     "answers" => $response,
