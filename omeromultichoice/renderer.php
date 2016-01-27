@@ -357,8 +357,8 @@ abstract class qtype_omeromultichoice_base_renderer extends qtype_multichoice_re
                     "image_navigation_locked" => (bool)$question->omeroimagelocked,
                     "question_answer_container" => $question_answer_container,
                     "focus_areas_container" => self::to_unique_identifier($qa, self::FOCUS_AREAS_CONTAINER),
-                    "visible_rois" => explode(",", $question->visiblerois),
-                    "focusable_rois" => explode(",", $question->focusablerois),
+                    "visible_rois" => empty($question->visiblerois) ? [] : explode(",", $question->visiblerois),
+                    "focusable_rois" => empty($question->focusablerois) ? [] : explode(",", $question->focusablerois),
                     "answer_input_name" => $answer_input_name
                 )
             )
