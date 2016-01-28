@@ -173,4 +173,15 @@ class qtype_omeromultichoice_edit_form extends qtype_omerocommon_edit_form
             'window.question = ' . json_encode($this->question)
         );
     }
+
+    /**
+     * Defines the set of locale strings used for JS modules
+     *
+     * @throws coding_exception
+     */
+    protected function export_locale_js_strings(){
+        global $PAGE;
+        parent::export_locale_js_strings();
+        $PAGE->requires->string_for_js('correctansweris', 'qtype_omerointeractive');
+    }
 }

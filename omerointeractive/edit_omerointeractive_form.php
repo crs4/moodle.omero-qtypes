@@ -204,6 +204,20 @@ class qtype_omerointeractive_edit_form extends qtype_omerocommon_edit_form
 
 
     /**
+     * Defines the set of locale strings used for JS modules
+     *
+     * @throws coding_exception
+     */
+    protected function export_locale_js_strings()
+    {
+        global $PAGE;
+        parent::export_locale_js_strings();
+        $PAGE->requires->string_for_js('answer_group_of_rois', 'qtype_omerointeractive');
+        $PAGE->requires->string_for_js('validation_noroi_per_group', 'qtype_omerointeractive');
+    }
+
+
+    /**
      * Perform the necessary preprocessing for the fields added by
      * {@link add_per_answer_fields()}.
      * @param object $question the data being passed to the form.
