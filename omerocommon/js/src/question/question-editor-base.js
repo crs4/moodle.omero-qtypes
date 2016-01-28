@@ -187,11 +187,20 @@ define("qtype_omerocommon/question-editor-base",
                     var submit_function = function (e) {
                         try {
                             me.saveAll();
-                            if (!me.validate()) return false;
+                            var errors = me.validate();
+
+                            // prepare and display error messages
+                            if (errors.length > 0) {
+                                var errorMessage = "";
+                                for (var i in errors)
+                                    errorMessage += '<i class="glyphicon glyphicon-thumbs-down red"></i>  ' + errors[i] + '<br>';
+                                me._showDialogMessage(errorMessage);
+                            }
+                            return errors.length === 0;
+
                         } catch (e) {
                             console.error(e);
                             me._showDialogMessage(e.message);
-                            return false;
                         }
                     };
 
