@@ -551,8 +551,8 @@ abstract class qtype_omerocommon_edit_form extends qtype_multichoice_edit_form
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
         <h4 class="modal-title" id="myModalLabel">
-            <li class="warning glyphicon glyphicon-warning-sign"></li> Warning
-        </h4>
+            <li class="warning glyphicon glyphicon-warning-sign"></li> ' . get_string('validate_warning', 'qtype_omerocommon') .
+        '</h4>
       </div>
       <div class="modal-body text-center">
         <span id="modal-frame-text"></span>
