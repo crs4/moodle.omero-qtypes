@@ -426,6 +426,8 @@ abstract class qtype_omerointeractive_base_renderer extends qtype_multichoice_re
             'value' => $answer_input_name,
         ));
 
+        global $PAGE;
+        $PAGE->requires->string_for_js('marker', 'qtype_omerointeractive');
 
         $PAGE->requires->js_call_amd(
             "qtype_omerointeractive/question-player-interactive",
