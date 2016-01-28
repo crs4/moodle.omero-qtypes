@@ -159,7 +159,7 @@ class qtype_omerointeractive_multi_renderer extends qtype_multichoice_multi_rend
         }
 
         if (!empty($right)) {
-            return get_string('correctanswerare', 'qtype_omerointeractive') .
+            return get_string('correctansweris', 'qtype_omerointeractive') .
             implode(' + ', $right);
         }
         return '';
@@ -345,16 +345,16 @@ abstract class qtype_omerointeractive_base_renderer extends qtype_multichoice_re
         $result .= '<!-- TOOLBAR -->
                 <div class="btn-group interactive-player-toolbar pull-right" style="margin-left: 5px;" data-toggle="buttons" aria-pressed="false" autocomplete="true">
                     <a href="#" id="' . self::to_unique_identifier($qa, self::IMAGE_CLEAR_MARKER_CTRL) . '" class="btn btn-default disabled" aria-label="Left Align">
-                        <i class="glyphicon glyphicon-remove"></i> Clear
-                    </a>
+                        <i class="glyphicon glyphicon-remove"></i> '. get_string('clear_markers', 'qtype_omerointeractive') .
+                    '</a>
                 </div>
                 <div class="btn-group interactive-player-toolbar pull-right" data-toggle="buttons" aria-pressed="false" autocomplete="off">
                     <a href="#" id="' . self::to_unique_identifier($qa, self::IMAGE_ADD_MARKER_CTRL) . '" class="btn btn-default disabled"  aria-label="Left Align">
-                        <i class="glyphicon glyphicon-plus"></i> Add
-                    </a>
+                        <i class="glyphicon glyphicon-plus"></i> '. get_string('add_marker', 'qtype_omerointeractive') .
+                    '</a>
                     <a href="#" id="' . self::to_unique_identifier($qa, self::IMAGE_EDIT_MARKER_CTRL) . '" class="btn btn-default disabled" aria-label="Left Align">
-                        <i class="glyphicon glyphicon-edit"></i> Edit
-                    </a>
+                        <i class="glyphicon glyphicon-edit"></i> '. get_string('edit_marker', 'qtype_omerointeractive') .
+                    '</a>
                 </div>';
 
         $result .= '<div id="' . self::to_unique_identifier($qa, "graphics_container") . '" class="image-viewer-container" style="position: relative;" >
