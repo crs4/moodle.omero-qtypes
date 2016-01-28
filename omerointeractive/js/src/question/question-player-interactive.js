@@ -150,8 +150,11 @@ define("qtype_omerointeractive/question-player-interactive",
             var me = player;
             var config = player._config;
             var marker_info_container = cid(config, CONTROL_KEYS.DEL) + "-" + marker_id + '_container';
-            var label = marker_id.replace("_", " ");
-            label = label.charAt(0).toUpperCase() + label.substring(1);
+            var label = marker_id;
+            var marker_parts = marker_id.split("_");
+            if(marker_parts && marker_parts.length===2)
+                label = marker_parts[1];
+            label = M.util.get_string("marker", "qtype_omerointeractive") + " " + label;
             color = color ? 'style="color: ' + color + ';"' : '';
             var $delm_btn = $('<div id="' + marker_info_container + '">' +
                 '<i id="' + cid(config, CONTROL_KEYS.GOTO) + "-" + marker_id + '_btn" ' +
