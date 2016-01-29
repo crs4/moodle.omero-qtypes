@@ -80,7 +80,7 @@ body[id^=page-question-type-omero] .file-picker .fp-list .fp-repo-icon {
 
 .modal.fade.in {
     top: 30%;
-    height: 160px;
+    height: 200px;
 }
 
 @media (min-width: 768px) {
@@ -108,6 +108,7 @@ body[id^=page-question-type-omero] .file-picker .fp-list .fp-repo-icon {
 
 .modal-body{
     min-height: 100%;
+    height: 90px;
 }
 
 /* fixes the size of textfields when bootstrap library is loaded */

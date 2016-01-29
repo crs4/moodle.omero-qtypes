@@ -40,19 +40,19 @@ $string['answer_groups'] = "Answer Groups";
 
 
 
-
 $string['answer_options_properties'] = 'Properties of answer options';
 
 $string['general_and_combined_feedback'] = 'General and combined feedback';
 
 
-$string['add_roi_answer'] = 'Add new ROI answer';
+
+
 
 $string['choiceno'] = '{$a}';
 
 $string['roi_choiceno'] = 'ROI choice {$a}';
 
-$string['add_roi_answer'] = 'Add a new ROI based answer';
+
 
 $string['answer_type'] = "Answer type";
 
@@ -68,20 +68,31 @@ $string['qtype_1'] = "ROI answer";
 $string['savechangesandcontinueediting'] = "Save";
 $string['savechangesandexit'] = "Save and Exit";
 
+$string['answer_group_of_rois'] = "List of ROIs";
+$string['validation_noroi_per_group'] = "Every answer group must have at least one ROI !!!";
+
 
 $string['roi_id'] = 'Identifier';
 $string['roi_comment'] = 'Comment';
 $string['roi_type'] = 'Type';
 $string['roi_width'] = 'Width';
 $string['roi_height'] = 'Height';
+$string['roi_group'] = 'Group';
 
 $string['language'] = "Language";
+
+
+$string['add_marker'] = "Add";
+$string['edit_marker'] = "Edit";
+$string['clear_markers'] = "Clear";
 
 $string['answerassociatedrois'] = 'The set of ROIs <em>(Regions Of Interest)</em> of this question is: ';
 
 $string['correctansweris'] = 'To correctly answer you have to select one of the following ROIs: ';
 $string['correctanswerare'] = 'To correctly and completely answer you have to select the following ROIs: ';
 
+
+$string['marker'] = 'Marker';
 $string['yourmarkers'] = 'Your markers: ';
 
 $string['focusareas'] = 'Focus Areas: ';

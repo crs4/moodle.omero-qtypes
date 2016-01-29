@@ -108,7 +108,7 @@ prototype.initTable = function (hideToolbar, showColumnSelector) {
                     formatter: me.idFormatter
                 },
                 {
-                    title: 'ROI Shape Details',
+                    title: M.util.get_string('roi_shape_details', 'qtype_omerocommon'),
                     colspan: 4,
                     align: 'center'
                 }
@@ -116,7 +116,7 @@ prototype.initTable = function (hideToolbar, showColumnSelector) {
             [
                 {
                     field: 'description',
-                    title: 'Description',
+                    title: M.util.get_string('roi_description', 'qtype_omerocommon'),
                     //sortable: true,
                     align: 'left',
                     //editable: {
@@ -140,7 +140,7 @@ prototype.initTable = function (hideToolbar, showColumnSelector) {
                 },
                 {
                     field: 'visible',
-                    title: 'Visibility',
+                    title: M.util.get_string('roi_visibility', 'qtype_omerocommon'),
                     width: "20px",
                     align: 'center',
                     valign: 'middle',
@@ -149,7 +149,7 @@ prototype.initTable = function (hideToolbar, showColumnSelector) {
                 },
                 {
                     field: 'focusable',
-                    title: 'Focus',
+                    title: M.util.get_string('roi_focus', 'qtype_omerocommon'),
                     width: "20px",
                     align: 'center',
                     valign: 'middle',
@@ -158,7 +158,7 @@ prototype.initTable = function (hideToolbar, showColumnSelector) {
                 },
                 {
                     field: 'answerGroup',
-                    title: 'Group',
+                    title: M.util.get_string('roi_group', 'qtype_omerocommon'),
                     align: 'center',
                     valign: 'middle',
                     width: "40px",

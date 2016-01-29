@@ -88,6 +88,9 @@ abstract class qtype_omerocommon_edit_form extends qtype_multichoice_edit_form
 
         // controls
         $this->define_update_and_preview_controls();
+
+        // locale strings for JS modules
+        $this->export_locale_js_strings();
     }
 
 
@@ -547,11 +550,11 @@ abstract class qtype_omerocommon_edit_form extends qtype_multichoice_edit_form
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="myModalLabel">
-            <li class="warning glyphicon glyphicon-warning-sign"></li> Warning
-        </h4>
+        <h4 class="modal-title text-warning" id="myModalLabel">
+            <i class="glyphicon glyphicon-warning-sign"></i> ' . get_string('validate_warning', 'qtype_omerocommon') .
+        '</h4>
       </div>
-      <div class="modal-body text-center">
+      <div class="modal-body text-left">
         <span id="modal-frame-text"></span>
       </div>
       <div class="modal-footer text-center">
@@ -604,6 +607,29 @@ abstract class qtype_omerocommon_edit_form extends qtype_multichoice_edit_form
 
         $mform->addElement("hidden", 'omeroimageproperties');
         $mform->setType('omeroimageproperties', PARAM_RAW);
+    }
+
+
+    /**
+     * Defines the set of locale strings used for JS modules
+     *
+     * @throws coding_exception
+     */
+    protected function export_locale_js_strings(){
+        global $PAGE;
+        $PAGE->requires->string_for_js('roi_shape_details', 'qtype_omerocommon');
+        $PAGE->requires->string_for_js('roi_description', 'qtype_omerocommon');
+        $PAGE->requires->string_for_js('roi_visibility', 'qtype_omerocommon');
+        $PAGE->requires->string_for_js('roi_focus', 'qtype_omerocommon');
+        $PAGE->requires->string_for_js('feedback', 'question');
+        $PAGE->requires->string_for_js('answer_grade', 'qtype_omerocommon');
+        $PAGE->requires->string_for_js('answer_choiceno', 'qtype_omerocommon');
+        $PAGE->requires->string_for_js('validate_warning', 'qtype_omerocommon');
+        $PAGE->requires->string_for_js('validate_no_image', 'qtype_omerocommon');
+        $PAGE->requires->string_for_js('validate_no_answers', 'qtype_omerocommon');
+        $PAGE->requires->string_for_js('validate_at_least_one_100', 'qtype_omerocommon');
+        $PAGE->requires->string_for_js('validate_at_most_one_100', 'qtype_omerocommon');
+        $PAGE->requires->string_for_js('validate_sum_of_grades', 'qtype_omerocommon');
     }
 
 

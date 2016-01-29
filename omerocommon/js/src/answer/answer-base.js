@@ -156,7 +156,7 @@ define("qtype_omerocommon/answer-base",
                  */
                 prototype.updateHeader = function (index) {
                     // reference to the head
-                    this._answer_head.html("Answer " + index);
+                    this._answer_head.html(M.util.get_string("answer_choiceno", "qtype_omerocommon") + index);
                 };
 
 
