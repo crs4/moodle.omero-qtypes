@@ -469,8 +469,7 @@ abstract class qtype_omerocommon_edit_form extends qtype_multichoice_edit_form
         $mform = $this->_form;
         if (!empty($CFG->usetags)) {
             $mform->addElement('header', 'tagsheader', get_string('questionclassifiers', "qtype_omerocommon"));
-            $mform->addElement('omeroquestiontags', 'tags',
-                "", get_string('selectquestionclassifiers', "qtype_omerocommon"),
+            $mform->addElement('omeroquestiontags', 'tags', "", "officialtags",
                 get_string('editquestionclassifiers', "qtype_omerocommon"), array("display" => "onlyofficial"));
             $mform->setExpanded('tagsheader');
         }
@@ -552,7 +551,7 @@ abstract class qtype_omerocommon_edit_form extends qtype_multichoice_edit_form
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
         <h4 class="modal-title text-warning" id="myModalLabel">
             <i class="glyphicon glyphicon-warning-sign"></i> ' . get_string('validate_warning', 'qtype_omerocommon') .
-        '</h4>
+            '</h4>
       </div>
       <div class="modal-body text-left">
         <span id="modal-frame-text"></span>
@@ -615,7 +614,8 @@ abstract class qtype_omerocommon_edit_form extends qtype_multichoice_edit_form
      *
      * @throws coding_exception
      */
-    protected function export_locale_js_strings(){
+    protected function export_locale_js_strings()
+    {
         global $PAGE;
         $PAGE->requires->string_for_js('roi_shape_details', 'qtype_omerocommon');
         $PAGE->requires->string_for_js('roi_description', 'qtype_omerocommon');
