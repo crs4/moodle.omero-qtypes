@@ -187,11 +187,20 @@ define("qtype_omerocommon/question-editor-base",
                     var submit_function = function (e) {
                         try {
                             me.saveAll();
-                            if (!me.validate()) return false;
+                            var errors = me.validate();
+
+                            // prepare and display error messages
+                            if (errors.length > 0) {
+                                var errorMessage = "";
+                                for (var i in errors)
+                                    errorMessage += '<i class="glyphicon glyphicon-thumbs-down red"></i>  ' + errors[i] + '<br>';
+                                me._showDialogMessage(errorMessage);
+                            }
+                            return errors.length === 0;
+
                         } catch (e) {
                             console.error(e);
                             me._showDialogMessage(e.message);
-                            return false;
                         }
                     };
 
@@ -203,20 +212,19 @@ define("qtype_omerocommon/question-editor-base",
 
                 /**
                  * Validate data before submission
-                 * @returns {boolean}
+                 * @returns {array} a string array containing error messages
                  */
-                prototype.validate = function () {
-                    var result = true;
-                    if (this._answers.length < 1) {
-                        this._showDialogMessage("Answers are less than 1 !!!");
-                        result = false;
-                    }
+                prototype.validate = function (errors) {
 
+                    errors = errors || [];
                     if (!this._image_viewer_controller
                         || this._image_viewer_controller._image_id === null
                         || this._image_viewer_controller._image_id === undefined) {
-                        this._showDialogMessage("No image selected !!!");
-                        result = false;
+                        errors.push(M.util.get_string('validate_no_image', 'qtype_omerocommon'));
+                    }
+
+                    if (this._answers.length < 1) {
+                        errors.push(M.util.get_string('validate_no_answers', 'qtype_omerocommon'));
                     }
 
                     var single_correct_answer = this.hasSingleCorrectAnswer();
@@ -236,35 +244,16 @@ define("qtype_omerocommon/question-editor-base",
                     }
 
                     if (single_correct_answer) {
-                        if (found_max == 0) {
-                            this._showDialogMessage("One of the choices should have grade 100% !!!");
-                            result = false;
-                        } else if (found_max > 1) {
-                            this._showDialogMessage("At most one answer should have grade 100% !!!");
-                            result = false;
-                        }
+                        if (found_max == 0)
+                            errors.push(M.util.get_string('validate_at_least_one_100', 'qtype_omerocommon'));
+                        else if (found_max > 1)
+                            errors.push(M.util.get_string('validate_at_least_one_100', 'qtype_omerocommon'));
                     } else {
-                        if (total_fraction != 1) {
-                            this._showDialogMessage("The sum of grades should be equal to 100% !!!");
-                            result = false;
-                        }
+                        if (total_fraction != 1)
+                            errors.push(M.util.get_string('validate_sum_of_grades', 'qtype_omerocommon'));
                     }
 
-                    try {
-                        for (var i in this._answers) {
-                            var answer = this._answers[i];
-                            if (answer && answer._roi_id_list == 0) {
-                                this._showDialogMessage("Every answer group must have at least one ROI!!!");
-                                result = false;
-                                break;
-                            }
-                        }
-                    } catch (e) {
-                        console.error(e);
-                        result = false;
-                    }
-
-                    return result;
+                    return errors;
                 };
 
                 prototype._showDialogMessage = function (message) {

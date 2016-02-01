@@ -87,16 +87,16 @@ define("qtype_omerointeractive/answer-group",
                     panel_body.append(me._answer_container);
 
                     // roi id list
-                    me._build_list_of_rois("answer", "List of ROIs");
+                    me._build_list_of_rois("answer", M.util.get_string("answer_group_of_rois", "qtype_omerointeractive"));
 
                     // answer format
                     //me._build_hidden_of("answerformat", "1");
 
                     // answer grade
-                    me._build_select_of("fraction", "Grade");
+                    me._build_select_of("fraction", M.util.get_string("answer_grade", "qtype_omerocommon"));
 
                     // answer feedback
-                    me._build_textarea_of("feedback", "Feedback");
+                    me._build_textarea_of("feedback", M.util.get_string("feedback", "question"));
 
                     // answer format
                     //me._build_hidden_of("feedbackformat", "1");

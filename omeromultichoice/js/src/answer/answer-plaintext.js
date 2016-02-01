@@ -87,10 +87,10 @@ define("qtype_omeromultichoice/answer-plaintext",
                     me._build_hidden_of("answerformat", "1");
 
                     // answer grade
-                    me._build_select_of("fraction", "Grade");
+                    me._build_select_of("fraction", M.util.get_string("answer_grade", "qtype_omerocommon"));
 
                     // answer feedback
-                    me._build_textarea_of("feedback", "Feedback");
+                    me._build_textarea_of("feedback",  M.util.get_string("feedback", "question"));
 
                     // answer format
                     me._build_hidden_of("feedbackformat", "1");

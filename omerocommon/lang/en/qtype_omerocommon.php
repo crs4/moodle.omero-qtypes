@@ -38,6 +38,10 @@ $string['questionclassifiers'] = 'Classifiers';
 $string['selectquestionclassifiers'] = 'Select one or more question classifiers';
 $string['editquestionclassifiers'] = 'Edit';
 
+
+$string['answer_choiceno'] = "Answer choice n. ";
+$string['answer_grade'] = "Grade";
+
 $string['answer_options_properties'] = 'Properties of answer options';
 
 $string['general_and_combined_feedback'] = 'General and combined feedback';
@@ -56,6 +60,7 @@ $string['roi_shape_inspector'] = "ROI Shapes Inspector";
 
 $string['omero_image_viewer'] = "Omero Image Viewer";
 $string['omero_image_and_rois'] = "Omero Image and ROIs";
+$string['image_viewer_lock_student_navigation'] = "lock student navigation";
 
 $string['qtype_0'] = "Plaintext";
 $string['qtype_1'] = "ROI answer";
@@ -64,12 +69,25 @@ $string['qtype_1'] = "ROI answer";
 $string['savechangesandcontinueediting'] = "Save";
 $string['savechangesandexit'] = "Save and Exit";
 
+$string['validate_warning'] = "Warning";
+$string['validate_no_answers'] = "Answers are less than 1 !!!";
+$string['validate_no_image'] = "No image selected !!!";
+$string['validate_at_least_one_100'] = "One of the choices should have grade 100% !!!";
+$string['validate_at_most_one_100'] = "At most one answer should have grade 100% !!!";
+$string['validate_sum_of_grades'] = "The sum of grades should be equal to 100% !!!";
+
 
 $string['roi_id'] = 'Identifier';
 $string['roi_comment'] = 'Comment';
 $string['roi_type'] = 'Type';
 $string['roi_width'] = 'Width';
 $string['roi_height'] = 'Height';
+
+$string['roi_shape_details'] = "ROI Shape Details";
+$string['roi_description'] = "Description";
+$string['roi_visibility'] = "Visibility";
+$string['roi_focus'] = "Focus";
+
 
 $string['language'] = "Language";
 

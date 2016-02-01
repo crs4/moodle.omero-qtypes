@@ -153,6 +153,23 @@ define("qtype_omerointeractive/question-editor-interactive",
                     console.log("Removed new ROIs ", e);
                     updateGroupButton(this);
                 };
+
+                prototype.validate = function(){
+                    var errors = this.parent.validate.call(this);
+                    try {
+                        for (var i in this._answers) {
+                            var answer = this._answers[i];
+                            if (answer && answer._roi_id_list == 0) {
+                                errors.push(M.util.get_string('validation_noroi_per_group', 'qtype_omerointeractive'));
+                                break;
+                            }
+                        }
+                    } catch (e) {
+                        console.error(e);
+                        errors.push(e.message);
+                    }
+                    return errors;
+                }
             },
 
 

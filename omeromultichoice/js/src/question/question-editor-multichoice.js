@@ -67,6 +67,10 @@ define("qtype_omeromultichoice/question-editor-multichoice",
                 prototype.buildAnswer = function (answer_number, fraction_options) {
                     return new M.qtypes.omeromultichoice.AnswerPlaintext(this._answers_section_id, answer_number, fraction_options);
                 };
+
+                prototype.validate = function(){
+                    return this.parent.validate.call(this);
+                }
             },
 
 
