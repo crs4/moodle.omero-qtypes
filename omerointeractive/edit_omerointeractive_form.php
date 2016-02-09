@@ -153,7 +153,7 @@ class qtype_omerointeractive_edit_form extends qtype_omerocommon_edit_form
 
 
         $mform->addElement('header', 'roitableinspectorheader',
-            get_string('roi_shape_inspector', 'qtype_omeromultichoice'), '');
+            get_string('roi_shape_inspector', 'qtype_omerocommon'), '');
         $mform->setExpanded('roitableinspectorheader', 1);
 
         $mform->addElement('html', '
