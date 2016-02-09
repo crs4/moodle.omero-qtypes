@@ -77,4 +77,4 @@ $string['validate_no_answers'] = "Answers are less than 1 !!!";
 $string['validate_no_image'] = "No image selected !!!";
 $string['validate_at_least_one_100'] = "One of the choices should have grade 100% !!!";
 $string['validate_at_most_one_100'] = "At most one answer should have grade 100% !!!";
-$string['validate_sum_of_grades'] = "The sum of grades should be equal to 100% !!!";
+$string['validate_sum_of_grades'] = "The sum of answer grades should be equal to 100% !!!";
