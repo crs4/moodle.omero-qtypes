@@ -27,8 +27,8 @@
 $string['pluginname'] = 'Omero Interactive';
 $string['pluginname_help'] = 'Tipo di domanda in cui lo studente interagisce con l\'immagine per identificarne specifiche aree (con l\'ausilio di <em>markers</em>) come risposta.';
 $string['pluginname_link'] = 'question/type/omeroineractive';
-$string['pluginnameadding'] = 'Aggiungi una domanda di tipo Omero Interactive';
-$string['pluginnameediting'] = 'Modifica una domanda di tipo Omero Interactive';
+$string['pluginnameadding'] = 'Aggiungi una domanda "Omero Interactive"';
+$string['pluginnameediting'] = 'Modifica una domanda "Omero Interactive"';
 $string['pluginnamesummary'] = 'Tipo di domanda in cui lo studente interagisce con l\'immagine per identificarne specifiche aree (con l\'ausilio di <em>markers</em>) come risposta. La valutazione della risposta dello studente avviene per comparazione della posizione dei suoi marker con le ROIs posizionate dal docente.';
 
 # answers

@@ -26,8 +26,8 @@
 # generics
 $string['pluginname'] = 'Omero MultiChoice';
 $string['pluginname_link'] = 'question/type/omeromultichoice';
-$string['pluginnameadding'] = 'Adding a Omero MultiChoice Question';
-$string['pluginnameediting'] = 'Editing a Omero MultiChoice Question';
+$string['pluginnameadding'] = 'Adding a "Omero MultiChoice" question';
+$string['pluginnameediting'] = 'Editing a "Omero MultiChoice" question';
 $string['pluginname_help'] = 'A question type which allows to choose a digital pathology image, select which ROIs of the image will be displayed and to specify a set of multiple choice answers.';
 $string['pluginnamesummary'] = 'A question type which allows to choose a digital pathology image, select which ROIs of the image will be displayed and to specify a set of multiple choice answers.';
 
