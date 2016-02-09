@@ -89,10 +89,12 @@ class qtype_omeromultichoice_edit_form extends qtype_omerocommon_edit_form
                           </div>
                           <div id="omero-image-view-lock-container">
                               <label for="omero-image-view-lock">'.
-                                get_string('image_viewer_lock_student_navigation', 'qtype_omerocommon') .
-                              '</label>
+                                get_string('image_viewer_student_navigation', 'qtype_omerocommon') .
+                             '</label>
                               <input id="omero-image-view-lock" name="omero-image-view-lock" data-toggle="toggle"
-                                     type="checkbox" data-onstyle="success" data-offstyle="danger">
+                                     type="checkbox" data-onstyle="success" data-offstyle="default"
+                                     data-on="'. get_string('image_viewer_lock_student_navigation','qtype_omerocommon') .'"
+                                     data-off="'. get_string('image_viewer_unlock_student_navigation', 'qtype_omerocommon') .'">
                           </div>
                         </div>
         ');
