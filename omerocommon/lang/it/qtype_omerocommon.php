@@ -53,7 +53,9 @@ $string['general_and_combined_feedback'] = 'Feedback generale e combinato';
 
 # image viewer
 $string['omero_image_viewer'] = "Visualizzatore dell'immagine Omero";
-$string['image_viewer_lock_student_navigation'] = "blocca navigazione studente";
+$string['image_viewer_student_navigation'] = "blocco navigazione studente:";
+$string['image_viewer_locked_student_navigation'] = "<i class='glyphicon glyphicon-lock'></i>";
+$string['image_viewer_lock_student_navigation'] = "";
 
 # ROIs
 $string['roi_shape_inspector'] = "ROI Shape Inspector";
