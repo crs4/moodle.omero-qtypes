@@ -50,10 +50,14 @@ body[id^=page-question-type-omero] #omero-image-viewer-toolbar {
 
 body[id^=page-question-type-omero] #omero-image-view-lock-container {
     float: right;
+    margin-top: 20px;
 }
+
+
 
 body[id^=page-question-type-omero] #omero-image-view-lock {
     margin-left: 5px;
+    width: auto;
 }
 
 body[id^=page-question-type-omero] #omero-image-viewer-properties {

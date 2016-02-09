@@ -142,10 +142,12 @@ class qtype_omerointeractive_edit_form extends qtype_omerocommon_edit_form
                           </div>
                           <div id="omero-image-view-lock-container">
                               <label for="omero-image-view-lock">' .
-            get_string('image_viewer_lock_student_navigation', 'qtype_omerocommon') .
+            get_string('image_viewer_student_navigation', 'qtype_omerocommon') .
             '</label>
                               <input id="omero-image-view-lock" name="omero-image-view-lock" data-toggle="toggle"
-                                     type="checkbox" data-onstyle="success" data-offstyle="danger">
+                                     type="checkbox" data-onstyle="success" data-offstyle="default"
+                                     data-on="'. get_string('image_viewer_locked_student_navigation','qtype_omerocommon') .'"
+                                     data-off="'. get_string('image_viewer_lock_student_navigation', 'qtype_omerocommon') .'">
                           </div>
                         </div>
         ');
@@ -153,7 +155,7 @@ class qtype_omerointeractive_edit_form extends qtype_omerocommon_edit_form
 
 
         $mform->addElement('header', 'roitableinspectorheader',
-            get_string('roi_shape_inspector', 'qtype_omeromultichoice'), '');
+            get_string('roi_shape_inspector', 'qtype_omerocommon'), '');
         $mform->setExpanded('roitableinspectorheader', 1);
 
         $mform->addElement('html', '
@@ -167,9 +169,9 @@ class qtype_omerointeractive_edit_form extends qtype_omerocommon_edit_form
                     <!-- Single button -->
                     <div class="btn-group">
                       <button id="' . self::ADD_ROI_TO_GROUP . '"
-                              type="button" class="btn btn-info  dropdown-toggle input-small disabled"
+                              type="button" class="btn btn-info dropdown-toggle disabled"
                               data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">' .
-                                get_string('roi_group', 'qtype_omerointeractive') .
+                                get_string('answer_group', 'qtype_omerointeractive') .
                             ' <span class="caret"></span>
                       </button>
                       <ul id="' . self::ADD_ROI_GROUP_LIST_OPTIONS . '" class="dropdown-menu option input-small " role="menu">

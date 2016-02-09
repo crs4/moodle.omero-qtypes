@@ -38,10 +38,13 @@ class MoodleQuickForm_omeroquestiontags extends MoodleQuickForm_tags
      */
     function MoodleQuickForm_omeroquestiontags($elementName = null, $elementLabel = null,
                                                $selectElementLabel = null,
+                                               $elementDescription = null,
                                                $editElementLabel = null,
                                                $options = array(), $attributes = null)
     {
         parent::MoodleQuickForm_tags($elementName, $elementLabel, $options, $attributes);
+        $this->elementLabel = $elementLabel;
+        $this->elementDescription = $elementDescription;
         $this->selectElementLabel = $selectElementLabel;
         $this->editElementLabel = $editElementLabel;
     }
@@ -61,7 +64,7 @@ class MoodleQuickForm_omeroquestiontags extends MoodleQuickForm_tags
             $this->_load_official_tags();
 
             // If the user can manage official tags, give them a link to manage them.
-            $label = $this->selectElementLabel !== null ? $this->selectElementLabel : get_string('otags', 'tag');
+            $label = $this->elementDescription !== null ? $this->elementDescription : get_string('otags', 'tag');
             if (has_capability('moodle/tag:manage', context_system::instance())) {
                 $url = $CFG->wwwroot . '/tag/manage.php';
                 $label .= ' ' . $OUTPUT->action_link(

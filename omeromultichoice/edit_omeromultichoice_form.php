@@ -89,10 +89,12 @@ class qtype_omeromultichoice_edit_form extends qtype_omerocommon_edit_form
                           </div>
                           <div id="omero-image-view-lock-container">
                               <label for="omero-image-view-lock">'.
-                                get_string('image_viewer_lock_student_navigation', 'qtype_omerocommon') .
-                              '</label>
+                                get_string('image_viewer_student_navigation', 'qtype_omerocommon') .
+                             '</label>
                               <input id="omero-image-view-lock" name="omero-image-view-lock" data-toggle="toggle"
-                                     type="checkbox" data-onstyle="success" data-offstyle="danger">
+                                     type="checkbox" data-onstyle="success" data-offstyle="default"
+                                     data-on="'. get_string('image_viewer_locked_student_navigation','qtype_omerocommon') .'"
+                                     data-off="'. get_string('image_viewer_lock_student_navigation', 'qtype_omerocommon') .'">
                           </div>
                         </div>
         ');
@@ -100,7 +102,7 @@ class qtype_omeromultichoice_edit_form extends qtype_omerocommon_edit_form
 
 
         $mform->addElement('header', 'roitableinspectorheader',
-            get_string('roi_shape_inspector', 'qtype_omeromultichoice'), '');
+            get_string('roi_shape_inspector', 'qtype_omerocommon'), '');
         $mform->setExpanded('roitableinspectorheader', 0);
 
         $mform->addElement('html', '
@@ -183,5 +185,6 @@ class qtype_omeromultichoice_edit_form extends qtype_omerocommon_edit_form
         global $PAGE;
         parent::export_locale_js_strings();
         $PAGE->requires->string_for_js('correctansweris', 'qtype_omerointeractive');
+        $PAGE->requires->string_for_js('answer_text', 'qtype_omeromultichoice');
     }
 }

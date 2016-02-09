@@ -26,15 +26,15 @@
 # generics
 $string['pluginname'] = 'Omero MultiChoice';
 $string['pluginname_link'] = 'question/type/omeromultichoice';
-$string['pluginnameadding'] = 'Adding a "Omero MultiChoice" question';
-$string['pluginnameediting'] = 'Editing a "Omero MultiChoice" question';
-$string['pluginname_help'] = 'A multiple choice question type which allows to choose an Omero image and select a set of ROIs (Region Of Interest) defined within the image to display.';
-$string['pluginnamesummary'] = 'A multiple choice question type which allows to choose an Omero image and select a set of ROIs (Region Of Interest) defined within the image to display.';
+$string['pluginnameadding'] = 'Inserisci una domanda "Omero MultiChoice"';
+$string['pluginnameediting'] = 'Modifica una domanda "Omero MultiChoice"';
+$string['pluginname_help'] = 'Tipo di domanda a risposta multipla che consente la scelta e l\'associazione di un\'immagine Omero e la selezione di un insieme di ROI (Region Of Interest) da visualizzare.';
+$string['pluginnamesummary'] = 'Tipo di domanda a risposta multipla che consente la scelta e l\'associazione di un\'immagine Omero e la selezione di un insieme di ROI (Region Of Interest) da visualizzare..';
 
 # answers
-$string['add_answers'] = 'Add answers';
-$string['answer_text'] = 'Text';
+$string['add_answers'] = 'Aggiungi risposte';
+$string['answer_text'] = 'Testo';
 
 # feedback
-$string['correctansweris'] = 'The only correct answer is: ';
-$string['correctanswerare'] = 'The correct answers are only: ';
+$string['correctansweris'] = 'La sola risposta corretta è: ';
+$string['correctanswerare'] = 'Le risposte corrette sono: ';
