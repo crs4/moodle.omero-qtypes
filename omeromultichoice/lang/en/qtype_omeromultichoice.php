@@ -33,6 +33,7 @@ $string['pluginnamesummary'] = 'A multiple choice question type which allows to 
 
 # answers
 $string['add_answers'] = 'Add answers';
+$string['answer_text'] = 'Text';
 
 # feedback
 $string['correctansweris'] = 'The only correct answer is: ';

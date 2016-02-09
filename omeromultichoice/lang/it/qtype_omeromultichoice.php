@@ -33,6 +33,7 @@ $string['pluginnamesummary'] = 'Tipo di domanda a risposta multipla che consente
 
 # answers
 $string['add_answers'] = 'Aggiungi risposte';
+$string['answer_text'] = 'Testo';
 
 # feedback
 $string['correctansweris'] = 'La sola risposta corretta è: ';

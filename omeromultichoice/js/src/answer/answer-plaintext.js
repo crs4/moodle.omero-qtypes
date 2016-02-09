@@ -81,7 +81,7 @@ define("qtype_omeromultichoice/answer-plaintext",
                     panel_body.append(me._answer_container);
 
                     // answer text
-                    me._build_textarea_of("answer", "Text");
+                    me._build_textarea_of("answer",  M.util.get_string("answer_text", "qtype_omeromultichoice"));
 
                     // answer format
                     me._build_hidden_of("answerformat", "1");
