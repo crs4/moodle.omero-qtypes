@@ -23,6 +23,8 @@
 
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
+
+# generics
 $string['pluginname'] = 'Omero Interactive';
 $string['pluginname_help'] = 'Create a cloze question type with embedded response fields in the question text to enter a numeric
 or text value or select a value from a number of options.';
@@ -34,65 +36,24 @@ sub questions in the question text.
 So the student can enter a numeric or short text answer or choose an answer or answer(s) from
  using a select box, check boxes or radio boxes.';
 
-
+# answers
 $string['add_answers'] = "Add answer groups";
 $string['answer_groups'] = "Answer Groups";
-
-
-
-$string['answer_options_properties'] = 'Properties of answer options';
-
-$string['general_and_combined_feedback'] = 'General and combined feedback';
-
-
-
-
-
-$string['choiceno'] = '{$a}';
-
-$string['roi_choiceno'] = 'ROI choice {$a}';
-
-
-
-$string['answer_type'] = "Answer type";
-
-$string['roi_shape_inspector'] = "ROI Shapes Inspector";
-
-$string['omero_image_viewer'] = "Omero Image Viewer";
-$string['omero_image_and_rois'] = "Omero Image and ROIs";
-
-$string['qtype_0'] = "Plaintext";
-$string['qtype_1'] = "ROI answer";
-
-
-$string['savechangesandcontinueediting'] = "Save";
-$string['savechangesandexit'] = "Save and Exit";
-
 $string['answer_group_of_rois'] = "List of ROIs";
 $string['validation_noroi_per_group'] = "Every answer group must have at least one ROI !!!";
 
-
-$string['roi_id'] = 'Identifier';
-$string['roi_comment'] = 'Comment';
-$string['roi_type'] = 'Type';
-$string['roi_width'] = 'Width';
-$string['roi_height'] = 'Height';
-$string['roi_group'] = 'Group';
-
-$string['language'] = "Language";
-
-
+# marker controls
 $string['add_marker'] = "Add";
 $string['edit_marker'] = "Edit";
 $string['clear_markers'] = "Clear";
-
-$string['answerassociatedrois'] = 'The set of ROIs <em>(Regions Of Interest)</em> of this question is: ';
-
-$string['correctansweris'] = 'To correctly answer you have to select one of the following ROIs: ';
-$string['correctanswerare'] = 'To correctly and completely answer you have to select the following ROIs: ';
-
-
 $string['marker'] = 'Marker';
 $string['yourmarkers'] = 'Your markers: ';
 
+# focus area info
 $string['focusareas'] = 'Focus Areas: ';
+
+# feedback
+$string['answerassociatedroi'] = 'The ROI <em>(Region Of Interest)</em> of this question is: ';
+$string['answerassociatedrois'] = 'The set of ROIs <em>(Regions Of Interest)</em> of this question is: ';
+$string['correctansweris'] = 'To correctly answer you have to select one of the following ROIs: ';
+$string['correctanswerare'] = 'To correctly and completely answer you have to select the following ROIs: ';

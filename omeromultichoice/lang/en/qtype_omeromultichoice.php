@@ -23,6 +23,8 @@
 
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
+
+# generics
 $string['pluginname'] = 'Omero MultiChoice';
 $string['pluginname_help'] = 'Create a cloze question type with embedded response fields in the question text to enter a numeric
 or text value or select a value from a number of options.';
@@ -33,38 +35,10 @@ $string['pluginnamesummary'] = 'A Omero MultiChoice question type which allows t
 sub questions in the question text.
 So the student can enter a numeric or short text answer or choose an answer or answer(s) from
  using a select box, check boxes or radio boxes.';
+
+# answers
 $string['add_answers'] = 'Add answers';
-$string['add_roi_answer'] = 'Add new ROI answer';
 
-$string['choiceno'] = '{$a}';
-
-$string['roi_choiceno'] = 'ROI choice {$a}';
-
-$string['add_roi_answer'] = 'Add a new ROI based answer';
-
-$string['answer_type'] = "Answer type";
-
-$string['roi_shape_inspector'] = "ROI Shape Inspector";
-$string['answer_groups'] = "Answer Groups";
-
-$string['omero_image_and_rois'] = "Omero Image and ROIs";
-
-$string['qtype_0'] = "Plaintext";
-$string['qtype_1'] = "ROI answer";
-
-$string['roi_id'] = 'Identifier';
-$string['roi_comment'] = 'Comment';
-$string['roi_type'] = 'Type';
-$string['roi_width'] = 'Width';
-$string['roi_height'] = 'Height';
-
-$string['language'] = "Language";
-
-$string['answerhowmany'] = 'One or multiple correct answers?';
-$string['answersingleno'] = 'Multiple correct answers allowed';
-$string['answersingleyes'] = 'One correct answer only';
-
-$string['answerassociatedroi'] = 'The ROI <em>(Region Of Interest)</em> of this question is: ';
-$string['answerassociatedrois'] = 'The ROIs <em>(Region Of Interest)</em> of this question are: ';
+# feedback
 $string['correctansweris'] = 'The only correct answer is: ';
 $string['correctanswerare'] = 'The correct answers are only: ';
