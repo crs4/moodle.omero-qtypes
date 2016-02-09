@@ -20,21 +20,16 @@
  * @package    qtype
  * @subpackage omeromultichoice
  * @copyright  2015 CRS4
-
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 # generics
 $string['pluginname'] = 'Omero MultiChoice';
-$string['pluginname_help'] = 'Create a cloze question type with embedded response fields in the question text to enter a numeric
-or text value or select a value from a number of options.';
 $string['pluginname_link'] = 'question/type/omeromultichoice';
 $string['pluginnameadding'] = 'Adding a Omero MultiChoice Question';
 $string['pluginnameediting'] = 'Editing a Omero MultiChoice Question';
-$string['pluginnamesummary'] = 'A Omero MultiChoice question type which allows the embedding of the response fields for various available
-sub questions in the question text.
-So the student can enter a numeric or short text answer or choose an answer or answer(s) from
- using a select box, check boxes or radio boxes.';
+$string['pluginname_help'] = 'A question type which allows to choose a digital pathology image, select which ROIs of the image will be displayed and to specify a set of multiple choice answers.';
+$string['pluginnamesummary'] = 'A question type which allows to choose a digital pathology image, select which ROIs of the image will be displayed and to specify a set of multiple choice answers.';
 
 # answers
 $string['add_answers'] = 'Add answers';

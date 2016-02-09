@@ -20,21 +20,16 @@
  * @package    qtype
  * @subpackage omeromultichoice
  * @copyright  2015 CRS4
-
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 # generics
 $string['pluginname'] = 'Omero Interactive';
-$string['pluginname_help'] = 'Create a cloze question type with embedded response fields in the question text to enter a numeric
-or text value or select a value from a number of options.';
+$string['pluginname_help'] = 'A question type which asks the students to identify, using markers, specific areas on the image in response to the test questions and it’s able to evaluate the student answers by comparing the location of the markers with instructor’s specified ROIs.';
 $string['pluginname_link'] = 'question/type/omeroineractive';
 $string['pluginnameadding'] = 'Adding a Omero Interactive question';
 $string['pluginnameediting'] = 'Editing a Omero Interactive question';
-$string['pluginnamesummary'] = 'A Omero Interactive question type which allows the embedding of the response fields for various available
-sub questions in the question text.
-So the student can enter a numeric or short text answer or choose an answer or answer(s) from
- using a select box, check boxes or radio boxes.';
+$string['pluginnamesummary'] = 'A question type which asks the students to identify, using markers, specific areas on the image in response to the test questions and it’s able to evaluate the student answers by comparing the location of the markers with instructor’s specified ROIs.';
 
 # answers
 $string['add_answers'] = "Add answer groups";
