@@ -167,9 +167,9 @@ class qtype_omerointeractive_edit_form extends qtype_omerocommon_edit_form
                     <!-- Single button -->
                     <div class="btn-group">
                       <button id="' . self::ADD_ROI_TO_GROUP . '"
-                              type="button" class="btn btn-info  dropdown-toggle input-small disabled"
+                              type="button" class="btn btn-info dropdown-toggle disabled"
                               data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">' .
-                                get_string('roi_group', 'qtype_omerointeractive') .
+                                get_string('answer_group', 'qtype_omerointeractive') .
                             ' <span class="caret"></span>
                       </button>
                       <ul id="' . self::ADD_ROI_GROUP_LIST_OPTIONS . '" class="dropdown-menu option input-small " role="menu">

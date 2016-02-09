@@ -33,6 +33,7 @@ $string['pluginnamesummary'] = 'Tipo di domanda in cui lo studente interagisce c
 
 # answers
 $string['add_answers'] = "Aggiungi gruppo di risposte";
+$string['answer_group'] = "Gruppo";
 $string['answer_groups'] = "Gruppi di risposte";
 $string['answer_group_of_rois'] = "Liste delle ROIs";
 $string['validation_noroi_per_group'] = "Ogni gruppo di risposte deve avere almeno una ROI !!!";
