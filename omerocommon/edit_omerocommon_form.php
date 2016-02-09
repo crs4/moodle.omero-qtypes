@@ -470,7 +470,10 @@ abstract class qtype_omerocommon_edit_form extends qtype_multichoice_edit_form
         if (!empty($CFG->usetags)) {
             $mform->addElement('header', 'tagsheader', get_string('questionclassifiers', "qtype_omerocommon"));
             $mform->addElement('omeroquestiontags', 'tags', "", "officialtags",
-                get_string('editquestionclassifiers', "qtype_omerocommon"), array("display" => "onlyofficial"));
+                get_string('selectquestionclassifiers', "qtype_omerocommon"),
+                get_string('editquestionclassifiers', "qtype_omerocommon"),
+                array("display" => "onlyofficial")
+            );
             $mform->setExpanded('tagsheader');
         }
     }

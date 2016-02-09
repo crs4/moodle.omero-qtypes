@@ -35,8 +35,8 @@ $string['language'] = "Language";
 
 # classifiers (i.e., question tags)
 $string['questionclassifiers'] = 'Classifiers';
-$string['selectquestionclassifiers'] = 'Select one or more question classifiers';
-$string['editquestionclassifiers'] = 'Edit';
+$string['selectquestionclassifiers'] = 'Select one or more question classifiers: ';
+$string['editquestionclassifiers'] = 'Manage classifiers';
 
 # answers
 $string['answer_options_properties'] = 'Properties of answer options';

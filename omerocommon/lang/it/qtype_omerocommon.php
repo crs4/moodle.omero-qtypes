@@ -35,15 +35,15 @@ $string['language'] = "Lingua";
 
 # classifiers (i.e., question tags)
 $string['questionclassifiers'] = 'Classificatori';
-$string['selectquestionclassifiers'] = 'Seleziona uno o più classificatori di domanda';
-$string['editquestionclassifiers'] = 'Modifica';
+$string['selectquestionclassifiers'] = 'Seleziona uno o più classificatori di domanda: ';
+$string['editquestionclassifiers'] = 'Gestisci Classificatori';
 
 # answers
 $string['answer_options_properties'] = 'Proprietà delle opzioni di risposta';
 $string['add_answers'] = 'Aggiungi risposte';
 $string['choiceno'] = '{$a}';
 $string['answer_choiceno'] = "Opzione risposta n. ";
-$string['answer_grade'] = "Voto";
+$string['answer_grade'] = "Punteggio";
 $string['answerhowmany'] = 'Una sola o più risposte corrette?';
 $string['answersingleno'] = 'Consenti risposte corrette multiple';
 $string['answersingleyes'] = 'Una sola risposta corretta';
