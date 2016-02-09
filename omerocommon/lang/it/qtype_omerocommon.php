@@ -52,7 +52,7 @@ $string['answersingleyes'] = 'Una sola risposta corretta';
 $string['general_and_combined_feedback'] = 'Feedback generale e combinato';
 
 # image viewer
-$string['omero_image_viewer'] = "Visualizzatore Immagine Omero";
+$string['omero_image_viewer'] = "Visualizzatore dell'immagine Omero";
 $string['image_viewer_lock_student_navigation'] = "blocca navigazione studente";
 
 # ROIs
