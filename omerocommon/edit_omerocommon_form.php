@@ -638,7 +638,7 @@ abstract class qtype_omerocommon_edit_form extends qtype_multichoice_edit_form
      */
     protected function get_more_choices_string()
     {
-        return get_string('add_roi_answer', 'qtype_omerocommon');
+        return get_string('add_answers', 'qtype_omerocommon');
     }
 
 
