@@ -28,8 +28,8 @@ $string['pluginname'] = 'Omero MultiChoice';
 $string['pluginname_link'] = 'question/type/omeromultichoice';
 $string['pluginnameadding'] = 'Adding a "Omero MultiChoice" question';
 $string['pluginnameediting'] = 'Editing a "Omero MultiChoice" question';
-$string['pluginname_help'] = 'A question type which allows to choose a digital pathology image, select which ROIs of the image will be displayed and to specify a set of multiple choice answers.';
-$string['pluginnamesummary'] = 'A question type which allows to choose a digital pathology image, select which ROIs of the image will be displayed and to specify a set of multiple choice answers.';
+$string['pluginname_help'] = 'A multiple choice question type which allows to choose an Omero image and select a set of ROIs (Region Of Interest) defined within the image to display.';
+$string['pluginnamesummary'] = 'A multiple choice question type which allows to choose an Omero image and select a set of ROIs (Region Of Interest) defined within the image to display.';
 
 # answers
 $string['add_answers'] = 'Add answers';
