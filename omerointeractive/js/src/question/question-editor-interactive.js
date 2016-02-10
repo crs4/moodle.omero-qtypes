@@ -141,7 +141,7 @@ define("qtype_omerointeractive/question-editor-interactive",
                  *
                  * @param answer_number
                  * @param fraction_options
-                 * @returns {M.qtypes.omeromultichoice.AnswerPlaintext}
+                 * @returns {M.qtypes.omerointeractive.AnswerGroup}
                  */
                 prototype.buildAnswer = function (answer_number, fraction_options, answer_index) {
                     return new M.qtypes.omerointeractive.AnswerGroup(this._answers_section_id, answer_number, fraction_options, answer_index);
