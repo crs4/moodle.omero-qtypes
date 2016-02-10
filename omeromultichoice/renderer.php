@@ -222,7 +222,7 @@ abstract class qtype_omeromultichoice_base_renderer extends qtype_multichoice_re
             }
         }
 
-        $multi_correct_answer = ($question instanceof qtype_omerointeractive_multi_question);
+        $multi_correct_answer = ($question instanceof qtype_omeromultichoice_multi_renderer);
         if (!$multi_correct_answer) $no_max_markers = 1;
 
         $inputname = $qa->get_qt_field_name('answer');
