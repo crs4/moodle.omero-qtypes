@@ -1,44 +1,45 @@
 <?php
-// This file is part of Moodle - http://moodle.org/
+
+// Copyright (c) 2015-2016, CRS4
 //
-// Moodle is free software: you can redistribute it and/or modify
-// it under the terms of the GNU General Public License as published by
-// the Free Software Foundation, either version 3 of the License, or
-// (at your option) any later version.
+// Permission is hereby granted, free of charge, to any person obtaining a copy of
+// this software and associated documentation files (the "Software"), to deal in
+// the Software without restriction, including without limitation the rights to
+// use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of
+// the Software, and to permit persons to whom the Software is furnished to do so,
+// subject to the following conditions:
 //
-// Moodle is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-// GNU General Public License for more details.
+// The above copyright notice and this permission notice shall be included in all
+// copies or substantial portions of the Software.
 //
-// You should have received a copy of the GNU General Public License
-// along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS
+// FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
+// COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
+// IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
+// CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 /**
  * omeromultichoice question renderer class.
  *
  * @package    qtype
- * @subpackage omeromultichoice
- * @copyright  2015 CRS4
- * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later //FIXME: check the licence
+ * @subpackage omerointeractive
+ * @copyright  2015-2016 CRS4
+ * @license    https://opensource.org/licenses/mit-license.php MIT license
  */
-
 
 defined('MOODLE_INTERNAL') || die();
-
-
-/**
- * Generates the output for omeromultichoice questions.
- *
- * @copyright  2015 CRS4
- * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later //FIXME: check the licence
- */
 
 require_once($CFG->dirroot . '/question/type/omerocommon/js/viewer_config.php');
 require_once($CFG->dirroot . '/question/type/multichoice/renderer.php');
 require_once($CFG->dirroot . '/question/type/omerocommon/js/modules.php');
 
-
+/**
+ * Generates the output for omeromultichoice questions (single correct answer).
+ *
+ * @copyright  2015-2016 CRS4
+ * @license    https://opensource.org/licenses/mit-license.php MIT license
+ */
 class qtype_omerointeractive_single_renderer extends qtype_multichoice_single_renderer
 {
     public function head_code(question_attempt $qa)
@@ -97,6 +98,12 @@ class qtype_omerointeractive_single_renderer extends qtype_multichoice_single_re
 }
 
 
+/**
+ * Generates the output for omeromultichoice questions (multiple correct answers).
+ *
+ * @copyright  2015-2016 CRS4
+ * @license    https://opensource.org/licenses/mit-license.php MIT license
+ */
 class qtype_omerointeractive_multi_renderer extends qtype_multichoice_multi_renderer
 {
     public function head_code(question_attempt $qa)
@@ -171,7 +178,12 @@ class qtype_omerointeractive_multi_renderer extends qtype_multichoice_multi_rend
     }
 }
 
-
+/**
+ * Generates the output for omeromultichoice questions: base class with utility methods.
+ *
+ * @copyright  2015-2016 CRS4
+ * @license    https://opensource.org/licenses/mit-license.php MIT license
+ */
 abstract class qtype_omerointeractive_base_renderer extends qtype_multichoice_renderer_base
 {
 
@@ -345,16 +357,16 @@ abstract class qtype_omerointeractive_base_renderer extends qtype_multichoice_re
         $result .= '<!-- TOOLBAR -->
                 <div class="btn-group interactive-player-toolbar pull-right" style="margin-left: 5px;" data-toggle="buttons" aria-pressed="false" autocomplete="true">
                     <a href="#" id="' . self::to_unique_identifier($qa, self::IMAGE_CLEAR_MARKER_CTRL) . '" class="btn btn-default disabled" aria-label="Left Align">
-                        <i class="glyphicon glyphicon-remove"></i> '. get_string('clear_markers', 'qtype_omerointeractive') .
-                    '</a>
+                        <i class="glyphicon glyphicon-remove"></i> ' . get_string('clear_markers', 'qtype_omerointeractive') .
+            '</a>
                 </div>
                 <div class="btn-group interactive-player-toolbar pull-right" data-toggle="buttons" aria-pressed="false" autocomplete="off">
                     <a href="#" id="' . self::to_unique_identifier($qa, self::IMAGE_ADD_MARKER_CTRL) . '" class="btn btn-default disabled"  aria-label="Left Align">
-                        <i class="glyphicon glyphicon-plus"></i> '. get_string('add_marker', 'qtype_omerointeractive') .
-                    '</a>
+                        <i class="glyphicon glyphicon-plus"></i> ' . get_string('add_marker', 'qtype_omerointeractive') .
+            '</a>
                     <a href="#" id="' . self::to_unique_identifier($qa, self::IMAGE_EDIT_MARKER_CTRL) . '" class="btn btn-default disabled" aria-label="Left Align">
-                        <i class="glyphicon glyphicon-edit"></i> '. get_string('edit_marker', 'qtype_omerointeractive') .
-                    '</a>
+                        <i class="glyphicon glyphicon-edit"></i> ' . get_string('edit_marker', 'qtype_omerointeractive') .
+            '</a>
                 </div>';
 
         $result .= '<div id="' . self::to_unique_identifier($qa, "graphics_container") . '" class="image-viewer-container" style="position: relative;" >

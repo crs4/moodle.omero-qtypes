@@ -20,7 +20,7 @@
  * @package    qtype
  * @subpackage omeromultichoice
  * @copyright  2015 CRS4
- * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later //FIXME: check the licence
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later //FIXME: check the license
  */
 
 
@@ -31,7 +31,7 @@ defined('MOODLE_INTERNAL') || die();
  * Generates the output for omeromultichoice questions.
  *
  * @copyright  2015 CRS4
- * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later //FIXME: check the licence
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later //FIXME: check the license
  */
 
 require_once($CFG->dirroot . '/question/type/multichoice/renderer.php');
