@@ -26,7 +26,7 @@
  * @package    qtype
  * @subpackage omeromultichoice
  * @copyright  2015-2016 CRS4
- * @licence    https://opensource.org/licenses/mit-license.php MIT licence
+ * @license    https://opensource.org/licenses/mit-license.php MIT license
  */
 
 defined('MOODLE_INTERNAL') || die();

@@ -25,7 +25,7 @@
  * @package    qtype
  * @subpackage omerointeractive
  * @copyright  2015-2016 CRS4
- * @licence    https://opensource.org/licenses/mit-license.php MIT licence
+ * @license    https://opensource.org/licenses/mit-license.php MIT license
  */
 
 defined('MOODLE_INTERNAL') || die();
@@ -36,7 +36,7 @@ require_once($CFG->dirroot . '/question/type/omerocommon/question.php');
  * Represents a omerointeractive question with a single correct answer option.
  *
  * @copyright  2015-2016 CRS4
- * @licence    https://opensource.org/licenses/mit-license.php MIT licence
+ * @license    https://opensource.org/licenses/mit-license.php MIT license
  */
 class qtype_omerointeractive_single_question extends qtype_multichoice_single_question
 {

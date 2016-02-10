@@ -25,7 +25,7 @@
  * @package    qtype
  * @subpackage omerointeractive
  * @copyright  2015-2016 CRS4
- * @licence    https://opensource.org/licenses/mit-license.php MIT licence
+ * @license    https://opensource.org/licenses/mit-license.php MIT license
  */
 
 defined('MOODLE_INTERNAL') || die();
@@ -38,7 +38,7 @@ require_once($CFG->dirroot . '/question/type/omerocommon/questiontype_base.php')
  * The omeromultichoice question type.
  *
  * @copyright  2015-2016 CRS4
- * @licence    https://opensource.org/licenses/mit-license.php MIT licence
+ * @license    https://opensource.org/licenses/mit-license.php MIT license
  */
 class qtype_omerointeractive extends qtype_omerocommon
 {

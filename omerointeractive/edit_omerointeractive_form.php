@@ -25,7 +25,7 @@
  * @package    qtype
  * @subpackage omerointeractive
  * @copyright  2015-2016 CRS4
- * @licence    https://opensource.org/licenses/mit-license.php MIT licence
+ * @license    https://opensource.org/licenses/mit-license.php MIT license
  */
 
 defined('MOODLE_INTERNAL') || die();
@@ -39,7 +39,7 @@ require_once($CFG->dirroot . '/question/type/omerocommon/edit_omerocommon_form.p
  * omerointeractive question editing form definition.
  *
  * @copyright  2015-2016 CRS4
- * @licence    https://opensource.org/licenses/mit-license.php MIT licence
+ * @license    https://opensource.org/licenses/mit-license.php MIT license
  */
 //class qtype_omerointeractive_edit_form extends qtype_omerocommon_edit_form
 class qtype_omerointeractive_edit_form extends qtype_omerocommon_edit_form

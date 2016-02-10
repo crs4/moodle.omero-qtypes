@@ -31,7 +31,7 @@ require_once($CFG->dirroot . '/question/type/omerocommon/questiontype_base.php')
  * @package    qtype
  * @subpackage omeromultichoice
  * @copyright  2015-2016 CRS4
- * @licence    https://opensource.org/licenses/mit-license.php MIT licence
+ * @license    https://opensource.org/licenses/mit-license.php MIT license
  */
 class qtype_omeromultichoice extends qtype_omerocommon
 {

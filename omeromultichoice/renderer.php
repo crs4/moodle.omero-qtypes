@@ -31,7 +31,7 @@ require_once($CFG->dirroot . '/question/type/omerocommon/js/modules.php');
  * @package    qtype
  * @subpackage omeromultichoice
  * @copyright  2015-2016 CRS4
- * @licence    https://opensource.org/licenses/mit-license.php MIT licence
+ * @license    https://opensource.org/licenses/mit-license.php MIT license
  */
 class qtype_omeromultichoice_single_renderer extends qtype_multichoice_single_renderer
 {
@@ -91,7 +91,7 @@ class qtype_omeromultichoice_single_renderer extends qtype_multichoice_single_re
  * @package    qtype
  * @subpackage omeromultichoice
  * @copyright  2015-2016 CRS4
- * @licence    https://opensource.org/licenses/mit-license.php MIT licence
+ * @license    https://opensource.org/licenses/mit-license.php MIT license
  */
 class qtype_omeromultichoice_multi_renderer extends qtype_multichoice_multi_renderer
 {
@@ -158,7 +158,7 @@ class qtype_omeromultichoice_multi_renderer extends qtype_multichoice_multi_rend
  * @package    qtype
  * @subpackage omeromultichoice
  * @copyright  2015-2016 CRS4
- * @licence    https://opensource.org/licenses/mit-license.php MIT licence
+ * @license    https://opensource.org/licenses/mit-license.php MIT license
  */
 abstract class qtype_omeromultichoice_base_renderer extends qtype_multichoice_renderer_base
 {

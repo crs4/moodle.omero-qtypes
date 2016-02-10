@@ -25,7 +25,7 @@
  * @package    qtype
  * @subpackage omerointeractive
  * @copyright  2015-2016 CRS4
- * @licence    https://opensource.org/licenses/mit-license.php MIT licence
+ * @license    https://opensource.org/licenses/mit-license.php MIT license
  */
 
 defined('MOODLE_INTERNAL') || die();
@@ -38,7 +38,7 @@ require_once($CFG->dirroot . '/question/type/omerocommon/js/modules.php');
  * Generates the output for omeromultichoice questions (single correct answer).
  *
  * @copyright  2015-2016 CRS4
- * @licence    https://opensource.org/licenses/mit-license.php MIT licence
+ * @license    https://opensource.org/licenses/mit-license.php MIT license
  */
 class qtype_omerointeractive_single_renderer extends qtype_multichoice_single_renderer
 {
@@ -102,7 +102,7 @@ class qtype_omerointeractive_single_renderer extends qtype_multichoice_single_re
  * Generates the output for omeromultichoice questions (multiple correct answers).
  *
  * @copyright  2015-2016 CRS4
- * @licence    https://opensource.org/licenses/mit-license.php MIT licence
+ * @license    https://opensource.org/licenses/mit-license.php MIT license
  */
 class qtype_omerointeractive_multi_renderer extends qtype_multichoice_multi_renderer
 {
@@ -182,7 +182,7 @@ class qtype_omerointeractive_multi_renderer extends qtype_multichoice_multi_rend
  * Generates the output for omeromultichoice questions: base class with utility methods.
  *
  * @copyright  2015-2016 CRS4
- * @licence    https://opensource.org/licenses/mit-license.php MIT licence
+ * @license    https://opensource.org/licenses/mit-license.php MIT license
  */
 abstract class qtype_omerointeractive_base_renderer extends qtype_multichoice_renderer_base
 {

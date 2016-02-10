@@ -29,7 +29,7 @@ require_once($CFG->dirroot . '/question/type/omerocommon/question.php');
  * @package    qtype
  * @subpackage omeromultichoice
  * @copyright  2015-2016 CRS4
- * @licence    https://opensource.org/licenses/mit-license.php MIT licence
+ * @license    https://opensource.org/licenses/mit-license.php MIT license
  */
 class qtype_omeromultichoice_single_question extends qtype_multichoice_single_question {
     public function get_renderer(moodle_page $page) {
@@ -43,7 +43,7 @@ class qtype_omeromultichoice_single_question extends qtype_multichoice_single_qu
  * @package    qtype
  * @subpackage omeromultichoice
  * @copyright  2015-2016 CRS4
- * @licence    https://opensource.org/licenses/mit-license.php MIT licence
+ * @license    https://opensource.org/licenses/mit-license.php MIT license
  */
 class qtype_omeromultichoice_multi_question extends qtype_multichoice_multi_question {
     public function get_renderer(moodle_page $page) {

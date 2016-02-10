@@ -27,7 +27,7 @@ defined('MOODLE_INTERNAL') || die();
  * @param $qtype_package the name of the qtype package
  * @package    qtype_omerocommon
  * @copyright  2015-2016 CRS4
- * @licence    https://opensource.org/licenses/mit-license.php MIT licence
+ * @license    https://opensource.org/licenses/mit-license.php MIT license
  */
 function init_js_modules($qtype_package, $header=false)
 {
