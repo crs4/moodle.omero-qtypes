@@ -63,12 +63,14 @@ define("qtype_omerocommon/image-viewer",
                 M.qtypes.omerocommon.ImageViewer = function (image_id, image_properties,
                                                              image_server, image_viewer_container_id,
                                                              image_viewer_annotations_canvas_id,
+                                                             viewer_model_server,
                                                              viewer_config) {
                     this._image_server = image_server;
                     this._image_viewer_container_id = image_viewer_container_id;
                     this._image_viewer_annotations_canvas_id = image_viewer_annotations_canvas_id;
                     this._image_id = image_id;
                     this._image_properties = image_properties;
+                    this._viewer_model_server = viewer_model_server,
                     this._listeners = [];
                     this._lock_navigation = false;
 
