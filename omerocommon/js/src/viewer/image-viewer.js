@@ -139,14 +139,13 @@ define("qtype_omerocommon/image-viewer",
                         me.updateViewFromProperties(me._image_properties);
 
                         // initialize the scalebar
-                        $.get(me._image_server + "/ome_seadragon/deepzoom/image_mpp/" + me._image_id + ".dzi").done(
-                            function (data) {
-                                console.log("Loading openseadragon viewer");
-                                var image_mpp = data.image_mpp ? data.image_mpp : 0;
-                                me._viewer_controller.enableScalebar(image_mpp, me._scalebar_config);
-                            }
-                        );
+                        me._model.getImageDZI(function(data){
+                            console.log("Loading openseadragon viewer");
+                            var image_mpp = data.image_mpp ? data.image_mpp : 0;
+                            me._viewer_controller.enableScalebar(image_mpp, me._scalebar_config);
+                        });
 
+                        // loads rois if required
                         if (load_rois)
                             me.loadROIs(callback);
                         else notifyListeners(me._listeners, callback);
