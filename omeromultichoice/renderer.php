@@ -361,6 +361,7 @@ abstract class qtype_omeromultichoice_base_renderer extends qtype_multichoice_re
                     "image_frame_id" => $omero_frame_id,
                     "image_annotations_canvas_id" => self::to_unique_identifier($qa, "annotations_canvas"),
                     "image_server" => $OMERO_SERVER,
+                    "viewer_model_server" => $CFG->wwwroot . "/repository/omero/viewer/viewer-model.php",
                     "image_viewer_container" => self::to_unique_identifier($qa, self::IMAGE_VIEWER_CONTAINER),
                     "image_navigation_locked" => (bool)$question->omeroimagelocked,
                     "question_answer_container" => $question_answer_container,
