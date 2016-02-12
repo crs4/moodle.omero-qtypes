@@ -121,7 +121,7 @@ define("qtype_omerocommon/image-viewer",
                     me._viewer_controller.buildViewer();
 
                     // initializes the ImageModelManager
-                    me._model = new ImageModelManager(me._image_server, me._image_id);
+                    me._model = new ImageModelManager(me._viewer_model_server, me._image_id);
 
                     // open
                     me._viewer_controller.viewer.addHandler("open", function () {
