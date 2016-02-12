@@ -134,23 +134,6 @@ define("qtype_omerocommon/image-viewer",
                         window.annotation_canvas = me._annotations_controller;
                         me._annotations_controller.buildAnnotationsCanvas(me._viewer_controller);
                         me._viewer_controller.addAnnotationsController(me._annotations_controller, true);
-                        //window.events_controller = me._annotation_events_controller;
-
-                        //$("#" + me._image_viewer_container_id).mouseup(function(event){
-                        //    console.log(event);
-                        //
-                        //});
-                        //
-                        //$("#" + me._image_viewer_container_id).mousedown(function(event){
-                        //
-                        //    console.log(event);
-                        //
-                        //});
-
-                        $("#add-new-roi").click(function () {
-                            return false;
-                        });
-
 
                         // update the center and zoom level
                         me.updateViewFromProperties(me._image_properties);
