@@ -141,7 +141,8 @@ define("qtype_omerocommon/question-player-base",
                     // build the ImaveViewer controller
                     var viewer_ctrl = new M.qtypes.omerocommon.ImageViewer(
                         config.image_id, config.image_properties,
-                        config.image_server, config.image_viewer_container, config.image_annotations_canvas_id);
+                        config.image_server, config.image_viewer_container, config.image_annotations_canvas_id,
+                        config.viewer_model_server);
                     this._image_viewer_controller = viewer_ctrl;
                 };
 
