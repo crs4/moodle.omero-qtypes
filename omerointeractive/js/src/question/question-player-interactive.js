@@ -124,6 +124,7 @@ define("qtype_omerointeractive/question-player-interactive",
         function checkAnswers(player) {
             var me = player;
             var result = {};
+            var marked_shapes = [];
             var config = player._config;
             console.log(config);
             var shapes = me._image_viewer_controller.getShapes(me._config.available_shapes);
@@ -141,13 +142,15 @@ define("qtype_omerointeractive/question-player-interactive",
                     for (var k in config.shape_groups[group]) {
                         console.log("Shape id: " + k);
                         var shape = me._image_viewer_controller.getShape(config.shape_groups[group][k]);
-                        console.log("Checking against ", shape);
-                        if (shape.contains(center.x, center.y)) {
+                        console.log("Checking against ", shape, marked_shapes, shape.id in marked_shapes);
+                        if (!(shape.id in marked_shapes) && shape.contains(center.x, center.y)) {
                             console.log("Contained in shape " + shape.id);
                             matched_shape = {shape_id: shape.id, shape_group: group};
+                            marked_shapes[shape.id] = shape;
                             break;
                         }
                     }
+                    if(matched_shape !== "none") break;
                 }
                 result[i] = matched_shape;
             }
