@@ -84,6 +84,11 @@ div.answer-summary-fixed-text{
 
 div[id*=remove_marker_ctrl]{
     display: inline-block;
+    margin-right: 10px;
+}
+
+div[id*=hide_marker_ctrl]{
+    margin-left: 5px;
 }
 
 .focus_areas_container {
