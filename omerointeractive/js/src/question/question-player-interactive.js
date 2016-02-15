@@ -193,9 +193,9 @@ define("qtype_omerointeractive/question-player-interactive",
                 label +
                 (editable ? ' <i id="' + cid(config, CONTROL_KEYS.DEL) + "-" + marker_id + '_btn" ' +
                 ' class="red glyphicon glyphicon-remove"></i> ' : "") +
-                (!editable ? ' [<small><i id="' + cid(config, CONTROL_KEYS.HIDE) + "-" + marker_id + '_btn" ' +
-                ' class="glyphicon glyphicon-eye-open"></i></small>] ' : "") +
-                "</div>");
+                (!editable ? ' <small><i id="' + cid(config, CONTROL_KEYS.HIDE) + "-" + marker_id + '_btn" ' +
+                ' class="glyphicon glyphicon-eye-open" style="color: #555"></i></small> ' : "") +
+                "|</div>");
             me._remove_markers_container.append($delm_btn);
 
 
