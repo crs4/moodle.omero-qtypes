@@ -412,7 +412,7 @@ abstract class qtype_omerointeractive_base_renderer extends qtype_multichoice_re
             $answer_options_attributes['disabled'] = 'disabled';
         }
 
-        if ($options->correctness) {
+        if ($options->correctness && count($answer_options) > 0) {
             $result .= html_writer::start_tag('div', array('class' => 'question-summary hidden'));
             $result .= html_writer::tag('div',
                 get_string("answerassociatedrois", "qtype_omerointeractive"),
