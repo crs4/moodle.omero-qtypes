@@ -304,40 +304,42 @@ abstract class qtype_omerointeractive_base_renderer extends qtype_multichoice_re
                 // Switch to determine whether to show correct answer or not
                 $isselected = $question->is_choice_selected($response, $shape_id);
 
-                $answer_options[] = $hidden .
-                    html_writer::empty_tag('li', $answer_options_attributes) .
-                    html_writer::tag('label',
-                        html_writer::tag("i", " ",
-                            array(
-                                "class" => "glyphicon glyphicon-map-marker roi-shape-info",
-                                "roi-shape-id" => $shape_id
+                if (!empty(strip_tags($ans->feedback))) {
+                    $answer_options[] = $hidden .
+                        html_writer::empty_tag('li', $answer_options_attributes) .
+                        html_writer::tag('label',
+                            html_writer::tag("i", " ",
+                                array(
+                                    "class" => "glyphicon glyphicon-map-marker roi-shape-info",
+                                    "roi-shape-id" => $shape_id
+                                )
                             )
-                        )
-                        . " [" . $shape_id . "] " .
-                        $question->make_html_inline($question->format_text(
-                            $ans->feedback, $ans->answerformat, $qa, 'question', 'answer', $ansid)
-                        ) . ($isselected ?
-                            ('<span class="pull-right">' . $renderer->feedback_image($renderer->is_right($ans)) . '</span>')
-                            : ""),
-                        array('for' => $answer_options_attributes['id'])
-                    );
+                            . " [" . $shape_id . "]: " .
+                            $question->make_html_inline($question->format_text(
+                                $ans->feedback, $ans->answerformat, $qa, 'question', 'answer', $ansid)
+                            ) . ($isselected ?
+                                ('<span class="pull-right">' . $renderer->feedback_image($renderer->is_right($ans)) . '</span>')
+                                : ""),
+                            array('for' => $answer_options_attributes['id'])
+                        );
 
 
-                $class = 'r' . ($value % 2);
+                    $class = 'r' . ($value % 2);
 
-                if ($isselected) {
-                    $answer_options_attributes['checked'] = 'checked';
-                } else {
-                    unset($answer_options_attributes['checked']);
+                    if ($isselected) {
+                        $answer_options_attributes['checked'] = 'checked';
+                    } else {
+                        unset($answer_options_attributes['checked']);
+                    }
+                    if ($options->correctness && $isselected) {
+                        $feedback_class = $renderer->feedback_image($renderer->is_right($ans));
+                        $feedbackimg[] = $renderer->feedback_image($renderer->is_right($ans));
+                        $class .= ' ' . $renderer->feedback_class($renderer->is_right($ans));
+                    } else {
+                        $feedbackimg[] = '';
+                    }
+                    $classes[] = $class;
                 }
-                if ($options->correctness && $isselected) {
-                    $feedback_class = $renderer->feedback_image($renderer->is_right($ans));
-                    $feedbackimg[] = $renderer->feedback_image($renderer->is_right($ans));
-                    $class .= ' ' . $renderer->feedback_class($renderer->is_right($ans));
-                } else {
-                    $feedbackimg[] = '';
-                }
-                $classes[] = $class;
             }
         }
 
