@@ -44,7 +44,6 @@
 
 div[id*=marker_removers_container]{
     display: block;
-    padding-bottom: 40px;
 }
 
 span.yourmarkers-text{
@@ -74,7 +73,7 @@ div.qtext {
 }
 
 div.question-summary {
-    margin: 20px 0 20px;
+    margin: 40px 0 20px;
     min-height: 80px;
 }
 
