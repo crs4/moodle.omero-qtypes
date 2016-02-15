@@ -210,6 +210,29 @@ define("qtype_omerointeractive/question-player-interactive",
                 }
             );
 
+            $("#" + cid(config, CONTROL_KEYS.HIDE) + "-" + marker_id + '_btn').bind(
+                'click', {
+                    'marker_id': marker_id,
+                    'btn_id': 'del_' + marker_id,
+                    'marker_info_container': marker_info_container
+                },
+                function (event) {
+                    console.log("Event", event);
+                    var el = $(event.target);
+                    if(el.hasClass("glyphicon-eye-open")){
+                        me._image_viewer_controller.hideRoiShapes([event.data.marker_id]);
+                        el.removeClass("glyphicon-eye-open");
+                        el.addClass("glyphicon-eye-close");
+                        el.css("color","#999");
+                    }else{
+                        el.removeClass("glyphicon-eye-close");
+                        el.addClass("glyphicon-eye-open");
+                        el.css("color", "#555");
+                        me._image_viewer_controller.showRoiShapes([event.data.marker_id]);
+                    }
+                }
+            );
+
             $("#" + cid(config, CONTROL_KEYS.GOTO) + "-" + marker_id + '_btn').bind(
                 'click', {'marker_id': marker_id},
                 function (event) {
