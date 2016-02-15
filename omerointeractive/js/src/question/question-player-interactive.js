@@ -47,7 +47,8 @@ define("qtype_omerointeractive/question-player-interactive",
             EDIT: "enable_edit_markers_ctrl_id",
             DEL: "remove_marker_ctrl_id",
             CLEAR: "clear_marker_ctrl_id",
-            GOTO: "goto_marker_ctrl_id"
+            GOTO: "goto_marker_ctrl_id",
+            HIDE: "hide_marker_ctrl_id"
         };
 
         var markers_config = {
@@ -182,10 +183,16 @@ define("qtype_omerointeractive/question-player-interactive",
                 label = marker_parts[1];
             label = M.util.get_string("marker", "qtype_omerointeractive") + " " + label;
             color = color ? 'style="color: ' + color + ';"' : '';
+
+            // '<i class="green glyphicon glyphicon-eye-open"></i>'
+            // '<i class="#E9E9E9 glyphicon glyphicon-eye-close"></i>'
+
             var $delm_btn = $('<div id="' + marker_info_container + '">' +
                 '<i id="' + cid(config, CONTROL_KEYS.GOTO) + "-" + marker_id + '_btn" ' +
                 ' class="glyphicon glyphicon-map-marker" ' + color + '></i> ' +
                 label +
+                '<i id="' + cid(config, CONTROL_KEYS.HIDE) + "-" + marker_id + '_btn" ' +
+                ' class="glyphicon glyphicon-eye-open" ' + color + '></i> ' +
                 (editable ? ' <i id="' + cid(config, CONTROL_KEYS.DEL) + "-" + marker_id + '_btn" ' +
                 ' class="red glyphicon glyphicon-remove"></i> ' : "") +
                 "</div>");
