@@ -60,7 +60,7 @@ span.focus-areas-text{
 }
 
 .remove_marker_button_group div {
-    margin: 0 5px;
+    margin: 0 0px;
 }
 
 div[id*=graphics_container] {
@@ -83,7 +83,7 @@ div.answer-summary-fixed-text{
 
 div[id*=remove_marker_ctrl]{
     display: inline-block;
-    margin-right: 10px;
+    margin-right: 5px;
 }
 
 div[id*=hide_marker_ctrl]{
