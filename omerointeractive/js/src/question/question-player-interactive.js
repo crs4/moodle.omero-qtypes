@@ -151,7 +151,7 @@ define("qtype_omerointeractive/question-player-interactive",
                             break;
                         }
                     }
-                    if(matched_shape !== "none") break;
+                    if (matched_shape !== "none") break;
                 }
                 result[i] = matched_shape;
             }
@@ -169,7 +169,7 @@ define("qtype_omerointeractive/question-player-interactive",
 
             me._response_form.append($(input));
 
-            console.log(result);
+            console.log("Correction result: ", result);
         }
 
 
@@ -273,12 +273,13 @@ define("qtype_omerointeractive/question-player-interactive",
                     addMarkerInfo(player, marker.shape_id, !config.correction_mode, markers_config.stroke_color);
                 }
 
+                // roi-shape-info listeners
                 var selector = " .roi-shape-info";
                 var f = $("#" + config.question_answer_container).parents("form");
                 selector = "#" + ((f && f.attr("id")) ?
                         f.attr("id") : config.question_answer_container) + selector;
                 $(selector).each(function () {
-                    console.log($(this).attr("roi-shape-id"));
+                    console.log("Updating properties of the ROI shape:", $(this).attr("roi-shape-id"));
                     var shape_id = $(this).attr("roi-shape-id");
                     var shape = player._image_viewer_controller.getShape(shape_id);
                     console.log("Check the current shape", shape);
