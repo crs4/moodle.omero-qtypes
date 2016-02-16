@@ -179,7 +179,7 @@ define("qtype_omerointeractive/question-player-interactive",
             var marker_info_container = cid(config, CONTROL_KEYS.DEL) + "-" + marker_id + '_container';
             var label = marker_id;
             var marker_parts = marker_id.split("_");
-            if(marker_parts && marker_parts.length===2)
+            if (marker_parts && marker_parts.length === 2)
                 label = marker_parts[1];
             label = M.util.get_string("marker", "qtype_omerointeractive") + " " + label;
             color = color ? 'style="color: ' + color + ';"' : '';
@@ -193,9 +193,9 @@ define("qtype_omerointeractive/question-player-interactive",
                 label +
                 (editable ? ' <i id="' + cid(config, CONTROL_KEYS.DEL) + "-" + marker_id + '_btn" ' +
                 ' class="red glyphicon glyphicon-remove"></i> ' : "") +
-                (!editable ? ' <small><i id="' + cid(config, CONTROL_KEYS.HIDE) + "-" + marker_id + '_btn" ' +
+                (editable ? ' <small><i id="' + cid(config, CONTROL_KEYS.HIDE) + "-" + marker_id + '_btn" ' +
                 ' class="glyphicon glyphicon-eye-open" style="color: #555"></i></small> ' : "") +
-                "|</div>");
+                " |</div>");
             me._remove_markers_container.append($delm_btn);
 
 
@@ -219,12 +219,12 @@ define("qtype_omerointeractive/question-player-interactive",
                 function (event) {
                     console.log("Event", event);
                     var el = $(event.target);
-                    if(el.hasClass("glyphicon-eye-open")){
+                    if (el.hasClass("glyphicon-eye-open")) {
                         me._image_viewer_controller.hideRoiShapes([event.data.marker_id]);
                         el.removeClass("glyphicon-eye-open");
                         el.addClass("glyphicon-eye-close");
-                        el.css("color","#999");
-                    }else{
+                        el.css("color", "#999");
+                    } else {
                         el.removeClass("glyphicon-eye-close");
                         el.addClass("glyphicon-eye-open");
                         el.css("color", "#555");
@@ -248,6 +248,7 @@ define("qtype_omerointeractive/question-player-interactive",
                 return;
             }
 
+            var me = player;
             var config = player._config;
             player._image_viewer_controller.showRoiShapes(config.visible_rois);
             player._image_viewer_controller.showRoiShapes(config.available_shapes);
@@ -289,6 +290,36 @@ define("qtype_omerointeractive/question-player-interactive",
                             player._image_viewer_controller.setFocusOnRoiShape(shape_id);
                         });
                     }
+                });
+
+                // roi-shape-info visibility listener
+                selector = " .roi-shape-visibility";
+                f = $("#" + config.question_answer_container).parents("form");
+                selector = "#" + ((f && f.attr("id")) ?
+                        f.attr("id") : config.question_answer_container) + selector;
+                $(selector).each(function(el_idx, el_value){
+                    var el_ctrl = $(el_value);
+                    el_ctrl.bind(
+                        'click', {
+                            'marker_id': el_ctrl.attr("roi-shape-id"),
+                            'btn_id': 'hide_' + el_ctrl.attr("roi-shape-id")
+                        },
+                        function (event) {
+                            console.log("Event", event);
+                            var el = $(event.target);
+                            if (el.hasClass("glyphicon-eye-open")) {
+                                me._image_viewer_controller.hideRoiShapes([event.data.marker_id]);
+                                el.removeClass("glyphicon-eye-open");
+                                el.addClass("glyphicon-eye-close");
+                                el.css("color", "#999");
+                            } else {
+                                el.removeClass("glyphicon-eye-close");
+                                el.addClass("glyphicon-eye-open");
+                                el.css("color", "#555");
+                                me._image_viewer_controller.showRoiShapes([event.data.marker_id]);
+                            }
+                        }
+                    );
                 });
 
                 $("#" + config.question_answer_container + " .question-summary").removeClass("hidden");
