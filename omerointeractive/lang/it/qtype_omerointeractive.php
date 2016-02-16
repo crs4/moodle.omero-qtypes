@@ -54,7 +54,13 @@ $string['yourmarkers'] = 'I tuoi markers: ';
 $string['focusareas'] = 'Aree rilevanti: ';
 
 # feedback
-$string['answerassociatedroi'] = 'La ROI <em>(Region Of Interest)</em> di questa domanda è: ';
-$string['answerassociatedrois'] = 'L\'insieme di ROIs <em>(Regions Of Interest)</em> di questa domanda è costituito da: ';
-$string['correctansweris'] = 'Per rispondere correttamente alla domanda devi selezionare una o più delle seguenti ROI: ';
-$string['correctanswerare'] = 'Per rispondere in modo <em>corretto</em> e <em>completo</em> alla domanada devi selezionare le seguenti ROI: ';
+$string['notice_your_answer'] = 'Presta attenzione alla tua risposta: ';
+$string['notice_your_answers'] = 'Presta attenzione alla tue risposte: ';
+$string['your_marker_inside'] = 'è all\'interno della ROI';
+$string['your_marker_outside'] = 'non è contenuto in nessuna ROI';
+$string['answerassociatedroi'] = 'Si noti la ROI (<em>Region Of Interest</em>) d\'interesse per questa domanda: ';
+$string['answerassociatedrois'] = 'Si notino le ROIs (<em>Regions Of Interest</em>) d\'interesse per questa domanda: ';
+$string['single_correctansweris'] = 'Per rispondere correttamente alla domanda devi selezionare la seguente ROI: ';
+$string['single_correctanswerare'] = 'Per rispondere correttamente alla domanda devi selezionare una o più delle seguenti ROI: ';
+$string['multi_correctansweris'] = 'Per rispondere correttamente alla domanda devi selezionare la seguente ROI: ';
+$string['multi_correctanswerare'] = 'Per rispondere in modo <em>corretto</em> e <em>completo</em> alla domanada devi selezionare le seguenti ROI: ';
