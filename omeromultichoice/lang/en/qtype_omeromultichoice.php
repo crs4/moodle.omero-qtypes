@@ -1,70 +1,45 @@
 <?php
-// This file is part of Moodle - http://moodle.org/
+
+// Copyright (c) 2015-2016, CRS4
 //
-// Moodle is free software: you can redistribute it and/or modify
-// it under the terms of the GNU General Public License as published by
-// the Free Software Foundation, either version 3 of the License, or
-// (at your option) any later version.
+// Permission is hereby granted, free of charge, to any person obtaining a copy of
+// this software and associated documentation files (the "Software"), to deal in
+// the Software without restriction, including without limitation the rights to
+// use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of
+// the Software, and to permit persons to whom the Software is furnished to do so,
+// subject to the following conditions:
 //
-// Moodle is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-// GNU General Public License for more details.
+// The above copyright notice and this permission notice shall be included in all
+// copies or substantial portions of the Software.
 //
-// You should have received a copy of the GNU General Public License
-// along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS
+// FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
+// COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
+// IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
+// CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 /**
- * Strings for component 'qtype_omeromultichoice', language 'en', branch 'MOODLE_29_STABLE'
+ * Strings for the module 'qtype_omeromultichoice', language 'en'
  *
  * @package    qtype
  * @subpackage omeromultichoice
- * @copyright  2015 CRS4
-
- * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ * @copyright  2015-2016 CRS4
+ * @license    https://opensource.org/licenses/mit-license.php MIT license
  */
+
+# generics
 $string['pluginname'] = 'Omero MultiChoice';
-$string['pluginname_help'] = 'Create a cloze question type with embedded response fields in the question text to enter a numeric
-or text value or select a value from a number of options.';
 $string['pluginname_link'] = 'question/type/omeromultichoice';
-$string['pluginnameadding'] = 'Adding a Omero MultiChoice Question';
-$string['pluginnameediting'] = 'Editing a Omero MultiChoice Question';
-$string['pluginnamesummary'] = 'A Omero MultiChoice question type which allows the embedding of the response fields for various available
-sub questions in the question text.
-So the student can enter a numeric or short text answer or choose an answer or answer(s) from
- using a select box, check boxes or radio boxes.';
+$string['pluginnameadding'] = 'Adding a "Omero MultiChoice" question';
+$string['pluginnameediting'] = 'Editing a "Omero MultiChoice" question';
+$string['pluginname_help'] = 'A multiple choice question type which allows to choose an Omero image and select a set of ROIs (Region Of Interest) defined within the image to display.';
+$string['pluginnamesummary'] = 'A multiple choice question type which allows to choose an Omero image and select a set of ROIs (Region Of Interest) defined within the image to display.';
+
+# answers
 $string['add_answers'] = 'Add answers';
-$string['add_roi_answer'] = 'Add new ROI answer';
+$string['answer_text'] = 'Text';
 
-$string['choiceno'] = '{$a}';
-
-$string['roi_choiceno'] = 'ROI choice {$a}';
-
-$string['add_roi_answer'] = 'Add a new ROI based answer';
-
-$string['answer_type'] = "Answer type";
-
-$string['roi_shape_inspector'] = "ROI Shape Inspector";
-$string['answer_groups'] = "Answer Groups";
-
-$string['omero_image_and_rois'] = "Omero Image and ROIs";
-
-$string['qtype_0'] = "Plaintext";
-$string['qtype_1'] = "ROI answer";
-
-$string['roi_id'] = 'Identifier';
-$string['roi_comment'] = 'Comment';
-$string['roi_type'] = 'Type';
-$string['roi_width'] = 'Width';
-$string['roi_height'] = 'Height';
-
-$string['language'] = "Language";
-
-$string['answerhowmany'] = 'One or multiple correct answers?';
-$string['answersingleno'] = 'Multiple correct answers allowed';
-$string['answersingleyes'] = 'One correct answer only';
-
-$string['answerassociatedroi'] = 'The ROI <em>(Region Of Interest)</em> of this question is: ';
-$string['answerassociatedrois'] = 'The ROIs <em>(Region Of Interest)</em> of this question are: ';
+# feedback
 $string['correctansweris'] = 'The only correct answer is: ';
 $string['correctanswerare'] = 'The correct answers are only: ';

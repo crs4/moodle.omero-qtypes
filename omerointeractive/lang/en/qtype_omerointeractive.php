@@ -1,98 +1,60 @@
 <?php
-// This file is part of Moodle - http://moodle.org/
+
+// Copyright (c) 2015-2016, CRS4
 //
-// Moodle is free software: you can redistribute it and/or modify
-// it under the terms of the GNU General Public License as published by
-// the Free Software Foundation, either version 3 of the License, or
-// (at your option) any later version.
+// Permission is hereby granted, free of charge, to any person obtaining a copy of
+// this software and associated documentation files (the "Software"), to deal in
+// the Software without restriction, including without limitation the rights to
+// use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of
+// the Software, and to permit persons to whom the Software is furnished to do so,
+// subject to the following conditions:
 //
-// Moodle is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-// GNU General Public License for more details.
+// The above copyright notice and this permission notice shall be included in all
+// copies or substantial portions of the Software.
 //
-// You should have received a copy of the GNU General Public License
-// along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS
+// FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
+// COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
+// IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
+// CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 /**
- * Strings for component 'qtype_omeromultichoice', language 'en', branch 'MOODLE_29_STABLE'
+ * Strings for the module 'qtype_omerointeractive', language 'en'
  *
  * @package    qtype
- * @subpackage omeromultichoice
- * @copyright  2015 CRS4
-
- * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ * @subpackage omerointeractive
+ * @copyright  2015-2016 CRS4
+ * @license    https://opensource.org/licenses/mit-license.php MIT license
  */
+
+# generics
 $string['pluginname'] = 'Omero Interactive';
-$string['pluginname_help'] = 'Create a cloze question type with embedded response fields in the question text to enter a numeric
-or text value or select a value from a number of options.';
+$string['pluginname_help'] = 'A question type which asks the students to identify, using markers, specific areas on the image in response to the test questions and it’s able to evaluate the student answers by comparing the location of the markers with instructor’s specified ROIs.';
 $string['pluginname_link'] = 'question/type/omeroineractive';
-$string['pluginnameadding'] = 'Adding a Omero Interactive question';
-$string['pluginnameediting'] = 'Editing a Omero Interactive question';
-$string['pluginnamesummary'] = 'A Omero Interactive question type which allows the embedding of the response fields for various available
-sub questions in the question text.
-So the student can enter a numeric or short text answer or choose an answer or answer(s) from
- using a select box, check boxes or radio boxes.';
+$string['pluginnameadding'] = 'Adding a "Omero Interactive" question';
+$string['pluginnameediting'] = 'Editing a "Omero Interactive" question';
+$string['pluginnamesummary'] = 'A question type which asks the students to identify, using markers, specific areas on the image in response to the test questions and it’s able to evaluate the student answers by comparing the location of the markers with instructor’s specified ROIs.';
 
-
+# answers
 $string['add_answers'] = "Add answer groups";
+$string['answer_group'] = "Group";
 $string['answer_groups'] = "Answer Groups";
-
-
-
-$string['answer_options_properties'] = 'Properties of answer options';
-
-$string['general_and_combined_feedback'] = 'General and combined feedback';
-
-
-
-
-
-$string['choiceno'] = '{$a}';
-
-$string['roi_choiceno'] = 'ROI choice {$a}';
-
-
-
-$string['answer_type'] = "Answer type";
-
-$string['roi_shape_inspector'] = "ROI Shapes Inspector";
-
-$string['omero_image_viewer'] = "Omero Image Viewer";
-$string['omero_image_and_rois'] = "Omero Image and ROIs";
-
-$string['qtype_0'] = "Plaintext";
-$string['qtype_1'] = "ROI answer";
-
-
-$string['savechangesandcontinueediting'] = "Save";
-$string['savechangesandexit'] = "Save and Exit";
-
 $string['answer_group_of_rois'] = "List of ROIs";
 $string['validation_noroi_per_group'] = "Every answer group must have at least one ROI !!!";
 
-
-$string['roi_id'] = 'Identifier';
-$string['roi_comment'] = 'Comment';
-$string['roi_type'] = 'Type';
-$string['roi_width'] = 'Width';
-$string['roi_height'] = 'Height';
-$string['roi_group'] = 'Group';
-
-$string['language'] = "Language";
-
-
+# marker controls
 $string['add_marker'] = "Add";
 $string['edit_marker'] = "Edit";
 $string['clear_markers'] = "Clear";
-
-$string['answerassociatedrois'] = 'The set of ROIs <em>(Regions Of Interest)</em> of this question is: ';
-
-$string['correctansweris'] = 'To correctly answer you have to select one of the following ROIs: ';
-$string['correctanswerare'] = 'To correctly and completely answer you have to select the following ROIs: ';
-
-
 $string['marker'] = 'Marker';
 $string['yourmarkers'] = 'Your markers: ';
 
+# focus area info
 $string['focusareas'] = 'Focus Areas: ';
+
+# feedback
+$string['answerassociatedroi'] = 'The ROI <em>(Region Of Interest)</em> of this question is: ';
+$string['answerassociatedrois'] = 'The set of ROIs <em>(Regions Of Interest)</em> of this question is: ';
+$string['correctansweris'] = 'To correctly answer you have to select one of the following ROIs: ';
+$string['correctanswerare'] = 'To correctly and completely answer you have to select the following ROIs: ';

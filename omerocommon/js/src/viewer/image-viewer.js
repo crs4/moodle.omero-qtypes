@@ -1,7 +1,30 @@
-/**
- * Created by kikkomep on 12/2/15.
- */
+// Copyright (c) 2015-2016, CRS4
+//
+// Permission is hereby granted, free of charge, to any person obtaining a copy of
+// this software and associated documentation files (the "Software"), to deal in
+// the Software without restriction, including without limitation the rights to
+// use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of
+// the Software, and to permit persons to whom the Software is furnished to do so,
+// subject to the following conditions:
+//
+// The above copyright notice and this permission notice shall be included in all
+// copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS
+// FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
+// COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
+// IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
+// CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
+/**
+ * Image viewer controller.
+ *
+ * @package    qtype
+ * @subpackage omerocommon
+ * @copyright  2015-2016 CRS4
+ * @license    https://opensource.org/licenses/mit-license.php MIT license
+ */
 define("qtype_omerocommon/image-viewer",
     [
         'jquery'
@@ -40,12 +63,14 @@ define("qtype_omerocommon/image-viewer",
                 M.qtypes.omerocommon.ImageViewer = function (image_id, image_properties,
                                                              image_server, image_viewer_container_id,
                                                              image_viewer_annotations_canvas_id,
+                                                             viewer_model_server,
                                                              viewer_config) {
                     this._image_server = image_server;
                     this._image_viewer_container_id = image_viewer_container_id;
                     this._image_viewer_annotations_canvas_id = image_viewer_annotations_canvas_id;
                     this._image_id = image_id;
                     this._image_properties = image_properties;
+                    this._viewer_model_server = viewer_model_server,
                     this._listeners = [];
                     this._lock_navigation = false;
 
@@ -96,7 +121,7 @@ define("qtype_omerocommon/image-viewer",
                     me._viewer_controller.buildViewer();
 
                     // initializes the ImageModelManager
-                    me._model = new ImageModelManager(me._image_server, me._image_id);
+                    me._model = new ImageModelManager(me._viewer_model_server, me._image_id);
 
                     // open
                     me._viewer_controller.viewer.addHandler("open", function () {
@@ -109,36 +134,18 @@ define("qtype_omerocommon/image-viewer",
                         window.annotation_canvas = me._annotations_controller;
                         me._annotations_controller.buildAnnotationsCanvas(me._viewer_controller);
                         me._viewer_controller.addAnnotationsController(me._annotations_controller, true);
-                        //window.events_controller = me._annotation_events_controller;
-
-                        //$("#" + me._image_viewer_container_id).mouseup(function(event){
-                        //    console.log(event);
-                        //
-                        //});
-                        //
-                        //$("#" + me._image_viewer_container_id).mousedown(function(event){
-                        //
-                        //    console.log(event);
-                        //
-                        //});
-
-                        $("#add-new-roi").click(function () {
-                            return false;
-                        });
-
 
                         // update the center and zoom level
                         me.updateViewFromProperties(me._image_properties);
 
                         // initialize the scalebar
-                        $.get(me._image_server + "/ome_seadragon/deepzoom/image_mpp/" + me._image_id + ".dzi").done(
-                            function (data) {
-                                console.log("Loading openseadragon viewer");
-                                var image_mpp = data.image_mpp ? data.image_mpp : 0;
-                                me._viewer_controller.enableScalebar(image_mpp, me._scalebar_config);
-                            }
-                        );
+                        me._model.getImageDZI(function(data){
+                            console.log("Loading openseadragon viewer");
+                            var image_mpp = data.image_mpp ? data.image_mpp : 0;
+                            me._viewer_controller.enableScalebar(image_mpp, me._scalebar_config);
+                        });
 
+                        // loads rois if required
                         if (load_rois)
                             me.loadROIs(callback);
                         else notifyListeners(me._listeners, callback);

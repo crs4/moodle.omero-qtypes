@@ -1,28 +1,32 @@
 <?php
-// This file is part of Moodle - http://moodle.org/
+
+// Copyright (c) 2015-2016, CRS4
 //
-// Moodle is free software: you can redistribute it and/or modify
-// it under the terms of the GNU General Public License as published by
-// the Free Software Foundation, either version 3 of the License, or
-// (at your option) any later version.
+// Permission is hereby granted, free of charge, to any person obtaining a copy of
+// this software and associated documentation files (the "Software"), to deal in
+// the Software without restriction, including without limitation the rights to
+// use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of
+// the Software, and to permit persons to whom the Software is furnished to do so,
+// subject to the following conditions:
 //
-// Moodle is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-// GNU General Public License for more details.
+// The above copyright notice and this permission notice shall be included in all
+// copies or substantial portions of the Software.
 //
-// You should have received a copy of the GNU General Public License
-// along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS
+// FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
+// COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
+// IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
+// CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 /**
  * Defines the editing form for the omeromultichoice question type.
  *
  * @package    qtype
  * @subpackage omeromultichoice
- * @copyright  2015 CRS4
- * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later //FIXME: check the licence
+ * @copyright  2015-2016 CRS4
+ * @license    https://opensource.org/licenses/mit-license.php MIT license
  */
-
 
 defined('MOODLE_INTERNAL') || die();
 
@@ -31,8 +35,8 @@ require_once($CFG->dirroot . '/question/type/omerocommon/edit_omerocommon_form.p
 /**
  * omeromultichoice question editing form definition.
  *
- * @copyright  2015 CRS4
- * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later // FIXME: check the licence
+ * @copyright  2015-2016 CRS4
+ * @license    https://opensource.org/licenses/mit-license.php MIT license
  */
 class qtype_omeromultichoice_edit_form extends qtype_omerocommon_edit_form
 {
@@ -89,10 +93,12 @@ class qtype_omeromultichoice_edit_form extends qtype_omerocommon_edit_form
                           </div>
                           <div id="omero-image-view-lock-container">
                               <label for="omero-image-view-lock">'.
-                                get_string('image_viewer_lock_student_navigation', 'qtype_omerocommon') .
-                              '</label>
+                                get_string('image_viewer_student_navigation', 'qtype_omerocommon') .
+                             '</label>
                               <input id="omero-image-view-lock" name="omero-image-view-lock" data-toggle="toggle"
-                                     type="checkbox" data-onstyle="success" data-offstyle="danger">
+                                     type="checkbox" data-onstyle="success" data-offstyle="default"
+                                     data-on="'. get_string('image_viewer_locked_student_navigation','qtype_omerocommon') .'"
+                                     data-off="'. get_string('image_viewer_lock_student_navigation', 'qtype_omerocommon') .'">
                           </div>
                         </div>
         ');
@@ -100,7 +106,7 @@ class qtype_omeromultichoice_edit_form extends qtype_omerocommon_edit_form
 
 
         $mform->addElement('header', 'roitableinspectorheader',
-            get_string('roi_shape_inspector', 'qtype_omeromultichoice'), '');
+            get_string('roi_shape_inspector', 'qtype_omerocommon'), '');
         $mform->setExpanded('roitableinspectorheader', 0);
 
         $mform->addElement('html', '
@@ -183,5 +189,6 @@ class qtype_omeromultichoice_edit_form extends qtype_omerocommon_edit_form
         global $PAGE;
         parent::export_locale_js_strings();
         $PAGE->requires->string_for_js('correctansweris', 'qtype_omerointeractive');
+        $PAGE->requires->string_for_js('answer_text', 'qtype_omeromultichoice');
     }
 }

@@ -18,8 +18,9 @@
 // COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
 // IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
 // CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
 /**
- * omeromultichoice question type version information.
+ * Strings for the module 'qtype_omeromultichoice', language 'it'
  *
  * @package    qtype
  * @subpackage omeromultichoice
@@ -27,9 +28,18 @@
  * @license    https://opensource.org/licenses/mit-license.php MIT license
  */
 
-defined('MOODLE_INTERNAL') || die();
+# generics
+$string['pluginname'] = 'Omero MultiChoice';
+$string['pluginname_link'] = 'question/type/omeromultichoice';
+$string['pluginnameadding'] = 'Inserisci una domanda "Omero MultiChoice"';
+$string['pluginnameediting'] = 'Modifica una domanda "Omero MultiChoice"';
+$string['pluginname_help'] = 'Tipo di domanda a risposta multipla che consente la scelta e l\'associazione di un\'immagine Omero e la selezione di un insieme di ROI (Region Of Interest) da visualizzare.';
+$string['pluginnamesummary'] = 'Tipo di domanda a risposta multipla che consente la scelta e l\'associazione di un\'immagine Omero e la selezione di un insieme di ROI (Region Of Interest) da visualizzare..';
 
-$plugin->component = 'qtype_omeromultichoice';
-$plugin->version   = 2016012700;        // The current plugin version (Date: YYYYMMDDXX).
-$plugin->requires  = 2015051100;        // Requires this Moodle version.
-$plugin->maturity  = MATURITY_ALPHA;
+# answers
+$string['add_answers'] = 'Aggiungi risposte';
+$string['answer_text'] = 'Testo';
+
+# feedback
+$string['correctansweris'] = 'La sola risposta corretta è: ';
+$string['correctanswerare'] = 'Le risposte corrette sono: ';
