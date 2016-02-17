@@ -243,6 +243,7 @@ abstract class qtype_omeromultichoice_base_renderer extends qtype_multichoice_re
         $feedbackimg = array();
         $feedback = array();
         $classes = array();
+        $num_of_response = 0;
         foreach ($question->get_order($qa) as $value => $ansid) {
             $ans = $question->answers[$ansid];
             $inputattributes['name'] = $renderer->get_input_name($qa, $value);
@@ -251,6 +252,7 @@ abstract class qtype_omeromultichoice_base_renderer extends qtype_multichoice_re
             $isselected = $question->is_choice_selected($response, $value);
             if ($isselected) {
                 $inputattributes['checked'] = 'checked';
+                $num_of_response++;
             } else {
                 unset($inputattributes['checked']);
             }
@@ -355,7 +357,14 @@ abstract class qtype_omeromultichoice_base_renderer extends qtype_multichoice_re
         }
 
         $result .= html_writer::start_tag('div', array('class' => 'multichoice-options-container'));
-        $result .= html_writer::tag('div', $renderer->prompt(), array('class' => 'prompt'));
+
+        $result .= html_writer::tag('div',
+            !$options->correctness ? $renderer->prompt() :
+                ($num_of_response === 1 ?
+                    get_string("notice_your_answer", "qtype_omerocommon") :
+                    get_string("notice_your_answers", "qtype_omerocommon")
+                ),
+            array('class' => 'prompt'));
 
         $result .= html_writer::start_tag('div', array('class' => 'answer'));
         foreach ($radiobuttons as $key => $radio) {
