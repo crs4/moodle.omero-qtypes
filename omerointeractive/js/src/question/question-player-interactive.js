@@ -260,9 +260,10 @@ define("qtype_omerointeractive/question-player-interactive",
                     var marker_color = undefined;
                     console.log(marker, markers_config);
                     if (config.answers.shapes[i] != "none") {
-                        if (config.answer_fraction[config.answers.shapes[i].shape_id] == 1)
-                            marker_color = COLORS.correct;
-                        else marker_color = COLORS.partially_correct;
+                        //if (config.answer_fraction[config.answers.shapes[i].shape_id] == 1)
+                        //    marker_color = COLORS.correct;
+                        //else marker_color = COLORS.partially_correct;
+                        marker_color = COLORS.correct;
                     } else marker_color = COLORS.wrong;
 
                     if (marker_color) {
