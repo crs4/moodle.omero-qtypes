@@ -70,18 +70,20 @@ class qtype_omeromultichoice_single_renderer extends qtype_multichoice_single_re
 
     public function correct_response(question_attempt $qa)
     {
+        $result = "";
         $question = $qa->get_question();
-        foreach ($question->get_order($qa) as $ans_number => $ans_id) {
-            $answer = $question->answers[$ans_id];
-            if (question_state::graded_state_for_fraction($answer->fraction) ==
-                question_state::$gradedright
-            ) {
-                return get_string('correctansweris', 'qtype_multichoice',
-                    qtype_omeromultichoice_base_renderer::number_answer($ans_number, $question->answernumbering));
+        if ($question->shownumcorrect) {
+            foreach ($question->get_order($qa) as $ans_number => $ans_id) {
+                $answer = $question->answers[$ans_id];
+                if (question_state::graded_state_for_fraction($answer->fraction) ==
+                    question_state::$gradedright
+                ) {
+                    $result = get_string('correctansweris', 'qtype_multichoice',
+                        qtype_omeromultichoice_base_renderer::number_answer($ans_number, $question->answernumbering));
+                }
             }
         }
-
-        return '';
+        return $result;
     }
 }
 
@@ -133,21 +135,24 @@ class qtype_omeromultichoice_multi_renderer extends qtype_multichoice_multi_rend
     public function correct_response(question_attempt $qa)
     {
         $counter = 0;
+        $result = "";
         $question = $qa->get_question();
-        $right = array();
-        foreach ($question->get_order($qa) as $ans_number => $answer_id) {
-            $answer = $question->answers[$answer_id];
-            if ($answer->fraction > 0) {
-                $right[] = qtype_omeromultichoice_base_renderer::number_answer($ans_number, $question->answernumbering);
+        if ($question->shownumcorrect) {
+            $right = array();
+            foreach ($question->get_order($qa) as $ans_number => $answer_id) {
+                $answer = $question->answers[$answer_id];
+                if ($answer->fraction > 0) {
+                    $right[] = qtype_omeromultichoice_base_renderer::number_answer($ans_number, $question->answernumbering);
+                }
+                $counter++;
             }
-            $counter++;
-        }
 
-        if (!empty($right)) {
-            return get_string('correctansweris', 'qtype_multichoice',
-                implode(' + ', $right));
+            if (!empty($right)) {
+                $result = get_string('correctansweris', 'qtype_multichoice',
+                    implode(' + ', $right));
+            }
         }
-        return '';
+        return $result;
     }
 
 }
