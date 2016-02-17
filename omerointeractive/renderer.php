@@ -359,7 +359,8 @@ abstract class qtype_omerointeractive_base_renderer extends qtype_multichoice_re
                     ) .
                     '</span>';
 
-                if ($shape !== "none") {
+
+                if ($shape !== "none" && !empty(strip_tags($answer_options_info[$shape->shape_id]->feedback))) {
                     $marker_correction_text .=
                         html_writer::tag("div",
                             html_writer::tag("i", " ",
