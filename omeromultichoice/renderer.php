@@ -148,8 +148,7 @@ class qtype_omeromultichoice_multi_renderer extends qtype_multichoice_multi_rend
             }
 
             if (!empty($right)) {
-                $result = get_string('correctansweris', 'qtype_multichoice',
-                    implode(' + ', $right));
+                $result = get_string('correctansweris', 'qtype_multichoice', implode(' + ', $right));
             }
         }
         return $result;
@@ -263,32 +262,38 @@ abstract class qtype_omeromultichoice_base_renderer extends qtype_multichoice_re
                     'value' => 0,
                 ));
             }
-            $radiobuttons[] = $hidden . html_writer::empty_tag('input', $inputattributes) .
-                html_writer::tag('label',
-                    $question->format_text(
-                        $renderer->number_in_style($value, $question->answernumbering) .
-                        preg_replace('/<p[^>]*>(.*)<\/p[^>]*>/i', '$1', $ans->answer), $ans->answerformat,
-                        $qa, 'question', 'answer', $ansid),
-                    array('for' => $inputattributes['id']));
 
             // Param $options->suppresschoicefeedback is a hack specific to the
             // oumultiresponse question type. It would be good to refactor to
             // avoid refering to it here.
-            if ($options->feedback && empty($options->suppresschoicefeedback) &&
-                $isselected && trim($ans->feedback)
+            $feedback_content = null;
+            if ($options->feedback && empty($options->suppresschoicefeedback) && $isselected
             ) {
-                $feedback[] = html_writer::tag('div',
-                    $question->format_text(
-                        $ans->feedback, $ans->feedbackformat,
-                        $qa, 'question', 'answerfeedback', $ansid) .
-                    ($isselected ?
-                        ('<span class="pull-right">' . $renderer->feedback_image($renderer->is_right($ans)) . '</span>')
-                        : "")
-                    ,
-                    array('class' => 'specificfeedback'));
+                $feedback_content = ($isselected ?
+                    ('<span class="pull-right">' . $renderer->feedback_image($renderer->is_right($ans)) . '</span>')
+                    : "");
+                $feedback_text = trim($ans->feedback);
+                if (!empty(strip_tags($feedback_text))) {
+                    $feedback_content .= html_writer::tag("div",
+                        html_writer::tag("i", " ",
+                            array(
+                                "class" => "pull-left glyphicon glyphicon-record",
+                                "style" => "margin-right: 20px"
+                            )
+                        ) .
+                        $feedback_text,
+                        array(
+                            "class" => "outcome",
+                            "style" => "display: block-inline; margin: 0 0 10px; padding: 20px 30px 15px;"
+                        )
+                    );
+                }
+                $feedback[] = $feedback_content;
+
             } else {
                 $feedback[] = '';
             }
+
             $class = 'r' . ($value % 2);
             if ($options->correctness && $isselected) {
                 $feedbackimg[] = $renderer->feedback_image($renderer->is_right($ans));
@@ -297,6 +302,16 @@ abstract class qtype_omeromultichoice_base_renderer extends qtype_multichoice_re
                 $feedbackimg[] = '';
             }
             $classes[] = $class;
+
+            $radiobutton_label = html_writer::tag('label',
+                $question->format_text(
+                    $renderer->number_in_style($value, $question->answernumbering) .
+                    preg_replace('/<p[^>]*>(.*)<\/p[^>]*>/i', '$1', $ans->answer), $ans->answerformat,
+                    $qa, 'question', 'answer', $ansid)
+                ,
+                array('for' => $inputattributes['id']));
+
+            $radiobuttons[] = $hidden . html_writer::empty_tag('input', $inputattributes) . $radiobutton_label;
         }
 
 
@@ -333,7 +348,7 @@ abstract class qtype_omeromultichoice_base_renderer extends qtype_multichoice_re
 
         $result .= '</div>';
 
-        if(!empty($question->focusablerois)) {
+        if (!empty($question->focusablerois)) {
             $result .= '<div id="' . self::to_unique_identifier($qa, self::FOCUS_AREAS_CONTAINER) . '" ' .
                 ' class="focus_areas_container">' .
                 '<span class="focus-areas-text">* ' . get_string("focusareas", "qtype_omerointeractive") . '</span> ' . '</div>';
@@ -344,7 +359,7 @@ abstract class qtype_omeromultichoice_base_renderer extends qtype_multichoice_re
 
         $result .= html_writer::start_tag('div', array('class' => 'answer'));
         foreach ($radiobuttons as $key => $radio) {
-            $result .= html_writer::tag('div', $radio . ' ' . $feedbackimg[$key],
+            $result .= html_writer::tag('div', $radio . ' ' . $feedback[$key],
                 array('class' => $classes[$key]));
         }
         $result .= html_writer::end_tag('div'); // Answer.
