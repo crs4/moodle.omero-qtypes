@@ -96,6 +96,16 @@ define("qtype_omerocommon/image-viewer",
                             this._viewer_config[prop] = viewer_config[prop];
                         }
                     }
+
+                    // init loading message
+                    var container = $("#" + this._image_viewer_container_id);
+                    if(container){
+                        container = container.parent();
+                        if(container){
+                            var dialog_container = $("#" + this._image_viewer_container_id + '-loading-dialog');
+                            this._waiting_dialog = dialog_container;
+                        }
+                    }
                 };
 
 
