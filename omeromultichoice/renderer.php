@@ -335,6 +335,7 @@ abstract class qtype_omeromultichoice_base_renderer extends qtype_multichoice_re
         $result .= '<div id="' . self::to_unique_identifier($qa, "graphics_container") . '" class="image-viewer-container" style="position: relative;" >
             <div id="' . self::to_unique_identifier($qa, self::IMAGE_VIEWER_CONTAINER) . '" style="position: absolute; width: 100%; height: 500px; margin: auto;"></div>
             <canvas id="' . self::to_unique_identifier($qa, 'annotations_canvas') . '" style="position: absolute; width: 100%; height: 500px; margin: auto;"></canvas>
+            <div id="' . self::to_unique_identifier($qa, self::IMAGE_VIEWER_CONTAINER) . '-loading-dialog" class="image-viewer-loading-dialog"></div>
         </div>';
 
 

@@ -96,6 +96,16 @@ define("qtype_omerocommon/image-viewer",
                             this._viewer_config[prop] = viewer_config[prop];
                         }
                     }
+
+                    // init loading message
+                    var container = $("#" + this._image_viewer_container_id);
+                    if(container){
+                        container = container.parent();
+                        if(container){
+                            var dialog_container = $("#" + this._image_viewer_container_id + '-loading-dialog');
+                            this._waiting_dialog = dialog_container;
+                        }
+                    }
                 };
 
 
@@ -148,7 +158,12 @@ define("qtype_omerocommon/image-viewer",
                         // loads rois if required
                         if (load_rois)
                             me.loadROIs(callback);
-                        else notifyListeners(me._listeners, callback);
+                        else {
+                            // notifies listeners
+                            notifyListeners(me._listeners, callback);
+                            // hide loading dialog
+                            me._waiting_dialog.hide();
+                        }
                     });
                 };
 
@@ -215,6 +230,9 @@ define("qtype_omerocommon/image-viewer",
 
                         // notify listeners
                         notifyListeners(me._listeners, callback);
+
+                        // hide loading dialog
+                        me._waiting_dialog.hide();
                     });
                 };
 

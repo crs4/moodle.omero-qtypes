@@ -65,6 +65,11 @@ class qtype_omerointeractive_single_renderer extends qtype_multichoice_single_re
         return parent::is_right($ans);
     }
 
+    public function is_right_marker($response, $marker_index)
+    {
+        return $response->shapes[$marker_index] !== "none" ? 1 : 0;
+    }
+
     public function get_input_name(question_attempt $qa, $value)
     {
         return $qa->get_qt_field_name('answer');
@@ -354,7 +359,8 @@ abstract class qtype_omerointeractive_base_renderer extends qtype_multichoice_re
                     ) .
                     '</span>';
 
-                if ($shape !== "none") {
+
+                if ($shape !== "none" && !empty(strip_tags($answer_options_info[$shape->shape_id]->feedback))) {
                     $marker_correction_text .=
                         html_writer::tag("div",
                             html_writer::tag("i", " ",
@@ -429,8 +435,9 @@ abstract class qtype_omerointeractive_base_renderer extends qtype_multichoice_re
                 </div>';
 
         $result .= '<div id="' . self::to_unique_identifier($qa, "graphics_container") . '" class="image-viewer-container" style="position: relative;" >
-            <div id="' . self::to_unique_identifier($qa, self::IMAGE_VIEWER_CONTAINER) . '" style="position: absolute; width: 100%; height: 500px; margin: auto;"></div>
-            <canvas id="' . self::to_unique_identifier($qa, 'annotations_canvas') . '" style="position: absolute; width: 100%; height: 500px; margin: auto;"></canvas>
+            <div id="' . self::to_unique_identifier($qa, self::IMAGE_VIEWER_CONTAINER) . '" style="position: absolute; width: 100%; height: 500px; margin: auto; z-index: 0;"></div>
+            <canvas id="' . self::to_unique_identifier($qa, 'annotations_canvas') . '" style="position: absolute; width: 100%; height: 500px; margin: auto; z-index: 1;"></canvas>
+            <div id="' . self::to_unique_identifier($qa, self::IMAGE_VIEWER_CONTAINER) . '-loading-dialog" class="image-viewer-loading-dialog"></div>
         </div>';
 
 
