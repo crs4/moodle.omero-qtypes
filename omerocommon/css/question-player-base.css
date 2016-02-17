@@ -42,15 +42,15 @@
     text-align: right;
 }
 
-div[id*=marker_removers_container]{
+div[id*=marker_removers_container] {
     display: block;
 }
 
-span.yourmarkers-text{
+span.yourmarkers-text {
     font-weight: bold;
 }
 
-span.focus-areas-text{
+span.focus-areas-text {
     font-weight: bold;
 }
 
@@ -77,16 +77,16 @@ div.question-summary {
     min-height: 80px;
 }
 
-div.answer-summary-fixed-text{
+div.answer-summary-fixed-text {
     margin: 10px 0;
 }
 
-div[id*=remove_marker_ctrl]{
+div[id*=remove_marker_ctrl] {
     display: inline-block;
     margin-right: 5px;
 }
 
-div[id*=hide_marker_ctrl]{
+div[id*=hide_marker_ctrl] {
     margin-left: 5px;
 }
 
@@ -97,23 +97,30 @@ div[id*=hide_marker_ctrl]{
     position: relative;
 }
 
-div[id*=goto_marker_ctrl_id]{
+div[id*=goto_marker_ctrl_id] {
     display: inline-block;
     margin-left: 10px;
 }
 
-div.multichoice-options-container{
+div.multichoice-options-container {
     margin: 20px 10px 40px;
 }
 
-div.multichoice-options-container .prompt{
+div.multichoice-options-container .prompt {
     margin-bottom: 10px;
 }
 
-div.outcome{
+div.outcome {
     margin-top: 20px;
 }
 
-.content .formulation{
+.content .formulation {
     padding: 8px 14px 8px 14px;
+}
+
+div.image-viewer-loading-dialog {
+    background: rgba(9, 9, 9, 0.4) url("http://10.211.55.4:4789/moodle/question/type/omerocommon/img/loading.gif") no-repeat center;
+    position: absolute;
+    width: 100%;
+    height: 500px;
 }
