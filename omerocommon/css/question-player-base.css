@@ -119,7 +119,7 @@ div.outcome {
 }
 
 div.image-viewer-loading-dialog {
-    background: rgba(9, 9, 9, 0.4) url("http://10.211.55.4:4789/moodle/question/type/omerocommon/img/loading.gif") no-repeat center;
+    background: rgba(255, 255, 255, 0.4) url("http://10.211.55.4:4789/moodle/question/type/omerocommon/img/loading.gif") no-repeat center;
     position: absolute;
     width: 100%;
     height: 500px;
