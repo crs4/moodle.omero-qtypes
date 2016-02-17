@@ -65,6 +65,11 @@ class qtype_omerointeractive_single_renderer extends qtype_multichoice_single_re
         return parent::is_right($ans);
     }
 
+    public function is_right_marker($response, $marker_index)
+    {
+        return $response->shapes[$marker_index] !== "none" ? 1 : 0;
+    }
+
     public function get_input_name(question_attempt $qa, $value)
     {
         return $qa->get_qt_field_name('answer');
