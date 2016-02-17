@@ -71,9 +71,12 @@ define("qtype_omerocommon/question-editor-base",
 
         function showDialogMessage(message) {
             $("#modal-frame-text").html(message);
-            $("#myModal").modal();
+            $("#myModal").modal("show");
         }
 
+        function hideDialogMessage(){
+            $("#myModal").modal("hide");
+        }
 
         // Public functions
         return {
