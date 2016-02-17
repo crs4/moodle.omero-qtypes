@@ -356,6 +356,11 @@ define("qtype_omerointeractive/question-player-interactive",
 
                 // show focus areas
                 me.showFocusAreas();
+
+                // initialize controls
+                setEnabledMarkerControl(me, CONTROL_KEYS.ADD, !config.correction_mode);
+                setEnabledMarkerControl(me, CONTROL_KEYS.EDIT, false);
+                setEnabledMarkerControl(me, CONTROL_KEYS.CLEAR, false);
             });
         }
 
@@ -440,11 +445,6 @@ define("qtype_omerointeractive/question-player-interactive",
                         });
 
                         me._remove_markers_container = $("#" + config["marker_removers_container"]);
-
-                        // initialize controls
-                        setEnabledMarkerControl(this, CONTROL_KEYS.ADD, !config.correction_mode);
-                        setEnabledMarkerControl(this, CONTROL_KEYS.EDIT, false);
-                        setEnabledMarkerControl(this, CONTROL_KEYS.CLEAR, false);
 
                         // initialize image positioning control
                         $("#" + config.question_answer_container + " .restore-image-center-btn").click(function () {
