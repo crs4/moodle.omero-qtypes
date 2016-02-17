@@ -158,7 +158,12 @@ define("qtype_omerocommon/image-viewer",
                         // loads rois if required
                         if (load_rois)
                             me.loadROIs(callback);
-                        else notifyListeners(me._listeners, callback);
+                        else {
+                            // notifies listeners
+                            notifyListeners(me._listeners, callback);
+                            // hide loading dialog
+                            me._waiting_dialog.hide();
+                        }
                     });
                 };
 
@@ -225,6 +230,9 @@ define("qtype_omerocommon/image-viewer",
 
                         // notify listeners
                         notifyListeners(me._listeners, callback);
+
+                        // hide loading dialog
+                        me._waiting_dialog.hide();
                     });
                 };
 
