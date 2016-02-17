@@ -44,7 +44,6 @@
 
 div[id*=marker_removers_container]{
     display: block;
-    padding-bottom: 40px;
 }
 
 span.yourmarkers-text{
@@ -61,7 +60,7 @@ span.focus-areas-text{
 }
 
 .remove_marker_button_group div {
-    margin: 0 5px;
+    margin: 0 0px;
 }
 
 div[id*=graphics_container] {
@@ -74,7 +73,7 @@ div.qtext {
 }
 
 div.question-summary {
-    margin: 30px 0 40px;
+    margin: 40px 0 20px;
     min-height: 80px;
 }
 
@@ -84,6 +83,11 @@ div.answer-summary-fixed-text{
 
 div[id*=remove_marker_ctrl]{
     display: inline-block;
+    margin-right: 5px;
+}
+
+div[id*=hide_marker_ctrl]{
+    margin-left: 5px;
 }
 
 .focus_areas_container {
@@ -107,7 +111,7 @@ div.multichoice-options-container .prompt{
 }
 
 div.outcome{
-    margin-top: 40px;
+    margin-top: 20px;
 }
 
 .content .formulation{

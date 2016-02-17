@@ -54,7 +54,11 @@ $string['yourmarkers'] = 'Your markers: ';
 $string['focusareas'] = 'Focus Areas: ';
 
 # feedback
-$string['answerassociatedroi'] = 'The ROI <em>(Region Of Interest)</em> of this question is: ';
-$string['answerassociatedrois'] = 'The set of ROIs <em>(Regions Of Interest)</em> of this question is: ';
-$string['correctansweris'] = 'To correctly answer you have to select one of the following ROIs: ';
-$string['correctanswerare'] = 'To correctly and completely answer you have to select the following ROIs: ';
+$string['your_marker_inside'] = 'is inside the ROI';
+$string['your_marker_outside'] = 'is outside of any ROI';
+$string['answerassociatedroi'] = 'Notice the relevant ROI (<em>Region Of Interest</em>) of this question: ';
+$string['answerassociatedrois'] = 'Notice the relevant ROIs (<em>Regions Of Interest</em>) of this question: ';
+$string['single_correctansweris'] = 'To correctly answer you have to select the following ROI: ';
+$string['single_correctanswerare'] = 'To correctly answer you have to select one of the following ROIs: ';
+$string['multi_correctansweris'] = 'To correctly answer you have to select the following ROI: ';
+$string['multi_correctanswerare'] = 'To correctly and completely answer you have to select the following ROIs: ';
