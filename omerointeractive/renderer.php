@@ -476,8 +476,8 @@ abstract class qtype_omerointeractive_base_renderer extends qtype_multichoice_re
 
             $result .= html_writer::tag('div',
                 (count($response->markers) === 1) ?
-                    get_string("notice_your_answer", "qtype_omerointeractive") :
-                    get_string("notice_your_answers", "qtype_omerointeractive"),
+                    get_string("notice_your_answer", "qtype_omerocommon") :
+                    get_string("notice_your_answers", "qtype_omerocommon"),
                 array("class" => "answer-summary-fixed-text"));
 
             $result .= html_writer::start_tag('ul', array('class' => 'answer'));
