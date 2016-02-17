@@ -54,8 +54,6 @@ $string['yourmarkers'] = 'Your markers: ';
 $string['focusareas'] = 'Focus Areas: ';
 
 # feedback
-$string['notice_your_answer'] = 'Notice your answer: ';
-$string['notice_your_answers'] = 'Notice your answers: ';
 $string['your_marker_inside'] = 'is inside the ROI';
 $string['your_marker_outside'] = 'is outside of any ROI';
 $string['answerassociatedroi'] = 'Notice the relevant ROI (<em>Region Of Interest</em>) of this question: ';
