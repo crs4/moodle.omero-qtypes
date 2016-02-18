@@ -95,16 +95,17 @@ class qtype_omerointeractive_single_renderer extends qtype_multichoice_single_re
         if ($question->shownumcorrect) {
             foreach ($question->get_order($qa) as $ans_number => $ans_id) {
                 $answer = $question->answers[$ans_id];
-                if (question_state::graded_state_for_fraction($answer->fraction) ==
-                    question_state::$gradedright
-                ) {
-                    array_push($right,
-                        '<i roi-shape-id="' . $answer->answer . '" class="glyphicon glyphicon-map-marker roi-shape-info"></i> ' .
-                        '[' . $answer->answer . "]");
+                if (question_state::graded_state_for_fraction($answer->fraction) == question_state::$gradedright) {
+                    foreach(explode(",", $answer->answer) as $k => $v) {
+                        array_push($right,
+                            '<i roi-shape-id="' . $v .
+                            '" class="glyphicon glyphicon-map-marker roi-shape-info"></i> ' .
+                            '[' . $v . "]");
+                    }
                 }
             }
             $result = get_string(count($right) == 1
-                    ? 'single_correctansweris' : 'single_correctansweris', 'qtype_omerointeractive') . implode(", ", $right);
+                    ? 'single_correctansweris' : 'single_correctansweris', 'qtype_omerointeractive') . implode(" or ", $right);
         }
         return $result;
     }
