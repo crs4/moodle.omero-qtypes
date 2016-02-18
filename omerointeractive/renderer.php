@@ -329,11 +329,8 @@ abstract class qtype_omerointeractive_base_renderer extends qtype_multichoice_re
                 $isselected = true;
                 $hidden = '';
                 $answer_options_attributes = array();
-
-
                 $marker_correction = $hidden;
                 $marker_correction .= html_writer::empty_tag('li', $answer_options_attributes);
-
                 $marker_correction_text =
                     get_string("marker", "qtype_omerointeractive") . " " .
                     html_writer::tag("i", " ",
@@ -366,7 +363,6 @@ abstract class qtype_omerointeractive_base_renderer extends qtype_multichoice_re
                     ) .
                     '</span>';
 
-
                 if ($shape !== "none" && !empty(strip_tags($answer_options_info[$shape->shape_id]->feedback))) {
                     $marker_correction_text .=
                         html_writer::tag("div",
@@ -387,13 +383,12 @@ abstract class qtype_omerointeractive_base_renderer extends qtype_multichoice_re
 
                 $class = 'r' . ($value % 2);
                 $answer_options_attributes['checked'] = 'checked';
-                $feedback_class = $renderer->feedback_image($renderer->is_right_marker($response, $index));
-                $feedbackimg[] = $renderer->feedback_image($renderer->is_right_marker($response, $index));
-                $class .= ' ' . $renderer->feedback_class($renderer->is_right_marker($response, $index));
+                $feedback_class = $renderer->feedback_image($renderer->is_right_marker($shape_grade_map, $response, $index));
+                $feedbackimg[] = $renderer->feedback_image($renderer->is_right_marker($shape_grade_map, $response, $index));
+                $class .= ' ' . $renderer->feedback_class($renderer->is_right_marker($shape_grade_map, $response, $index));
                 $classes[] = $class;
             }
         }
-
 
         foreach ($question->get_order($qa) as $value => $ansid) {
             $ans = $question->answers[$ansid];
@@ -401,7 +396,6 @@ abstract class qtype_omerointeractive_base_renderer extends qtype_multichoice_re
             $answer_options_attributes['name'] = $renderer->get_input_name($qa, $value);
             $answer_options_attributes['value'] = $renderer->get_input_value($value);
             $answer_options_attributes['id'] = $renderer->get_input_id($qa, $value);
-
 
             $hidden = '';
             if (!$options->readonly && $renderer->get_input_type() == 'checkbox') {
@@ -468,10 +462,7 @@ abstract class qtype_omerointeractive_base_renderer extends qtype_multichoice_re
         $result .= '<div id="' . self::to_unique_identifier($qa, self::MARKER_REMOVERS_CONTAINER) . '" ' .
             ' class="remove_marker_button_group">' .
             '<span class="yourmarkers-text">* ' . get_string("yourmarkers", "qtype_omerointeractive") . '</span> ' . '</div>';
-
-
         $result .= '</div>';
-
 
         $answer_input_name = $qa->get_qt_field_name('answer');
         $answer_options_attributes = array(
@@ -484,10 +475,7 @@ abstract class qtype_omerointeractive_base_renderer extends qtype_multichoice_re
         }
 
         if ($options->correctness && count($response->markers) > 0) {
-
-
             $result .= html_writer::start_tag('div', array('class' => 'question-summary hidden'));
-
             $result .= html_writer::tag('div',
                 (count($response->markers) === 1) ?
                     get_string("notice_your_answer", "qtype_omerocommon") :
