@@ -140,13 +140,17 @@ define("qtype_omerointeractive/question-player-interactive",
                 var matched_shape = "none";
                 for (var group in config.shape_groups) {
                     console.log("Group: " + group);
-                    for (var k in config.shape_groups[group]) {
+                    for (var k in config.shape_groups[group].shapes) {
                         console.log("Shape id: " + k);
-                        var shape = me._image_viewer_controller.getShape(config.shape_groups[group][k]);
+                        var shape = me._image_viewer_controller.getShape(config.shape_groups[group].shapes[k]);
                         console.log("Checking against ", shape, marked_shapes, shape.id in marked_shapes);
                         if (!(shape.id in marked_shapes) && shape.contains(center.x, center.y)) {
                             console.log("Contained in shape " + shape.id);
-                            matched_shape = {shape_id: shape.id, shape_group: group};
+                            matched_shape = {
+                                shape_id: shape.id,
+                                shape_group: group,
+                                fraction: config.shape_groups[group].shape_grade
+                            };
                             marked_shapes[shape.id] = shape;
                             break;
                         }
@@ -256,21 +260,20 @@ define("qtype_omerointeractive/question-player-interactive",
                 console.log("No answer found!!!");
             else {
                 for (var i in config.answers.markers) {
+                    var shape = config.answers.shapes[i];
                     var marker = config.answers.markers[i];
                     var marker_color = undefined;
-                    console.log(marker, markers_config);
-                    if (config.answers.shapes[i] != "none") {
-                        //if (config.answer_fraction[config.answers.shapes[i].shape_id] == 1)
-                        //    marker_color = COLORS.correct;
-                        //else marker_color = COLORS.partially_correct;
+                    console.log("Check Marker: ", marker, markers_config);
+                    if (shape === "none" || shape.fraction <= 0)
+                        marker_color = COLORS.wrong;
+                    else if (config.max_markers == 1 && shape.fraction < 1)
+                        marker_color = COLORS.partially_correct;
+                    else
                         marker_color = COLORS.correct;
-                    } else marker_color = COLORS.wrong;
-
                     if (marker_color) {
                         markers_config.fill_color = marker_color;
                         markers_config.stroke_color = marker_color;
                     }
-
                     player._image_viewer_controller.drawMarker(marker, markers_config);
                     addMarkerInfo(player, marker.shape_id, !config.correction_mode, markers_config.stroke_color);
                 }
@@ -298,7 +301,7 @@ define("qtype_omerointeractive/question-player-interactive",
                 f = $("#" + config.question_answer_container).parents("form");
                 selector = "#" + ((f && f.attr("id")) ?
                         f.attr("id") : config.question_answer_container) + selector;
-                $(selector).each(function(el_idx, el_value){
+                $(selector).each(function (el_idx, el_value) {
                     var el_ctrl = $(el_value);
                     el_ctrl.bind(
                         'click', {

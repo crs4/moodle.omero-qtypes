@@ -65,9 +65,11 @@ class qtype_omerointeractive_single_renderer extends qtype_multichoice_single_re
         return parent::is_right($ans);
     }
 
-    public function is_right_marker($response, $marker_index)
+    public function is_right_marker($shape_grade_map, $response, $marker_index)
     {
-        return $response->shapes[$marker_index] !== "none" ? 1 : 0;
+        $shape = $response->shapes[$marker_index];
+        return $response->shapes[$marker_index] !== "none" ?
+            $shape_grade_map->{$shape->shape_id} <= 0 ? 0 : $shape_grade_map->{$shape->shape_id} : 0;
     }
 
     public function get_input_name(question_attempt $qa, $value)
@@ -93,16 +95,17 @@ class qtype_omerointeractive_single_renderer extends qtype_multichoice_single_re
         if ($question->shownumcorrect) {
             foreach ($question->get_order($qa) as $ans_number => $ans_id) {
                 $answer = $question->answers[$ans_id];
-                if (question_state::graded_state_for_fraction($answer->fraction) ==
-                    question_state::$gradedright
-                ) {
-                    array_push($right,
-                        '<i roi-shape-id="' . $answer->answer . '" class="glyphicon glyphicon-map-marker roi-shape-info"></i> ' .
-                        '[' . $answer->answer . "]");
+                if (question_state::graded_state_for_fraction($answer->fraction) == question_state::$gradedright) {
+                    foreach(explode(",", $answer->answer) as $k => $v) {
+                        array_push($right,
+                            '<i roi-shape-id="' . $v .
+                            '" class="glyphicon glyphicon-map-marker roi-shape-info"></i> ' .
+                            '[' . $v . "]");
+                    }
                 }
             }
             $result = get_string(count($right) == 1
-                    ? 'single_correctansweris' : 'single_correctansweris', 'qtype_omerointeractive') . implode(", ", $right);
+                    ? 'single_correctansweris' : 'single_correctansweris', 'qtype_omerointeractive') . implode(" or ", $right);
         }
         return $result;
     }
@@ -138,12 +141,13 @@ class qtype_omerointeractive_multi_renderer extends qtype_multichoice_multi_rend
         } else {
             return 0;
         }
-        //return $ans->fraction > 0;
     }
 
-    public function is_right_marker($response, $marker_index)
+    public function is_right_marker($shape_grade_map, $response, $marker_index)
     {
-        return $response->shapes[$marker_index] !== "none" ? 1 : 0;
+        $shape = $response->shapes[$marker_index];
+        return $response->shapes[$marker_index] !== "none" ?
+            $shape_grade_map->{$shape->shape_id} <= 0 ? 0 : 1 : 0;
     }
 
 
@@ -183,7 +187,7 @@ class qtype_omerointeractive_multi_renderer extends qtype_multichoice_multi_rend
                         $right_shape_set[] .= '<i roi-shape-id="' . $shape_id . '" class="glyphicon glyphicon-map-marker roi-shape-info"></i> ' .
                             '[' . $shape_id . "]";
                     if (!empty($right_shape_set))
-                        $right[] .= (implode(' - ', $right_shape_set));
+                        $right[] .= (implode(', ', $right_shape_set));
                 }
                 $counter++;
             }
@@ -275,28 +279,35 @@ abstract class qtype_omerointeractive_base_renderer extends qtype_multichoice_re
         $multi_correct_answer = ($question instanceof qtype_omerointeractive_multi_question);
 
         $no_max_markers = 0;
-        $shape_fraaction = new stdClass();
+        $answer_shape_map = array();
+        $shape_grade_map = new stdClass();
         $available_shapes = array();
         $shape_groups = array();
         foreach ($question->get_order($qa) as $ans_idx => $ansid) {
             $ans = $question->answers[$ansid];
             $value = $ans->answer;
+            $shape_group = array_map("intval", explode(",", $ans->answer));
+            $shape_group_cardinality = count($shape_group);
+            // update the max number of markers allowed
             if ($ans->fraction > 0 && !empty($value)) {
-                $shape_group = array_map("intval", explode(",", $ans->answer));
-                array_push($shape_groups, $shape_group);
-                $shape_group_cardinality = count($shape_group);
                 $no_max_markers += $shape_group_cardinality;
-                $shape_group_fraction = 0;
-                if ($shape_group_cardinality > 0) {
-                    $shape_group_fraction = $multi_correct_answer
-                        ? ($ans->fraction / $shape_group_cardinality)
-                        : $ans->fraction;
-                }
-                foreach ($shape_group as $shape_id) {
-                    $shape_fraaction->{$shape_id} = $shape_group_fraction;
-                    array_push($available_shapes, $shape_id);
-                }
             }
+            // compute the shape grade
+            $shape_group_fraction = 0;
+            if ($shape_group_cardinality > 0) {
+                $shape_group_fraction = $multi_correct_answer
+                    ? ($ans->fraction / $shape_group_cardinality)
+                    : $ans->fraction;
+            }
+            foreach ($shape_group as $shape_id) {
+                $shape_grade_map->{$shape_id} = $shape_group_fraction;
+                array_push($available_shapes, $shape_id);
+                $answer_shape_map[$shape_id] = $ans;
+            }
+            array_push($shape_groups, array(
+                "shapes" => $shape_group,
+                "shape_grade" => $shape_group_fraction
+            ));
         }
 
         // Fix the max number of markers
@@ -304,14 +315,9 @@ abstract class qtype_omerointeractive_base_renderer extends qtype_multichoice_re
 
         $answer_order = "";
         $answer_options = array();
-        $answer_options_info = array();
+
         $feedbackimg = array();
         $classes = array();
-
-        // prepare info of the list of shapes
-        foreach ($question->answers as $answer) {
-            $answer_options_info[$answer->answer] = $answer;
-        }
 
         // Show correct/wrong markers
         if ($options->correctness) {
@@ -321,11 +327,8 @@ abstract class qtype_omerointeractive_base_renderer extends qtype_multichoice_re
                 $isselected = true;
                 $hidden = '';
                 $answer_options_attributes = array();
-
-
                 $marker_correction = $hidden;
                 $marker_correction .= html_writer::empty_tag('li', $answer_options_attributes);
-
                 $marker_correction_text =
                     get_string("marker", "qtype_omerointeractive") . " " .
                     html_writer::tag("i", " ",
@@ -346,10 +349,9 @@ abstract class qtype_omerointeractive_base_renderer extends qtype_multichoice_re
                         ) . " [" . $shape->shape_id . "] ";
                 } else $marker_correction_text .= get_string("your_marker_outside", "qtype_omerointeractive");
 
-
                 $marker_correction_text .=
                     '<span class="pull-right">' .
-                    $renderer->feedback_image($renderer->is_right_marker($response, $index)) .
+                    $renderer->feedback_image($renderer->is_right_marker($shape_grade_map, $response, $index)) .
                     html_writer::tag("i", " ",
                         array(
                             "class" => "glyphicon glyphicon-eye-open roi-shape-visibility",
@@ -359,18 +361,16 @@ abstract class qtype_omerointeractive_base_renderer extends qtype_multichoice_re
                     ) .
                     '</span>';
 
-
-                if ($shape !== "none" && !empty(strip_tags($answer_options_info[$shape->shape_id]->feedback))) {
+                if ($shape !== "none" && !empty(strip_tags($answer_shape_map[$shape->shape_id]->feedback))) {
                     $marker_correction_text .=
                         html_writer::tag("div",
                             html_writer::tag("i", " ",
                                 array(
                                     "class" => "pull-left glyphicon glyphicon-record",
-                                    "roi-shape-id" => $marker->shape_id,
                                     "style" => "margin-right: 5px"
                                 )
                             ) .
-                            $answer_options_info[$shape->shape_id]->feedback,
+                            $answer_shape_map[$shape->shape_id]->feedback,
                             array("class" => "outcome", "style" => "display: block-inline; margin: 0 0 10px; padding: 20px 30px 15px;")
                         );
                 }
@@ -380,13 +380,12 @@ abstract class qtype_omerointeractive_base_renderer extends qtype_multichoice_re
 
                 $class = 'r' . ($value % 2);
                 $answer_options_attributes['checked'] = 'checked';
-                $feedback_class = $renderer->feedback_image($renderer->is_right_marker($response, $index));
-                $feedbackimg[] = $renderer->feedback_image($renderer->is_right_marker($response, $index));
-                $class .= ' ' . $renderer->feedback_class($renderer->is_right_marker($response, $index));
+                $feedback_class = $renderer->feedback_image($renderer->is_right_marker($shape_grade_map, $response, $index));
+                $feedbackimg[] = $renderer->feedback_image($renderer->is_right_marker($shape_grade_map, $response, $index));
+                $class .= ' ' . $renderer->feedback_class($renderer->is_right_marker($shape_grade_map, $response, $index));
                 $classes[] = $class;
             }
         }
-
 
         foreach ($question->get_order($qa) as $value => $ansid) {
             $ans = $question->answers[$ansid];
@@ -394,7 +393,6 @@ abstract class qtype_omerointeractive_base_renderer extends qtype_multichoice_re
             $answer_options_attributes['name'] = $renderer->get_input_name($qa, $value);
             $answer_options_attributes['value'] = $renderer->get_input_value($value);
             $answer_options_attributes['id'] = $renderer->get_input_id($qa, $value);
-
 
             $hidden = '';
             if (!$options->readonly && $renderer->get_input_type() == 'checkbox') {
@@ -461,10 +459,7 @@ abstract class qtype_omerointeractive_base_renderer extends qtype_multichoice_re
         $result .= '<div id="' . self::to_unique_identifier($qa, self::MARKER_REMOVERS_CONTAINER) . '" ' .
             ' class="remove_marker_button_group">' .
             '<span class="yourmarkers-text">* ' . get_string("yourmarkers", "qtype_omerointeractive") . '</span> ' . '</div>';
-
-
         $result .= '</div>';
-
 
         $answer_input_name = $qa->get_qt_field_name('answer');
         $answer_options_attributes = array(
@@ -477,10 +472,7 @@ abstract class qtype_omerointeractive_base_renderer extends qtype_multichoice_re
         }
 
         if ($options->correctness && count($response->markers) > 0) {
-
-
             $result .= html_writer::start_tag('div', array('class' => 'question-summary hidden'));
-
             $result .= html_writer::tag('div',
                 (count($response->markers) === 1) ?
                     get_string("notice_your_answer", "qtype_omerocommon") :
@@ -539,7 +531,7 @@ abstract class qtype_omerointeractive_base_renderer extends qtype_multichoice_re
                     "correction_mode" => (bool)$options->correctness,
                     "response" => $response,
                     "answers" => $response,
-                    "answer_fraction" => $shape_fraaction,
+                    "answer_fraction" => $shape_grade_map,
                     "max_markers" => $no_max_markers
                 )
             )
