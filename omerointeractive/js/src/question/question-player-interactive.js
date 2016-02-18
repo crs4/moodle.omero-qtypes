@@ -47,7 +47,8 @@ define("qtype_omerointeractive/question-player-interactive",
             EDIT: "enable_edit_markers_ctrl_id",
             DEL: "remove_marker_ctrl_id",
             CLEAR: "clear_marker_ctrl_id",
-            GOTO: "goto_marker_ctrl_id"
+            GOTO: "goto_marker_ctrl_id",
+            HIDE: "hide_marker_ctrl_id"
         };
 
         var markers_config = {
@@ -150,7 +151,7 @@ define("qtype_omerointeractive/question-player-interactive",
                             break;
                         }
                     }
-                    if(matched_shape !== "none") break;
+                    if (matched_shape !== "none") break;
                 }
                 result[i] = matched_shape;
             }
@@ -168,7 +169,7 @@ define("qtype_omerointeractive/question-player-interactive",
 
             me._response_form.append($(input));
 
-            console.log(result);
+            console.log("Correction result: ", result);
         }
 
 
@@ -178,17 +179,23 @@ define("qtype_omerointeractive/question-player-interactive",
             var marker_info_container = cid(config, CONTROL_KEYS.DEL) + "-" + marker_id + '_container';
             var label = marker_id;
             var marker_parts = marker_id.split("_");
-            if(marker_parts && marker_parts.length===2)
+            if (marker_parts && marker_parts.length === 2)
                 label = marker_parts[1];
             label = M.util.get_string("marker", "qtype_omerointeractive") + " " + label;
             color = color ? 'style="color: ' + color + ';"' : '';
+
+            // '<i class="green glyphicon glyphicon-eye-open"></i>'
+            // '<i class="#E9E9E9 glyphicon glyphicon-eye-close"></i>'
+
             var $delm_btn = $('<div id="' + marker_info_container + '">' +
                 '<i id="' + cid(config, CONTROL_KEYS.GOTO) + "-" + marker_id + '_btn" ' +
                 ' class="glyphicon glyphicon-map-marker" ' + color + '></i> ' +
                 label +
                 (editable ? ' <i id="' + cid(config, CONTROL_KEYS.DEL) + "-" + marker_id + '_btn" ' +
                 ' class="red glyphicon glyphicon-remove"></i> ' : "") +
-                "</div>");
+                (editable ? ' <small><i id="' + cid(config, CONTROL_KEYS.HIDE) + "-" + marker_id + '_btn" ' +
+                ' class="glyphicon glyphicon-eye-open" style="color: #555"></i></small> ' : "") +
+                " |</div>");
             me._remove_markers_container.append($delm_btn);
 
 
@@ -200,6 +207,29 @@ define("qtype_omerointeractive/question-player-interactive",
                 },
                 function (event) {
                     me._image_viewer_controller.removeMarker(event.data.marker_id);
+                }
+            );
+
+            $("#" + cid(config, CONTROL_KEYS.HIDE) + "-" + marker_id + '_btn').bind(
+                'click', {
+                    'marker_id': marker_id,
+                    'btn_id': 'del_' + marker_id,
+                    'marker_info_container': marker_info_container
+                },
+                function (event) {
+                    console.log("Event", event);
+                    var el = $(event.target);
+                    if (el.hasClass("glyphicon-eye-open")) {
+                        me._image_viewer_controller.hideRoiShapes([event.data.marker_id]);
+                        el.removeClass("glyphicon-eye-open");
+                        el.addClass("glyphicon-eye-close");
+                        el.css("color", "#999");
+                    } else {
+                        el.removeClass("glyphicon-eye-close");
+                        el.addClass("glyphicon-eye-open");
+                        el.css("color", "#555");
+                        me._image_viewer_controller.showRoiShapes([event.data.marker_id]);
+                    }
                 }
             );
 
@@ -218,6 +248,7 @@ define("qtype_omerointeractive/question-player-interactive",
                 return;
             }
 
+            var me = player;
             var config = player._config;
             player._image_viewer_controller.showRoiShapes(config.visible_rois);
             player._image_viewer_controller.showRoiShapes(config.available_shapes);
@@ -229,9 +260,10 @@ define("qtype_omerointeractive/question-player-interactive",
                     var marker_color = undefined;
                     console.log(marker, markers_config);
                     if (config.answers.shapes[i] != "none") {
-                        if (config.answer_fraction[config.answers.shapes[i].shape_id] == 1)
-                            marker_color = COLORS.correct;
-                        else marker_color = COLORS.partially_correct;
+                        //if (config.answer_fraction[config.answers.shapes[i].shape_id] == 1)
+                        //    marker_color = COLORS.correct;
+                        //else marker_color = COLORS.partially_correct;
+                        marker_color = COLORS.correct;
                     } else marker_color = COLORS.wrong;
 
                     if (marker_color) {
@@ -243,12 +275,13 @@ define("qtype_omerointeractive/question-player-interactive",
                     addMarkerInfo(player, marker.shape_id, !config.correction_mode, markers_config.stroke_color);
                 }
 
+                // roi-shape-info listeners
                 var selector = " .roi-shape-info";
                 var f = $("#" + config.question_answer_container).parents("form");
                 selector = "#" + ((f && f.attr("id")) ?
                         f.attr("id") : config.question_answer_container) + selector;
                 $(selector).each(function () {
-                    console.log($(this).attr("roi-shape-id"));
+                    console.log("Updating properties of the ROI shape:", $(this).attr("roi-shape-id"));
                     var shape_id = $(this).attr("roi-shape-id");
                     var shape = player._image_viewer_controller.getShape(shape_id);
                     console.log("Check the current shape", shape);
@@ -258,6 +291,36 @@ define("qtype_omerointeractive/question-player-interactive",
                             player._image_viewer_controller.setFocusOnRoiShape(shape_id);
                         });
                     }
+                });
+
+                // roi-shape-info visibility listener
+                selector = " .roi-shape-visibility";
+                f = $("#" + config.question_answer_container).parents("form");
+                selector = "#" + ((f && f.attr("id")) ?
+                        f.attr("id") : config.question_answer_container) + selector;
+                $(selector).each(function(el_idx, el_value){
+                    var el_ctrl = $(el_value);
+                    el_ctrl.bind(
+                        'click', {
+                            'marker_id': el_ctrl.attr("roi-shape-id"),
+                            'btn_id': 'hide_' + el_ctrl.attr("roi-shape-id")
+                        },
+                        function (event) {
+                            console.log("Event", event);
+                            var el = $(event.target);
+                            if (el.hasClass("glyphicon-eye-open")) {
+                                me._image_viewer_controller.hideRoiShapes([event.data.marker_id]);
+                                el.removeClass("glyphicon-eye-open");
+                                el.addClass("glyphicon-eye-close");
+                                el.css("color", "#999");
+                            } else {
+                                el.removeClass("glyphicon-eye-close");
+                                el.addClass("glyphicon-eye-open");
+                                el.css("color", "#555");
+                                me._image_viewer_controller.showRoiShapes([event.data.marker_id]);
+                            }
+                        }
+                    );
                 });
 
                 $("#" + config.question_answer_container + " .question-summary").removeClass("hidden");
@@ -293,6 +356,11 @@ define("qtype_omerointeractive/question-player-interactive",
 
                 // show focus areas
                 me.showFocusAreas();
+
+                // initialize controls
+                setEnabledMarkerControl(me, CONTROL_KEYS.ADD, !config.correction_mode);
+                setEnabledMarkerControl(me, CONTROL_KEYS.EDIT, false);
+                setEnabledMarkerControl(me, CONTROL_KEYS.CLEAR, false);
             });
         }
 
@@ -377,11 +445,6 @@ define("qtype_omerointeractive/question-player-interactive",
                         });
 
                         me._remove_markers_container = $("#" + config["marker_removers_container"]);
-
-                        // initialize controls
-                        setEnabledMarkerControl(this, CONTROL_KEYS.ADD, !config.correction_mode);
-                        setEnabledMarkerControl(this, CONTROL_KEYS.EDIT, false);
-                        setEnabledMarkerControl(this, CONTROL_KEYS.CLEAR, false);
 
                         // initialize image positioning control
                         $("#" + config.question_answer_container + " .restore-image-center-btn").click(function () {

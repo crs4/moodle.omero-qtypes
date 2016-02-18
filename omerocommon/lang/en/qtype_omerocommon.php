@@ -54,6 +54,8 @@ $string['answersingleyes'] = 'One correct answer only';
 
 # feedback
 $string['general_and_combined_feedback'] = 'General and combined feedback';
+$string['notice_your_answer'] = 'Notice your answer: ';
+$string['notice_your_answers'] = 'Notice your answers: ';
 
 # image viewer
 $string['omero_image_viewer'] = "Omero Image Viewer";

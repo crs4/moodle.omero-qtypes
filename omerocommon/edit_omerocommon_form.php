@@ -427,7 +427,7 @@ abstract class qtype_omerocommon_edit_form extends qtype_multichoice_edit_form
 
         // combined feedback
         $this->add_combined_feedback_fields(true);
-        $mform->disabledIf('shownumcorrect', 'single', 'eq', 1);
+        //$mform->disabledIf('shownumcorrect', 'single', 'eq', 1);
     }
 
     /**
