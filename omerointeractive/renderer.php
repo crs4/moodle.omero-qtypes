@@ -187,7 +187,7 @@ class qtype_omerointeractive_multi_renderer extends qtype_multichoice_multi_rend
                         $right_shape_set[] .= '<i roi-shape-id="' . $shape_id . '" class="glyphicon glyphicon-map-marker roi-shape-info"></i> ' .
                             '[' . $shape_id . "]";
                     if (!empty($right_shape_set))
-                        $right[] .= (implode(' - ', $right_shape_set));
+                        $right[] .= (implode(', ', $right_shape_set));
                 }
                 $counter++;
             }
