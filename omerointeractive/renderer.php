@@ -278,6 +278,7 @@ abstract class qtype_omerointeractive_base_renderer extends qtype_multichoice_re
         $multi_correct_answer = ($question instanceof qtype_omerointeractive_multi_question);
 
         $no_max_markers = 0;
+        $answer_shape_map = array();
         $shape_grade_map = new stdClass();
         $available_shapes = array();
         $shape_groups = array();
@@ -300,6 +301,7 @@ abstract class qtype_omerointeractive_base_renderer extends qtype_multichoice_re
             foreach ($shape_group as $shape_id) {
                 $shape_grade_map->{$shape_id} = $shape_group_fraction;
                 array_push($available_shapes, $shape_id);
+                $answer_shape_map[$shape_id] = $ans;
             }
             array_push($shape_groups, array(
                 "shapes" => $shape_group,
@@ -312,14 +314,9 @@ abstract class qtype_omerointeractive_base_renderer extends qtype_multichoice_re
 
         $answer_order = "";
         $answer_options = array();
-        $answer_options_info = array();
+
         $feedbackimg = array();
         $classes = array();
-
-        // prepare info of the list of shapes
-        foreach ($question->answers as $answer) {
-            $answer_options_info[$answer->answer] = $answer;
-        }
 
         // Show correct/wrong markers
         if ($options->correctness) {
@@ -363,17 +360,16 @@ abstract class qtype_omerointeractive_base_renderer extends qtype_multichoice_re
                     ) .
                     '</span>';
 
-                if ($shape !== "none" && !empty(strip_tags($answer_options_info[$shape->shape_id]->feedback))) {
+                if ($shape !== "none" && !empty(strip_tags($answer_shape_map[$shape->shape_id]->feedback))) {
                     $marker_correction_text .=
                         html_writer::tag("div",
                             html_writer::tag("i", " ",
                                 array(
                                     "class" => "pull-left glyphicon glyphicon-record",
-                                    "roi-shape-id" => $marker->shape_id,
                                     "style" => "margin-right: 5px"
                                 )
                             ) .
-                            $answer_options_info[$shape->shape_id]->feedback,
+                            $answer_shape_map[$shape->shape_id]->feedback,
                             array("class" => "outcome", "style" => "display: block-inline; margin: 0 0 10px; padding: 20px 30px 15px;")
                         );
                 }
