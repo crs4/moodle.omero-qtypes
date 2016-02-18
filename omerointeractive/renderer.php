@@ -278,28 +278,33 @@ abstract class qtype_omerointeractive_base_renderer extends qtype_multichoice_re
         $multi_correct_answer = ($question instanceof qtype_omerointeractive_multi_question);
 
         $no_max_markers = 0;
-        $shape_fraaction = new stdClass();
+        $shape_grade_map = new stdClass();
         $available_shapes = array();
         $shape_groups = array();
         foreach ($question->get_order($qa) as $ans_idx => $ansid) {
             $ans = $question->answers[$ansid];
             $value = $ans->answer;
+            $shape_group = array_map("intval", explode(",", $ans->answer));
+            $shape_group_cardinality = count($shape_group);
+            // update the max number of markers allowed
             if ($ans->fraction > 0 && !empty($value)) {
-                $shape_group = array_map("intval", explode(",", $ans->answer));
-                array_push($shape_groups, $shape_group);
-                $shape_group_cardinality = count($shape_group);
                 $no_max_markers += $shape_group_cardinality;
-                $shape_group_fraction = 0;
-                if ($shape_group_cardinality > 0) {
-                    $shape_group_fraction = $multi_correct_answer
-                        ? ($ans->fraction / $shape_group_cardinality)
-                        : $ans->fraction;
-                }
-                foreach ($shape_group as $shape_id) {
-                    $shape_fraaction->{$shape_id} = $shape_group_fraction;
-                    array_push($available_shapes, $shape_id);
-                }
             }
+            // compute the shape grade
+            $shape_group_fraction = 0;
+            if ($shape_group_cardinality > 0) {
+                $shape_group_fraction = $multi_correct_answer
+                    ? ($ans->fraction / $shape_group_cardinality)
+                    : $ans->fraction;
+            }
+            foreach ($shape_group as $shape_id) {
+                $shape_grade_map->{$shape_id} = $shape_group_fraction;
+                array_push($available_shapes, $shape_id);
+            }
+            array_push($shape_groups, array(
+                "shapes" => $shape_group,
+                "shape_grade" => $shape_group_fraction
+            ));
         }
 
         // Fix the max number of markers
@@ -541,7 +546,7 @@ abstract class qtype_omerointeractive_base_renderer extends qtype_multichoice_re
                     "correction_mode" => (bool)$options->correctness,
                     "response" => $response,
                     "answers" => $response,
-                    "answer_fraction" => $shape_fraaction,
+                    "answer_fraction" => $shape_grade_map,
                     "max_markers" => $no_max_markers
                 )
             )
