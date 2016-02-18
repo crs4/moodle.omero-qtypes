@@ -65,9 +65,11 @@ class qtype_omerointeractive_single_renderer extends qtype_multichoice_single_re
         return parent::is_right($ans);
     }
 
-    public function is_right_marker($response, $marker_index)
+    public function is_right_marker($shape_grade_map, $response, $marker_index)
     {
-        return $response->shapes[$marker_index] !== "none" ? 1 : 0;
+        $shape = $response->shapes[$marker_index];
+        return $response->shapes[$marker_index] !== "none" ?
+            $shape_grade_map->{$shape->shape_id} <= 0 ? 0 : $shape_grade_map->{$shape->shape_id} : 0;
     }
 
     public function get_input_name(question_attempt $qa, $value)
@@ -138,12 +140,13 @@ class qtype_omerointeractive_multi_renderer extends qtype_multichoice_multi_rend
         } else {
             return 0;
         }
-        //return $ans->fraction > 0;
     }
 
-    public function is_right_marker($response, $marker_index)
+    public function is_right_marker($shape_grade_map, $response, $marker_index)
     {
-        return $response->shapes[$marker_index] !== "none" ? 1 : 0;
+        $shape = $response->shapes[$marker_index];
+        return $response->shapes[$marker_index] !== "none" ?
+            $shape_grade_map->{$shape->shape_id} <= 0 ? 0 : 1 : 0;
     }
 
 
@@ -346,10 +349,9 @@ abstract class qtype_omerointeractive_base_renderer extends qtype_multichoice_re
                         ) . " [" . $shape->shape_id . "] ";
                 } else $marker_correction_text .= get_string("your_marker_outside", "qtype_omerointeractive");
 
-
                 $marker_correction_text .=
                     '<span class="pull-right">' .
-                    $renderer->feedback_image($renderer->is_right_marker($response, $index)) .
+                    $renderer->feedback_image($renderer->is_right_marker($shape_grade_map, $response, $index)) .
                     html_writer::tag("i", " ",
                         array(
                             "class" => "glyphicon glyphicon-eye-open roi-shape-visibility",
