@@ -69,5 +69,7 @@ tests/
 truefalse/
 upgrade.txt
 
-
+omerocommon/amd/build/*
+omeromultichoice/amd/build/*
+omerointeractive/amd/build/*
 
