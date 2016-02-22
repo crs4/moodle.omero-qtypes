@@ -96,7 +96,7 @@ class qtype_omerointeractive_single_renderer extends qtype_multichoice_single_re
             foreach ($question->get_order($qa) as $ans_number => $ans_id) {
                 $answer = $question->answers[$ans_id];
                 if (question_state::graded_state_for_fraction($answer->fraction) == question_state::$gradedright) {
-                    foreach(explode(",", $answer->answer) as $k => $v) {
+                    foreach (explode(",", $answer->answer) as $k => $v) {
                         array_push($right,
                             '<i roi-shape-id="' . $v .
                             '" class="glyphicon glyphicon-map-marker roi-shape-info"></i> ' .
@@ -489,6 +489,38 @@ abstract class qtype_omerointeractive_base_renderer extends qtype_multichoice_re
 
         $result .= html_writer::end_tag('div'); // Ablock.
 
+
+
+        $config = array(
+            "image_id" => $omero_image,
+            "image_properties" => json_decode($question->omeroimageproperties),
+            "image_frame_id" => $omero_frame_id,
+            "image_annotations_canvas_id" => self::to_unique_identifier($qa, "annotations_canvas"),
+            "image_server" => $OMERO_SERVER,
+            "image_viewer_container" => self::to_unique_identifier($qa, self::IMAGE_VIEWER_CONTAINER),
+            "image_navigation_locked" => (bool)$question->omeroimagelocked,
+            "viewer_model_server" => $CFG->wwwroot . "/repository/omero/viewer/viewer-model.php",
+            "question_answer_container" => $question_answer_container,
+            "enable_add_makers_ctrl_id" => self::to_unique_identifier($qa, self::IMAGE_ADD_MARKER_CTRL),
+            "enable_edit_markers_ctrl_id" => self::to_unique_identifier($qa, self::IMAGE_EDIT_MARKER_CTRL),
+            "remove_marker_ctrl_id" => self::to_unique_identifier($qa, self::IMAGE_DEL_MARKER_CTRL),
+            "clear_marker_ctrl_id" => self::to_unique_identifier($qa, self::IMAGE_CLEAR_MARKER_CTRL),
+            "marker_removers_container" => self::to_unique_identifier($qa, self::MARKER_REMOVERS_CONTAINER),
+            "focus_areas_container" => self::to_unique_identifier($qa, self::FOCUS_AREAS_CONTAINER),
+            "answer_input_name" => $answer_input_name,
+            "available_shapes" => ($available_shapes),
+            "shape_groups" => $shape_groups,
+            "visible_rois" => empty($question->visiblerois) ? [] : explode(",", $question->visiblerois),
+            "focusable_rois" => empty($question->focusablerois) ? [] : explode(",", $question->focusablerois),
+            "correction_mode" => (bool)$options->correctness,
+            "response" => $response,
+            "answers" => $response,
+            "answer_fraction" => $shape_grade_map,
+            "max_markers" => $no_max_markers
+        );
+
+        $result .= html_writer::empty_tag('input', array("id"=> "viewer-config", "type" => "hidden", "value" => json_encode($config)));
+
         if ($qa->get_state() == question_state::$invalid) {
             $result .= html_writer::nonempty_tag('div',
                 $question->get_validation_error($qa->get_last_qt_data()),
@@ -507,33 +539,7 @@ abstract class qtype_omerointeractive_base_renderer extends qtype_multichoice_re
         $PAGE->requires->js_call_amd(
             "qtype_omerointeractive/question-player-interactive",
             "start", array(
-                array(
-                    "image_id" => $omero_image,
-                    "image_properties" => json_decode($question->omeroimageproperties),
-                    "image_frame_id" => $omero_frame_id,
-                    "image_annotations_canvas_id" => self::to_unique_identifier($qa, "annotations_canvas"),
-                    "image_server" => $OMERO_SERVER,
-                    "image_viewer_container" => self::to_unique_identifier($qa, self::IMAGE_VIEWER_CONTAINER),
-                    "image_navigation_locked" => (bool)$question->omeroimagelocked,
-                    "viewer_model_server" => $CFG->wwwroot . "/repository/omero/viewer/viewer-model.php",
-                    "question_answer_container" => $question_answer_container,
-                    "enable_add_makers_ctrl_id" => self::to_unique_identifier($qa, self::IMAGE_ADD_MARKER_CTRL),
-                    "enable_edit_markers_ctrl_id" => self::to_unique_identifier($qa, self::IMAGE_EDIT_MARKER_CTRL),
-                    "remove_marker_ctrl_id" => self::to_unique_identifier($qa, self::IMAGE_DEL_MARKER_CTRL),
-                    "clear_marker_ctrl_id" => self::to_unique_identifier($qa, self::IMAGE_CLEAR_MARKER_CTRL),
-                    "marker_removers_container" => self::to_unique_identifier($qa, self::MARKER_REMOVERS_CONTAINER),
-                    "focus_areas_container" => self::to_unique_identifier($qa, self::FOCUS_AREAS_CONTAINER),
-                    "answer_input_name" => $answer_input_name,
-                    "available_shapes" => ($available_shapes),
-                    "shape_groups" => $shape_groups,
-                    "visible_rois" => empty($question->visiblerois) ? [] : explode(",", $question->visiblerois),
-                    "focusable_rois" => empty($question->focusablerois) ? [] : explode(",", $question->focusablerois),
-                    "correction_mode" => (bool)$options->correctness,
-                    "response" => $response,
-                    "answers" => $response,
-                    "answer_fraction" => $shape_grade_map,
-                    "max_markers" => $no_max_markers
-                )
+                $config
             )
         );
 
