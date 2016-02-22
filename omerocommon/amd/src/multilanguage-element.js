@@ -30,13 +30,14 @@ define([
         'qtype_omerocommon/moodle-forms-utils'
     ],
     function ($) {
-        // Private functions.
 
-        // Public functions
-
-
-        console.log("Initialized", this);
-
+        /**
+         * Defines a MultilanguageElement
+         *
+         * @param input_data_element_name
+         * @param locale_map_element_name
+         * @constructor
+         */
         M.qtypes.omerocommon.MultilanguageElement = function (input_data_element_name, locale_map_element_name) {
 
             this._current_language = null;
@@ -165,7 +166,7 @@ define([
             mel.saveDataToFormInputs();
         };
 
-
+        // returns the class
         return M.qtypes.omerocommon.MultilanguageElement;
     }
 );

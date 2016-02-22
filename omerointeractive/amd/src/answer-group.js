@@ -32,12 +32,9 @@ define([
         'qtype_omerocommon/multilanguage-attoeditor'
     ],
     function (j, FormUtils, AnswerBase, Editor) {
-        // Private functions.
+
+        // jQuery reference
         var $ = jQuery;
-
-        // Public functions
-
-        console.log("Initialized", this);
 
         // defines the basic package
         M.qtypes = M.qtypes || {};
@@ -315,6 +312,7 @@ define([
             })(jQuery, window);
         };
 
+        // returns the class
         return M.qtypes.omerointeractive.AnswerGroup;
     }
 );

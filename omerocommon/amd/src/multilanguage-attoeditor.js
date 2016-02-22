@@ -32,13 +32,6 @@ define([
         'qtype_omerocommon/moodle-attoeditor'
     ],
     function ($, Element, Editor) {
-        // Private functions.
-
-
-        // Public functions
-
-
-        console.log("Initialized", this);
 
         /**
          * Builds a new MultilanguageAttoEditor
@@ -107,7 +100,7 @@ define([
             this._editor.setText(text);
         };
 
-
+        // returns the class
         return M.qtypes.omerocommon.MultilanguageAttoEditor;
     }
 );

@@ -33,8 +33,13 @@ define([
         'qtype_omerocommon/multilanguage-attoeditor'
     ],
     function ($, Editor, FormUtils) {
-        // Private functions.
 
+        /**
+         * Utility function: notify listeners
+         *
+         * @param answer
+         * @param event
+         */
         function notifyListeners(answer, event) {
             console.log("notifying event...", event);
             for (var i in answer._listeners) {
@@ -44,10 +49,6 @@ define([
                     listener[callbackName](event);
             }
         }
-
-        // Public functions
-
-        console.log("Initialized", this);
 
         // defines the basic package
         M.qtypes = M.qtypes || {};
@@ -89,8 +90,15 @@ define([
         };
 
 
+        // reference to the prototype
         var prototype = M.qtypes.omerocommon.AnswerBase.prototype;
 
+
+        /**
+         * Returns the ID of this answer
+         *
+         * @returns {string|*}
+         */
         prototype.getId = function () {
             return this._answer_number;
         };
@@ -358,6 +366,7 @@ define([
             }
         };
 
+        // return the class
         return M.qtypes.omerocommon.AnswerBase;
     }
 );

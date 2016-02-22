@@ -27,12 +27,9 @@
  */
 define(['jquery'],
     function (j) {
-        // Private functions.
+
+        // reference to jQuery
         var $ = jQuery;
-
-
-        // Public functions
-
 
         // defines the basic package
         M.qtypes = M.qtypes || {};

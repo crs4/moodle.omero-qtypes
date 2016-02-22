@@ -35,7 +35,6 @@ define([
         'qtype_omerocommon/roi-shape-table',
     ],
     function ($, Editor, FormUtils) {
-        // Private functions.
 
         // A reference to the languageSelector
         var language_selector = $("#id_question_language");
@@ -79,9 +78,6 @@ define([
             $("#myModal").modal("hide");
         }
 
-        // Public functions
-
-        console.log("Initialized", this);
 
         // defines the basic package
         M.qtypes = M.qtypes || {};

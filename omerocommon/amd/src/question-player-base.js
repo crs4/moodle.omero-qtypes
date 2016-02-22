@@ -34,8 +34,8 @@ define([
         'qtype_omerocommon/image-viewer'
     ],
     function (jQ, Editor, FormUtils, mle, mlat, ImageViewer) {
-        // Private functions.
 
+        // jQuery reference
         var $ = jQuery;
 
         var CONTROL_KEYS = {
@@ -82,15 +82,13 @@ define([
             me._image_viewer_controller.showRoiShapes(config.focusable_rois, true);
         }
 
-        // Public functions
-
-        console.log("Initialized", this);
 
         // defines the basic package
         M.qtypes = M.qtypes || {};
 
         // defines the specific package of this module
         M.qtypes.omerocommon = M.qtypes.omerocommon || {};
+
 
         /**
          * Defines MoodleFormUtils class
@@ -161,6 +159,7 @@ define([
             addFocusAreasInfo(this);
         };
 
+        // returns the class
         return M.qtypes.omerocommon.QuestionPlayerBase;
     }
 );

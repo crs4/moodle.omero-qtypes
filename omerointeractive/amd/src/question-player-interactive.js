@@ -7,7 +7,7 @@ define([
     'qtype_omerocommon/image-viewer'
 ], function (QuestionPlayerBase, ImageViewer) {
 
-    // Private functions.
+    // jQuery reference
     var $ = jQuery;
 
     var initialized = false;
@@ -338,9 +338,6 @@ define([
             setEnabledMarkerControl(me, CONTROL_KEYS.CLEAR, false);
         });
     }
-
-
-    console.log("Initialized", this);
 
     // defines the basic package
     M.qtypes = M.qtypes || {};

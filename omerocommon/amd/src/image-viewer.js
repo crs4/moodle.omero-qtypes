@@ -27,10 +27,12 @@
  */
 define(['jquery'], function ($) {
 
-        // Private functions.
-        //var $ = jQuery;
-
-
+        /**
+         * Utility class
+         *
+         * @param listeners
+         * @param callback
+         */
         function notifyListeners(listeners, callback) {
             for (var i in listeners) {
                 var callback = listeners[i];
@@ -42,9 +44,6 @@ define(['jquery'], function ($) {
                 callback();
         }
 
-        // Public functions
-
-
         // defines the basic package
         M.qtypes = M.qtypes || {};
 
@@ -52,6 +51,7 @@ define(['jquery'], function ($) {
         M.qtypes.omerocommon = M.qtypes.omerocommon || {};
 
         /**
+         * Defines an ImageViewer
          *
          * @constructor
          */
@@ -103,8 +103,7 @@ define(['jquery'], function ($) {
             }
         };
 
-
-        //
+        // reference to the prototype
         var prototype = M.qtypes.omerocommon.ImageViewer.prototype;
 
         /**
@@ -351,10 +350,14 @@ define(['jquery'], function ($) {
             };
         };
 
+        /**
+         * Returns the image size
+         *
+         * @returns {*}
+         */
         prototype.getImageSize = function () {
             return this._viewer_controller.getImageDimensions();
         };
-
 
         /**
          * Update the view accordingly to the image_properties parameter
@@ -381,7 +384,6 @@ define(['jquery'], function ($) {
 
             console.log("Jumping to " + image_center.x + " -- " + image_center.y);
         };
-
 
         /**
          * Returns a relative URL containing all relevant info to display
@@ -499,11 +501,10 @@ define(['jquery'], function ($) {
             console.log("Visible ROI list", this._visible_roi_shape_list);
         };
 
-
         //
         console.log("Initialized qtype_omerocommon/image-viewer");
 
-
+        // returns the class definition
         return M.qtypes.omerocommon.ImageViewer;
     }
 );

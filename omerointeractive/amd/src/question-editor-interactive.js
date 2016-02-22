@@ -32,7 +32,6 @@ define([
         'qtype_omerointeractive/answer-group'
     ],
     function ($, FormUtils, Editor) {
-        // Private functions.
 
         function onSelectROIGroup(group) {
             console.log("Selected ROI group", group);
@@ -70,8 +69,6 @@ define([
                 editor._add_to_group_element.addClass("disabled");
         }
 
-
-        console.log("Initialized", this);
 
         // defines the basic package
         M.qtypes = M.qtypes || {};

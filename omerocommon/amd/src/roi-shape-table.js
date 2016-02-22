@@ -466,7 +466,6 @@ define(['jquery', 'qtype_omerocommon/roi-shape-model'], function ($, RoiShapeMod
             this.appendRoiShapeList(data);
         };
 
-
         prototype.getRoiShape = function (roi_shape_id) {
             return this.table_element.bootstrapTable('getRowByUniqueId', roi_shape_id);
         };
@@ -484,7 +483,7 @@ define(['jquery', 'qtype_omerocommon/roi-shape-model'], function ($, RoiShapeMod
             return this.table_element.bootstrapTable('removeAll');
         };
 
-
+        // returns the class
         return M.qtypes.omerocommon.RoiShapeTableBase;
     }
 );

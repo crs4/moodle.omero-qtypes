@@ -30,12 +30,6 @@ define([
         'qtype_omerocommon/moodle-forms-utils'
     ],
     function ($, Editor, FormUtils) {
-        // Private functions.
-
-
-        // Public functions
-
-        console.log("Initialized", this);
 
         // defines the basic package
         M.qtypes = M.qtypes || {};
@@ -243,6 +237,7 @@ define([
             };
         };
 
+        // returns the class
         return M.qtypes.omerocommon.MoodleAttoEditor;
     }
 );

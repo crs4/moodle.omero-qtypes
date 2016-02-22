@@ -33,10 +33,6 @@ define([
         'qtype_omerocommon/multilanguage-attoeditor'
     ],
     function ($, Editor, FormUtils) {
-        // Private functions.
-
-
-        console.log("Initialized", this);
 
         // defines the basic package
         M.qtypes = M.qtypes || {};
@@ -126,7 +122,7 @@ define([
             me._answer_container = panel;
         };
 
-
+        // returns the class
         return M.qtypes.omeromultichoice.AnswerPlaintext;
     }
 );

@@ -34,10 +34,6 @@ define([
         'qtype_omeromultichoice/answer-plaintext'
     ],
     function ($, Editor, FormUtils) {
-        // Private functions.
-
-        console.log("Initialized", this);
-
 
         // defines the basic package
         M.qtypes = M.qtypes || {};
@@ -99,6 +95,7 @@ define([
             );
         };
 
+        // returns the class
         return M.qtypes.omeromultichoice.QuestionEditorMultichoice;
     }
 );

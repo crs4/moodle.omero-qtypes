@@ -27,14 +27,6 @@
  */
 define(['jquery'], function ($) {
 
-        // Private functions.
-        // ...
-
-        // Public functions
-
-
-        console.log("Initialized", this);
-
         // defines the basic package
         M.qtypes = M.qtypes || {};
 
@@ -68,6 +60,7 @@ define(['jquery'], function ($) {
             return result;
         };
 
+        // returns the class
         return M.qtypes.omerocommon.RoiShapeModel;
     }
 );
