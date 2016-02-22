@@ -141,7 +141,6 @@ define([
 
         M.qtypes.omeromultichoice.QuestionPlayerMultichoice.start = function (config) {
 
-            alert("Loading the correct module!!!");
             $(document).ready(
                 function () {
                     var instance = new M.qtypes.omeromultichoice.QuestionPlayerMultichoice();
