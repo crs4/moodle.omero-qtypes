@@ -30,7 +30,9 @@ define([
         'qtype_omerocommon/moodle-forms-utils',
         'qtype_omerocommon/answer-base',
         'qtype_omerocommon/multilanguage-element',
-        'qtype_omerocommon/multilanguage-attoeditor'
+        'qtype_omerocommon/multilanguage-attoeditor',
+        'qtype_omerocommon/roi-shape-model',
+        'qtype_omerocommon/roi-shape-table',
     ],
     function ($, Editor, FormUtils) {
         // Private functions.
