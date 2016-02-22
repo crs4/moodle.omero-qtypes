@@ -7,8 +7,6 @@ define([
     'qtype_omerocommon/image-viewer'
 ], function (QuestionPlayerBase, ImageViewer) {
 
-    alert(QuestionPlayerBase);
-
     // Private functions.
     var $ = jQuery;
 
