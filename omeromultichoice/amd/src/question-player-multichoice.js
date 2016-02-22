@@ -25,8 +25,7 @@
  * @copyright  2015-2016 CRS4
  * @license    https://opensource.org/licenses/mit-license.php MIT license
  */
-define("qtype_omeromultichoice/question-player-multichoice",
-    [
+define([
         'jquery',
         'qtype_omerocommon/moodle-forms-utils',
         'qtype_omerocommon/answer-base',
@@ -77,86 +76,80 @@ define("qtype_omeromultichoice/question-player-multichoice",
             });
         }
 
-        // Public functions
-        return {
-            initialize: function (str) {
-                console.log("Initialized", this);
+        console.log("Initialized", this);
 
-                // defines the basic package
-                M.qtypes = M.qtypes || {};
+        // defines the basic package
+        M.qtypes = M.qtypes || {};
 
-                // defines the specific package of this module
-                M.qtypes.omeromultichoice = M.qtypes.omeromultichoice || {};
+        // defines the specific package of this module
+        M.qtypes.omeromultichoice = M.qtypes.omeromultichoice || {};
 
-                /**
-                 * Defines MoodleFormUtils class
-                 * @type {{}}
-                 */
-                M.qtypes.omeromultichoice.QuestionPlayerMultichoice = function () {
+        /**
+         * Defines MoodleFormUtils class
+         * @type {{}}
+         */
+        M.qtypes.omeromultichoice.QuestionPlayerMultichoice = function () {
 
-                    // the reference to this scope
-                    var me = this;
+            // the reference to this scope
+            var me = this;
 
-                    // Call the parent constructor
-                    M.qtypes.omerocommon.QuestionPlayerBase.call(this);
-                };
+            // Call the parent constructor
+            M.qtypes.omerocommon.QuestionPlayerBase.call(this);
+        };
 
-                // inherit
-                M.qtypes.omeromultichoice.QuestionPlayerMultichoice.prototype =
-                    new M.qtypes.omerocommon.QuestionPlayerBase();
+        // inherit
+        M.qtypes.omeromultichoice.QuestionPlayerMultichoice.prototype =
+            new M.qtypes.omerocommon.QuestionPlayerBase();
 
-                // correct the constructor
-                M.qtypes.omeromultichoice.QuestionPlayerMultichoice.prototype.constructor =
-                    M.qtypes.omeromultichoice.QuestionPlayerMultichoice;
+        // correct the constructor
+        M.qtypes.omeromultichoice.QuestionPlayerMultichoice.prototype.constructor =
+            M.qtypes.omeromultichoice.QuestionPlayerMultichoice;
 
-                M.qtypes.omeromultichoice.QuestionPlayerMultichoice.prototype.parent =
-                    M.qtypes.omerocommon.QuestionPlayerBase.prototype;
+        M.qtypes.omeromultichoice.QuestionPlayerMultichoice.prototype.parent =
+            M.qtypes.omerocommon.QuestionPlayerBase.prototype;
 
-                // local reference to the current prototype
-                var prototype = M.qtypes.omeromultichoice.QuestionPlayerMultichoice.prototype;
+        // local reference to the current prototype
+        var prototype = M.qtypes.omeromultichoice.QuestionPlayerMultichoice.prototype;
 
-                /**
-                 * Performs the initialization
-                 */
-                prototype.initialize = function (config) {
-                    var me = this;
+        /**
+         * Performs the initialization
+         */
+        prototype.initialize = function (config) {
+            var me = this;
 
-                    if (me.initialized) console.log("Already Initialized");
-                    else {
+            if (me.initialized) console.log("Already Initialized");
+            else {
 
-                        this.parent.initialize.call(this, config);
+                this.parent.initialize.call(this, config);
 
-                        me._answer_input_name = config.answer_input_name;
-                        console.log("Setted the answer prefix", me._answer_input_name);
+                me._answer_input_name = config.answer_input_name;
+                console.log("Setted the answer prefix", me._answer_input_name);
 
-                        // initialize image positioning control
-                        $("#" + config.question_answer_container + " .restore-image-center-btn").click(function () {
-                            me._image_viewer_controller.updateViewFromProperties(config.image_properties);
-                        });
+                // initialize image positioning control
+                $("#" + config.question_answer_container + " .restore-image-center-btn").click(function () {
+                    me._image_viewer_controller.updateViewFromProperties(config.image_properties);
+                });
 
-                        me.initialized = true;
-                        console.log("Question multichoice player initialized!!!");
+                me.initialized = true;
+                console.log("Question multichoice player initialized!!!");
 
-                        // automatically start the player
-                        start(me);
-                    }
-                };
-            },
-
-
-            /**
-             *
-             *
-             */
-            start: function (config) {
-
-                $(document).ready(
-                    function () {
-                        var instance = new M.qtypes.omeromultichoice.QuestionPlayerMultichoice();
-                        instance.initialize(config);
-                    }
-                );
+                // automatically start the player
+                start(me);
             }
         };
+
+
+        M.qtypes.omeromultichoice.QuestionPlayerMultichoice.start = function (config) {
+
+            alert("Loading the correct module!!!");
+            $(document).ready(
+                function () {
+                    var instance = new M.qtypes.omeromultichoice.QuestionPlayerMultichoice();
+                    instance.initialize(config);
+                }
+            );
+        };
+
+        return M.qtypes.omeromultichoice.QuestionPlayerMultichoice;
     }
 );
