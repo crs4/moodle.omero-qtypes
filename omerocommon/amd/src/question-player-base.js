@@ -25,8 +25,7 @@
  * @copyright  2015-2016 CRS4
  * @license    https://opensource.org/licenses/mit-license.php MIT license
  */
-define("qtype_omerocommon/question-player-base",
-    [
+define([
         'jquery',
         'qtype_omerocommon/moodle-forms-utils',
         'qtype_omerocommon/answer-base',
@@ -34,9 +33,9 @@ define("qtype_omerocommon/question-player-base",
         'qtype_omerocommon/multilanguage-attoeditor',
         'qtype_omerocommon/image-viewer'
     ],
-    function (jQ, Editor, FormUtils) {
-        // Private functions.
+    function (jQ, Editor, FormUtils, mle, mlat, ImageViewer) {
 
+        // jQuery reference
         var $ = jQuery;
 
         var CONTROL_KEYS = {
@@ -83,86 +82,84 @@ define("qtype_omerocommon/question-player-base",
             me._image_viewer_controller.showRoiShapes(config.focusable_rois, true);
         }
 
-        // Public functions
-        return {
-            initialize: function (str) {
-                console.log("Initialized", this);
 
-                // defines the basic package
-                M.qtypes = M.qtypes || {};
+        // defines the basic package
+        M.qtypes = M.qtypes || {};
 
-                // defines the specific package of this module
-                M.qtypes.omerocommon = M.qtypes.omerocommon || {};
-
-                /**
-                 * Defines MoodleFormUtils class
-                 * @type {{}}
-                 */
-                M.qtypes.omerocommon.QuestionPlayerBase = function () {
-
-                    // the reference to this scope
-                    var me = this;
-
-                    // register the current instance
-                    if (me.constructor != M.qtypes.omerocommon.QuestionPlayerBase)
-                        M.qtypes.omerocommon.QuestionPlayerBase.instances.push(me);
-                };
+        // defines the specific package of this module
+        M.qtypes.omerocommon = M.qtypes.omerocommon || {};
 
 
-                // list of player instances
-                M.qtypes.omerocommon.QuestionPlayerBase.instances = [];
+        /**
+         * Defines MoodleFormUtils class
+         * @type {{}}
+         */
+        M.qtypes.omerocommon.QuestionPlayerBase = function () {
 
-                /* Static methods */
+            // the reference to this scope
+            var me = this;
 
-                /**
-                 * Returns the list of player instances
-                 * @returns {Array}
-                 */
-                M.qtypes.omerocommon.QuestionPlayerBase.getInstances = function () {
-                    return M.qtypes.omerocommon.QuestionPlayerBase.instances;
-                };
-
-                // local reference to the current prototype
-                var prototype = M.qtypes.omerocommon.QuestionPlayerBase.prototype;
-
-                /* Instance methods */
-
-                /**
-                 * Initialization
-                 */
-                prototype.initialize = function (config) {
-                    // set tht configuration
-                    this._config = config;
-                    console.log("Configuration", config);
-
-                    // identifier of the focus area container
-                    this._focus_areas_container = $("#" + config["focus_areas_container"]);
-
-                    // build the ImaveViewer controller
-                    var viewer_ctrl = new M.qtypes.omerocommon.ImageViewer(
-                        config.image_id, config.image_properties,
-                        config.image_server, config.image_viewer_container, config.image_annotations_canvas_id,
-                        config.viewer_model_server);
-                    this._image_viewer_controller = viewer_ctrl;
-                };
-
-                /**
-                 * Start the question player
-                 */
-                prototype.start = function () {
-                    this._image_viewer_controller.open(true, function () {
-                        console.log("ImageViewer initialized!!!");
-                    });
-                };
-
-
-                /**
-                 *
-                 */
-                prototype.showFocusAreas = function () {
-                   addFocusAreasInfo(this);
-                }
-            }
+            // register the current instance
+            if (me.constructor != M.qtypes.omerocommon.QuestionPlayerBase)
+                M.qtypes.omerocommon.QuestionPlayerBase.instances.push(me);
         };
+
+
+        // list of player instances
+        M.qtypes.omerocommon.QuestionPlayerBase.instances = [];
+
+        /* Static methods */
+
+        /**
+         * Returns the list of player instances
+         * @returns {Array}
+         */
+        M.qtypes.omerocommon.QuestionPlayerBase.getInstances = function () {
+            return M.qtypes.omerocommon.QuestionPlayerBase.instances;
+        };
+
+        // local reference to the current prototype
+        var prototype = M.qtypes.omerocommon.QuestionPlayerBase.prototype;
+
+        /* Instance methods */
+
+        /**
+         * Initialization
+         */
+        prototype.initialize = function (config) {
+            // set tht configuration
+            this._config = config;
+            console.log("Configuration", config);
+
+            // identifier of the focus area container
+            this._focus_areas_container = $("#" + config["focus_areas_container"]);
+
+            // build the ImaveViewer controller
+            var viewer_ctrl = new ImageViewer(
+                config.image_id, config.image_properties,
+                config.image_server, config.image_viewer_container, config.image_annotations_canvas_id,
+                config.viewer_model_server);
+            this._image_viewer_controller = viewer_ctrl;
+        };
+
+        /**
+         * Start the question player
+         */
+        prototype.start = function () {
+            this._image_viewer_controller.open(true, function () {
+                console.log("ImageViewer initialized!!!");
+            });
+        };
+
+
+        /**
+         *
+         */
+        prototype.showFocusAreas = function () {
+            addFocusAreasInfo(this);
+        };
+
+        // returns the class
+        return M.qtypes.omerocommon.QuestionPlayerBase;
     }
 );
