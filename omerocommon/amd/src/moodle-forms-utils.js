@@ -25,11 +25,13 @@
  * @copyright  2015-2016 CRS4
  * @license    https://opensource.org/licenses/mit-license.php MIT license
  */
+/* jshint curly: false */
+/* globals console, jQuery */
 define(['jquery'],
-    function (j) {
+    function ($) {
 
-        // reference to jQuery
-        var $ = jQuery;
+        // override reference to jQuery
+        $ = jQuery;
 
         // defines the basic package
         M.qtypes = M.qtypes || {};

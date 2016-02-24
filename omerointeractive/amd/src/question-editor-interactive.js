@@ -31,12 +31,17 @@ define([
         'qtype_omerocommon/question-editor-base',
         'qtype_omerointeractive/answer-group'
     ],
-    function ($, FormUtils, Editor) {
 
-        function onSelectROIGroup(group) {
-            console.log("Selected ROI group", group);
-            alert("....");
-        }
+    /* jshint curly: false */
+    /* globals console */
+    function ($ /*, FormUtils, Editor*/) {
+
+
+        /*
+         function onSelectROIGroup(group) {
+         console.log("Selected ROI group", group);
+         alert("....");
+         }*/
 
         function updateGroupButton(editor, selected_shapes) {
             if (!selected_shapes)

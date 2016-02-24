@@ -32,7 +32,9 @@ define([
         'qtype_omerocommon/multilanguage-element',
         'qtype_omerocommon/multilanguage-attoeditor'
     ],
-    function ($, Editor, FormUtils) {
+
+    /* jshint curly: false */
+    function ($) {
 
         // defines the basic package
         M.qtypes = M.qtypes || {};

@@ -31,7 +31,9 @@ define([
         'qtype_omerocommon/answer-base',
         'qtype_omerocommon/multilanguage-attoeditor'
     ],
-    function (j, FormUtils, AnswerBase, Editor) {
+    /* jshint curly: false */
+    /* globals console, jQuery */
+    function (/*j, FormUtils, AnswerBase, Editor*/) {
 
         // jQuery reference
         var $ = jQuery;

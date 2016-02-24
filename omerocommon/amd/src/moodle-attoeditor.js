@@ -25,11 +25,13 @@
  * @copyright  2015-2016 CRS4
  * @license    https://opensource.org/licenses/mit-license.php MIT license
  */
+/* jshint curly: false */
+/* globals console */
 define([
         'jquery',
         'qtype_omerocommon/moodle-forms-utils'
     ],
-    function ($, Editor, FormUtils) {
+    function (/*$, Editor, FormUtils*/) {
 
         // defines the basic package
         M.qtypes = M.qtypes || {};

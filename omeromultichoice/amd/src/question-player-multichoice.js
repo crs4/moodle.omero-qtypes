@@ -33,12 +33,15 @@ define([
         'qtype_omerocommon/multilanguage-attoeditor',
         'qtype_omerocommon/question-player-base'
     ],
-    function (j, Editor, FormUtils) {
-        // Private functions.
+
+    /* jshint curly: false */
+    /* globals console, jQuery */
+    function () {
+
+        // overrides jQuery
         var $ = jQuery;
 
-        var initialized = false;
-
+        // default marker configuration
         var markers_config = {
             'fill_color': "#ffffff",
             'fill_alpha': '0.4',

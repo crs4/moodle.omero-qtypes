@@ -27,10 +27,14 @@
  */
 
 
-define(['jquery', 'qtype_omerocommon/roi-shape-model'], function ($, RoiShapeModel) {
+define(['jquery', 'qtype_omerocommon/roi-shape-model'],
 
-        // Private functions.
-        var $ = jQuery;
+    /* jshint curly: false */
+    /* globals console, jQuery */
+    function ($ /*, RoiShapeModel*/) {
+
+        // override jQuery
+        $ = jQuery;
 
         // defines the basic package
         M.qtypes = M.qtypes || {};

@@ -26,12 +26,12 @@
  * @license    https://opensource.org/licenses/mit-license.php MIT license
  */
 define([
-        'jquery',
         'qtype_omerocommon/moodle-forms-utils',
         'qtype_omerocommon/multilanguage-element',
         'qtype_omerocommon/moodle-attoeditor'
     ],
-    function ($, Element, Editor) {
+    /* jshint curly: false */
+    function (/*FormUtils, MultilanguageElement, MoodleAttoEditor*/) {
 
         /**
          * Builds a new MultilanguageAttoEditor

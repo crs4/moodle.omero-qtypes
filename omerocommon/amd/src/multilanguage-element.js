@@ -25,11 +25,10 @@
  * @copyright  2015-2016 CRS4
  * @license    https://opensource.org/licenses/mit-license.php MIT license
  */
-define([
-        'jquery',
-        'qtype_omerocommon/moodle-forms-utils'
-    ],
-    function ($) {
+define(['qtype_omerocommon/moodle-forms-utils'],
+    /* jshint curly: false */
+    /* globals console */
+    function (/* FormUtils */) {
 
         /**
          * Defines a MultilanguageElement

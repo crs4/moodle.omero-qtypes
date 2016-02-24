@@ -33,6 +33,8 @@ define([
         'qtype_omerocommon/multilanguage-attoeditor',
         'qtype_omerocommon/image-viewer'
     ],
+    /* jshint curly: false */
+    /* globals console, jQuery */
     function (jQ, Editor, FormUtils, mle, mlat, ImageViewer) {
 
         // jQuery reference

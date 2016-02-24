@@ -5,7 +5,10 @@
 define([
     'qtype_omerocommon/question-player-base',
     'qtype_omerocommon/image-viewer'
-], function (QuestionPlayerBase, ImageViewer) {
+],
+    /* jshint curly: false */
+    /* globals console, jQuery */
+    function (QuestionPlayerBase) {
 
     // jQuery reference
     var $ = jQuery;

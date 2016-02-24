@@ -34,7 +34,12 @@ define([
         'qtype_omerocommon/roi-shape-model',
         'qtype_omerocommon/roi-shape-table',
     ],
-    function ($, Editor, FormUtils) {
+    /* jshint curly: false */
+    /* globals console, jQuery, EventException */
+    function ($/*, FormUtils*/) {
+
+        // override jQuery definition
+        $ = jQuery;
 
         // A reference to the languageSelector
         var language_selector = $("#id_question_language");

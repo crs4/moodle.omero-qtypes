@@ -33,7 +33,10 @@ define([
         'qtype_omerocommon/question-editor-base',
         'qtype_omeromultichoice/answer-plaintext'
     ],
-    function ($, Editor, FormUtils) {
+
+    /* jshint curly: false */
+    /* globals console */
+    function ($) {
 
         // defines the basic package
         M.qtypes = M.qtypes || {};
