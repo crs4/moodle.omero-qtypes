@@ -232,19 +232,21 @@ define([
 
         prototype.saveDataToFormInputs = function (answer_index) {
 
+            var id, hidden, element_name;
             var form = document.forms[0];
+
             if (!form) {
                 console.warn("Form not found!!!");
                 return;
             }
 
             for (var i in this._answer_properties) {
-                var element_name = this._answer_properties[i];
-                var id = this._build_id_of(element_name, answer_index);
+                element_name = this._answer_properties[i];
+                id = this._build_id_of(element_name, answer_index);
                 var name = this._build_name_of(element_name, answer_index);
                 var value = this._data[element_name];
 
-                var hidden = document.getElementById(id); //$("#" + id);
+                hidden = document.getElementById(id); //$("#" + id);
                 if (hidden) hidden.setAttribute("value", value);
                 else {
                     hidden = '<input ' + 'id="' + id + '" ' + 'name="' + name + '" type="hidden" value="' + value + '">';
@@ -253,23 +255,22 @@ define([
             }
 
             console.log("Saving multi language elements...", this._answer_number);
-            for (var element_name in this._editors_map) {
-
+            for (element_name in this._editors_map) {
                 var editor = this._editors_map[element_name];
                 var locale_map_name = this._build_locale_map_name_of(element_name, answer_index);
-                var id = 'id_' + locale_map_name;
+                id = 'id_' + locale_map_name;
                 console.log("Saving editor data...", id, locale_map_name);
 
-                var hidden = document.getElementById(id);
+                hidden = document.getElementById(id);
                 if (!hidden) //hidden.val(value);
                 {
                     hidden = '<input ' +
                         'id="' + id + '" ' + 'name="' + locale_map_name + '" type="hidden" >';
-                    console.log("Creating the hidden field", id, name, locale_map_name);
+                    console.log("Creating the hidden field", id, element_name, locale_map_name);
                     M.qtypes.omerocommon.MoodleFormUtils.appendHiddenElement(this._answer_container, hidden);
-                    console.log("Created the hidden field", id, name, locale_map_name);
+                    console.log("Created the hidden field", id, element_name, locale_map_name);
                 } else {
-                    console.log("Found hidden field to save editor data...", id, name, locale_map_name);
+                    console.log("Found hidden field to save editor data...", id, element_name, locale_map_name);
                 }
 
                 editor.saveDataToFormInputs(locale_map_name);
@@ -299,17 +300,19 @@ define([
         prototype._build_textarea_of = function (element_name, label, local_map_name) {
             var id = this._build_id_of(element_name);
             var name = this._build_name_of(element_name);
-            var value = this._data[element_name];
+            //var value = this._data[element_name];
 
             local_map_name = (typeof local_map_name === 'undefined')
                 ? this._build_locale_map_name_of(element_name) : local_map_name;
 
             var element = '<textarea ' +
-                'id="' + this._build_id_of(element_name) + '" ' +
-                'name="' + this._build_name_of(element_name) + '" ' +
+                'id="' + id + '" ' +
+                'name="' + name + '" ' +
                 'rows="2"' +
                 '></textarea>';
 
+            //console.log("LABEL", label, "ELEMENT", element, "LOCALE_MAP", local_map_name);
+            //alert("CHeck please!!!");
             this._form_utils.appendElement(this._answer_container, label, element, local_map_name);
             //this._init_textarea_editor(element_name);
             var editor = new M.qtypes.omerocommon.MultilanguageAttoEditor(name, local_map_name, false);
@@ -321,7 +324,8 @@ define([
 
         prototype._init_textarea_editor = function (element_name) {
             var name = this._build_name_of(element_name);
-            var editor = new M.qtypes.omerocommon.MultilanguageAttoEditor(name, this._build_locale_map_name_of(element_name), false);
+            var editor = new M.qtypes.omerocommon.MultilanguageAttoEditor(name,
+                this._build_locale_map_name_of(element_name), false);
             editor.init("en");
             this._editors_map[name] = editor;
         };
@@ -351,7 +355,7 @@ define([
             fraction_selector.onchange = function (data) {
                 console.log("Changed grade", data);
                 me._data[element_name] = fraction_selector.options[fraction_selector.selectedIndex].value;
-            }
+            };
         };
 
         prototype._build_hidden_of = function (element_name, value) {
