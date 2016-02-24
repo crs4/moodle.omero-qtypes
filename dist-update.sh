@@ -1,10 +1,10 @@
 #!/bin/bash
 
 # clean
-./clean-min.sh
+./dist-clean.sh
 
-# updates
+# update
 for pkg in "omerocommon" "omeromultichoice" "omerointeractive"; do
     echo "Uptading dist of the package: '${pkg}'";
-    cd ${pkg}/amd && grunt --force && cd -
+    cd ${pkg}/amd && grunt "$@" && cd -
 done
