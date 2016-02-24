@@ -79,10 +79,12 @@ define([
             $("#myModal").modal("show");
         }
 
+        /* jshint ignore:start */
         function hideDialogMessage() {
             $("#myModal").modal("hide");
         }
 
+        /* jshint ignore:end */
 
         // defines the basic package
         M.qtypes = M.qtypes || {};
