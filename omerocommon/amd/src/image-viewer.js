@@ -38,12 +38,12 @@ define(['jquery'], function ($) {
          */
         function notifyListeners(listeners, callback) {
             for (var i in listeners) {
-                var callback = listeners[i];
-                if (callback) {
-                    callback();
+                var listenerCallback = listeners[i];
+                if (listenerCallback) {
+                    listenerCallback();
                 }
             }
-            if (listeners.indexOf(callback) === -1)
+            if (callback)
                 callback();
         }
 
