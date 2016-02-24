@@ -52,13 +52,16 @@ define([
             var me = player;
             var config = me._config;
 
+            function handleFocusClick(event) {
+                me._image_viewer_controller.setFocusOnRoiShape(event.data.marker_id, true);
+            }
 
             for (var i in config.focusable_rois) {
                 // as a intial assumption, we consider every ROI to show as a focus area
                 var focus_area_id = config.focusable_rois[i];
                 var focus_area_details = me._image_viewer_controller.getShape(focus_area_id);
                 if (focus_area_details) {
-                    var color = focus_area_details.toJSON()["stroke_color"];
+                    var color = focus_area_details.toJSON().stroke_color;
                     var marker_info_container = cid(config, CONTROL_KEYS.GOTO) + focus_area_id + '_container';
                     var label = focus_area_id.replace("_", " ");
                     label = label.charAt(0).toUpperCase() + label.substring(1);
@@ -74,9 +77,7 @@ define([
                     // register the listener for the 'jump to'
                     $("#" + cid(config, CONTROL_KEYS.GOTO) + focus_area_id + '_btn').bind(
                         'click', {'marker_id': focus_area_id},
-                        function (event) {
-                            me._image_viewer_controller.setFocusOnRoiShape(event.data.marker_id, true);
-                        }
+                        handleFocusClick
                     );
                 }
             }
@@ -134,7 +135,7 @@ define([
             console.log("Configuration", config);
 
             // identifier of the focus area container
-            this._focus_areas_container = $("#" + config["focus_areas_container"]);
+            this._focus_areas_container = $("#" + config.focus_areas_container);
 
             // build the ImaveViewer controller
             var viewer_ctrl = new ImageViewer(

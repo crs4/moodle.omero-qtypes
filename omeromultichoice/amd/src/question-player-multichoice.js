@@ -69,17 +69,16 @@ define([
 
                 if (!config.correction_mode) {
                     me._image_viewer_controller.showRoiShapes(config.visible_rois, true);
-                } else {
-                    console.log("Answers: ", config.answers);
-                    showResults(me);
                 }
+                //else {
+                //    console.log("Answers: ", config.answers);
+                //    showResults(me);
+                //}
 
                 // show focus areas
                 me.showFocusAreas();
             });
         }
-
-        console.log("Initialized", this);
 
         // defines the basic package
         M.qtypes = M.qtypes || {};
@@ -92,10 +91,7 @@ define([
          * @type {{}}
          */
         M.qtypes.omeromultichoice.QuestionPlayerMultichoice = function () {
-
-            // the reference to this scope
-            var me = this;
-
+            this.initialized = false;
             // Call the parent constructor
             M.qtypes.omerocommon.QuestionPlayerBase.call(this);
         };

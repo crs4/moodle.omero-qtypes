@@ -102,6 +102,8 @@ define(['jquery', 'qtype_omerocommon/roi-shape-model'],
 
             var me = this;
 
+            console.log("showColumnSelector: " + showColumnSelector);
+
             // Registers a reference to the table container
             me.table_element = $("#" + me._table_id);
             me.remove_element = $('#remove');
@@ -265,7 +267,7 @@ define(['jquery', 'qtype_omerocommon/roi-shape-model'],
 
         prototype.getIdSelections = function () {
             return $.map(this.table_element.bootstrapTable('getSelections'), function (row) {
-                return row.id
+                return row.id;
             });
         };
 
@@ -282,10 +284,14 @@ define(['jquery', 'qtype_omerocommon/roi-shape-model'],
          * Build an event handler
          *
          * @param table
-         * @returns {{[click .like]: 'click .like', [click .roi-shape-visibility]: 'click .roi-shape-visibility', [click .remove]: 'click .remove', [change .answer-class]: 'change .answer-class'}}
+         * @returns {{[click .like]: 'click .like',
+         *           [click .roi-shape-visibility]: 'click .roi-shape-visibility',
+         *           [click .remove]: 'click .remove',
+         *           [change .answer-class]: 'change .answer-class'}}
          */
 
         prototype.eventHandler = function (table) {
+            var me = this;
 
             // Reusable function to handle visibility change
             function onRoiShapeVisibilityChanged(target, value, row) {
@@ -307,12 +313,12 @@ define(['jquery', 'qtype_omerocommon/roi-shape-model'],
             }
 
             return {
-                'click .like': function (e, value, row, index) {
+                'click .like': function (e, value, row /*, index*/) {
                     if ($(e.target).attr("class").indexOf("glyphicon-plus-sign") !== -1)
                         $(e.target).attr("class", "green glyphicon glyphicon-eye-open");
                     else
                         $(e.target).attr("class", "red glyphicon glyphicon-eye-close");
-                    alert('You click like action, row: ' + JSON.stringify(row));
+                    console.log('You click like action, row: ' + JSON.stringify(row));
                 },
 
                 /**
@@ -323,7 +329,7 @@ define(['jquery', 'qtype_omerocommon/roi-shape-model'],
                  * @param row
                  * @param index
                  */
-                'click .roi-shape-visibility': function (e, value, row, index) {
+                'click .roi-shape-visibility': function (e, value, row /*, index*/) {
                     onRoiShapeVisibilityChanged(e.target, value, row);
                 },
 
@@ -335,7 +341,7 @@ define(['jquery', 'qtype_omerocommon/roi-shape-model'],
                  * @param row
                  * @param index
                  */
-                'click .roi-shape-focusability': function (e, value, row, index) {
+                'click .roi-shape-focusability': function (e, value, row /*, index*/) {
                     row.focusable = !row.focusable;
                     if (row.focusable)
                         $(e.target).attr("class", "green glyphicon glyphicon-record");
@@ -353,7 +359,7 @@ define(['jquery', 'qtype_omerocommon/roi-shape-model'],
                     onRoiShapeVisibilityChanged($(e.target).parents("tr").find(".roi-shape-visibility i")[0], value, row);
                 },
 
-                'click .remove': function (e, value, row, index) {
+                'click .remove': function (e, value, row /*, index*/) {
                     me.table_element.bootstrapTable('remove', {
                         field: 'id',
                         values: [row.id]
@@ -362,8 +368,7 @@ define(['jquery', 'qtype_omerocommon/roi-shape-model'],
 
                 'change .answer-class': function (e, value, row, index) {
                     console.log(e, value, row, index);
-                    console.log("ROW: ", row);
-                    alert("Changed!!!");
+                    console.log("Changed ROW: ", row);
                 }
             };
         };
@@ -441,7 +446,7 @@ define(['jquery', 'qtype_omerocommon/roi-shape-model'],
             ].join(" ");
         };
 
-        prototype.answerClassFormatter = function (value, row, index) {
+        prototype.answerClassFormatter = function (/*value, row, index*/) {
             return [
                 '<select class="answer-class form-control">',
                 '<option>1</option>',

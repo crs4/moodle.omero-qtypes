@@ -47,29 +47,38 @@ define([
             if (!selected_shapes)
                 selected_shapes = editor.getSelectedROIIds();
 
-            var toEnable = selected_shapes.length > 0;
-            if (toEnable) {
-                var button = editor._add_to_group_list_element;
-                button.html(""); // clear
-                toEnable = false;
-                for (var i in editor._answers) {
-                    var group = editor._answers[i];
-                    if (group.containsROIs(editor.getSelectedROIIds())) break;
-                    var option = $('<li value="' + i + '"><a href="#">' + (parseInt(i) + 1) + '</a></li>');
-                    toEnable = true;
-                    button.append(option);
-                    option.click(function () {
-                        var group_id = $(this).attr("value");
-                        console.log("Selected ROI GROUP: " + group_id);
-                        var selected_rois = editor.getSelectedROIIds();
-                        if (selected_rois && selected_rois.length > 0) {
-                            editor._answers[group_id].addROIsToGroup(selected_rois);
-                        }
-                    });
+            function handleOptionClick(e) {
+                var group_id = $(this).attr("value");
+                console.log("Selected ROI GROUP: " + group_id, e);
+                var selected_rois = editor.getSelectedROIIds();
+                if (selected_rois && selected_rois.length > 0) {
+                    editor._answers[group_id].addROIsToGroup(selected_rois);
                 }
             }
 
-            toEnable ?
+            var toEnable = selected_shapes.length > 0;
+            if (toEnable) {
+                var group, option;
+                var button = editor._add_to_group_list_element;
+                button.html(""); // clear
+                for (var i in editor._answers) {
+                    group = editor._answers[i];
+                    console.log(
+                        "Selected ROIs", group.containsROIs(editor.getSelectedROIIds()),
+                        "Checking GROUp", group, group.containsROIs(editor.getSelectedROIIds()));
+                    if (group.containsROIs(editor.getSelectedROIIds())) {
+                        toEnable = false;
+                        break;
+                    }else {
+                        option = $('<li value="' + i + '"><a href="#">' + (parseInt(i) + 1) + '</a></li>');
+                        toEnable = true;
+                        button.append(option);
+                        option.click({}, handleOptionClick);
+                    }
+                }
+            }
+
+            return toEnable ?
                 editor._add_to_group_element.removeClass("disabled") :
                 editor._add_to_group_element.addClass("disabled");
         }
@@ -86,10 +95,6 @@ define([
          * @type {{}}
          */
         M.qtypes.omerointeractive.QuestionEditorInteractive = function () {
-
-            // the reference to this scope
-            var me = this;
-
             // Call the parent constructor
             M.qtypes.omerocommon.QuestionEditorBase.call(this);
         };
@@ -124,12 +129,12 @@ define([
         prototype.initialize = function (answers_section_id, fraction_options,
                                          add_to_group_element_id, add_to_group_list_element_id) {
 
-            this.parent.initialize.call(this, answers_section_id, fraction_options);
             this._show_roishape_column_group = true;
             this._add_to_group_element_id = add_to_group_element_id;
             this._add_to_group_element = $("#" + add_to_group_element_id);
             this._add_to_group_list_element_id = add_to_group_list_element_id;
             this._add_to_group_list_element = $("#" + add_to_group_list_element_id);
+            this.parent.initialize.call(this, answers_section_id, fraction_options);
             this._add_to_group_list_element.dropdown();
         };
 
@@ -140,7 +145,9 @@ define([
          * @returns {M.qtypes.omerointeractive.AnswerGroup}
          */
         prototype.buildAnswer = function (answer_number, fraction_options, answer_index) {
-            return new M.qtypes.omerointeractive.AnswerGroup(this._answers_section_id, answer_number, fraction_options, answer_index);
+            return new M.qtypes.omerointeractive.AnswerGroup(
+                this._answers_section_id,
+                answer_number, fraction_options, answer_index);
         };
 
         prototype.onAddAnswer = function (answer) {
@@ -178,7 +185,7 @@ define([
             try {
                 for (var i in this._answers) {
                     var answer = this._answers[i];
-                    if (answer && answer._roi_id_list == 0) {
+                    if (answer && answer._roi_id_list === 0) {
                         errors.push(M.util.get_string('validation_noroi_per_group', 'qtype_omerointeractive'));
                         break;
                     }
@@ -191,20 +198,22 @@ define([
         };
 
 
-        M.qtypes.omerointeractive.QuestionEditorInteractive.main = function (answers_section_id, fraction_options, add_to_group_element_id, add_to_group_list_element_id) {
+        M.qtypes.omerointeractive.QuestionEditorInteractive.main =
+            function (answers_section_id, fraction_options,
+                      add_to_group_element_id, add_to_group_list_element_id) {
 
-            console.log(fraction_options);
-            $(document).ready(
-                function () {
-                    var instance = M.qtypes.omerointeractive.QuestionEditorInteractive.getInstance();
-                    instance.initialize(
-                        answers_section_id, fraction_options,
-                        add_to_group_element_id, add_to_group_list_element_id
-                    );
-                    window.qei = instance;
-                }
-            );
-        };
+                console.log(fraction_options);
+                $(document).ready(
+                    function () {
+                        var instance = M.qtypes.omerointeractive.QuestionEditorInteractive.getInstance();
+                        instance.initialize(
+                            answers_section_id, fraction_options,
+                            add_to_group_element_id, add_to_group_list_element_id
+                        );
+                        window.qei = instance;
+                    }
+                );
+            };
 
         return M.qtypes.omerointeractive.QuestionEditorInteractive;
     }

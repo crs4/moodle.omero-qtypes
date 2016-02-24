@@ -53,9 +53,6 @@ define([
 
             // parent constructor
             M.qtypes.omerocommon.QuestionEditorBase.call(this);
-
-            // the reference to this scope
-            var me = this;
         };
 
         // inherit

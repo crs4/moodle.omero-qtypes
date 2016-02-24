@@ -49,12 +49,8 @@ define([
          */
         M.qtypes.omeromultichoice.AnswerPlaintext = function (answer_list_container_id, answer_number, fraction_options) {
 
-            // the reference to this scope
-            var me = this;
-
             // Call the parent constructor
             M.qtypes.omerocommon.AnswerBase.call(this, answer_list_container_id, answer_number, fraction_options);
-
         };
 
 
