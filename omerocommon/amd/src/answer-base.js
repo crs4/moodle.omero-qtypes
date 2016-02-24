@@ -47,8 +47,9 @@ define([
             for (var i in answer._listeners) {
                 var listener = answer._listeners[i];
                 var callbackName = "on" + event.name.charAt(0).toUpperCase() + event.name.substr(1);
-                if (listener && listener[callbackName])
+                if (listener && listener[callbackName]) {
                     listener[callbackName](event);
+                }
             }
         }
 
@@ -211,7 +212,7 @@ define([
                 element = me._inputs[element_name];
                 if (element) {
                     var value = parseFloat(data[element_name]);
-                    value = ((value == 1 || value == 0) ? value.toFixed(1) : value);
+                    value = ((value === 1 || value === 0) ? value.toFixed(1) : value);
                     document.getElementById($(element).attr("id")).value = value;
                 }
             }
