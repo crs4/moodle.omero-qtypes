@@ -188,7 +188,7 @@ class qtype_omeromultichoice_edit_form extends qtype_omerocommon_edit_form
     protected function export_locale_js_strings(){
         global $PAGE;
         parent::export_locale_js_strings();
-        $PAGE->requires->string_for_js('correctansweris', 'qtype_omerointeractive');
+        $PAGE->requires->string_for_js('correctansweris', 'qtype_omeromultichoice');
         $PAGE->requires->string_for_js('answer_text', 'qtype_omeromultichoice');
     }
 }

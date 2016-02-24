@@ -283,7 +283,7 @@ abstract class qtype_omeromultichoice_base_renderer extends qtype_multichoice_re
                                 "style" => "margin-right: 20px"
                             )
                         ) .
-                        $feedback_text,
+                        format_text($feedback_text),
                         array(
                             "class" => "outcome",
                             "style" => "display: block-inline; margin: 0 0 10px; padding: 20px 30px 15px;"

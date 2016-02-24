@@ -5,12 +5,13 @@
 define([
     'qtype_omerocommon/question-player-base',
     'qtype_omerocommon/image-viewer'
-], function (QuestionPlayerBase, ImageViewer) {
+],
+    /* jshint curly: false */
+    /* globals console, jQuery */
+    function (QuestionPlayerBase) {
 
     // jQuery reference
     var $ = jQuery;
-
-    var initialized = false;
 
     var last_control = null;
 
@@ -354,7 +355,7 @@ define([
     M.qtypes.omerointeractive.QuestionPlayerInteractive = function () {
 
         // the reference to this scope
-        //this._initialized = false;
+        this.initialized = false;
 
         // Call the parent constructor
         M.qtypes.omerocommon.QuestionPlayerBase.call(this);
@@ -415,7 +416,7 @@ define([
                 switchToActive(config);
             });
 
-            me._remove_markers_container = $("#" + config["marker_removers_container"]);
+            me._remove_markers_container = $("#" + config.marker_removers_container);
 
             // initialize image positioning control
             $("#" + config.question_answer_container + " .restore-image-center-btn").click(function () {
@@ -465,7 +466,7 @@ define([
     };
 
 
-    prototype.checkAnswers = function (config) {
+    prototype.checkAnswers = function () {
         checkAnswers(this);
     };
 
@@ -474,16 +475,11 @@ define([
 
     qpiClass.serializeResponse = function (markers, shapes, image_viewer_controller) {
         var result = {
-            markers: $.map(markers, function (val, i) {
+            markers: $.map(markers, function (val) {
                 var marker = image_viewer_controller.toShapeJSON(val.id);
-                //return {
-                //    "id": val.id,
-                //    "center": {"x": marker.center_x, "y": marker.center_y},
-                //    "radius": marker.radius
-                //};
                 return marker;
             }),
-            shapes: $.map(shapes, function (val, i) {
+            shapes: $.map(shapes, function (val) {
                 return val;
             })
         };
@@ -492,16 +488,16 @@ define([
     };
 
     qpiClass.deserializeResponse = function (response) {
-        var response = JSON.parse(response);
-        return response;
+        return JSON.parse(response);
     };
 
     qpiClass.start = function (config) {
 
+        // TODO: switch to the new strategy to get configuration
         // extract configuration
         var c = document.getElementById("viewer-config");
-        var config = JSON.parse(c.value);
-        console.log("QuestionPlayer interactive configuration", config);
+        var configx = JSON.parse(c.value);
+        console.log("QuestionPlayer interactive configuration", configx);
 
         // instantiate the class and
         var instance = new M.qtypes.omerointeractive.QuestionPlayerInteractive();

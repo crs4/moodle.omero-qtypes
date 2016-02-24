@@ -105,7 +105,7 @@ class qtype_omerointeractive_single_renderer extends qtype_multichoice_single_re
                 }
             }
             $result = get_string(count($right) == 1
-                    ? 'single_correctansweris' : 'single_correctansweris', 'qtype_omerointeractive') . implode(" or ", $right);
+                    ? 'single_correctansweris' : 'single_correctanswerare', 'qtype_omerointeractive') . implode(", ", $right);
         }
         return $result;
     }
@@ -370,7 +370,7 @@ abstract class qtype_omerointeractive_base_renderer extends qtype_multichoice_re
                                     "style" => "margin-right: 5px"
                                 )
                             ) .
-                            $answer_shape_map[$shape->shape_id]->feedback,
+                            format_text($answer_shape_map[$shape->shape_id]->feedback),
                             array("class" => "outcome", "style" => "display: block-inline; margin: 0 0 10px; padding: 20px 30px 15px;")
                         );
                 }

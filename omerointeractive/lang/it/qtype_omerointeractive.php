@@ -59,6 +59,6 @@ $string['your_marker_outside'] = 'non è contenuto in nessuna ROI';
 $string['answerassociatedroi'] = 'Si noti la ROI (<em>Region Of Interest</em>) d\'interesse per questa domanda: ';
 $string['answerassociatedrois'] = 'Si notino le ROIs (<em>Regions Of Interest</em>) d\'interesse per questa domanda: ';
 $string['single_correctansweris'] = 'Per rispondere correttamente alla domanda devi selezionare la seguente ROI: ';
-$string['single_correctanswerare'] = 'Per rispondere correttamente alla domanda devi selezionare una o più delle seguenti ROI: ';
+$string['single_correctanswerare'] = 'Per rispondere correttamente alla domanda devi selezionare una delle seguenti ROI: ';
 $string['multi_correctansweris'] = 'Per rispondere correttamente alla domanda devi selezionare la seguente ROI: ';
 $string['multi_correctanswerare'] = 'Per rispondere in modo <em>corretto</em> e <em>completo</em> alla domanada devi selezionare le seguenti ROI: ';

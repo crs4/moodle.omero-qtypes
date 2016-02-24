@@ -31,7 +31,9 @@ define([
         'qtype_omerocommon/answer-base',
         'qtype_omerocommon/multilanguage-attoeditor'
     ],
-    function (j, FormUtils, AnswerBase, Editor) {
+    /* jshint curly: false */
+    /* globals console, jQuery */
+    function (/*j, FormUtils, AnswerBase, Editor*/) {
 
         // jQuery reference
         var $ = jQuery;
@@ -58,7 +60,6 @@ define([
             // init the list of ROI associated to this answer
             me._roi_id_list = [];
             me._init_roi_list();
-
             me._initContextMenu();
         };
 
@@ -143,7 +144,7 @@ define([
             }
             if (changed) {
                 this.updateROIList();
-                this._notifyListeners({name: "AnswerROIsAdded", answer: me, roi_id_list: roi_id_list})
+                this._notifyListeners({name: "AnswerROIsAdded", answer: me, roi_id_list: roi_id_list});
             }
         };
 
@@ -160,7 +161,7 @@ define([
             }
             if (changed) {
                 this.updateROIList();
-                this._notifyListeners({name: "AnswerROIsRemoved", answer: me, roi_id_list: roi_id_list})
+                this._notifyListeners({name: "AnswerROIsRemoved", answer: me, roi_id_list: roi_id_list});
             }
         };
 
@@ -177,7 +178,8 @@ define([
 
 
         prototype._init_roi_list = function () {
-            var list = this._data["answer"];//;$("[name*=answer\\[" + this._answer_number + "\\]]");
+            console.log("Answer", this._data.answer, this._data.answer);
+            var list = this._data.answer;//;$("[name*=answer\\[" + this._answer_number + "\\]]");
             if (list && list.length > 0)
                 this._roi_id_list = list.split(",").map(function (e) {
                     return parseInt(e);
@@ -189,23 +191,17 @@ define([
 
             var id = this._build_id_of(element_name);
             var name = this._build_name_of(element_name);
-            var value = "";
+            //var value = "";
 
-
-            //console.log(roi_list);
-            //if (roi_list && roi_list.length > 0) {
-            //
-            //}
             this._init_roi_list();
 
             var select = '<div ' + 'id="' + id + '_roi_list" ' + 'name="' + name + '_answer_roi_list"></div>';
             var roi_list = $("[name*=" + element_name + "\\[" + this._answer_number + "\\]]");
-            if (roi_list.length == 0)
+            if (roi_list.length === 0)
                 select += '<input type="hidden" name="' + name + '" value="">';
 
             var fraction_selector = $(select);
             this._form_utils.appendElement(this._answer_container, label, fraction_selector, false);
-
 
             if (this._roi_id_list) {
                 this.updateROIList();
@@ -225,37 +221,53 @@ define([
             }
             el_list.innerHTML = (list.join(", "));
             $("[name*=answer\\[" + this._answer_number + "\\]]").val(this._roi_id_list.join(","));
-            this._data["answer"] = this._roi_id_list.join(",");
+            this._data.answer = this._roi_id_list.join(",");
             this._initContextMenuOn();
         };
 
 
         prototype._initContextMenuOn = function () {
             var me = this;
+
+            var onMenuSelected = function (invokedOn, selectedMenu) {
+                if (selectedMenu.attr("id") === "roishape-answer-option-delete") {
+                    var matches = invokedOn.prop('id').match(/(.+)-roi-shape-answer-option/);
+                    var roi_shape_id = matches[1];
+                    if (!roi_shape_id) {
+                        console.warn("Unable to identify the ROI id!!!");
+                        return;
+                    }
+                    me.removeROIsFromGroup([parseInt(roi_shape_id)]);
+                }
+            };
+
             for (var i in this._roi_id_list) {
                 var selector = "#" + this._roi_id_list[i] + "-roi-shape-answer-option";
                 $(selector).contextMenu({
                     menuSelector: "#roishape-answer-option-ctx-menu",
-                    menuSelected: function (invokedOn, selectedMenu) {
-
-                        if (selectedMenu.attr("id") === "roishape-answer-option-delete") {
-                            var matches = invokedOn.prop('id').match(/(.+)-roi-shape-answer-option/);
-                            var roi_shape_id = matches[1];
-                            if (!roi_shape_id) {
-                                console.warn("Unable to identify the ROI id!!!");
-                                return;
-                            }
-
-                            me.removeROIsFromGroup([parseInt(roi_shape_id)]);
-                        }
-                    }
+                    menuSelected: onMenuSelected
                 });
             }
         };
 
 
         prototype._initContextMenu = function () {
-            (function ($, window) {
+
+            function getMenuPosition(settings, mouse, direction, scrollDir) {
+                var win = $(window)[direction](),
+                    scroll = $(window)[scrollDir](),
+                    menu = $(settings.menuSelector)[direction](),
+                    position = mouse + scroll;
+
+                // opening menu would pass the side of the page
+                if (mouse + menu > win && menu < mouse)
+                    position -= menu;
+
+                return position;
+            }
+
+
+            (function ($) {
 
                 $.fn.contextMenu = function (settings) {
 
@@ -272,13 +284,12 @@ define([
                                 .show()
                                 .css({
                                     position: "absolute",
-                                    left: getMenuPosition(e.clientX, 'width', 'scrollLeft'),
-                                    top: getMenuPosition(e.clientY, 'height', 'scrollTop')
+                                    left: getMenuPosition(settings, e.clientX, 'width', 'scrollLeft'),
+                                    top: getMenuPosition(settings, e.clientY, 'height', 'scrollTop')
                                 })
                                 .off('click')
                                 .on('click', 'a', function (e) {
                                     $menu.hide();
-
                                     var $invokedOn = $menu.data("invokedOn");
                                     var $selectedMenu = $(e.target);
                                     $invokedOn = $invokedOn.prop("tagName") == "I"
@@ -294,20 +305,6 @@ define([
                             $(settings.menuSelector).hide();
                         });
                     });
-
-                    function getMenuPosition(mouse, direction, scrollDir) {
-                        var win = $(window)[direction](),
-                            scroll = $(window)[scrollDir](),
-                            menu = $(settings.menuSelector)[direction](),
-                            position = mouse + scroll;
-
-                        // opening menu would pass the side of the page
-                        if (mouse + menu > win && menu < mouse)
-                            position -= menu;
-
-                        return position;
-                    }
-
                 };
             })(jQuery, window);
         };

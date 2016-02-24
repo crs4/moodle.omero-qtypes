@@ -34,7 +34,12 @@ define([
         'qtype_omerocommon/roi-shape-model',
         'qtype_omerocommon/roi-shape-table',
     ],
-    function ($, Editor, FormUtils) {
+    /* jshint curly: false */
+    /* globals console, jQuery, EventException */
+    function ($/*, FormUtils*/) {
+
+        // override jQuery definition
+        $ = jQuery;
 
         // A reference to the languageSelector
         var language_selector = $("#id_question_language");
@@ -57,7 +62,7 @@ define([
             // initializes the list of supported languages
             if (!_supported_languages) {
                 _supported_languages = [];
-                var language_selector = document.forms[0].elements["question_language"];
+                var language_selector = document.forms[0].elements.question_language; //.["question_language"];
                 var language_options = language_selector.options;
                 for (var i = 0; i < language_options.length; i++) {
                     _supported_languages.push(language_options[i].value);
@@ -74,10 +79,12 @@ define([
             $("#myModal").modal("show");
         }
 
+        /* jshint ignore:start */
         function hideDialogMessage() {
             $("#myModal").modal("hide");
         }
 
+        /* jshint ignore:end */
 
         // defines the basic package
         M.qtypes = M.qtypes || {};
@@ -121,70 +128,75 @@ define([
          */
         prototype.initialize = function (answers_section_id, fraction_options) {
             var me = this;
-
-            initializeSupportedLanguages();
+            var i, counter;
 
             // the ID of the answer serction
             me._answers_section_id = answers_section_id;
             me._fraction_options = fraction_options;
             me._show_roishape_column_group = false;
 
-            $(document).ready(function () {
-
-                me._build_answer_controls();
-
-                me._editor = {};
-                for (var i in me._localized_string_names) {
-                    var localized_string_name = me._localized_string_names[i];
-                    var editor = new M.qtypes.omerocommon.MultilanguageAttoEditor(localized_string_name, localized_string_name + "_locale_map", true);
-                    editor.init(language_selector.val(), localized_string_name + "_locale_map");
-                    editor.loadDataFromFormInputs(localized_string_name + "_locale_map");
-                    editor.onLanguageChanged(language_selector.val());
-                    // registers a reference to the editor instance
-                    me._editor[localized_string_name] = editor;
-                }
-
-                me._answers_counter_element = document.forms[0].elements["noanswers"];
-                if (!me._answers_counter_element) {
-                    var counter = document.createElement("input");
-                    counter.setAttribute("type", "hidden");
-                    counter.setAttribute("name", "noanswers");
-                    counter.setAttribute("value", "0");
-                    document.forms[0].appendElement(counter);
-                    me._answers_counter_element = counter;
-
-                } else {
-                    var counter = me._answers_counter_element.getAttribute("value");
-                    if (counter) {
-                        counter = parseInt(counter);
-                        for (var i = 0; i < counter; i++) {
-                            me.addAnswer(true, i);
-                        }
-                    }
-                }
-
-                var $ = jQuery;
-                me._image_locked_element = $("[name^=omeroimagelocked]");
-                me._image_locked = me._image_locked_element.val() == "1";
-
-                $('#omero-image-view-lock').bootstrapToggle(me._image_locked ? 'on' : 'off');
-                $('#omero-image-view-lock').change(function () {
-                    me._image_locked_element.val($(this).prop('checked') ? 1 : 0);
-                });
-
-                me._visible_roi_list = [];
-                me.initElementList("visiblerois", me._visible_roi_list);
-
-                me._focusable_roi_list = [];
-                me.initElementList("focusablerois", me._focusable_roi_list);
-
-                $('html, body').animate({
-                    scrollTop: $("#" + document.forms[0].getAttribute("id")).offset().top - 200
-                }, 500);
-            });
-
             me._answers = [];
             me._answer_ids = {};
+
+            // TODO: initialize me!!!!
+            //var frame_id = "omero-image-viewer";
+            var visible_roi_list = [];
+
+
+            initializeSupportedLanguages();
+
+            me._build_answer_controls();
+
+
+            me._editor = {};
+            for (i in me._localized_string_names) {
+                var localized_string_name = me._localized_string_names[i];
+                var editor = new M.qtypes.omerocommon.MultilanguageAttoEditor(
+                    localized_string_name, localized_string_name + "_locale_map", true);
+                editor.init(language_selector.val(), localized_string_name + "_locale_map");
+                editor.loadDataFromFormInputs(localized_string_name + "_locale_map");
+                editor.onLanguageChanged(language_selector.val());
+                // registers a reference to the editor instance
+                me._editor[localized_string_name] = editor;
+            }
+
+            me._answers_counter_element = document.forms[0].elements.noanswers;//["noanswers"];
+            if (!me._answers_counter_element) {
+                counter = document.createElement("input");
+                counter.setAttribute("type", "hidden");
+                counter.setAttribute("name", "noanswers");
+                counter.setAttribute("value", "0");
+                document.forms[0].appendElement(counter);
+                me._answers_counter_element = counter;
+
+            } else {
+                counter = me._answers_counter_element.getAttribute("value");
+                if (counter) {
+                    counter = parseInt(counter);
+                    for (i = 0; i < counter; i++) {
+                        me.addAnswer(true, i);
+                    }
+                }
+            }
+
+            me._image_locked_element = $("[name^=omeroimagelocked]");
+            me._image_locked = me._image_locked_element.val() == "1";
+
+            $('#omero-image-view-lock').bootstrapToggle(me._image_locked ? 'on' : 'off');
+            $('#omero-image-view-lock').change(function () {
+                me._image_locked_element.val($(this).prop('checked') ? 1 : 0);
+            });
+
+            me._visible_roi_list = [];
+            me.initElementList("visiblerois", me._visible_roi_list);
+
+            me._focusable_roi_list = [];
+            me.initElementList("focusablerois", me._focusable_roi_list);
+
+            $('html, body').animate({
+                scrollTop: $("#" + document.forms[0].getAttribute("id")).offset().top - 200
+            }, 500);
+
 
             // registers the editor as listener of the 'LanguageChanged' event
             language_selector.on("change",
@@ -193,9 +205,6 @@ define([
                 }
             );
 
-            // TODO: initialize me!!!!
-            var frame_id = "omero-image-viewer";
-            var visible_roi_list = [];
 
             // register the frame when loaded
             document.addEventListener("frameLoaded", function (e) {
@@ -203,7 +212,7 @@ define([
             }, true);
 
             // procedure for pre-processing and validating data to submit
-            var submit_function = function (e) {
+            var submit_function = function () {
                 try {
                     me.saveAll();
                     var errors = me.validate();
@@ -217,11 +226,14 @@ define([
                     }
                     return errors.length === 0;
 
-                } catch (e) {
-                    console.error(e);
-                    me._showDialogMessage(e.message);
+                } catch (er) {
+                    console.error(er);
+                    me._showDialogMessage(er.message);
                 }
             };
+
+            // set the current language
+            me.onLanguageChanged(language_selector.val());
 
             // attach the the pre-submit procedure
             $("input[name=updatebutton]").on("click", submit_function);
@@ -263,7 +275,7 @@ define([
             }
 
             if (single_correct_answer) {
-                if (found_max == 0)
+                if (found_max === 0)
                     errors.push(M.util.get_string('validate_at_least_one_100', 'qtype_omerocommon'));
                 else if (found_max > 1)
                     errors.push(M.util.get_string('validate_at_least_one_100', 'qtype_omerocommon'));
@@ -368,7 +380,8 @@ define([
         };
 
         prototype.onLockImageChanged = function (locked) {
-            locked ? this.lockImage() : this.unlockImage();
+            if (locked) this.lockImage();
+            else this.unlockImage();
         };
 
         prototype.updateViewCenter = function () {
@@ -402,10 +415,11 @@ define([
 
 
         prototype.buildAnswer = function (answer_number, fraction_options) {
-            console.error("You need to implement this method!!!");
+            console.error("You need to implement this method!!!", answer_number, fraction_options);
         };
 
         prototype.addAnswer = function (disable_animiation, answer_index) {
+            var i;
             var me = this;
             var answer_uuid = M.qtypes.omerocommon.MoodleFormUtils.generateGuid();
             var answer = this.buildAnswer(answer_uuid, this._fraction_options);
@@ -422,10 +436,10 @@ define([
                 };
                 this.updateAnswerCounter();
                 var editors = answer.getEditorsMap();
-                for (var i in editors) {
+                for (i in editors) {
                     this._editor[i] = editors[i];
                 }
-                for (var i in this._answers) {
+                for (i in this._answers) {
                     this._answers[i].updateHeader((parseInt(i) + 1));
                 }
             }
@@ -436,7 +450,8 @@ define([
                 }, 1000);
 
             // callback for the event onAddAnswer
-            if (this["onAddAnswer"]) this["onAddAnswer"](answer);
+            if (this.onAddAnswer)
+                this.onAddAnswer(answer);
 
             return answer;
         };
@@ -444,6 +459,7 @@ define([
 
         prototype.removeAnswer = function (answer_id) {
             console.log(this._answers);
+            var i;
             if (answer_id in this._answer_ids) {
                 var answer = this._answer_ids[answer_id];
                 if (answer) {
@@ -452,7 +468,7 @@ define([
                     delete this._answer_ids[answer_id];
                     this.updateAnswerCounter();
                     var editors = answer.getEditorsMap();
-                    for (var i in editors) {
+                    for (i in editors) {
                         var editor = editors[i];
                         editor.destroy();
                         delete this._editor[i];
@@ -460,7 +476,7 @@ define([
 
                     var last_answer_header = null;
 
-                    for (var i in this._answers) {
+                    for (i in this._answers) {
                         this._answers[i].updateHeader((parseInt(i) + 1));
                         last_answer_header = this._answers[i]._answer_head;
                     }
@@ -471,7 +487,7 @@ define([
                         }, 1000);
 
                     // callback for the event onRemoveAnswer
-                    if (this["onRemoveAnswer"]) this["onRemoveAnswer"](answer);
+                    if (this.onRemoveAnswer) this.onRemoveAnswer(answer);
 
                     return true;
                 }
@@ -501,7 +517,7 @@ define([
             // Registers a reference to the frame
             me._omero_viewer_frame = omero_viewer_frame;
 
-            if (frame_details == undefined) {
+            if (frame_details === undefined) {
                 // Register the main listener for the 'omeroViewerInitialized' event
                 me._omero_viewer_frame.contentWindow.addEventListener("omeroViewerInitialized", function (e) {
                     me.onViewerFrameInitialized(me, frame_id, e.detail, visible_roi_list);
@@ -536,6 +552,8 @@ define([
                 me._initImagePropertiesControls();
                 me._image_viewer_controller.updateViewFromProperties(me._image_properties);
             });
+
+            console.log("OnFrameInitialized", me, frame_id, image_details, visible_roi_list);
         };
 
 
@@ -568,7 +586,7 @@ define([
         prototype._registerFrameWindowEventHandlers = function (me, frame_id) {
             var omero_viewer_frame = document.getElementById(frame_id);
             if (!omero_viewer_frame) {
-                throw EventException("Frame " + frame_id + " not found!!!");
+                throw new EventException("Frame " + frame_id + " not found!!!");
             }
 
             // Registers a reference to the frame
@@ -577,17 +595,10 @@ define([
             // Register a reference to the Omero Repository Controller
             var frameWindow = me._omero_viewer_frame.contentWindow;
             me._image_viewer_controller = frameWindow.omero_repository_image_viewer_controller;
-
-            // Adds listeners
-            var frameWindow = omero_viewer_frame.contentWindow;
-            //frameWindow.addEventListener("roiShapeSelected", M.omero_multichoice_helper.roiShapeSelected);
-            //frameWindow.addEventListener("roiShapeDeselected", M.omero_multichoice_helper.roiShapeDeselected);
-            //frameWindow.addEventListener("roiVisibilityChanged", M.omero_multichoice_helper.roiVisibilityChanged);
         };
 
 
         prototype.initElementList = function (list_name, list) {
-            var me = this;
             var input_list = $("[name=" + list_name + "]").val();
             if (input_list && input_list != "none") {
                 var temp_list = input_list.split(",");

@@ -25,11 +25,10 @@
  * @copyright  2015-2016 CRS4
  * @license    https://opensource.org/licenses/mit-license.php MIT license
  */
-define([
-        'jquery',
-        'qtype_omerocommon/moodle-forms-utils'
-    ],
-    function ($) {
+define(['qtype_omerocommon/moodle-forms-utils'],
+    /* jshint curly: false */
+    /* globals console */
+    function (/* FormUtils */) {
 
         /**
          * Defines a MultilanguageElement
@@ -61,14 +60,20 @@ define([
 
             // initializes the map of localized strings
             this._locale_text_map = {};
-
             console.log("Multilanguage data element: ", input_data_element_name);
-            //alert("Check INPUT: " + input_data_element_name);
+
+            // clear textarea
+            this._editor.setText("");
+
+            // process initialization
             if (typeof input_data_element_name !== 'undefined'
                 && input_data_element_name.length > 0) {
-
                 this.loadDataFromFormInputs(input_data_element_name);
-            } else this.onLanguageChanged(current_language);
+            }
+
+            // update language
+            if(current_language)
+                this.onLanguageChanged(current_language);
 
             // register the serialization
             var me = this;
@@ -76,7 +81,6 @@ define([
             me._update_listener = function () {
                 M.qtypes.omerocommon.MultilanguageElement.serializeToFormInputs(me);
                 console.log("Object before submission", me);
-                //alert("Check: " + me.input_data_element_name);
             };
             //document.forms[0].addEventListener("submit", me._update_listener);
         };

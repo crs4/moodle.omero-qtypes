@@ -25,7 +25,7 @@
  * @copyright  2015-2016 CRS4
  * @license    https://opensource.org/licenses/mit-license.php MIT license
  */
-define(['jquery'], function ($) {
+define([], function () {
 
         // defines the basic package
         M.qtypes = M.qtypes || {};
@@ -43,14 +43,14 @@ define(['jquery'], function ($) {
         };
 
         // shortcut for the 'class'
-        var theClass = M.qtypes.omerocommon.RoiShapeModel;
+        var TheClass = M.qtypes.omerocommon.RoiShapeModel;
 
         //
-        theClass.toRoiShapeModel = function (roi_shape_list, visible_roi_list, focusable_roi_list) {
+        TheClass.toRoiShapeModel = function (roi_shape_list, visible_roi_list, focusable_roi_list) {
             var result = [];
             for (var i in roi_shape_list) {
                 var roi = roi_shape_list[i];
-                result.push(new theClass(
+                result.push(new TheClass(
                     roi,
                         visible_roi_list && visible_roi_list.indexOf(roi.id) !== -1,
                         focusable_roi_list && focusable_roi_list.indexOf(roi.id) !== -1

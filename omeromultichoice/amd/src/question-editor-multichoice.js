@@ -33,7 +33,10 @@ define([
         'qtype_omerocommon/question-editor-base',
         'qtype_omeromultichoice/answer-plaintext'
     ],
-    function ($, Editor, FormUtils) {
+
+    /* jshint curly: false */
+    /* globals console */
+    function ($) {
 
         // defines the basic package
         M.qtypes = M.qtypes || {};
@@ -50,9 +53,6 @@ define([
 
             // parent constructor
             M.qtypes.omerocommon.QuestionEditorBase.call(this);
-
-            // the reference to this scope
-            var me = this;
         };
 
         // inherit

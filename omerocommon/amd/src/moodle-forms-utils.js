@@ -25,11 +25,13 @@
  * @copyright  2015-2016 CRS4
  * @license    https://opensource.org/licenses/mit-license.php MIT license
  */
+/* jshint curly: false */
+/* globals console, jQuery */
 define(['jquery'],
-    function (j) {
+    function ($) {
 
-        // reference to jQuery
-        var $ = jQuery;
+        // override reference to jQuery
+        $ = jQuery;
 
         // defines the basic package
         M.qtypes = M.qtypes || {};
@@ -69,11 +71,11 @@ define(['jquery'],
                                                          label, element) {
             var me = this;
             var element_obj = $(element);
-            var existingContainer = $("#" + editor_container_id + " div.fcontainer");
+            var existingContainer = $("#" + container_id + " div.fcontainer");
 
             // Checks whether the fieldset exists or not
-            if (!editor_container_id.length) {
-                console.error("FieldSet " + editor_container_id + " not found!!!");
+            if (!container_id.length) {
+                console.error("FieldSet " + container_id + " not found!!!");
             }
 
             // checks the existing id (or generates it)
@@ -214,24 +216,7 @@ define(['jquery'],
 
 
         formUtilsClass.initModelPanels = function (modal_panel_id) {
-
             $('#' + modal_panel_id).modal();
-
-            //$('#myInput').focus();
-
-
-            //$("#enableModal").click(function () {
-            //    $('#myModal').modal();
-            //    //$('#myInput').focus();
-            //});
-
-
-            //$('#username').editable({
-            //
-            //    success: function (response, newValue) {
-            //        alert("Changed: !!!");
-            //    }
-            //});
         };
 
 
@@ -275,10 +260,10 @@ define(['jquery'],
             //   example 2: htmlentities("foo'bar","ENT_QUOTES");
             //   returns 2: 'foo&#039;bar'
 
-            var hash_map = formUtilsClass.getHtmlTranslationTable('HTML_ENTITIES', quote_style),
-                symbol = '';
+            var hash_map = formUtilsClass.getHtmlTranslationTable('HTML_ENTITIES', quote_style);
+            //var symbol = '';
 
-            string = string == null ? '' : string + '';
+            string = string === null ? '' : string + '';
 
             if (!hash_map) {
                 return false;
@@ -288,7 +273,7 @@ define(['jquery'],
                 hash_map["'"] = '&#039;';
             }
 
-            double_encode = double_encode == null || !!double_encode;
+            double_encode = double_encode === null || !!double_encode;
 
             var regex = new RegExp("&(?:#\\d+|#x[\\da-f]+|[a-zA-Z][\\da-z]*);|[" +
                 Object.keys(hash_map)
@@ -306,6 +291,7 @@ define(['jquery'],
             });
         };
 
+        /* jshint bitwise: false */
         formUtilsClass.htmlspecialchars = function (string, quote_style, charset, double_encode) {
             //       discuss at: http://phpjs.org/functions/htmlspecialchars/
             //      original by: Mirek Slugen
