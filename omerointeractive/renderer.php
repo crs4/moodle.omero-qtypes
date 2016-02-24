@@ -105,7 +105,7 @@ class qtype_omerointeractive_single_renderer extends qtype_multichoice_single_re
                 }
             }
             $result = get_string(count($right) == 1
-                    ? 'single_correctansweris' : 'single_correctanswerare', 'qtype_omerointeractive') . implode(" or ", $right);
+                    ? 'single_correctansweris' : 'single_correctanswerare', 'qtype_omerointeractive') . implode(", ", $right);
         }
         return $result;
     }
