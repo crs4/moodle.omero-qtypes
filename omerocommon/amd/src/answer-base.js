@@ -298,7 +298,6 @@ define([
         prototype._build_textarea_of = function (element_name, label, local_map_name) {
             var id = this._build_id_of(element_name);
             var name = this._build_name_of(element_name);
-            //var value = this._data[element_name];
 
             local_map_name = (typeof local_map_name === 'undefined')
                 ? this._build_locale_map_name_of(element_name) : local_map_name;
@@ -309,24 +308,19 @@ define([
                 'rows="2"' +
                 '></textarea>';
 
-            //console.log("LABEL", label, "ELEMENT", element, "LOCALE_MAP", local_map_name);
-            //alert("CHeck please!!!");
             this._form_utils.appendElement(this._answer_container, label, element, local_map_name);
-            //this._init_textarea_editor(element_name);
             var editor = new M.qtypes.omerocommon.MultilanguageAttoEditor(name, local_map_name, false);
-            editor.init("en"); //language_selector.val()
-            //editor.init("en", local_map_name);
             this._editors_map[element_name] = editor;
             console.log("Editors map", this._editors_map);
         };
 
-        prototype._init_textarea_editor = function (element_name) {
-            var name = this._build_name_of(element_name);
-            var editor = new M.qtypes.omerocommon.MultilanguageAttoEditor(name,
-                this._build_locale_map_name_of(element_name), false);
-            editor.init("en");
-            this._editors_map[name] = editor;
-        };
+        //prototype._init_textarea_editor = function (element_name) {
+        //    var name = this._build_name_of(element_name);
+        //    var editor = new M.qtypes.omerocommon.MultilanguageAttoEditor(name,
+        //        this._build_locale_map_name_of(element_name), false);
+        //    editor.init("en");
+        //    this._editors_map[name] = editor;
+        //};
 
         prototype._build_select_of = function (element_name, label) {
             var id = this._build_id_of(element_name);
