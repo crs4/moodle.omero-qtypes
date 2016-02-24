@@ -224,7 +224,6 @@ define([
                 var id = 'id_' + locale_map_name;
                 console.log("Loading editor data...", id, locale_map_name);
                 editor.loadDataFromFormInputs(locale_map_name);
-                editor.onLanguageChanged("en");
             }
 
             this._data = data;
@@ -310,6 +309,7 @@ define([
 
             this._form_utils.appendElement(this._answer_container, label, element, local_map_name);
             var editor = new M.qtypes.omerocommon.MultilanguageAttoEditor(name, local_map_name, false);
+            editor.init();
             this._editors_map[element_name] = editor;
             console.log("Editors map", this._editors_map);
         };

@@ -232,6 +232,9 @@ define([
                 }
             };
 
+            // set the current language
+            me.onLanguageChanged(language_selector.val());
+
             // attach the the pre-submit procedure
             $("input[name=updatebutton]").on("click", submit_function);
             $("input[name=submitbutton]").on("click", submit_function);
