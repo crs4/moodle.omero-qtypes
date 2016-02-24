@@ -144,11 +144,10 @@ abstract class qtype_omerocommon extends qtype_multichoice
         $languages = array();
         $json_data = json_decode($json_format);
         foreach ($json_data as $lang => $text) {
-            if (empty(strip_tags($text))) debugging("Skipping EMPTY \"$text\" of language $lang");
-            else if (!in_array($lang, $languages)) {
+            if (!empty(strip_tags($text)) && !in_array($lang, $languages)) {
                 $result .= '<span class="multilang" lang="' . $lang . '">' . $text . '</span>';
                 array_push($languages, $lang);
-            } else debugging("Skipping DUPLICATED \"$text\" of language $lang");
+            }
         }
         return $result;
     }
