@@ -62,10 +62,9 @@ define(['qtype_omerocommon/moodle-forms-utils'],
             this._locale_text_map = {};
 
             console.log("Multilanguage data element: ", input_data_element_name);
-            //alert("Check INPUT: " + input_data_element_name);
+
             if (typeof input_data_element_name !== 'undefined'
                 && input_data_element_name.length > 0) {
-
                 this.loadDataFromFormInputs(input_data_element_name);
             } else this.onLanguageChanged(current_language);
 
@@ -75,7 +74,6 @@ define(['qtype_omerocommon/moodle-forms-utils'],
             me._update_listener = function () {
                 M.qtypes.omerocommon.MultilanguageElement.serializeToFormInputs(me);
                 console.log("Object before submission", me);
-                //alert("Check: " + me.input_data_element_name);
             };
             //document.forms[0].addEventListener("submit", me._update_listener);
         };

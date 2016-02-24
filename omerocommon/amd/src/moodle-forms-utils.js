@@ -216,24 +216,7 @@ define(['jquery'],
 
 
         formUtilsClass.initModelPanels = function (modal_panel_id) {
-
             $('#' + modal_panel_id).modal();
-
-            //$('#myInput').focus();
-
-
-            //$("#enableModal").click(function () {
-            //    $('#myModal').modal();
-            //    //$('#myInput').focus();
-            //});
-
-
-            //$('#username').editable({
-            //
-            //    success: function (response, newValue) {
-            //        alert("Changed: !!!");
-            //    }
-            //});
         };
 
 
