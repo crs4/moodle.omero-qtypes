@@ -287,9 +287,7 @@ define([
         };
 
         prototype._build_locale_map_name_of = function (element_name, answer_index) {
-            //alert("Building locale map name: " + element_name + " -- " + answer_index);
             answer_index = (typeof answer_index !== 'undefined') ? answer_index : this._answer_number;
-            //alert("Computed answer index: " + answer_index);
             return element_name + '_locale_map[' + answer_index + "]";
         };
 
