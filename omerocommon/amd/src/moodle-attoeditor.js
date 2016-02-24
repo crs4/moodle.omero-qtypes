@@ -229,11 +229,29 @@ define([
                 me.setText("");
             };
 
-            me.setText = function (text) {
-                console.log("Setting text: " + me.input_data_element_name + "editable");
-                var data_element = document.getElementById(me.input_data_element_name + "editable");
-                if (!data_element) console.warn("AttoEditor of " + me.input_data_element_name + " seems not initialized!");
-                else data_element.innerHTML = text;
+            me.setText = function (text, async) {
+                console.log("Setting text: " + text + " within the textarea: " + me.input_data_element_name + "editable");
+                if(!async){
+                    var data_element = document.getElementById(me.input_data_element_name + "editable");
+                    if (!data_element) console.warn("AttoEditor of " +
+                        me.input_data_element_name + " seems not initialized!");
+                    else data_element.innerHTML = text;
+                }else {
+                    var count = 0;
+                    var timeoutVar = setInterval(
+                        function setText() {
+                            var data_element = document.getElementById(me.input_data_element_name + "editable");
+                            if (data_element) {
+                                data_element.innerHTML = text;
+                                console.warn("AttoEditor of " +
+                                    me.input_data_element_name + " seems initialized!", "Attempt: " + (count));
+                                clearTimeout(timeoutVar);
+                            } else {
+                                console.warn("AttoEditor of " +
+                                    me.input_data_element_name + " seems not initialized!", "Attempt: " + (++count));
+                            }
+                        }, 200);
+                }
             };
 
             me.getText = function () {

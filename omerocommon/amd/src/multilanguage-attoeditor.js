@@ -97,7 +97,7 @@ define([
 
             // update the editor with the current locale text
             var text = this._locale_text_map[language] || "";
-            this._editor.setText(text);
+            this._editor.setText(text, true);
         };
 
         // returns the class
