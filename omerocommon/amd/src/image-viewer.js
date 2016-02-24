@@ -68,8 +68,8 @@ define(['jquery'], function ($) {
             this._image_viewer_annotations_canvas_id = image_viewer_annotations_canvas_id;
             this._image_id = image_id;
             this._image_properties = image_properties;
-            this._viewer_model_server = viewer_model_server,
-                this._listeners = [];
+            this._viewer_model_server = viewer_model_server;
+            this._listeners = [];
             this._lock_navigation = false;
 
             // default viewer configuration
@@ -234,7 +234,7 @@ define(['jquery'], function ($) {
         };
 
         prototype.isNavigationLocked = function () {
-            return this._lock_navigation == true;
+            return this._lock_navigation === true;
         };
 
         prototype.setNavigationLock = function (enable) {
@@ -409,7 +409,7 @@ define(['jquery'], function ($) {
                     + "z=" + 1 + "&" // TODO: to update with the actual Z value (we not support only Z=1)
                     + "zm=" + viewport_details.zoom_level + "&"
                     + "x=" + viewport_details.center_x + "&"
-                    + "y=" + viewport_details.center_y
+                    + "y=" + viewport_details.center_y;
             }
             return result;
         };
@@ -464,7 +464,7 @@ define(['jquery'], function ($) {
          */
         prototype._addVisibleRoiShapes = function (roi_ids) {
             if (!roi_ids.split) roi_ids = "" + [roi_ids];
-            if (roi_ids != undefined && roi_ids.length > 0) {
+            if (roi_ids !== undefined && roi_ids.length > 0) {
                 var roi_id_list = roi_ids.split(",");
                 for (var i in roi_id_list) {
                     var roi_id = roi_id_list[i];
@@ -491,12 +491,12 @@ define(['jquery'], function ($) {
         prototype._removeVisibleRoiShapes = function (roi_ids) {
             if (!roi_ids.split)
                 delete this._visible_roi_shape_list[roi_ids];
-            else if (roi_ids != undefined && roi_ids.length > 0) {
+            else if (roi_ids !== undefined && roi_ids.length > 0) {
                 var roi_id_list = roi_ids.split(",");
                 for (var i in roi_id_list) {
                     var roi_id = roi_id_list[i];
                     console.log("ARRAY: ", this._visible_roi_shape_list);
-                    var index = this._visible_roi_shape_list.indexOf(roi_id);
+                    //var index = this._visible_roi_shape_list.indexOf(roi_id);
                     delete this._visible_roi_shape_list[roi_id];
                     console.log("Removed visible roi element: ", this._visible_roi_shape_list);
                 }
