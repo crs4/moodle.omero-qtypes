@@ -141,8 +141,14 @@ abstract class qtype_omerocommon extends qtype_multichoice
     public static function serialize_to_multilang_form($json_format)
     {
         $result = "";
-        foreach (json_decode($json_format) as $lang => $text) {
-            $result .= '<span class="multilang" lang="' . $lang . '">' . $text . '</span>';
+        $languages = array();
+        $json_data = json_decode($json_format);
+        foreach ($json_data as $lang => $text) {
+            if (empty(strip_tags($text))) debugging("Skipping EMPTY \"$text\" of language $lang");
+            else if (!in_array($lang, $languages)) {
+                $result .= '<span class="multilang" lang="' . $lang . '">' . $text . '</span>';
+                array_push($languages, $lang);
+            } else debugging("Skipping DUPLICATED \"$text\" of language $lang");
         }
         return $result;
     }
@@ -158,6 +164,7 @@ abstract class qtype_omerocommon extends qtype_multichoice
     public static function serialize_to_json_from($multilang_format)
     {
         $result = array();
+        $languages = array();
         $dom = new DOMDocument();
         $dom->strictErrorChecking = FALSE;
         $dom->loadHTML('<?xml version="1.0" encoding="UTF-8"?><html><body>' . $multilang_format . '</body></html>');
@@ -165,7 +172,12 @@ abstract class qtype_omerocommon extends qtype_multichoice
         $classname = "multilang";
         $nodes = $finder->query("//*[contains(concat(' ', normalize-space(@class), ' '), ' $classname ')]");
         foreach ($nodes as $node) {
-            $result[$node->getAttribute("lang")] = self::DOMinnerHTML($node);
+            $lang = $node->getAttribute("lang");
+            $text = self::DOMinnerHTML($node);
+            if (!empty(strip_tags($text)) && !in_array($lang, $languages)) {
+                $result[$lang] = $text;
+                array_push($languages, $lang);
+            }
         }
         return $result;
     }
