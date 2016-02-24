@@ -243,11 +243,11 @@ define([
                             var data_element = document.getElementById(me.input_data_element_name + "editable");
                             if (data_element) {
                                 data_element.innerHTML = text;
-                                console.warn("AttoEditor of " +
+                                console.log("AttoEditor of " +
                                     me.input_data_element_name + " seems initialized!", "Attempt: " + (count));
                                 clearTimeout(timeoutVar);
                             } else {
-                                console.warn("AttoEditor of " +
+                                console.log("AttoEditor of " +
                                     me.input_data_element_name + " seems not initialized!", "Attempt: " + (++count));
                             }
                         }, 200);
