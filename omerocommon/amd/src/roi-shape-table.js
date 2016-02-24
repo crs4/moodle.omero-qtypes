@@ -43,14 +43,11 @@ define(['jquery', 'qtype_omerocommon/roi-shape-model'],
         M.qtypes.omerocommon = M.qtypes.omerocommon || {};
 
         /**
+         * utility function to notify listeners
          *
-         * @returns {string}
-         * @private
+         * @param table
+         * @param event
          */
-        function _getRoiShapeDetailInfoUrl() {
-            return "type/omeromultichoice/tests/data.json";
-        }
-
         function notifyListeners(table, event) {
             for (var i in table._event_listener_list) {
                 var callback_name = "on" + event.type.charAt(0).toUpperCase() + event.type.slice(1);
