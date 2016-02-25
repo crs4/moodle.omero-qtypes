@@ -60,7 +60,7 @@ define(['qtype_omerocommon/moodle-forms-utils'],
 
             // initializes the map of localized strings
             this._locale_text_map = {};
-            console.log("Multilanguage data element: ", input_data_element_name);
+            console.log("Multilanguage data element: ", input_data_element_name, "language:", current_language);
 
             // clear textarea
             this._editor.setText("");
@@ -72,7 +72,7 @@ define(['qtype_omerocommon/moodle-forms-utils'],
             }
 
             // update language
-            if(current_language)
+            if (current_language)
                 this.onLanguageChanged(current_language);
 
             // register the serialization
