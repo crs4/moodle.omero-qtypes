@@ -491,7 +491,7 @@ abstract class qtype_omerointeractive_base_renderer extends qtype_multichoice_re
 
 
 
-        $config = array(
+        $player_config = array(
             "image_id" => $omero_image,
             "image_properties" => json_decode($question->omeroimageproperties),
             "image_frame_id" => $omero_frame_id,
@@ -519,7 +519,12 @@ abstract class qtype_omerointeractive_base_renderer extends qtype_multichoice_re
             "max_markers" => $no_max_markers
         );
 
-        $result .= html_writer::empty_tag('input', array("id"=> "viewer-config", "type" => "hidden", "value" => json_encode($config)));
+        $player_config_element_id = self::to_unique_identifier($qa, "viewer-config");
+        $result .= html_writer::empty_tag(
+            "input", array("id"=> $player_config_element_id,
+            "type" => "hidden",
+                "value" => json_encode($player_config))
+        );
 
         if ($qa->get_state() == question_state::$invalid) {
             $result .= html_writer::nonempty_tag('div',
@@ -538,9 +543,7 @@ abstract class qtype_omerointeractive_base_renderer extends qtype_multichoice_re
 
         $PAGE->requires->js_call_amd(
             "qtype_omerointeractive/question-player-interactive",
-            "start", array(
-                $config
-            )
+            "start", array($player_config_element_id)
         );
 
         return $result;

@@ -491,14 +491,11 @@ define([
         return JSON.parse(response);
     };
 
-    qpiClass.start = function (config) {
-
-        // TODO: switch to the new strategy to get configuration
+    qpiClass.start = function (config_element_id) {
         // extract configuration
-        var c = document.getElementById("viewer-config");
-        var configx = JSON.parse(c.value);
-        console.log("QuestionPlayer interactive configuration", configx);
-
+        var c = document.getElementById(config_element_id);
+        var config = JSON.parse(c.value);
+        console.log("QuestionPlayerInteractive configuration", config);
         // instantiate the class and
         var instance = new M.qtypes.omerointeractive.QuestionPlayerInteractive();
         instance.initialize(config);
