@@ -37,12 +37,6 @@ define([
     function ($ /*, FormUtils, Editor*/) {
 
 
-        /*
-         function onSelectROIGroup(group) {
-         console.log("Selected ROI group", group);
-         alert("....");
-         }*/
-
         function updateGroupButton(editor, selected_shapes) {
             if (!selected_shapes)
                 selected_shapes = editor.getSelectedROIIds();
@@ -69,7 +63,7 @@ define([
                     if (group.containsROIs(editor.getSelectedROIIds())) {
                         toEnable = false;
                         break;
-                    }else {
+                    } else {
                         option = $('<li value="' + i + '"><a href="#">' + (parseInt(i) + 1) + '</a></li>');
                         toEnable = true;
                         button.append(option);
