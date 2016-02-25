@@ -103,23 +103,30 @@ define([
             var me = this;
 
             // register the current instance
-            if (me.constructor != M.qtypes.omerocommon.QuestionPlayerBase)
-                M.qtypes.omerocommon.QuestionPlayerBase.instances.push(me);
+            if (M.cfg.developerdebug) {
+                if (me.constructor != M.qtypes.omerocommon.QuestionPlayerBase)
+                    M.qtypes.omerocommon.QuestionPlayerBase.instances.push(me);
+            }
         };
 
 
         // list of player instances
-        M.qtypes.omerocommon.QuestionPlayerBase.instances = [];
+        if (M.cfg.developerdebug)
+            M.qtypes.omerocommon.QuestionPlayerBase.instances = [];
 
         /* Static methods */
 
         /**
          * Returns the list of player instances
+         * Note that is available for debug
+         *
          * @returns {Array}
          */
-        M.qtypes.omerocommon.QuestionPlayerBase.getInstances = function () {
-            return M.qtypes.omerocommon.QuestionPlayerBase.instances;
-        };
+        if (M.cfg.developerdebug) {
+            M.qtypes.omerocommon.QuestionPlayerBase.getInstances = function () {
+                return M.qtypes.omerocommon.QuestionPlayerBase.instances;
+            };
+        }
 
         // local reference to the current prototype
         var prototype = M.qtypes.omerocommon.QuestionPlayerBase.prototype;

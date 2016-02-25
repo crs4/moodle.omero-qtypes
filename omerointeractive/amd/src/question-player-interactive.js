@@ -372,14 +372,6 @@ define([
     M.qtypes.omerointeractive.QuestionPlayerInteractive.prototype.parent =
         M.qtypes.omerocommon.QuestionPlayerBase.prototype;
 
-    M.qtypes.omerointeractive.QuestionPlayerInteractive.getInstance = function () {
-        if (!M.qtypes.omerocommon.QuestionPlayerBase.instance) {
-            M.qtypes.omerocommon.QuestionPlayerBase.instance =
-                new M.qtypes.omerointeractive.QuestionPlayerInteractive();
-        }
-        return M.qtypes.omerocommon.QuestionPlayerBase.instance;
-    };
-
     // local reference to the current prototype
     var prototype = M.qtypes.omerointeractive.QuestionPlayerInteractive.prototype;
 
