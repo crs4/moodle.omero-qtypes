@@ -115,10 +115,6 @@ define([
         };
 
 
-        M.qtypes.omerocommon.QuestionEditorBase.getInstance = function () {
-            return M.qtypes.omerocommon.QuestionEditorBase.instance;
-        };
-
         // A local reference to the prototype
         var prototype = M.qtypes.omerocommon.QuestionEditorBase.prototype;
 

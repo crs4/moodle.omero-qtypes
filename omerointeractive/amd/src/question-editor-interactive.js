@@ -113,16 +113,6 @@ define([
         // local reference to the current prototype
         var prototype = M.qtypes.omerointeractive.QuestionEditorInteractive.prototype;
 
-
-        M.qtypes.omerointeractive.QuestionEditorInteractive.getInstance = function () {
-            if (!M.qtypes.omerocommon.QuestionEditorBase.instance) {
-                M.qtypes.omerocommon.QuestionEditorBase.instance =
-                    new M.qtypes.omerointeractive.QuestionEditorInteractive();
-            }
-            return M.qtypes.omerocommon.QuestionEditorBase.instance;
-        };
-
-
         /**
          * Performs the initialization
          */
@@ -205,7 +195,7 @@ define([
                 console.log(fraction_options);
                 $(document).ready(
                     function () {
-                        var instance = M.qtypes.omerointeractive.QuestionEditorInteractive.getInstance();
+                        var instance = new M.qtypes.omerointeractive.QuestionEditorInteractive();
                         instance.initialize(
                             answers_section_id, fraction_options,
                             add_to_group_element_id, add_to_group_list_element_id
