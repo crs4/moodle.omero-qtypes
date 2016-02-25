@@ -438,6 +438,7 @@ define([
                 var editors = answer.getEditorsMap();
                 for (i in editors) {
                     this._editor[i] = editors[i];
+                    this._editor[i].changeLanguage(language_selector.val());
                 }
                 for (i in this._answers) {
                     this._answers[i].updateHeader((parseInt(i) + 1));
