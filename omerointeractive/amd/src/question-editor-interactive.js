@@ -194,7 +194,8 @@ define([
                             answers_section_id, fraction_options,
                             add_to_group_element_id, add_to_group_list_element_id
                         );
-                        window.qei = instance;
+                        if (M.cfg.developerdebug)
+                            window.qei = instance;
                     }
                 );
             };

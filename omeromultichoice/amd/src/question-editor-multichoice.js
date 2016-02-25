@@ -82,7 +82,8 @@ define([
                 function () {
                     var instance = new M.qtypes.omeromultichoice.QuestionEditorMultichoice();
                     instance.initialize(answers_section_id, fraction_options);
-                    window.qem = instance;
+                    if (M.cfg.developerdebug)
+                        window.qem = instance;
                 }
             );
         };
