@@ -20,10 +20,6 @@
 M.omero_multichoice_handler = {
     init: function () {
 
-        console.log($);
-        //alert("Initialized!");
-
-
         // ToDO: change the frameLoaded event
         document.addEventListener("frameLoaded", function (e) {
             var frame_id = e.detail.frame_id;

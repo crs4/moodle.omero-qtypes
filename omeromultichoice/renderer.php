@@ -283,7 +283,7 @@ abstract class qtype_omeromultichoice_base_renderer extends qtype_multichoice_re
                                 "style" => "margin-right: 20px"
                             )
                         ) .
-                        $feedback_text,
+                        format_text($feedback_text),
                         array(
                             "class" => "outcome",
                             "style" => "display: block-inline; margin: 0 0 10px; padding: 20px 30px 15px;"
@@ -382,25 +382,35 @@ abstract class qtype_omeromultichoice_base_renderer extends qtype_multichoice_re
                 array('class' => 'validationerror'));
         }
 
+        // set the player configuration
+        $player_config = array(
+            "image_id" => $omero_image,
+            "image_properties" => json_decode($question->omeroimageproperties),
+            "image_frame_id" => $omero_frame_id,
+            "image_annotations_canvas_id" => self::to_unique_identifier($qa, "annotations_canvas"),
+            "image_server" => $OMERO_SERVER,
+            "viewer_model_server" => $CFG->wwwroot . "/repository/omero/viewer/viewer-model.php",
+            "image_viewer_container" => self::to_unique_identifier($qa, self::IMAGE_VIEWER_CONTAINER),
+            "image_navigation_locked" => (bool)$question->omeroimagelocked,
+            "question_answer_container" => $question_answer_container,
+            "focus_areas_container" => self::to_unique_identifier($qa, self::FOCUS_AREAS_CONTAINER),
+            "visible_rois" => empty($question->visiblerois) ? [] : explode(",", $question->visiblerois),
+            "focusable_rois" => empty($question->focusablerois) ? [] : explode(",", $question->focusablerois),
+            "answer_input_name" => $answer_input_name
+        );
+
+        // embed the player configuration within an hidden input element
+        $player_config_element_id = self::to_unique_identifier($qa, "player-config");
+        $result .= html_writer::empty_tag(
+            "input", array("id"=> $player_config_element_id,
+                "type" => "hidden",
+                "value" => json_encode($player_config))
+        );
+
+        // start the pplayer
         $PAGE->requires->js_call_amd(
             "qtype_omeromultichoice/question-player-multichoice",
-            "start", array(
-                array(
-                    "image_id" => $omero_image,
-                    "image_properties" => json_decode($question->omeroimageproperties),
-                    "image_frame_id" => $omero_frame_id,
-                    "image_annotations_canvas_id" => self::to_unique_identifier($qa, "annotations_canvas"),
-                    "image_server" => $OMERO_SERVER,
-                    "viewer_model_server" => $CFG->wwwroot . "/repository/omero/viewer/viewer-model.php",
-                    "image_viewer_container" => self::to_unique_identifier($qa, self::IMAGE_VIEWER_CONTAINER),
-                    "image_navigation_locked" => (bool)$question->omeroimagelocked,
-                    "question_answer_container" => $question_answer_container,
-                    "focus_areas_container" => self::to_unique_identifier($qa, self::FOCUS_AREAS_CONTAINER),
-                    "visible_rois" => empty($question->visiblerois) ? [] : explode(",", $question->visiblerois),
-                    "focusable_rois" => empty($question->focusablerois) ? [] : explode(",", $question->focusablerois),
-                    "answer_input_name" => $answer_input_name
-                )
-            )
+            "start", array($player_config_element_id)
         );
 
         return $result;

@@ -73,6 +73,7 @@ function init_js_modules($qtype_package, $header=false)
         $source_folder = $CFG->dirroot . "/question/type/$qtype_package/js/dist";
     }
 
+    if(!file_exists($source_folder)) return;
 
     // Scan JS folder
     foreach (scandir($source_folder) as $foldername) {
