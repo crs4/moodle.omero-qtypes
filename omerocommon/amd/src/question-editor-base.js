@@ -115,10 +115,6 @@ define([
         };
 
 
-        M.qtypes.omerocommon.QuestionEditorBase.getInstance = function () {
-            return M.qtypes.omerocommon.QuestionEditorBase.instance;
-        };
-
         // A local reference to the prototype
         var prototype = M.qtypes.omerocommon.QuestionEditorBase.prototype;
 
@@ -438,6 +434,7 @@ define([
                 var editors = answer.getEditorsMap();
                 for (i in editors) {
                     this._editor[i] = editors[i];
+                    this._editor[i].changeLanguage(language_selector.val());
                 }
                 for (i in this._answers) {
                     this._answers[i].updateHeader((parseInt(i) + 1));
@@ -458,11 +455,18 @@ define([
 
 
         prototype.removeAnswer = function (answer_id) {
+            var i, last_answer_header;
             console.log(this._answers);
-            var i;
             if (answer_id in this._answer_ids) {
                 var answer = this._answer_ids[answer_id];
                 if (answer) {
+                    // find the header of the option above the one to delete
+                    for (i in this._answer_ids) {
+                        if (this._answer_ids[i]._answer_number === answer_id)
+                            break;
+                        last_answer_header = this._answer_ids[i]._answer_head;
+                    }
+                    // perform deletion
                     answer.hide();
                     this._answers.splice(answer_id, 1);
                     delete this._answer_ids[answer_id];
@@ -473,22 +477,14 @@ define([
                         editor.destroy();
                         delete this._editor[i];
                     }
-
-                    var last_answer_header = null;
-
-                    for (i in this._answers) {
-                        this._answers[i].updateHeader((parseInt(i) + 1));
-                        last_answer_header = this._answers[i]._answer_head;
-                    }
-
-                    if (last_answer_header !== null)
+                    // scrollTop to the the option above the one deleted
+                    if (last_answer_header !== undefined)
                         $('html, body').animate({
                             scrollTop: last_answer_header.offset().top - 125
                         }, 1000);
 
                     // callback for the event onRemoveAnswer
                     if (this.onRemoveAnswer) this.onRemoveAnswer(answer);
-
                     return true;
                 }
             }

@@ -37,12 +37,6 @@ define([
     function ($ /*, FormUtils, Editor*/) {
 
 
-        /*
-         function onSelectROIGroup(group) {
-         console.log("Selected ROI group", group);
-         alert("....");
-         }*/
-
         function updateGroupButton(editor, selected_shapes) {
             if (!selected_shapes)
                 selected_shapes = editor.getSelectedROIIds();
@@ -69,7 +63,7 @@ define([
                     if (group.containsROIs(editor.getSelectedROIIds())) {
                         toEnable = false;
                         break;
-                    }else {
+                    } else {
                         option = $('<li value="' + i + '"><a href="#">' + (parseInt(i) + 1) + '</a></li>');
                         toEnable = true;
                         button.append(option);
@@ -112,16 +106,6 @@ define([
 
         // local reference to the current prototype
         var prototype = M.qtypes.omerointeractive.QuestionEditorInteractive.prototype;
-
-
-        M.qtypes.omerointeractive.QuestionEditorInteractive.getInstance = function () {
-            if (!M.qtypes.omerocommon.QuestionEditorBase.instance) {
-                M.qtypes.omerocommon.QuestionEditorBase.instance =
-                    new M.qtypes.omerointeractive.QuestionEditorInteractive();
-            }
-            return M.qtypes.omerocommon.QuestionEditorBase.instance;
-        };
-
 
         /**
          * Performs the initialization
@@ -205,12 +189,13 @@ define([
                 console.log(fraction_options);
                 $(document).ready(
                     function () {
-                        var instance = M.qtypes.omerointeractive.QuestionEditorInteractive.getInstance();
+                        var instance = new M.qtypes.omerointeractive.QuestionEditorInteractive();
                         instance.initialize(
                             answers_section_id, fraction_options,
                             add_to_group_element_id, add_to_group_list_element_id
                         );
-                        window.qei = instance;
+                        if (M.cfg.developerdebug)
+                            window.qei = instance;
                     }
                 );
             };

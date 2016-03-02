@@ -138,14 +138,14 @@ define([
         };
 
 
-        M.qtypes.omeromultichoice.QuestionPlayerMultichoice.start = function (config) {
-
-            $(document).ready(
-                function () {
-                    var instance = new M.qtypes.omeromultichoice.QuestionPlayerMultichoice();
-                    instance.initialize(config);
-                }
-            );
+        M.qtypes.omeromultichoice.QuestionPlayerMultichoice.start = function (config_element_id) {
+            // extract configuration
+            var c = document.getElementById(config_element_id);
+            var config = JSON.parse(c.value);
+            console.log("QuestionPlayerMultichoice configuration", config);
+            // start the player
+            var instance = new M.qtypes.omeromultichoice.QuestionPlayerMultichoice();
+            instance.initialize(config);
         };
 
         return M.qtypes.omeromultichoice.QuestionPlayerMultichoice;

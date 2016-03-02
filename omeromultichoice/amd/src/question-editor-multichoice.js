@@ -58,14 +58,6 @@ define([
         // inherit
         M.qtypes.omeromultichoice.QuestionEditorMultichoice.prototype = new M.qtypes.omerocommon.QuestionEditorBase();
 
-        M.qtypes.omeromultichoice.QuestionEditorMultichoice.getInstance = function () {
-            if (!M.qtypes.omerocommon.QuestionEditorBase.instance) {
-                M.qtypes.omerocommon.QuestionEditorBase.instance =
-                    new M.qtypes.omeromultichoice.QuestionEditorMultichoice();
-            }
-            return M.qtypes.omerocommon.QuestionEditorBase.instance;
-        };
-
         // A local reference to the prototype
         var prototype = M.qtypes.omeromultichoice.QuestionEditorMultichoice.prototype;
 
@@ -88,9 +80,10 @@ define([
             console.log(fraction_options);
             $(document).ready(
                 function () {
-                    var instance = M.qtypes.omeromultichoice.QuestionEditorMultichoice.getInstance();
+                    var instance = new M.qtypes.omeromultichoice.QuestionEditorMultichoice();
                     instance.initialize(answers_section_id, fraction_options);
-                    window.qem = instance;
+                    if (M.cfg.developerdebug)
+                        window.qem = instance;
                 }
             );
         };
