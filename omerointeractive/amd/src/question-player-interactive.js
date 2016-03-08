@@ -3,9 +3,9 @@
  */
 
 define([
-    'qtype_omerocommon/question-player-base',
-    'qtype_omerocommon/image-viewer'
-],
+        'qtype_omerocommon/question-player-base',
+        'qtype_omerocommon/image-viewer'
+    ],
     /* jshint curly: false */
     /* globals console, jQuery */
     function (QuestionPlayerBase) {

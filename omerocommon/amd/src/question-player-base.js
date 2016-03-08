@@ -31,10 +31,11 @@ define([
         'qtype_omerocommon/answer-base',
         'qtype_omerocommon/multilanguage-element',
         'qtype_omerocommon/multilanguage-attoeditor',
-        'qtype_omerocommon/image-viewer'
+        'qtype_omerocommon/image-viewer',
+        'qtype_omerocommon/message-dialog',
     ],
     /* jshint curly: false */
-    /* globals console, jQuery */
+    /* globals console, jQuery, document */
     function (jQ, Editor, FormUtils, mle, mlat, ImageViewer) {
 
         // jQuery reference
@@ -150,6 +151,10 @@ define([
                 config.image_server, config.image_viewer_container, config.image_annotations_canvas_id,
                 config.viewer_model_server);
             this._image_viewer_controller = viewer_ctrl;
+
+            this._message_dialog = new M.qtypes.omerocommon.MessageDialog(config.image_frame_id);
+
+            this._invalidator_panel = $("#" + config.question_answer_container + "-invalidator-panel");
         };
 
         /**
