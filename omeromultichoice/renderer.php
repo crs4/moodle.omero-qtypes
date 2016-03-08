@@ -417,6 +417,7 @@ abstract class qtype_omeromultichoice_base_renderer extends qtype_multichoice_re
             "viewer_model_server" => $CFG->wwwroot . "/repository/omero/viewer/viewer-model.php",
             "image_viewer_container" => self::to_unique_identifier($qa, self::IMAGE_VIEWER_CONTAINER),
             "image_navigation_locked" => (bool)$question->omeroimagelocked,
+            "qname" => $question->name,
             "question_answer_container" => $question_answer_container,
             "focus_areas_container" => self::to_unique_identifier($qa, self::FOCUS_AREAS_CONTAINER),
             "visible_rois" => empty($question->visiblerois) ? [] : explode(",", $question->visiblerois),
