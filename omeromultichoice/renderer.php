@@ -374,7 +374,32 @@ abstract class qtype_omeromultichoice_base_renderer extends qtype_multichoice_re
         }
         $result .= html_writer::end_tag('div'); // Answer.
 
+        $result .= html_writer::tag('div', '', array(
+            'id' => $question_answer_container . '-invalidator-panel',
+            'class' => "invalidator-panel"));
+
         $result .= html_writer::end_tag('div'); // Ablock.
+
+        // support for dialog message
+        $result .= html_writer::tag('div', '
+         <div class="modal fade" id="modal-frame-' . $omero_frame_id . '" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title text-warning" id="modal-frame-label-' . $omero_frame_id . '">
+            <i class="glyphicon glyphicon-warning-sign"></i> ' . get_string('validate_warning', 'qtype_omerocommon') .
+            '</h4>
+      </div>
+      <div class="modal-body text-left">
+        <span id="modal-frame-text-' . $omero_frame_id . '"></span>
+      </div>
+      <div class="modal-footer text-center">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>');
 
         if ($qa->get_state() == question_state::$invalid) {
             $result .= html_writer::nonempty_tag('div',
