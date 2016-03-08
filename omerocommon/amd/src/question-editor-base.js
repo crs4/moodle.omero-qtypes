@@ -555,6 +555,17 @@ define([
 
         prototype.onImageModelRoiLoaded = function (e) {
 
+            // removed_rois
+            var removed_rois = {};
+
+            // validate the list of visible ROIs
+            removed_rois.visible = this._image_viewer_controller.checkRois( this._visible_roi_list, true);
+            console.log("Validated ROI Shape List",  this._visible_roi_list);
+
+            // validate the list of focusable ROIs
+            removed_rois.focusable = this._image_viewer_controller.checkRois( this._focusable_roi_list, true);
+            console.log("Validated Focusable ROI List",  this._focusable_roi_list);
+
             var roi_list = M.qtypes.omerocommon.RoiShapeModel.toRoiShapeModel(e.detail,
                 this._visible_roi_list, this._focusable_roi_list);
             console.log("Loaded ROI Shapes Models", roi_list);
@@ -570,6 +581,8 @@ define([
             this._image_viewer_controller.showRoiShapes(this._visible_roi_list);
 
             console.log("Updated ROI table!!!");
+
+            return removed_rois;
         };
 
         /**

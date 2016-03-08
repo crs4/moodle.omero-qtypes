@@ -122,6 +122,39 @@ define([
             this._add_to_group_list_element.dropdown();
         };
 
+        prototype.onImageModelRoiLoaded = function (e) {
+            var removed_rois = this.parent.onImageModelRoiLoaded.call(this, e);
+            var removed_rois_from_groups = [];
+            for (var i  in this._answers) {
+                var answer = this._answers[i];
+                var unavailable_rois = this._image_viewer_controller.checkRois(answer.getROIsWithinGroup());
+                console.log(answer, unavailable_rois);
+                if (unavailable_rois && unavailable_rois.length > 0) {
+                    answer.removeROIsFromGroup(unavailable_rois);
+                    removed_rois_from_groups.push([(parseInt(i) + 1), unavailable_rois]);
+                    console.log("Removing not valid ROIs", unavailable_rois);
+                }
+            }
+
+            var j;
+            var message = "";
+            if (removed_rois.visible.length > 0)
+                message += "<br> - " + removed_rois.visible.join(", ") + " ( " +
+                    M.util.get_string('roi_visible', 'qtype_omerocommon') + " )";
+            if (removed_rois.focusable.length > 0)
+                message += "<br> - " + removed_rois.focusable.join(", ") + " ( " +
+                    M.util.get_string('roi_focusable', 'qtype_omerocommon') + " )";
+            for (j in removed_rois_from_groups) {
+                message += "<br> - " + removed_rois_from_groups[j][1].join(", ") + " ( " +
+                    M.util.get_string('answer', 'core') + " " + removed_rois_from_groups[j][0] + " )";
+            }
+
+            if (message.length > 0) {
+                message = M.util.get_string('answer_group_removed_invalid_rois', 'qtype_omerointeractive') + message;
+                this._showDialogMessage(message);
+            }
+        };
+
         /**
          *
          * @param answer_number
