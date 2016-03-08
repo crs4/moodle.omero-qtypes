@@ -74,12 +74,19 @@ $string['roi_shape_details'] = "Dettagli ROI Shape";
 $string['roi_description'] = "Descrizione";
 $string['roi_visibility'] = "Visibilità";
 $string['roi_focus'] = "Fuoco";
+$string['roi_visible'] = "ROI visibili";
+$string['roi_focusable'] = "Aree d'interesse";
 
 # save/update controls
 $string['savechangesandcontinueediting'] = "Salva";
 $string['savechangesandexit'] = "Salva ed esci";
 
 # validation messages
+$string['validate_question'] = "Domanda";
+$string['validate_editor_not_valid'] = "non valida";
+$string['validate_editor_not_existing_rois'] = "Le seguenti ROI non sono più disponibili in OMERO: ";
+$string['validate_editor_check_question'] = "Controlla la domanda !!!";
+$string['validate_player_not_existing_rois'] = "non valida. <br>Contatta il tuo istruttore/esaminatore !!!";
 $string['validate_warning'] = "Avviso";
 $string['validate_no_answers'] = "Le opzioni di risposta sono meno di 1 !!!";
 $string['validate_no_image'] = "Nessuna immagine selezionata !!!";

@@ -41,6 +41,7 @@ $string['add_answers'] = "Add answer groups";
 $string['answer_group'] = "Group";
 $string['answer_groups'] = "Answer Groups";
 $string['answer_group_of_rois'] = "List of ROIs";
+$string['answer_group_removed_invalid_rois'] = "The following ROIs are no longer available in OMERO:";
 $string['validation_noroi_per_group'] = "Every answer group must have at least one ROI !!!";
 
 # marker controls
