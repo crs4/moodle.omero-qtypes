@@ -448,6 +448,12 @@ abstract class qtype_omeromultichoice_base_renderer extends qtype_multichoice_re
         init_js_modules("omeromultichoice");
         init_js_imageviewer(get_config('omero', 'omero_restendpoint'));
         $PAGE->requires->css("/question/type/omerocommon/css/question-player-base.css");
+        $PAGE->requires->css("/question/type/omerocommon/css/message-dialog.css");
+        $PAGE->requires->string_for_js('validate_question', 'qtype_omerocommon');
+        $PAGE->requires->string_for_js('validate_editor_not_valid', 'qtype_omerocommon');
+        $PAGE->requires->string_for_js('validate_editor_check_question', 'qtype_omerocommon');
+        $PAGE->requires->string_for_js('validate_editor_not_existing_rois', 'qtype_omerocommon');
+        $PAGE->requires->string_for_js('validate_player_not_existing_rois', 'qtype_omerocommon');
     }
 
 
