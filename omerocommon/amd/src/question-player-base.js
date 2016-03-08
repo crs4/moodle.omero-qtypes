@@ -31,10 +31,11 @@ define([
         'qtype_omerocommon/answer-base',
         'qtype_omerocommon/multilanguage-element',
         'qtype_omerocommon/multilanguage-attoeditor',
-        'qtype_omerocommon/image-viewer'
+        'qtype_omerocommon/image-viewer',
+        'qtype_omerocommon/message-dialog',
     ],
     /* jshint curly: false */
-    /* globals console, jQuery */
+    /* globals console, jQuery, document */
     function (jQ, Editor, FormUtils, mle, mlat, ImageViewer) {
 
         // jQuery reference
@@ -150,6 +151,10 @@ define([
                 config.image_server, config.image_viewer_container, config.image_annotations_canvas_id,
                 config.viewer_model_server);
             this._image_viewer_controller = viewer_ctrl;
+
+            this._message_dialog = new M.qtypes.omerocommon.MessageDialog(config.image_frame_id);
+
+            this._invalidator_panel = $("#" + config.question_answer_container + "-invalidator-panel");
         };
 
         /**
@@ -167,6 +172,43 @@ define([
          */
         prototype.showFocusAreas = function () {
             addFocusAreasInfo(this);
+        };
+
+        /**
+         * utility function to check ROIs validity
+         * @private
+         */
+        prototype._checkRoisValidity = function (unavailable_roi_list) {
+            unavailable_roi_list = unavailable_roi_list || [];
+            unavailable_roi_list = unavailable_roi_list.concat(
+                this._image_viewer_controller.checkRois(this._config.visible_rois)
+            );
+            unavailable_roi_list = unavailable_roi_list.concat(
+                this._image_viewer_controller.checkRois(this._config.focusable_rois)
+            );
+
+            var unavailable_rois = [];
+            $.each(unavailable_roi_list, function (i, el) {
+                if ($.inArray(String(el), unavailable_rois) === -1) unavailable_rois.push(String(el));
+            });
+            if (unavailable_rois.length > 0) {
+                if (document.location.pathname.indexOf("preview.php") !== -1) {
+                    this._message_dialog.showDialogMessage(
+                        M.util.get_string('validate_question', 'qtype_omerocommon') +
+                        ' "' + this._config.qname + '" ' +
+                        M.util.get_string('validate_editor_not_valid', 'qtype_omerocommon') + '!!!<br>' +
+                        M.util.get_string('validate_editor_not_existing_rois', 'qtype_omerocommon') +
+                        unavailable_rois.join(',') + '.' + '<br>' +
+                        M.util.get_string('validate_editor_check_question', 'qtype_omerocommon')
+                    );
+                } else
+                    this._message_dialog.showDialogMessage(
+                        M.util.get_string('validate_question', 'qtype_omerocommon') +
+                        ' "' + this._config.qname + '" ' +
+                        M.util.get_string('validate_player_not_existing_rois', 'qtype_omerocommon')
+                    );
+                this._invalidator_panel.show();
+            }
         };
 
         // returns the class

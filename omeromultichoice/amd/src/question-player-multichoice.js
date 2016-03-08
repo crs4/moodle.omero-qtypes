@@ -70,13 +70,12 @@ define([
                 if (!config.correction_mode) {
                     me._image_viewer_controller.showRoiShapes(config.visible_rois, true);
                 }
-                //else {
-                //    console.log("Answers: ", config.answers);
-                //    showResults(me);
-                //}
 
                 // show focus areas
                 me.showFocusAreas();
+
+                // check validity of visible ROIs
+                me._checkRoisValidity();
             });
         }
 

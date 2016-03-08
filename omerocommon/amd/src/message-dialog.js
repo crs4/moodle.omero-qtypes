@@ -1,5 +1,3 @@
-<?php
-
 // Copyright (c) 2015-2016, CRS4
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy of
@@ -18,18 +16,50 @@
 // COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
 // IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
 // CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
 /**
- * omeromultichoice question type version information.
+ * Simple wrapper of the default browser logger.
  *
  * @package    qtype
- * @subpackage omeromultichoice
+ * @subpackage omerocommon
  * @copyright  2015-2016 CRS4
  * @license    https://opensource.org/licenses/mit-license.php MIT license
  */
+define([],
+    /* jshint curly: false */
+    /* globals $ */
+    function () {
 
-defined('MOODLE_INTERNAL') || die();
+        // debug_mode
+        //var debug_mode = M.cfg.developerdebug;
 
-$plugin->component = 'qtype_omeromultichoice';
-$plugin->version   = 2016030800;        // The current plugin version (Date: YYYYMMDDXX).
-$plugin->requires  = 2015051100;        // Requires this Moodle version.
-$plugin->maturity  = MATURITY_ALPHA;
+        // defines the basic package
+        M.qtypes = M.qtypes || {};
+
+        // defines the specific package of this module
+        M.qtypes.omerocommon = M.qtypes.omerocommon || {};
+
+        // the logger instance
+        M.qtypes.omerocommon.logger = {};
+
+
+        M.qtypes.omerocommon.MessageDialog = function (id_suffix) {
+            this._id_suffix = id_suffix;
+            this._MODAL_FRAME_ID = "modal-frame" + (id_suffix ? ("-" + id_suffix) : "");
+            this._MODAL_FRAME_TEXT_ID = "modal-frame-text" + (id_suffix ? ("-" + id_suffix) : "");
+        };
+
+
+        var prototype = M.qtypes.omerocommon.MessageDialog.prototype;
+
+        prototype.showDialogMessage = function (message) {
+            $("#" + this._MODAL_FRAME_TEXT_ID).html(message);
+            $("#" + this._MODAL_FRAME_ID).modal("show");
+        };
+
+
+        prototype.hideDialogMessage = function () {
+            $("#" + this._MODAL_FRAME_ID).modal("hide");
+        };
+    }
+);

@@ -75,6 +75,21 @@ define([
             return this.parent.validate.call(this);
         };
 
+        prototype.onImageModelRoiLoaded = function (e) {
+            var message = "";
+            var removed_rois = this.parent.onImageModelRoiLoaded.call(this, e);
+            if (removed_rois.visible.length > 0)
+                message += "<br> - " + removed_rois.visible.join(", ") + " ( " +
+                    M.util.get_string('roi_visible', 'qtype_omerocommon') + " )";
+            if (removed_rois.focusable.length > 0)
+                message += "<br> - " + removed_rois.focusable.join(", ") + " ( " +
+                    M.util.get_string('roi_focusable', 'qtype_omerocommon') + " )";
+            if (message.length > 0) {
+                message = M.util.get_string('validate_editor_not_existing_rois', 'qtype_omerocommon') + message;
+                this._showDialogMessage(message);
+            }
+        };
+
         M.qtypes.omeromultichoice.QuestionEditorMultichoice.main = function (answers_section_id, fraction_options) {
 
             console.log(fraction_options);
