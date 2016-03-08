@@ -41,6 +41,7 @@ $string['add_answers'] = "Aggiungi gruppo di risposte";
 $string['answer_group'] = "Gruppo";
 $string['answer_groups'] = "Gruppi di risposte";
 $string['answer_group_of_rois'] = "Liste delle ROIs";
+$string['answer_group_removed_invalid_rois'] = "Le seguenti ROI non sono più disponibili in OMERO:";
 $string['validation_noroi_per_group'] = "Ogni gruppo di risposte deve avere almeno una ROI !!!";
 
 # marker controls

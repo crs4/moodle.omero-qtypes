@@ -219,8 +219,10 @@ class qtype_omerointeractive_edit_form extends qtype_omerocommon_edit_form
     {
         global $PAGE;
         parent::export_locale_js_strings();
+        $PAGE->requires->string_for_js('answer_group', 'qtype_omerointeractive');
         $PAGE->requires->string_for_js('answer_group_of_rois', 'qtype_omerointeractive');
         $PAGE->requires->string_for_js('validation_noroi_per_group', 'qtype_omerointeractive');
+        $PAGE->requires->string_for_js('answer_group_removed_invalid_rois', 'qtype_omerointeractive');
     }
 
 

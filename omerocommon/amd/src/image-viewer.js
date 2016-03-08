@@ -433,7 +433,9 @@ define(['jquery'], function ($) {
             this._annotations_controller.showShapes(shape_id_list, true);
             if (fixed) {
                 for (var i in shape_id_list) {
-                    this._annotations_controller.getShape(shape_id_list[i]).disableEvents();
+                    var shape = this._annotations_controller.getShape(shape_id_list[i]);
+                    if (shape)
+                        shape.disableEvents();
                 }
             }
         };
@@ -502,6 +504,35 @@ define(['jquery'], function ($) {
                 }
             }
             console.log("Visible ROI list", this._visible_roi_shape_list);
+        };
+
+
+        /**
+         * Checks whether a list of ROIs is valid,
+         * i.e., every ROI in the list exists.
+         *
+         * @param annotations_controller
+         * @param shape_id_list
+         * @returns {Array}
+         */
+        prototype.checkRois = function (shape_id_list, fix) {
+            var result = [];
+            if (shape_id_list) {
+                var list = shape_id_list.slice(0);
+                for (var i in list) {
+                    var shape = this._annotations_controller.getShape(list[i]);
+                    if (!shape) {
+                        result.push(list[i]);
+                        if (fix) {
+                            var index = shape_id_list.indexOf(list[i]);
+                            if (index !== -1) {
+                                shape_id_list.splice(index, 1);
+                            }
+                        }
+                    }
+                }
+            }
+            return result;
         };
 
         //

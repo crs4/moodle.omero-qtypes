@@ -374,7 +374,32 @@ abstract class qtype_omeromultichoice_base_renderer extends qtype_multichoice_re
         }
         $result .= html_writer::end_tag('div'); // Answer.
 
+        $result .= html_writer::tag('div', '', array(
+            'id' => $question_answer_container . '-invalidator-panel',
+            'class' => "invalidator-panel"));
+
         $result .= html_writer::end_tag('div'); // Ablock.
+
+        // support for dialog message
+        $result .= html_writer::tag('div', '
+         <div class="modal fade" id="modal-frame-' . $omero_frame_id . '" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title text-warning" id="modal-frame-label-' . $omero_frame_id . '">
+            <i class="glyphicon glyphicon-warning-sign"></i> ' . get_string('validate_warning', 'qtype_omerocommon') .
+            '</h4>
+      </div>
+      <div class="modal-body text-left">
+        <span id="modal-frame-text-' . $omero_frame_id . '"></span>
+      </div>
+      <div class="modal-footer text-center">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>');
 
         if ($qa->get_state() == question_state::$invalid) {
             $result .= html_writer::nonempty_tag('div',
@@ -392,6 +417,7 @@ abstract class qtype_omeromultichoice_base_renderer extends qtype_multichoice_re
             "viewer_model_server" => $CFG->wwwroot . "/repository/omero/viewer/viewer-model.php",
             "image_viewer_container" => self::to_unique_identifier($qa, self::IMAGE_VIEWER_CONTAINER),
             "image_navigation_locked" => (bool)$question->omeroimagelocked,
+            "qname" => $question->name,
             "question_answer_container" => $question_answer_container,
             "focus_areas_container" => self::to_unique_identifier($qa, self::FOCUS_AREAS_CONTAINER),
             "visible_rois" => empty($question->visiblerois) ? [] : explode(",", $question->visiblerois),
@@ -402,7 +428,7 @@ abstract class qtype_omeromultichoice_base_renderer extends qtype_multichoice_re
         // embed the player configuration within an hidden input element
         $player_config_element_id = self::to_unique_identifier($qa, "player-config");
         $result .= html_writer::empty_tag(
-            "input", array("id"=> $player_config_element_id,
+            "input", array("id" => $player_config_element_id,
                 "type" => "hidden",
                 "value" => json_encode($player_config))
         );
@@ -423,6 +449,12 @@ abstract class qtype_omeromultichoice_base_renderer extends qtype_multichoice_re
         init_js_modules("omeromultichoice");
         init_js_imageviewer(get_config('omero', 'omero_restendpoint'));
         $PAGE->requires->css("/question/type/omerocommon/css/question-player-base.css");
+        $PAGE->requires->css("/question/type/omerocommon/css/message-dialog.css");
+        $PAGE->requires->string_for_js('validate_question', 'qtype_omerocommon');
+        $PAGE->requires->string_for_js('validate_editor_not_valid', 'qtype_omerocommon');
+        $PAGE->requires->string_for_js('validate_editor_check_question', 'qtype_omerocommon');
+        $PAGE->requires->string_for_js('validate_editor_not_existing_rois', 'qtype_omerocommon');
+        $PAGE->requires->string_for_js('validate_player_not_existing_rois', 'qtype_omerocommon');
     }
 
 
