@@ -506,6 +506,35 @@ define(['jquery'], function ($) {
             console.log("Visible ROI list", this._visible_roi_shape_list);
         };
 
+
+        /**
+         * Checks whether a list of ROIs is valid,
+         * i.e., every ROI in the list exists.
+         *
+         * @param annotations_controller
+         * @param shape_id_list
+         * @returns {Array}
+         */
+        prototype.checkRois = function (shape_id_list, fix) {
+            var result = [];
+            if (shape_id_list) {
+                var list = shape_id_list.slice(0);
+                for (var i in list) {
+                    var shape = this._annotations_controller.getShape(list[i]);
+                    if (!shape) {
+                        result.push(list[i]);
+                        if (fix) {
+                            var index = shape_id_list.indexOf(list[i]);
+                            if (index !== -1) {
+                                shape_id_list.splice(index, 1);
+                            }
+                        }
+                    }
+                }
+            }
+            return result;
+        };
+
         //
         console.log("Initialized qtype_omerocommon/image-viewer");
 
