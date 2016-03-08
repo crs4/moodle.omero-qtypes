@@ -428,7 +428,7 @@ abstract class qtype_omeromultichoice_base_renderer extends qtype_multichoice_re
         // embed the player configuration within an hidden input element
         $player_config_element_id = self::to_unique_identifier($qa, "player-config");
         $result .= html_writer::empty_tag(
-            "input", array("id"=> $player_config_element_id,
+            "input", array("id" => $player_config_element_id,
                 "type" => "hidden",
                 "value" => json_encode($player_config))
         );
