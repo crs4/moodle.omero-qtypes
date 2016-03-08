@@ -433,7 +433,9 @@ define(['jquery'], function ($) {
             this._annotations_controller.showShapes(shape_id_list, true);
             if (fixed) {
                 for (var i in shape_id_list) {
-                    this._annotations_controller.getShape(shape_id_list[i]).disableEvents();
+                    var shape = this._annotations_controller.getShape(shape_id_list[i]);
+                    if (shape)
+                        shape.disableEvents();
                 }
             }
         };
