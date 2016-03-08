@@ -169,7 +169,7 @@ define([
             try {
                 for (var i in this._answers) {
                     var answer = this._answers[i];
-                    if (answer && answer._roi_id_list === 0) {
+                    if (answer && answer.getROIsWithinGroup().length === 0) {
                         errors.push(M.util.get_string('validation_noroi_per_group', 'qtype_omerointeractive'));
                         break;
                     }
