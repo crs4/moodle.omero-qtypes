@@ -24,7 +24,7 @@ div[id*=question-container]{
 }
 
 .image-viewer-with-controls-container {
-    width: 650px;
+    /* width: 650px; */
     background: transparent;
     border: 1px solid transparent;
 }
