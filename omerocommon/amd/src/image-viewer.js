@@ -71,6 +71,7 @@ define(['jquery'], function ($) {
             this._viewer_model_server = viewer_model_server;
             this._listeners = [];
             this._lock_navigation = false;
+            this._visible_roi_shape_ids = [];
 
             // default viewer configuration
             this._viewer_config = {
@@ -327,11 +328,12 @@ define(['jquery'], function ($) {
 
         prototype.drawMarker = function (marker, marker_config) {
             // TODO: replace with the more general drawShape
-            if (marker.type === "circle")
+            if (marker.type === "circle") {
                 this._annotations_controller.drawCircle(
                     marker.shape_id, marker.center_x, marker.center_y,
                     marker.radius, undefined, marker_config, true);
-            else console.warn("Marker not supported yet", marker);
+                this._visible_roi_shape_ids.push(String(marker.shape_id));
+            } else console.warn("Marker not supported yet", marker);
         };
 
         /**
@@ -438,6 +440,10 @@ define(['jquery'], function ($) {
                         shape.disableEvents();
                 }
             }
+            for (var j in shape_id_list) {
+                if (this._visible_roi_shape_ids.indexOf(String(shape_id_list[j])) === -1)
+                    this._visible_roi_shape_ids.push(String(shape_id_list[j]));
+            }
         };
 
         /**
@@ -446,6 +452,11 @@ define(['jquery'], function ($) {
          */
         prototype.hideRoiShapes = function (shape_id_list) {
             this._annotations_controller.hideShapes(shape_id_list, true);
+            for (var j in shape_id_list) {
+                var index = this._visible_roi_shape_ids.indexOf(String(shape_id_list[j]));
+                if (index !== -1)
+                    this._visible_roi_shape_ids.splice(index, 1);
+            }
         };
 
         /**
