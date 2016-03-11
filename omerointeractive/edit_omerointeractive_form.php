@@ -163,8 +163,8 @@ class qtype_omerointeractive_edit_form extends qtype_omerocommon_edit_form
             '</label>
                               <input id="omero-image-view-lock" name="omero-image-view-lock" data-toggle="toggle"
                                      type="checkbox" data-onstyle="success" data-offstyle="default"
-                                     data-on="'. get_string('image_viewer_locked_student_navigation','qtype_omerocommon') .'"
-                                     data-off="'. get_string('image_viewer_lock_student_navigation', 'qtype_omerocommon') .'">
+                                     data-on="' . get_string('image_viewer_locked_student_navigation', 'qtype_omerocommon') . '"
+                                     data-off="' . get_string('image_viewer_lock_student_navigation', 'qtype_omerocommon') . '">
                           </div>
                         </div>
         ');
@@ -188,8 +188,8 @@ class qtype_omerointeractive_edit_form extends qtype_omerocommon_edit_form
                       <button id="' . self::ADD_ROI_TO_GROUP . '"
                               type="button" class="btn btn-info dropdown-toggle disabled"
                               data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">' .
-                                get_string('answer_group', 'qtype_omerointeractive') .
-                            ' <span class="caret"></span>
+            get_string('answer_group', 'qtype_omerointeractive') .
+            ' <span class="caret"></span>
                       </button>
                       <ul id="' . self::ADD_ROI_GROUP_LIST_OPTIONS . '" class="dropdown-menu option input-small " role="menu">
                         <li><a href="#">0</a></li>
