@@ -168,23 +168,6 @@ define([
             }
 
             me._answers_counter_element = document.forms[0].elements.noanswers;//["noanswers"];
-            if (!me._answers_counter_element) {
-                counter = document.createElement("input");
-                counter.setAttribute("type", "hidden");
-                counter.setAttribute("name", "noanswers");
-                counter.setAttribute("value", "0");
-                document.forms[0].appendElement(counter);
-                me._answers_counter_element = counter;
-
-            } else {
-                counter = me._answers_counter_element.getAttribute("value");
-                if (counter) {
-                    counter = parseInt(counter);
-                    for (i = 0; i < counter; i++) {
-                        me.addAnswer(true, i);
-                    }
-                }
-            }
 
             me._image_locked_element = $("[name^=omeroimagelocked]");
             me._image_locked = me._image_locked_element.val() == "1";
@@ -213,10 +196,6 @@ define([
             );
 
 
-            // register the frame when loaded
-            document.addEventListener("frameLoaded", function (e) {
-                me.onViewerFrameLoaded(e.detail.frame_id, visible_roi_list, e.detail);
-            }, true);
 
             // procedure for pre-processing and validating data to submit
             var submit_function = function () {
@@ -508,31 +487,6 @@ define([
         };
 
 
-        /**
-         * Updates the reference to the frame containing OmeroImageViewer
-         *
-         * @param frame_id
-         * @returns {Element|*|omero_viewer_frame}
-         * @private
-         */
-        prototype.onViewerFrameLoaded = function (frame_id, visible_roi_list, frame_details) {
-            var me = this;
-            var omero_viewer_frame = document.getElementById(frame_id);
-            if (!omero_viewer_frame) {
-                throw ("Frame " + frame_id + " not found!!!");
-            }
-            // Registers a reference to the frame
-            me._omero_viewer_frame = omero_viewer_frame;
-
-            if (frame_details === undefined) {
-                // Register the main listener for the 'omeroViewerInitialized' event
-                me._omero_viewer_frame.contentWindow.addEventListener("omeroViewerInitialized", function (e) {
-                    me.onViewerFrameInitialized(me, frame_id, e.detail, visible_roi_list);
-                    console.log("OmeroImageViewer init loaded!!!");
-                }, true);
-            } else {
-                me.onViewerFrameInitialized(me, frame_id, frame_details, visible_roi_list);
-            }
 
             // Log message (for debugging)
             console.log("Frame Object Registered!!!");
@@ -594,27 +548,6 @@ define([
             console.log("Updated ROI table!!!");
 
             return removed_rois;
-        };
-
-        /**
-         * Register listeners for events triggered
-         * by the frame identified by 'frame_id'
-         *
-         * @param frame_id
-         * @private
-         */
-        prototype._registerFrameWindowEventHandlers = function (me, frame_id) {
-            var omero_viewer_frame = document.getElementById(frame_id);
-            if (!omero_viewer_frame) {
-                throw new EventException("Frame " + frame_id + " not found!!!");
-            }
-
-            // Registers a reference to the frame
-            me._omero_viewer_frame = omero_viewer_frame;
-
-            // Register a reference to the Omero Repository Controller
-            var frameWindow = me._omero_viewer_frame.contentWindow;
-            me._image_viewer_controller = frameWindow.omero_repository_image_viewer_controller;
         };
 
 
