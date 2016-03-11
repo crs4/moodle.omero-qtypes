@@ -269,11 +269,15 @@ abstract class qtype_omerocommon_edit_form extends qtype_multichoice_edit_form
         $mform->addElement('header', 'omeroimageheader',
             get_string('omero_image_viewer', 'qtype_omerocommon'));
         // file picker
-        $mform->addElement('omerofilepicker', 'omeroimageurl', ' ', null,
-            array('maxbytes' => 2048, 'accepted_types' => array('*'),
+        $picker = $mform->addElement('omerofilepicker', 'omeroimageurl', ' ', null,
+            array('accepted_types' => array('*'),
                 'return_types' => array(FILE_EXTERNAL),
-                'omero_image_server' => get_config('omero', 'omero_restendpoint'))
+                'omero_image_server' => get_config('omero', 'omero_restendpoint')
+            )
         );
+
+        $this->image_selector_id = $picker->getSelectedImageInputId();
+        $this->image_info_container_id = $picker->getFileInfoContainerId();
 
         // build the ROI table inspector
         $this->define_roi_table_inspector();
