@@ -124,13 +124,22 @@ define([
         /**
          * Initializes this questionEditor controller
          */
-        prototype.initialize = function (answers_section_id, fraction_options) {
+        prototype.initialize = function (config) {
             var me = this;
             var i, counter;
 
+            // register configuration
+            me._config = config;
+
+            me._image_server = config.image_server;
+            me._viewer_model_server = config.viewer_model_server;
+
             // the ID of the answer serction
-            me._answers_section_id = answers_section_id;
-            me._fraction_options = fraction_options;
+            me._answers_section_id = config.answer_header;
+            me._fraction_options = config.fraction_options;
+
+            me._image_selector = $("#" + config.image_selector_id);
+            me._image_info_container = $("#" + config.image_info_container_id);
             me._show_roishape_column_group = false;
 
             me._answers = [];

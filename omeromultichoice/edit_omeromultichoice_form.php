@@ -65,16 +65,28 @@ class qtype_omeromultichoice_edit_form extends qtype_omerocommon_edit_form
         global $CFG, $PAGE;
         parent::definition();
 
+        $mform = $this->_form;
+        $mform->addElement("hidden", self::EDITOR_INFO_ELEMENT_NAME);
+        $mform->setType(self::EDITOR_INFO_ELEMENT_NAME, PARAM_RAW);
+        $mform->setDefault(self::EDITOR_INFO_ELEMENT_NAME, json_encode(
+                array(
+                    "image_server" => get_config('omero', 'omero_restendpoint'),
+                    "viewer_model_server" => $CFG->wwwroot . "/repository/omero/viewer/viewer-model.php",
+                    "image_info_container_id" => $this->image_info_container_id,
+                    "image_selector_id" => $this->image_selector_id,
+                    "answer_header" => "id_answerhdr",
+                    "fraction_options" => question_bank::fraction_options_full()
+                )
+            )
+        );
+
         //--------------------------------------------------------------------------------------------
         //FIXME: just for debugging
         $PAGE->requires->js(new moodle_url("$CFG->wwwroot/repository/omero/viewer/viewer-model.js"));
         //--------------------------------------------------------------------------------------------
 
         $PAGE->requires->js_call_amd("qtype_omeromultichoice/question-editor-multichoice", "main",
-            array(
-                "id_answerhdr",
-                question_bank::fraction_options_full()
-            )
+            array(self::EDITOR_INFO_ELEMENT_NAME)
         );
     }
 

@@ -69,6 +69,23 @@ class qtype_omerointeractive_edit_form extends qtype_omerocommon_edit_form
         global $CFG, $PAGE;
         parent::definition();
 
+        $mform = $this->_form;
+        $mform->addElement("hidden", self::EDITOR_INFO_ELEMENT_NAME);
+        $mform->setType(self::EDITOR_INFO_ELEMENT_NAME, PARAM_RAW);
+        $mform->setDefault(self::EDITOR_INFO_ELEMENT_NAME, json_encode(
+                array(
+                    "image_server" => get_config('omero', 'omero_restendpoint'),
+                    "viewer_model_server" => $CFG->wwwroot . "/repository/omero/viewer/viewer-model.php",
+                    "image_info_container_id" => $this->image_info_container_id,
+                    "image_selector_id" => $this->image_selector_id,
+                    "answer_header" => "id_answergroupsheader",
+                    "fraction_options" => question_bank::fraction_options_full(),
+                    "add_to_group_element_id" => self::ADD_ROI_TO_GROUP,
+                    "add_to_group_list_element_id" => self::ADD_ROI_GROUP_LIST_OPTIONS
+                )
+            )
+        );
+
         //--------------------------------------------------------------------------------------------
         //FIXME: just for debugging
         $PAGE->requires->js(new moodle_url("$CFG->wwwroot/repository/omero/viewer/viewer-model.js"));
@@ -76,11 +93,7 @@ class qtype_omerointeractive_edit_form extends qtype_omerocommon_edit_form
 
         global $PAGE;
         $PAGE->requires->js_call_amd("qtype_omerointeractive/question-editor-interactive", "main",
-            array(
-                "id_answergroupsheader",
-                question_bank::fraction_options_full(),
-                self::ADD_ROI_TO_GROUP, self::ADD_ROI_GROUP_LIST_OPTIONS
-            )
+            array(self::EDITOR_INFO_ELEMENT_NAME)
         );
     }
 
