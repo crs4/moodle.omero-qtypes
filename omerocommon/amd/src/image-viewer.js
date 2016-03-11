@@ -240,7 +240,7 @@ define(['jquery'], function ($) {
                         var marker_ids = me.getMarkerIds();
                         var shapes = me._annotations_controller.getShapesJSON().filter(
                             function (value) {
-                                return (marker_ids.indexOf(value.shape_id) !== -1)
+                                return (marker_ids && marker_ids.indexOf(value.shape_id) !== -1)
                                     || (me._visible_roi_shape_ids.indexOf(String(value.shape_id)) !== -1);
                             }
                         );
@@ -258,7 +258,10 @@ define(['jquery'], function ($) {
 
                         // redraw shapes
                         me._annotations_controller.drawShapesFromJSON(shapes);
-                    });
+                        if (marker_ids.length > 0)
+                            me._annotations_controller.shapesToMarkers(marker_ids);
+                    }
+                );
             });
         };
 
