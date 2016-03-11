@@ -328,7 +328,9 @@ define(['jquery'], function ($) {
         };
 
         prototype.getMarkerIds = function () {
-            return this._annotations_controller.markers_id;
+            if (this._annotations_controller.getMarkersID)
+                return this._annotations_controller.getMarkersID();
+            else return [];
         };
 
         prototype.getMarkers = function () {
