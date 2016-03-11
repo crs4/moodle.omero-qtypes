@@ -195,6 +195,33 @@ define([
                 }
             );
 
+            // register image change listener
+            me._image_selector.on("change", function (event) {
+                var image_url = $(event.target).val();
+                if (image_url) {
+                    var image_id = image_url.replace("/omero-image-repository/", "");
+                    me.onChangeImageSelection(image_url, image_id);
+
+                    // Initialize answers
+                    if (!me._answers_counter_element) {
+                        counter = document.createElement("input");
+                        counter.setAttribute("type", "hidden");
+                        counter.setAttribute("name", "noanswers");
+                        counter.setAttribute("value", "0");
+                        document.forms[0].appendElement(counter);
+                        me._answers_counter_element = counter;
+
+                    } else {
+                        counter = me._answers_counter_element.getAttribute("value");
+                        if (counter) {
+                            counter = parseInt(counter);
+                            for (i = 0; i < counter; i++) {
+                                me.addAnswer(true, i);
+                            }
+                        }
+                    }
+                }
+            });
 
 
             // procedure for pre-processing and validating data to submit
@@ -487,51 +514,45 @@ define([
         };
 
 
+        prototype.onChangeImageSelection = function (image_url, image_id) {
+            console.log("Image changed: ", "url=" + image_url, ", ID=" + image_id);
 
-            // Log message (for debugging)
-            console.log("Frame Object Registered!!!");
+            var me = this;
+            // build the ImaveViewer controller
+            var viewer_ctrl = new ImageViewer(
+                image_id, undefined,
+                me._image_server,
+                "image-viewer-container", "annotations_canvas",
+                me._viewer_model_server);
+            me._image_viewer_controller = viewer_ctrl;
 
-            // enable chaining
-            return me._omero_viewer_frame;
-        };
+            $("#image-viewer-container").html("");
+            $("#annotations_canvas").html("");
 
-
-        /**
-         *
-         * @param frame_id
-         * @param frame_details
-         * @param visible_roi_list
-         */
-        prototype.onViewerFrameInitialized = function (me, frame_id, image_details, visible_roi_list) {
-            me.current_image_info = image_details;
-            me._registerFrameWindowEventHandlers(me, frame_id);
-            me._image_viewer_controller.getModel().addEventListener(me);
-
-            $("#" + frame_id + "-toolbar").removeClass("hidden");
-
-            me._image_viewer_controller.onViewerInitialized(function () {
+            viewer_ctrl.open(true, function (data) {
+                me.onImageModelRoiLoaded(data);
                 me._initImagePropertiesControls();
                 me._image_viewer_controller.updateViewFromProperties(me._image_properties);
+                $("#omero-image-viewer-toolbar").removeClass("hidden");
             });
-
-            console.log("OnFrameInitialized", me, frame_id, image_details, visible_roi_list);
         };
 
 
-        prototype.onImageModelRoiLoaded = function (e) {
+
+        prototype.onImageModelRoiLoaded = function (data) {
 
             // removed_rois
             var removed_rois = {};
 
             // validate the list of visible ROIs
-            removed_rois.visible = this._image_viewer_controller.checkRois( this._visible_roi_list, true);
-            console.log("Validated ROI Shape List",  this._visible_roi_list);
+            removed_rois.visible = this._image_viewer_controller.checkRois(this._visible_roi_list, true);
+            console.log("Validated ROI Shape List", this._visible_roi_list);
 
             // validate the list of focusable ROIs
-            removed_rois.focusable = this._image_viewer_controller.checkRois( this._focusable_roi_list, true);
-            console.log("Validated Focusable ROI List",  this._focusable_roi_list);
+            removed_rois.focusable = this._image_viewer_controller.checkRois(this._focusable_roi_list, true);
+            console.log("Validated Focusable ROI List", this._focusable_roi_list);
 
-            var roi_list = M.qtypes.omerocommon.RoiShapeModel.toRoiShapeModel(e.detail,
+            var roi_list = M.qtypes.omerocommon.RoiShapeModel.toRoiShapeModel(data,
                 this._visible_roi_list, this._focusable_roi_list);
             console.log("Loaded ROI Shapes Models", roi_list);
 
