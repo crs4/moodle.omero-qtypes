@@ -34,12 +34,18 @@ require_once($CFG->dirroot . '/question/type/omerocommon/question.php');
 require_once($CFG->dirroot . '/question/type/omerocommon/questiontype_base.php');
 require_once($CFG->dirroot . '/question/type/multichoice/edit_multichoice_form.php');
 require_once($CFG->dirroot . '/question/type/omerocommon/js/modules.php');
+require_once($CFG->dirroot . '/question/type/omerocommon/js/viewer_config.php');
 
 /**
  * Base question editor form for Omero questions (see qtype_omeromultichoice and qtype_omerointeractive).
  */
 abstract class qtype_omerocommon_edit_form extends qtype_multichoice_edit_form
 {
+    const EDITOR_INFO_ELEMENT_NAME = "id_editor_info";
+
+    protected $image_info_container_id;
+    protected $image_selector_id;
+
     private $localized_strings = array(
         "questiontext", "generalfeedback",
         "correctfeedback", "partiallycorrectfeedback", "incorrectfeedback"
@@ -102,6 +108,7 @@ abstract class qtype_omerocommon_edit_form extends qtype_multichoice_edit_form
         $PAGE->requires->css(new moodle_url("$CFG->wwwroot/question/type/omerocommon/css/common-question-editor.css"));
         // Javascript
         init_js_modules("omerocommon");
+        init_js_imageviewer(get_config('omero', 'omero_restendpoint'));
     }
 
 
