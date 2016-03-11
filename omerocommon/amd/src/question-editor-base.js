@@ -33,10 +33,12 @@ define([
         'qtype_omerocommon/multilanguage-attoeditor',
         'qtype_omerocommon/roi-shape-model',
         'qtype_omerocommon/roi-shape-table',
+        'qtype_omerocommon/image-viewer',
+        'qtype_omerocommon/message-dialog',
     ],
     /* jshint curly: false */
     /* globals console, jQuery, EventException */
-    function ($/*, FormUtils*/) {
+    function ($, FormUtils, AnswerBase, Mle, Mlae, Rsm, Rst, ImageViewer, MessageDialog) {
 
         // override jQuery definition
         $ = jQuery;
