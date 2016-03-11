@@ -36,15 +36,15 @@ define(['jquery'], function ($) {
          * @param listeners
          * @param callback
          */
-        function notifyListeners(listeners, callback) {
+        function notifyListeners(listeners, callback, data) {
             for (var i in listeners) {
                 var listenerCallback = listeners[i];
                 if (listenerCallback) {
-                    listenerCallback();
+                    listenerCallback(data);
                 }
             }
             if (callback)
-                callback();
+                callback(data);
         }
 
         // defines the basic package
@@ -227,7 +227,7 @@ define(['jquery'], function ($) {
                 me._annotations_controller.hideShapes(undefined, false);
 
                 // notify listeners
-                notifyListeners(me._listeners, callback);
+                notifyListeners(me._listeners, callback, data);
 
                 // hide loading dialog
                 me._waiting_dialog.hide();
