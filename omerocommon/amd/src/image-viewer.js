@@ -235,7 +235,7 @@ define(['jquery'], function ($) {
 
                 // handle resize event
                 me._viewer_controller.viewer.addHandler("resize",
-                    function (event) {
+                    function () {
 
                         // retrieve the list of shapes to display
                         var marker_ids = me.getMarkerIds();

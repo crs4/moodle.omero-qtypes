@@ -37,8 +37,8 @@ define([
         'qtype_omerocommon/message-dialog',
     ],
     /* jshint curly: false */
-    /* globals console, jQuery, EventException */
-    function ($, FormUtils, AnswerBase, Mle, Mlae, Rsm, Rst, ImageViewer, MessageDialog) {
+    /* globals console, jQuery */
+    function ($, FormUtils, AnswerBase, Mle, Mlae, Rsm, Rst, ImageViewer) {
 
         // override jQuery definition
         $ = jQuery;
@@ -144,11 +144,6 @@ define([
 
             me._answers = [];
             me._answer_ids = {};
-
-            // TODO: initialize me!!!!
-            //var frame_id = "omero-image-viewer";
-            var visible_roi_list = [];
-
 
             initializeSupportedLanguages();
 
