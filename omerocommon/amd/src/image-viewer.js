@@ -59,7 +59,8 @@ define(['jquery'], function ($) {
          * @constructor
          */
         M.qtypes.omerocommon.ImageViewer = function (image_id, image_properties,
-                                                     image_server, image_viewer_container_id,
+                                                     image_server,
+                                                     image_viewer_container_id,
                                                      image_viewer_annotations_canvas_id,
                                                      viewer_model_server,
                                                      viewer_config) {
