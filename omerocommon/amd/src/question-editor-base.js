@@ -526,6 +526,10 @@ define([
                 '</div>';
             me._image_info_container.html(image_info_container);
 
+            // clean the existing image-viewer controller
+            if(me._image_viewer_controller)
+                delete me._image_viewer_controller;
+
             // build the ImaveViewer controller
             var viewer_ctrl = new ImageViewer(
                 image_id, undefined,
