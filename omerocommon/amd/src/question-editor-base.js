@@ -513,6 +513,19 @@ define([
             console.log("Image changed: ", "url=" + image_url, ", ID=" + image_id);
 
             var me = this;
+
+            // update the file-info section with the HTML elements needed to host the viewer
+            var image_info_container = '<div id="' + ("graphics_container") +
+                '" class="image-viewer-container" style="position: relative; height: 400px" >' +
+                '<div id="' + ("image-viewer-container") + '" ' +
+                'style="position: absolute; width: 100%; height: 400px; margin: auto; z-index: 0;"></div>' +
+                '<canvas id="' + ('annotations_canvas') + '" ' +
+                'style="position: absolute; width: 100%; height: 400px; margin: auto; z-index: 1;"></canvas>' +
+                '<div id="' + ("image-viewer-container") + '-loading-dialog" ' +
+                'class="image-viewer-loading-dialog" style="position: absolute; width: 100%; height: 400px;"></div>' +
+                '</div>';
+            me._image_info_container.html(image_info_container);
+
             // build the ImaveViewer controller
             var viewer_ctrl = new ImageViewer(
                 image_id, undefined,
@@ -521,9 +534,7 @@ define([
                 me._viewer_model_server);
             me._image_viewer_controller = viewer_ctrl;
 
-            $("#image-viewer-container").html("");
-            $("#annotations_canvas").html("");
-
+            // load and show image and its related ROIs
             viewer_ctrl.open(true, function (data) {
                 me.onImageModelRoiLoaded(data);
                 me._initImagePropertiesControls();
@@ -531,7 +542,6 @@ define([
                 $("#omero-image-viewer-toolbar").removeClass("hidden");
             });
         };
-
 
 
         prototype.onImageModelRoiLoaded = function (data) {
