@@ -529,7 +529,7 @@ abstract class qtype_omerointeractive_base_renderer extends qtype_multichoice_re
             "image_server" => $OMERO_SERVER,
             "image_viewer_container" => self::to_unique_identifier($qa, self::IMAGE_VIEWER_CONTAINER),
             "image_navigation_locked" => (bool)$question->omeroimagelocked,
-            "viewer_model_server" => $CFG->wwwroot . "/repository/omero/viewer/viewer-model.php",
+            "viewer_model_server" => $CFG->omero_image_server,
             "qname" => $question->name,
             "question_answer_container" => $question_answer_container,
             "enable_add_makers_ctrl_id" => self::to_unique_identifier($qa, self::IMAGE_ADD_MARKER_CTRL),

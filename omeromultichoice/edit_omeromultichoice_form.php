@@ -71,7 +71,7 @@ class qtype_omeromultichoice_edit_form extends qtype_omerocommon_edit_form
         $mform->setDefault(self::EDITOR_INFO_ELEMENT_NAME, json_encode(
                 array(
                     "image_server" => get_config('omero', 'omero_restendpoint'),
-                    "viewer_model_server" => $CFG->wwwroot . "/repository/omero/viewer/viewer-model.php",
+                    "viewer_model_server" => $CFG->omero_image_server,
                     "image_info_container_id" => $this->image_info_container_id,
                     "image_selector_id" => $this->image_selector_id,
                     "answer_header" => "id_answerhdr",
