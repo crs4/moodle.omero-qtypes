@@ -80,11 +80,6 @@ class qtype_omeromultichoice_edit_form extends qtype_omerocommon_edit_form
             )
         );
 
-        //--------------------------------------------------------------------------------------------
-        //FIXME: just for debugging
-        $PAGE->requires->js(new moodle_url("$CFG->wwwroot/repository/omero/viewer/viewer-model.js"));
-        //--------------------------------------------------------------------------------------------
-
         $PAGE->requires->js_call_amd("qtype_omeromultichoice/question-editor-multichoice", "main",
             array(self::EDITOR_INFO_ELEMENT_NAME)
         );
