@@ -28,7 +28,10 @@
 /* jshint curly: false */
 /* globals console, ViewerController, ImageModelManager, TransformMatrixHelper, TransformMatrixHelper */
 /* globals AnnotationsEventsController, AnnotationsController */
-define(['jquery'], function ($) {
+define([
+    'jquery',
+    'qtype_omerocommon/image-viewer-model'
+], function ($, ImageModelManager) {
 
         /**
          * Utility class

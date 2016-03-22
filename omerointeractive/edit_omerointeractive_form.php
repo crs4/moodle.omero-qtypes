@@ -32,9 +32,6 @@ defined('MOODLE_INTERNAL') || die();
 
 require_once($CFG->dirroot . '/question/type/omerocommon/edit_omerocommon_form.php');
 
-// TODO: just for debug
-//require_once($CFG->dirroot . '/question/type/omeromultichoice/edit_omeromultichoice_form.php');
-
 /**
  * omerointeractive question editing form definition.
  *
@@ -75,7 +72,7 @@ class qtype_omerointeractive_edit_form extends qtype_omerocommon_edit_form
         $mform->setDefault(self::EDITOR_INFO_ELEMENT_NAME, json_encode(
                 array(
                     "image_server" => get_config('omero', 'omero_restendpoint'),
-                    "viewer_model_server" => $CFG->wwwroot . "/repository/omero/viewer/viewer-model.php",
+                    "viewer_model_server" => $CFG->omero_image_server,
                     "image_info_container_id" => $this->image_info_container_id,
                     "image_selector_id" => $this->image_selector_id,
                     "answer_header" => "id_answergroupsheader",
@@ -85,11 +82,6 @@ class qtype_omerointeractive_edit_form extends qtype_omerocommon_edit_form
                 )
             )
         );
-
-        //--------------------------------------------------------------------------------------------
-        //FIXME: just for debugging
-        $PAGE->requires->js(new moodle_url("$CFG->wwwroot/repository/omero/viewer/viewer-model.js"));
-        //--------------------------------------------------------------------------------------------
 
         global $PAGE;
         $PAGE->requires->js_call_amd("qtype_omerointeractive/question-editor-interactive", "main",

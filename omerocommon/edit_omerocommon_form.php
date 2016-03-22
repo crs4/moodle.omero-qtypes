@@ -34,7 +34,7 @@ require_once($CFG->dirroot . '/question/type/omerocommon/question.php');
 require_once($CFG->dirroot . '/question/type/omerocommon/questiontype_base.php');
 require_once($CFG->dirroot . '/question/type/multichoice/edit_multichoice_form.php');
 require_once($CFG->dirroot . '/question/type/omerocommon/js/modules.php');
-require_once($CFG->dirroot . '/question/type/omerocommon/js/viewer_config.php');
+require_once($CFG->dirroot . '/question/type/omerocommon/viewer/viewer_config.php');
 
 /**
  * Base question editor form for Omero questions (see qtype_omeromultichoice and qtype_omerointeractive).
