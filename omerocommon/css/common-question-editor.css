@@ -114,3 +114,8 @@ body#page-question-type-omerointeractive img.iconsmall{
 body#page-question-type-omeromultichoice img.iconsmall{
     padding: 0;
 }
+
+
+div.image-viewer-loading-dialog{
+    background: rgba(255, 255, 255, 0.4) url('../img/loading.gif') no-repeat center;
+}

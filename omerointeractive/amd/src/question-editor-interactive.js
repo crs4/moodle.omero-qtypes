@@ -110,15 +110,14 @@ define([
         /**
          * Performs the initialization
          */
-        prototype.initialize = function (answers_section_id, fraction_options,
-                                         add_to_group_element_id, add_to_group_list_element_id) {
-
+        prototype.initialize = function (config) {
             this._show_roishape_column_group = true;
-            this._add_to_group_element_id = add_to_group_element_id;
-            this._add_to_group_element = $("#" + add_to_group_element_id);
-            this._add_to_group_list_element_id = add_to_group_list_element_id;
-            this._add_to_group_list_element = $("#" + add_to_group_list_element_id);
-            this.parent.initialize.call(this, answers_section_id, fraction_options);
+            this._add_to_group_element_id = config.add_to_group_element_id;
+            this._add_to_group_element = $("#" + config.add_to_group_element_id);
+            this._add_to_group_list_element_id = config.add_to_group_list_element_id;
+            this._add_to_group_list_element = $("#" + config.add_to_group_list_element_id);
+
+            this.parent.initialize.call(this, config);
             this._add_to_group_list_element.dropdown();
         };
 
@@ -215,18 +214,16 @@ define([
         };
 
 
-        M.qtypes.omerointeractive.QuestionEditorInteractive.main =
-            function (answers_section_id, fraction_options,
-                      add_to_group_element_id, add_to_group_list_element_id) {
+        M.qtypes.omerointeractive.QuestionEditorInteractive.main = function (config_element_id) {
+                // extract configuration
+                var c = document.getElementsByName(config_element_id)[0];
+                var config = JSON.parse(c.value);
+                console.log("QuestionEditorInteractive configuration", config);
 
-                console.log(fraction_options);
                 $(document).ready(
                     function () {
                         var instance = new M.qtypes.omerointeractive.QuestionEditorInteractive();
-                        instance.initialize(
-                            answers_section_id, fraction_options,
-                            add_to_group_element_id, add_to_group_list_element_id
-                        );
+                        instance.initialize(config);
                         if (M.cfg.developerdebug)
                             window.qei = instance;
                     }

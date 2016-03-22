@@ -33,10 +33,12 @@ define([
         'qtype_omerocommon/multilanguage-attoeditor',
         'qtype_omerocommon/roi-shape-model',
         'qtype_omerocommon/roi-shape-table',
+        'qtype_omerocommon/image-viewer',
+        'qtype_omerocommon/message-dialog',
     ],
     /* jshint curly: false */
-    /* globals console, jQuery, EventException */
-    function ($/*, FormUtils*/) {
+    /* globals console, jQuery */
+    function ($, FormUtils, AnswerBase, Mle, Mlae, Rsm, Rst, ImageViewer) {
 
         // override jQuery definition
         $ = jQuery;
@@ -122,22 +124,26 @@ define([
         /**
          * Initializes this questionEditor controller
          */
-        prototype.initialize = function (answers_section_id, fraction_options) {
+        prototype.initialize = function (config) {
             var me = this;
             var i, counter;
 
+            // register configuration
+            me._config = config;
+
+            me._image_server = config.image_server;
+            me._viewer_model_server = config.viewer_model_server;
+
             // the ID of the answer serction
-            me._answers_section_id = answers_section_id;
-            me._fraction_options = fraction_options;
+            me._answers_section_id = config.answer_header;
+            me._fraction_options = config.fraction_options;
+
+            me._image_selector = $("#" + config.image_selector_id);
+            me._image_info_container = $("#" + config.image_info_container_id);
             me._show_roishape_column_group = false;
 
             me._answers = [];
             me._answer_ids = {};
-
-            // TODO: initialize me!!!!
-            //var frame_id = "omero-image-viewer";
-            var visible_roi_list = [];
-
 
             initializeSupportedLanguages();
 
@@ -157,23 +163,6 @@ define([
             }
 
             me._answers_counter_element = document.forms[0].elements.noanswers;//["noanswers"];
-            if (!me._answers_counter_element) {
-                counter = document.createElement("input");
-                counter.setAttribute("type", "hidden");
-                counter.setAttribute("name", "noanswers");
-                counter.setAttribute("value", "0");
-                document.forms[0].appendElement(counter);
-                me._answers_counter_element = counter;
-
-            } else {
-                counter = me._answers_counter_element.getAttribute("value");
-                if (counter) {
-                    counter = parseInt(counter);
-                    for (i = 0; i < counter; i++) {
-                        me.addAnswer(true, i);
-                    }
-                }
-            }
 
             me._image_locked_element = $("[name^=omeroimagelocked]");
             me._image_locked = me._image_locked_element.val() == "1";
@@ -201,11 +190,34 @@ define([
                 }
             );
 
+            // register image change listener
+            me._image_selector.on("change", function (event) {
+                var image_url = $(event.target).val();
+                if (image_url) {
+                    var image_id = image_url.replace("/omero-image-repository/", "");
+                    me.onChangeImageSelection(image_url, image_id);
 
-            // register the frame when loaded
-            document.addEventListener("frameLoaded", function (e) {
-                me.onViewerFrameLoaded(e.detail.frame_id, visible_roi_list, e.detail);
-            }, true);
+                    // Initialize answers
+                    if (!me._answers_counter_element) {
+                        counter = document.createElement("input");
+                        counter.setAttribute("type", "hidden");
+                        counter.setAttribute("name", "noanswers");
+                        counter.setAttribute("value", "0");
+                        document.forms[0].appendElement(counter);
+                        me._answers_counter_element = counter;
+
+                    } else {
+                        counter = me._answers_counter_element.getAttribute("value");
+                        if (counter) {
+                            counter = parseInt(counter);
+                            for (i = 0; i < counter; i++) {
+                                me.addAnswer(true, i);
+                            }
+                        }
+                    }
+                }
+            });
+
 
             // procedure for pre-processing and validating data to submit
             var submit_function = function () {
@@ -497,76 +509,59 @@ define([
         };
 
 
-        /**
-         * Updates the reference to the frame containing OmeroImageViewer
-         *
-         * @param frame_id
-         * @returns {Element|*|omero_viewer_frame}
-         * @private
-         */
-        prototype.onViewerFrameLoaded = function (frame_id, visible_roi_list, frame_details) {
+        prototype.onChangeImageSelection = function (image_url, image_id) {
+            console.log("Image changed: ", "url=" + image_url, ", ID=" + image_id);
+
             var me = this;
-            var omero_viewer_frame = document.getElementById(frame_id);
-            if (!omero_viewer_frame) {
-                throw ("Frame " + frame_id + " not found!!!");
-            }
-            // Registers a reference to the frame
-            me._omero_viewer_frame = omero_viewer_frame;
 
-            if (frame_details === undefined) {
-                // Register the main listener for the 'omeroViewerInitialized' event
-                me._omero_viewer_frame.contentWindow.addEventListener("omeroViewerInitialized", function (e) {
-                    me.onViewerFrameInitialized(me, frame_id, e.detail, visible_roi_list);
-                    console.log("OmeroImageViewer init loaded!!!");
-                }, true);
-            } else {
-                me.onViewerFrameInitialized(me, frame_id, frame_details, visible_roi_list);
-            }
+            // update the file-info section with the HTML elements needed to host the viewer
+            var image_info_container = '<div id="' + ("graphics_container") +
+                '" class="image-viewer-container" style="position: relative; height: 400px" >' +
+                '<div id="' + ("image-viewer-container") + '" ' +
+                'style="position: absolute; width: 100%; height: 400px; margin: auto; z-index: 0;"></div>' +
+                '<canvas id="' + ('annotations_canvas') + '" ' +
+                'style="position: absolute; width: 100%; height: 400px; margin: auto; z-index: 1;"></canvas>' +
+                '<div id="' + ("image-viewer-container") + '-loading-dialog" ' +
+                'class="image-viewer-loading-dialog" style="position: absolute; width: 100%; height: 400px;"></div>' +
+                '</div>';
+            me._image_info_container.html(image_info_container);
 
-            // Log message (for debugging)
-            console.log("Frame Object Registered!!!");
+            // clean the existing image-viewer controller
+            if(me._image_viewer_controller)
+                delete me._image_viewer_controller;
 
-            // enable chaining
-            return me._omero_viewer_frame;
-        };
+            // build the ImaveViewer controller
+            var viewer_ctrl = new ImageViewer(
+                image_id, undefined,
+                me._image_server,
+                "image-viewer-container", "annotations_canvas",
+                me._viewer_model_server);
+            me._image_viewer_controller = viewer_ctrl;
 
-
-        /**
-         *
-         * @param frame_id
-         * @param frame_details
-         * @param visible_roi_list
-         */
-        prototype.onViewerFrameInitialized = function (me, frame_id, image_details, visible_roi_list) {
-            me.current_image_info = image_details;
-            me._registerFrameWindowEventHandlers(me, frame_id);
-            me._image_viewer_controller.getModel().addEventListener(me);
-
-            $("#" + frame_id + "-toolbar").removeClass("hidden");
-
-            me._image_viewer_controller.onViewerInitialized(function () {
+            // load and show image and its related ROIs
+            viewer_ctrl.open(true, function (data) {
+                me.onImageModelRoiLoaded(data);
                 me._initImagePropertiesControls();
                 me._image_viewer_controller.updateViewFromProperties(me._image_properties);
+                $("#omero-image-viewer-toolbar").removeClass("hidden");
             });
-
-            console.log("OnFrameInitialized", me, frame_id, image_details, visible_roi_list);
         };
 
 
-        prototype.onImageModelRoiLoaded = function (e) {
+        prototype.onImageModelRoiLoaded = function (data) {
 
             // removed_rois
             var removed_rois = {};
 
             // validate the list of visible ROIs
-            removed_rois.visible = this._image_viewer_controller.checkRois( this._visible_roi_list, true);
-            console.log("Validated ROI Shape List",  this._visible_roi_list);
+            removed_rois.visible = this._image_viewer_controller.checkRois(this._visible_roi_list, true);
+            console.log("Validated ROI Shape List", this._visible_roi_list);
 
             // validate the list of focusable ROIs
-            removed_rois.focusable = this._image_viewer_controller.checkRois( this._focusable_roi_list, true);
-            console.log("Validated Focusable ROI List",  this._focusable_roi_list);
+            removed_rois.focusable = this._image_viewer_controller.checkRois(this._focusable_roi_list, true);
+            console.log("Validated Focusable ROI List", this._focusable_roi_list);
 
-            var roi_list = M.qtypes.omerocommon.RoiShapeModel.toRoiShapeModel(e.detail,
+            var roi_list = M.qtypes.omerocommon.RoiShapeModel.toRoiShapeModel(data,
                 this._visible_roi_list, this._focusable_roi_list);
             console.log("Loaded ROI Shapes Models", roi_list);
 
@@ -583,27 +578,6 @@ define([
             console.log("Updated ROI table!!!");
 
             return removed_rois;
-        };
-
-        /**
-         * Register listeners for events triggered
-         * by the frame identified by 'frame_id'
-         *
-         * @param frame_id
-         * @private
-         */
-        prototype._registerFrameWindowEventHandlers = function (me, frame_id) {
-            var omero_viewer_frame = document.getElementById(frame_id);
-            if (!omero_viewer_frame) {
-                throw new EventException("Frame " + frame_id + " not found!!!");
-            }
-
-            // Registers a reference to the frame
-            me._omero_viewer_frame = omero_viewer_frame;
-
-            // Register a reference to the Omero Repository Controller
-            var frameWindow = me._omero_viewer_frame.contentWindow;
-            me._image_viewer_controller = frameWindow.omero_repository_image_viewer_controller;
         };
 
 

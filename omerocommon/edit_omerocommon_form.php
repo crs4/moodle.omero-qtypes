@@ -34,12 +34,18 @@ require_once($CFG->dirroot . '/question/type/omerocommon/question.php');
 require_once($CFG->dirroot . '/question/type/omerocommon/questiontype_base.php');
 require_once($CFG->dirroot . '/question/type/multichoice/edit_multichoice_form.php');
 require_once($CFG->dirroot . '/question/type/omerocommon/js/modules.php');
+require_once($CFG->dirroot . '/question/type/omerocommon/js/viewer_config.php');
 
 /**
  * Base question editor form for Omero questions (see qtype_omeromultichoice and qtype_omerointeractive).
  */
 abstract class qtype_omerocommon_edit_form extends qtype_multichoice_edit_form
 {
+    const EDITOR_INFO_ELEMENT_NAME = "id_editor_info";
+
+    protected $image_info_container_id;
+    protected $image_selector_id;
+
     private $localized_strings = array(
         "questiontext", "generalfeedback",
         "correctfeedback", "partiallycorrectfeedback", "incorrectfeedback"
@@ -102,6 +108,7 @@ abstract class qtype_omerocommon_edit_form extends qtype_multichoice_edit_form
         $PAGE->requires->css(new moodle_url("$CFG->wwwroot/question/type/omerocommon/css/common-question-editor.css"));
         // Javascript
         init_js_modules("omerocommon");
+        init_js_imageviewer(get_config('omero', 'omero_restendpoint'));
     }
 
 
@@ -262,11 +269,15 @@ abstract class qtype_omerocommon_edit_form extends qtype_multichoice_edit_form
         $mform->addElement('header', 'omeroimageheader',
             get_string('omero_image_viewer', 'qtype_omerocommon'));
         // file picker
-        $mform->addElement('omerofilepicker', 'omeroimageurl', ' ', null,
-            array('maxbytes' => 2048, 'accepted_types' => array('*'),
+        $picker = $mform->addElement('omerofilepicker', 'omeroimageurl', ' ', null,
+            array('accepted_types' => array('*'),
                 'return_types' => array(FILE_EXTERNAL),
-                'omero_image_server' => get_config('omero', 'omero_restendpoint'))
+                'omero_image_server' => get_config('omero', 'omero_restendpoint')
+            )
         );
+
+        $this->image_selector_id = $picker->getSelectedImageInputId();
+        $this->image_info_container_id = $picker->getFileInfoContainerId();
 
         // build the ROI table inspector
         $this->define_roi_table_inspector();

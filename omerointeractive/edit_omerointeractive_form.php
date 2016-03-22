@@ -69,6 +69,23 @@ class qtype_omerointeractive_edit_form extends qtype_omerocommon_edit_form
         global $CFG, $PAGE;
         parent::definition();
 
+        $mform = $this->_form;
+        $mform->addElement("hidden", self::EDITOR_INFO_ELEMENT_NAME);
+        $mform->setType(self::EDITOR_INFO_ELEMENT_NAME, PARAM_RAW);
+        $mform->setDefault(self::EDITOR_INFO_ELEMENT_NAME, json_encode(
+                array(
+                    "image_server" => get_config('omero', 'omero_restendpoint'),
+                    "viewer_model_server" => $CFG->wwwroot . "/repository/omero/viewer/viewer-model.php",
+                    "image_info_container_id" => $this->image_info_container_id,
+                    "image_selector_id" => $this->image_selector_id,
+                    "answer_header" => "id_answergroupsheader",
+                    "fraction_options" => question_bank::fraction_options_full(),
+                    "add_to_group_element_id" => self::ADD_ROI_TO_GROUP,
+                    "add_to_group_list_element_id" => self::ADD_ROI_GROUP_LIST_OPTIONS
+                )
+            )
+        );
+
         //--------------------------------------------------------------------------------------------
         //FIXME: just for debugging
         $PAGE->requires->js(new moodle_url("$CFG->wwwroot/repository/omero/viewer/viewer-model.js"));
@@ -76,11 +93,7 @@ class qtype_omerointeractive_edit_form extends qtype_omerocommon_edit_form
 
         global $PAGE;
         $PAGE->requires->js_call_amd("qtype_omerointeractive/question-editor-interactive", "main",
-            array(
-                "id_answergroupsheader",
-                question_bank::fraction_options_full(),
-                self::ADD_ROI_TO_GROUP, self::ADD_ROI_GROUP_LIST_OPTIONS
-            )
+            array(self::EDITOR_INFO_ELEMENT_NAME)
         );
     }
 
@@ -150,8 +163,8 @@ class qtype_omerointeractive_edit_form extends qtype_omerocommon_edit_form
             '</label>
                               <input id="omero-image-view-lock" name="omero-image-view-lock" data-toggle="toggle"
                                      type="checkbox" data-onstyle="success" data-offstyle="default"
-                                     data-on="'. get_string('image_viewer_locked_student_navigation','qtype_omerocommon') .'"
-                                     data-off="'. get_string('image_viewer_lock_student_navigation', 'qtype_omerocommon') .'">
+                                     data-on="' . get_string('image_viewer_locked_student_navigation', 'qtype_omerocommon') . '"
+                                     data-off="' . get_string('image_viewer_lock_student_navigation', 'qtype_omerocommon') . '">
                           </div>
                         </div>
         ');
@@ -175,8 +188,8 @@ class qtype_omerointeractive_edit_form extends qtype_omerocommon_edit_form
                       <button id="' . self::ADD_ROI_TO_GROUP . '"
                               type="button" class="btn btn-info dropdown-toggle disabled"
                               data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">' .
-                                get_string('answer_group', 'qtype_omerointeractive') .
-                            ' <span class="caret"></span>
+            get_string('answer_group', 'qtype_omerointeractive') .
+            ' <span class="caret"></span>
                       </button>
                       <ul id="' . self::ADD_ROI_GROUP_LIST_OPTIONS . '" class="dropdown-menu option input-small " role="menu">
                         <li><a href="#">0</a></li>

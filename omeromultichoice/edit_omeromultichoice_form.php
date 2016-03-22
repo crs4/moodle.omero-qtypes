@@ -65,16 +65,28 @@ class qtype_omeromultichoice_edit_form extends qtype_omerocommon_edit_form
         global $CFG, $PAGE;
         parent::definition();
 
+        $mform = $this->_form;
+        $mform->addElement("hidden", self::EDITOR_INFO_ELEMENT_NAME);
+        $mform->setType(self::EDITOR_INFO_ELEMENT_NAME, PARAM_RAW);
+        $mform->setDefault(self::EDITOR_INFO_ELEMENT_NAME, json_encode(
+                array(
+                    "image_server" => get_config('omero', 'omero_restendpoint'),
+                    "viewer_model_server" => $CFG->wwwroot . "/repository/omero/viewer/viewer-model.php",
+                    "image_info_container_id" => $this->image_info_container_id,
+                    "image_selector_id" => $this->image_selector_id,
+                    "answer_header" => "id_answerhdr",
+                    "fraction_options" => question_bank::fraction_options_full()
+                )
+            )
+        );
+
         //--------------------------------------------------------------------------------------------
         //FIXME: just for debugging
         $PAGE->requires->js(new moodle_url("$CFG->wwwroot/repository/omero/viewer/viewer-model.js"));
         //--------------------------------------------------------------------------------------------
 
         $PAGE->requires->js_call_amd("qtype_omeromultichoice/question-editor-multichoice", "main",
-            array(
-                "id_answerhdr",
-                question_bank::fraction_options_full()
-            )
+            array(self::EDITOR_INFO_ELEMENT_NAME)
         );
     }
 
@@ -92,13 +104,13 @@ class qtype_omeromultichoice_edit_form extends qtype_omerocommon_edit_form
                           <span id="omero-image-viewer-properties">x: 123123, y: 12312312, zm: 123123123</span>
                           </div>
                           <div id="omero-image-view-lock-container">
-                              <label for="omero-image-view-lock">'.
-                                get_string('image_viewer_student_navigation', 'qtype_omerocommon') .
-                             '</label>
+                              <label for="omero-image-view-lock">' .
+            get_string('image_viewer_student_navigation', 'qtype_omerocommon') .
+            '</label>
                               <input id="omero-image-view-lock" name="omero-image-view-lock" data-toggle="toggle"
                                      type="checkbox" data-onstyle="success" data-offstyle="default"
-                                     data-on="'. get_string('image_viewer_locked_student_navigation','qtype_omerocommon') .'"
-                                     data-off="'. get_string('image_viewer_lock_student_navigation', 'qtype_omerocommon') .'">
+                                     data-on="' . get_string('image_viewer_locked_student_navigation', 'qtype_omerocommon') . '"
+                                     data-off="' . get_string('image_viewer_lock_student_navigation', 'qtype_omerocommon') . '">
                           </div>
                         </div>
         ');
@@ -154,8 +166,8 @@ class qtype_omeromultichoice_edit_form extends qtype_omerocommon_edit_form
             <div id="add_answer_button" class="btn-group" style="margin-bottom: 20px;">
               <button type="button" class="btn btn-info dropdown-toggle"
                       data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">' .
-                            get_string('add_answers', 'qtype_omeromultichoice') .
-                      ' <span class="caret"></span>
+            get_string('add_answers', 'qtype_omeromultichoice') .
+            ' <span class="caret"></span>
               </button>
               <ul class="dropdown-menu">' . implode($options) . '</ul>' .
             '</div></div>'
@@ -185,7 +197,8 @@ class qtype_omeromultichoice_edit_form extends qtype_omerocommon_edit_form
      *
      * @throws coding_exception
      */
-    protected function export_locale_js_strings(){
+    protected function export_locale_js_strings()
+    {
         global $PAGE;
         parent::export_locale_js_strings();
         $PAGE->requires->string_for_js('correctansweris', 'qtype_omeromultichoice');

@@ -90,13 +90,16 @@ define([
             }
         };
 
-        M.qtypes.omeromultichoice.QuestionEditorMultichoice.main = function (answers_section_id, fraction_options) {
+        M.qtypes.omeromultichoice.QuestionEditorMultichoice.main = function (config_element_id) {
+            // extract configuration
+            var c = document.getElementsByName(config_element_id)[0];
+            var config = JSON.parse(c.value);
+            console.log("QuestionEditorMultichoice configuration", config);
 
-            console.log(fraction_options);
             $(document).ready(
                 function () {
                     var instance = new M.qtypes.omeromultichoice.QuestionEditorMultichoice();
-                    instance.initialize(answers_section_id, fraction_options);
+                    instance.initialize(config);
                     if (M.cfg.developerdebug)
                         window.qem = instance;
                 }
