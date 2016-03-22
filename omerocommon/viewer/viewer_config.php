@@ -36,7 +36,6 @@ function init_js_imageviewer($IMAGE_SERVER){
         $PAGE->requires->js(new moodle_url("$IMAGE_SERVER$script"), true);
     }
 
-    //FIXME: replace with the new location
-    //$PAGE->requires->js(new moodle_url("$CFG->wwwroot/repository/omero/viewer/viewer-model.js"));
-    //$PAGE->requires->js(new moodle_url("$CFG->wwwroot/repository/omero/viewer/viewer-controller.js"));
+    // set the image server url
+    $CFG->omero_image_server = $CFG->wwwroot . "/question/type/omerocommon/viewer/viewer-model.php";
 }

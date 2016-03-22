@@ -30,9 +30,9 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-require_once($CFG->dirroot . '/question/type/omerocommon/js/viewer_config.php');
 require_once($CFG->dirroot . '/question/type/multichoice/renderer.php');
 require_once($CFG->dirroot . '/question/type/omerocommon/js/modules.php');
+require_once($CFG->dirroot . '/question/type/omerocommon/viewer/viewer_config.php');
 
 /**
  * Generates the output for omeromultichoice questions (single correct answer).
