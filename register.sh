@@ -12,3 +12,5 @@ else
 	echo -e "Registering the 'omeroquestiontags' form.... done."
 fi
 
+# update JS dist
+cd ${MOODLE_WWW}/question/type && ./dist-update.sh
