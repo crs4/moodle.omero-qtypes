@@ -235,7 +235,7 @@ define([
                 for (var i in config.answers.markers) {
                     var shape = config.answers.shapes[i];
                     var marker = config.answers.markers[i];
-                    var marker_color = undefined;
+                    var marker_color;
                     console.log("Check Marker: ", marker, markers_config);
                     if (shape === "none" || shape.fraction <= 0)
                         marker_color = COLORS.wrong;
