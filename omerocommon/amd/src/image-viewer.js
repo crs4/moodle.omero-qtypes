@@ -26,7 +26,7 @@
  * @license    https://opensource.org/licenses/mit-license.php MIT license
  */
 /* jshint curly: false */
-/* globals console, ViewerController, ImageModelManager, TransformMatrixHelper, TransformMatrixHelper */
+/* globals console, ViewerController, TransformMatrixHelper, TransformMatrixHelper */
 /* globals AnnotationsEventsController, AnnotationsController */
 define([
     'jquery',

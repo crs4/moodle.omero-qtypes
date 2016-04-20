@@ -25,7 +25,9 @@
  * @copyright  2015-2016 CRS4
  * @license    https://opensource.org/licenses/mit-license.php MIT license
  */
-define([], function () {
+/* jshint curly: false */
+/* globals console */
+define(['jquery'], function ($) {
 
         // defines the basic package
         M.qtypes = M.qtypes || {};
@@ -46,7 +48,7 @@ define([], function () {
             this._listeners = [];
 
             // log init status
-            console.info("image_model_manager initialized!!!")
+            console.info("image_model_manager initialized!!!");
         };
 
 
@@ -60,8 +62,9 @@ define([], function () {
          * @param listener
          */
         prototype.addEventListener = function (listener) {
-            if (!listener) return;
-            this._listeners.push(listener);
+            if (listener) {
+                this._listeners.push(listener);
+            }
         };
 
 
@@ -71,10 +74,11 @@ define([], function () {
          * @param listener
          */
         prototype.removeEventListener = function (listener) {
-            if (!listener) return;
-            var index = this._listeners.indexOf(listener);
-            if (index > -1)
-                this._listeners.splice(index, 1);
+            if (listener) {
+                var index = this._listeners.indexOf(listener);
+                if (index > -1)
+                    this._listeners.splice(index, 1);
+            }
         };
 
 
