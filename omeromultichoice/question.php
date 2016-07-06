@@ -31,7 +31,7 @@ require_once($CFG->dirroot . '/question/type/omerocommon/question.php');
  * @copyright  2015-2016 CRS4
  * @license    https://opensource.org/licenses/mit-license.php MIT license
  */
-class qtype_omeromultichoice_single_question extends qtype_multichoice_single_question {
+class qtype_omeromultichoice_single_question extends qtype_omerocommon_single_question {
     public function get_renderer(moodle_page $page) {
         return $page->get_renderer('qtype_omeromultichoice', 'single');
     }
@@ -45,7 +45,7 @@ class qtype_omeromultichoice_single_question extends qtype_multichoice_single_qu
  * @copyright  2015-2016 CRS4
  * @license    https://opensource.org/licenses/mit-license.php MIT license
  */
-class qtype_omeromultichoice_multi_question extends qtype_multichoice_multi_question {
+class qtype_omeromultichoice_multi_question extends qtype_omerocommon_multi_question {
     public function get_renderer(moodle_page $page) {
         return $page->get_renderer('qtype_omeromultichoice', 'multi');
     }
