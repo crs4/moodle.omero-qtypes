@@ -64,5 +64,22 @@ abstract class qtype_omerocommon_question extends qtype_multichoice_base
 }
 
 
+abstract class qtype_omerocommon_single_question extends qtype_multichoice_single_question
+{
+    public function format_text($text, $format, $qa, $component, $filearea, $itemid,
+                                $clean = false)
+    {
+        $text = qtype_omerocommon_question::localize_text($text, $format, $qa, $component, $filearea, $itemid, $clean);
+        return parent::format_text($text, $format, $qa, $component, $filearea, $itemid, $clean);
+    }
 }
 
+abstract class qtype_omerocommon_multi_question extends qtype_multichoice_multi_question
+{
+    public function format_text($text, $format, $qa, $component, $filearea, $itemid,
+                                $clean = false)
+    {
+        $text = qtype_omerocommon_question::localize_text($text, $format, $qa, $component, $filearea, $itemid, $clean);
+        return parent::format_text($text, $format, $qa, $component, $filearea, $itemid, $clean);
+    }
+}
