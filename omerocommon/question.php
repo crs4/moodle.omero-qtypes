@@ -43,6 +43,43 @@ require_once($CFG->dirroot . '/question/type/multichoice/question.php');
  */
 abstract class qtype_omerocommon_question extends qtype_multichoice_base
 {
-
+    static public function localize_text($text, $format, $qa, $component, $filearea, $itemid,
+                                         $clean = false)
+    {
+        $language = current_language();
+        $dom = new DOMDocument();
+        $dom->strictErrorChecking = FALSE;
+        $dom->loadHTML('<?xml version="1.0" encoding="UTF-8"?><html><body>' . $text . '</body></html>');
+        $finder = new DomXPath($dom);
+        $classname = "multilang";
+        $nodes = $finder->query("//*[contains(concat(' ', normalize-space(@class), ' '), ' $classname ')]");
+        foreach ($nodes as $node) {
+            if (strcmp($node->getAttribute("lang"), $language) == 0) {
+                $text = $dom->saveHTML($node);
+                break;
+            }
+        }
+        return $text;
+    }
 }
 
+
+abstract class qtype_omerocommon_single_question extends qtype_multichoice_single_question
+{
+    public function format_text($text, $format, $qa, $component, $filearea, $itemid,
+                                $clean = false)
+    {
+        $text = qtype_omerocommon_question::localize_text($text, $format, $qa, $component, $filearea, $itemid, $clean);
+        return parent::format_text($text, $format, $qa, $component, $filearea, $itemid, $clean);
+    }
+}
+
+abstract class qtype_omerocommon_multi_question extends qtype_multichoice_multi_question
+{
+    public function format_text($text, $format, $qa, $component, $filearea, $itemid,
+                                $clean = false)
+    {
+        $text = qtype_omerocommon_question::localize_text($text, $format, $qa, $component, $filearea, $itemid, $clean);
+        return parent::format_text($text, $format, $qa, $component, $filearea, $itemid, $clean);
+    }
+}
