@@ -49,13 +49,15 @@ define([], function () {
         TheClass.toRoiShapeModel = function (roi_shape_list, visible_roi_list, focusable_roi_list) {
             var result = [];
             for (var i in roi_shape_list) {
-                var roi = roi_shape_list[i];
-                result.push(new TheClass(
-                    roi,
-                        visible_roi_list && visible_roi_list.indexOf(roi.id) !== -1,
-                        focusable_roi_list && focusable_roi_list.indexOf(roi.id) !== -1
-                    )
-                );
+                for (var j in roi_shape_list[i].shapes) {
+                    var shape = roi_shape_list[i].shapes[j];
+                    result.push(new TheClass(
+                        shape,
+                            visible_roi_list && visible_roi_list.indexOf(shape.id) !== -1,
+                            focusable_roi_list && focusable_roi_list.indexOf(shape.id) !== -1
+                        )
+                    );
+                }
             }
             return result;
         };
