@@ -138,6 +138,12 @@ abstract class qtype_omerocommon extends qtype_multichoice
     }
 
 
+    /**
+     * Serialize a JSON array of a multilang text to HTML
+     *
+     * @param $json_format
+     * @return string
+     */
     public static function serialize_to_multilang_form($json_format)
     {
         $result = "";
@@ -196,7 +202,7 @@ abstract class qtype_omerocommon extends qtype_multichoice
 
 
     /**
-     * Returns the list of span[@multilang]
+     * Returns the list of div[@multilang]
      * contained within the given <pre>$html</pre>
      *
      * @param $multilang_format
