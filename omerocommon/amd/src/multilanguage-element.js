@@ -143,7 +143,7 @@ define(['qtype_omerocommon/moodle-forms-utils'],
             }
         };
 
-        prototype.saveDataToFormInputs = function (input_data_element_name) {
+        prototype.saveDataToFormInputs = function (input_data_element_name, encode_text) {
 
             input_data_element_name = input_data_element_name || this.input_data_element_name;
             console.log("Serializing " + this.input_data_element_name + " -- " + input_data_element_name);
@@ -157,6 +157,8 @@ define(['qtype_omerocommon/moodle-forms-utils'],
             var serialized_text = JSON.stringify(this.getLocaleTextMap());
             for (var i = 0; i < input_elements.length; i++) {
                 var input_element = input_elements[i];
+                if (encode_text)
+                    serialized_text = $("<div>").text(serialized_text).html()
                 input_element.setAttribute("value", serialized_text);
             }
 
