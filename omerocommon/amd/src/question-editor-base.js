@@ -417,7 +417,7 @@ define([
                     console.log("Found hidden field to save editor data...", id, name, locale_map_name);
                 }
 
-                editor.saveDataToFormInputs(locale_map_name);
+                editor.saveDataToFormInputs(locale_map_name, true);
             }
         };
 
