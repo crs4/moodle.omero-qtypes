@@ -151,7 +151,7 @@ abstract class qtype_omerocommon extends qtype_multichoice
         $json_data = json_decode($json_format);
         foreach ($json_data as $lang => $text) {
             if (!empty(strip_tags($text)) && !in_array($lang, $languages)) {
-                $result .= '<div class="multilang" lang="' . $lang . '">' . $text . '</span>';
+                $result .= '<div class="multilang" lang="' . $lang . '">' . $text . '</div>';
                 array_push($languages, $lang);
             }
         }
