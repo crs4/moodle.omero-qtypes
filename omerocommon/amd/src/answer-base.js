@@ -246,6 +246,7 @@ define([
                 var value = this._data[element_name];
 
                 hidden = document.getElementById(id); //$("#" + id);
+                value = $("<div>").text(value).html();
                 if (hidden) hidden.setAttribute("value", value);
                 else {
                     hidden = '<input ' + 'id="' + id + '" ' + 'name="' + name + '" type="hidden" value="' + value + '">';
