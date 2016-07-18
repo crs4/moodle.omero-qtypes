@@ -28,7 +28,7 @@
 define(['qtype_omerocommon/moodle-forms-utils'],
     /* jshint curly: false */
     /* globals console */
-    function (/* FormUtils */) {
+    function ($/* FormUtils */) {
 
         /**
          * Defines a MultilanguageElement
@@ -158,7 +158,7 @@ define(['qtype_omerocommon/moodle-forms-utils'],
             for (var i = 0; i < input_elements.length; i++) {
                 var input_element = input_elements[i];
                 if (encode_text)
-                    serialized_text = $("<div>").text(serialized_text).html()
+                    serialized_text = $("<div>").text(serialized_text).html();
                 input_element.setAttribute("value", serialized_text);
             }
 
