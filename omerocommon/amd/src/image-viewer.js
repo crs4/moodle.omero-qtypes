@@ -277,7 +277,7 @@ define([
             this._lock_navigation = enable;
             if (enable) {
                 this._annotations_controller.disableMouseEvents();
-                this._annotation_events_controller.activateTool(this._annotation_events_controller.DUMMY_TOOL, false);
+                this._annotation_events_controller.activateTool(AnnotationsEventsController.DUMMY_TOOL, false);
             } else {
                 this._annotations_controller.disableMouseEvents();
             }
@@ -292,11 +292,11 @@ define([
 
         prototype.enableAddMarkers = function () {
             this._annotations_controller.disableMouseEvents();
-            this._annotation_events_controller.activateTool(this._annotation_events_controller.IMAGE_MARKING_TOOL);
+            this._annotation_events_controller.activateTool(AnnotationsEventsController.IMAGE_MARKING_TOOL);
         };
 
         prototype.enableMoveMarkers = function () {
-            this._annotation_events_controller.activateTool(this._annotation_events_controller.DUMMY_TOOL, false);
+            this._annotation_events_controller.activateTool(AnnotationsEventsController.DUMMY_TOOL, false);
             this._annotations_controller.enableEventsOnShapes(this.getMarkerIds());
         };
 

@@ -187,15 +187,6 @@ define(['jquery', 'qtype_omerocommon/roi-shape-model'],
                             valign: 'middle',
                             events: me.eventHandler(me),
                             formatter: me.focusAreaFormatter
-                        },
-                        {
-                            field: 'answerGroup',
-                            title: M.util.get_string('roi_group', 'qtype_omerocommon'),
-                            align: 'center',
-                            valign: 'middle',
-                            width: "40px",
-                            events: me.eventHandler(me),
-                            formatter: me.answerClassFormatter
                         }
                     ]
                 ]
