@@ -36,6 +36,9 @@ define([
     /* globals console */
     function ($) {
 
+        // override reference to jQuery
+        $ = jQuery;
+
         /**
          * Utility function: notify listeners
          *

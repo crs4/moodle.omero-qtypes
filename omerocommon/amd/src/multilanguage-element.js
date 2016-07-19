@@ -30,6 +30,9 @@ define(['qtype_omerocommon/moodle-forms-utils'],
     /* globals console */
     function ($/* FormUtils */) {
 
+        // override reference to jQuery
+        $ = jQuery;
+
         /**
          * Defines a MultilanguageElement
          *
