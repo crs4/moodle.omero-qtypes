@@ -33,7 +33,7 @@ define([
         'qtype_omerocommon/multilanguage-attoeditor'
     ],
     /* jshint curly: false */
-    /* globals console */
+    /* globals console, jQuery */
     function ($) {
 
         // override reference to jQuery

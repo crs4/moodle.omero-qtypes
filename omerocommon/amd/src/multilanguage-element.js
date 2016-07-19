@@ -27,7 +27,7 @@
  */
 define(['qtype_omerocommon/moodle-forms-utils'],
     /* jshint curly: false */
-    /* globals console */
+    /* globals console, jQuery */
     function ($/* FormUtils */) {
 
         // override reference to jQuery
