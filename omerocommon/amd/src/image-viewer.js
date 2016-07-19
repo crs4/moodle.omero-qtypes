@@ -26,9 +26,12 @@
  * @license    https://opensource.org/licenses/mit-license.php MIT license
  */
 /* jshint curly: false */
-/* globals console, ViewerController, ImageModelManager, TransformMatrixHelper, TransformMatrixHelper */
+/* globals console, ViewerController, TransformMatrixHelper, TransformMatrixHelper */
 /* globals AnnotationsEventsController, AnnotationsController */
-define(['jquery'], function ($) {
+define([
+    'jquery',
+    'qtype_omerocommon/image-viewer-model'
+], function ($, ImageModelManager) {
 
         /**
          * Utility class
@@ -36,15 +39,15 @@ define(['jquery'], function ($) {
          * @param listeners
          * @param callback
          */
-        function notifyListeners(listeners, callback) {
+        function notifyListeners(listeners, callback, data) {
             for (var i in listeners) {
                 var listenerCallback = listeners[i];
                 if (listenerCallback) {
-                    listenerCallback();
+                    listenerCallback(data);
                 }
             }
             if (callback)
-                callback();
+                callback(data);
         }
 
         // defines the basic package
@@ -59,7 +62,8 @@ define(['jquery'], function ($) {
          * @constructor
          */
         M.qtypes.omerocommon.ImageViewer = function (image_id, image_properties,
-                                                     image_server, image_viewer_container_id,
+                                                     image_server,
+                                                     image_viewer_container_id,
                                                      image_viewer_annotations_canvas_id,
                                                      viewer_model_server,
                                                      viewer_config) {
@@ -71,6 +75,7 @@ define(['jquery'], function ($) {
             this._viewer_model_server = viewer_model_server;
             this._listeners = [];
             this._lock_navigation = false;
+            this._visible_roi_shape_ids = [];
 
             // default viewer configuration
             this._viewer_config = {
@@ -226,10 +231,41 @@ define(['jquery'], function ($) {
                 me._annotations_controller.hideShapes(undefined, false);
 
                 // notify listeners
-                notifyListeners(me._listeners, callback);
+                notifyListeners(me._listeners, callback, data);
 
                 // hide loading dialog
                 me._waiting_dialog.hide();
+
+                // handle resize event
+                me._viewer_controller.viewer.addHandler("resize",
+                    function () {
+
+                        // retrieve the list of shapes to display
+                        var marker_ids = me.getMarkerIds();
+                        var shapes = me._annotations_controller.getShapesJSON().filter(
+                            function (value) {
+                                return (marker_ids && marker_ids.indexOf(value.shape_id) !== -1)
+                                    || (me._visible_roi_shape_ids.indexOf(String(value.shape_id)) !== -1);
+                            }
+                        );
+
+                        // clean and rebuild canvas
+                        me._annotations_controller.clear();
+                        me._annotations_controller.canvas = undefined;
+                        me._annotations_controller.buildAnnotationsCanvas(me._viewer_controller);
+
+                        // update the center
+                        var img_zoom = me._viewer_controller.getImageZoom();
+                        me._annotations_controller.setZoom(img_zoom);
+                        var center = me._viewer_controller.getCenter();
+                        me._annotations_controller.setCenter(center.x, center.y);
+
+                        // redraw shapes
+                        me._annotations_controller.drawShapesFromJSON(shapes);
+                        if (marker_ids.length > 0)
+                            me._annotations_controller.shapesToMarkers(marker_ids);
+                    }
+                );
             });
         };
 
@@ -241,7 +277,7 @@ define(['jquery'], function ($) {
             this._lock_navigation = enable;
             if (enable) {
                 this._annotations_controller.disableMouseEvents();
-                this._annotation_events_controller.activateTool(this._annotation_events_controller.DUMMY_TOOL, false);
+                this._annotation_events_controller.activateTool(AnnotationsEventsController.DUMMY_TOOL, false);
             } else {
                 this._annotations_controller.disableMouseEvents();
             }
@@ -256,11 +292,11 @@ define(['jquery'], function ($) {
 
         prototype.enableAddMarkers = function () {
             this._annotations_controller.disableMouseEvents();
-            this._annotation_events_controller.activateTool(this._annotation_events_controller.IMAGE_MARKING_TOOL);
+            this._annotation_events_controller.activateTool(AnnotationsEventsController.IMAGE_MARKING_TOOL);
         };
 
         prototype.enableMoveMarkers = function () {
-            this._annotation_events_controller.activateTool(this._annotation_events_controller.DUMMY_TOOL, false);
+            this._annotation_events_controller.activateTool(AnnotationsEventsController.DUMMY_TOOL, false);
             this._annotations_controller.enableEventsOnShapes(this.getMarkerIds());
         };
 
@@ -296,7 +332,9 @@ define(['jquery'], function ($) {
         };
 
         prototype.getMarkerIds = function () {
-            return this._annotations_controller.markers_id;
+            if (this._annotations_controller.getMarkersID)
+                return this._annotations_controller.getMarkersID();
+            else return [];
         };
 
         prototype.getMarkers = function () {
@@ -327,11 +365,12 @@ define(['jquery'], function ($) {
 
         prototype.drawMarker = function (marker, marker_config) {
             // TODO: replace with the more general drawShape
-            if (marker.type === "circle")
+            if (marker.type === "circle") {
                 this._annotations_controller.drawCircle(
                     marker.shape_id, marker.center_x, marker.center_y,
                     marker.radius, undefined, marker_config, true);
-            else console.warn("Marker not supported yet", marker);
+                this._visible_roi_shape_ids.push(String(marker.shape_id));
+            } else console.warn("Marker not supported yet", marker);
         };
 
         /**
@@ -438,6 +477,10 @@ define(['jquery'], function ($) {
                         shape.disableEvents();
                 }
             }
+            for (var j in shape_id_list) {
+                if (this._visible_roi_shape_ids.indexOf(String(shape_id_list[j])) === -1)
+                    this._visible_roi_shape_ids.push(String(shape_id_list[j]));
+            }
         };
 
         /**
@@ -446,6 +489,11 @@ define(['jquery'], function ($) {
          */
         prototype.hideRoiShapes = function (shape_id_list) {
             this._annotations_controller.hideShapes(shape_id_list, true);
+            for (var j in shape_id_list) {
+                var index = this._visible_roi_shape_ids.indexOf(String(shape_id_list[j]));
+                if (index !== -1)
+                    this._visible_roi_shape_ids.splice(index, 1);
+            }
         };
 
         /**

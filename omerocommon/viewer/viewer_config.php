@@ -18,18 +18,24 @@
 // COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
 // IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
 // CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-/**
- * omeromultichoice question type version information.
- *
- * @package    qtype
- * @subpackage omeromultichoice
- * @copyright  2015-2016 CRS4
- * @license    https://opensource.org/licenses/mit-license.php MIT license
- */
 
 defined('MOODLE_INTERNAL') || die();
 
-$plugin->component = 'qtype_omeromultichoice';
-$plugin->version   = 2016071900;        // The current plugin version (Date: YYYYMMDDXX).
-$plugin->requires  = 2015051100;        // Requires this Moodle version.
-$plugin->maturity  = MATURITY_ALPHA;
+function init_js_imageviewer($IMAGE_SERVER){
+
+    global $CFG, $PAGE;
+
+    $scripts = array(
+        "/static/ome_seadragon/js/openseadragon.min.js",
+        "/static/ome_seadragon/js/paper-full.min.js",
+        "/static/ome_seadragon/js/ome_seadragon.min.js",
+        "/static/ome_seadragon/js/openseadragon-scalebar.min.js"
+    );
+
+    foreach($scripts as $script){
+        $PAGE->requires->js(new moodle_url("$IMAGE_SERVER$script"), true);
+    }
+
+    // set the image server url
+    $CFG->omero_image_server = $CFG->wwwroot . "/question/type/omerocommon/viewer/viewer-model.php";
+}

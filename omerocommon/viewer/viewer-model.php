@@ -19,24 +19,39 @@
 // IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
 // CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
+// set the Moodle root directory
+$MOODLEROOT=dirname(dirname(dirname(dirname(dirname(__FILE__)))));
+
+// load dependencies
+require_once("$MOODLEROOT/config.php");
+require_once("$MOODLEROOT/repository/omero/lib.php");
+require_once("$MOODLEROOT/repository/omero/locallib.php");
+
+// check whether Moodle Env exists
 defined('MOODLE_INTERNAL') || die();
 
-function init_js_imageviewer($IMAGE_SERVER){
-
-    global $CFG, $PAGE;
-
-    $scripts = array(
-        "/static/ome_seadragon/js/openseadragon.min.js",
-        "/static/ome_seadragon/js/paper-full.min.js",
-        "/static/ome_seadragon/js/ome_seadragon.min.js",
-        "/static/ome_seadragon/js/openseadragon-scalebar.min.js"
-    );
-
-    foreach($scripts as $script){
-        $PAGE->requires->js(new moodle_url("$IMAGE_SERVER$script"), true);
-    }
-
-    //FIXME: replace with the new location
-    $PAGE->requires->js(new moodle_url("$CFG->wwwroot/repository/omero/viewer/viewer-model.js"));
-    //$PAGE->requires->js(new moodle_url("$CFG->wwwroot/repository/omero/viewer/viewer-controller.js"));
+// check whether the user is logged
+if (!isloggedin()) {
+    $moodle_url = "http://" . $_SERVER['SERVER_NAME'] . ":" . $_SERVER['SERVER_PORT'] . "/moodle";
+    header('Location: ' . $moodle_url);
 }
+
+// omero server
+$omero_server = new omero();
+
+// get method
+$method = required_param("m", PARAM_TEXT);
+
+// get the Image ID
+$image_id = required_param("id", PARAM_INT);
+
+// set the response header
+header('Content-Type: application/json');
+
+if($method == "img_details")
+    echo $omero_server->process_request(PathUtils::build_image_detail_url($image_id), false);
+else if($method == "dzi")
+    echo $omero_server->process_request(PathUtils::build_image_dzi_url($image_id), false);
+else
+    echo json_encode(array("error"=>"Not supported method!!!"));
+exit;

@@ -191,7 +191,6 @@ define([
 
             var id = this._build_id_of(element_name);
             var name = this._build_name_of(element_name);
-            //var value = "";
 
             this._init_roi_list();
 
@@ -210,9 +209,9 @@ define([
 
 
         prototype.updateROIList = function () {
+            var list = [];
             var id = this._build_id_of("answer");
             var el_list = document.getElementById(id + '_roi_list');
-            var list = [];
             for (var i in this._roi_id_list) {
                 list.push(['<span id="' + this._roi_id_list[i] + '-roi-shape-answer-option">',
                     '<i class="green glyphicon glyphicon-map-marker"></i> ',

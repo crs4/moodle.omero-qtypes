@@ -21,9 +21,9 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-require_once($CFG->dirroot . '/question/type/omerocommon/js/viewer_config.php');
 require_once($CFG->dirroot . '/question/type/multichoice/renderer.php');
 require_once($CFG->dirroot . '/question/type/omerocommon/js/modules.php');
+require_once($CFG->dirroot . '/question/type/omerocommon/viewer/viewer_config.php');
 
 /**
  * Render class for OmeroMultichoice question types with a single correct answer.
@@ -414,7 +414,7 @@ abstract class qtype_omeromultichoice_base_renderer extends qtype_multichoice_re
             "image_frame_id" => $omero_frame_id,
             "image_annotations_canvas_id" => self::to_unique_identifier($qa, "annotations_canvas"),
             "image_server" => $OMERO_SERVER,
-            "viewer_model_server" => $CFG->wwwroot . "/repository/omero/viewer/viewer-model.php",
+            "viewer_model_server" => $CFG->omero_image_server,
             "image_viewer_container" => self::to_unique_identifier($qa, self::IMAGE_VIEWER_CONTAINER),
             "image_navigation_locked" => (bool)$question->omeroimagelocked,
             "qname" => $question->name,

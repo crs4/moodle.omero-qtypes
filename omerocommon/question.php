@@ -55,11 +55,23 @@ abstract class qtype_omerocommon_question extends qtype_multichoice_base
         $nodes = $finder->query("//*[contains(concat(' ', normalize-space(@class), ' '), ' $classname ')]");
         foreach ($nodes as $node) {
             if (strcmp($node->getAttribute("lang"), $language) == 0) {
-                $text = $dom->saveHTML($node);
+                $text = self::DOMinnerHTML(($node));
                 break;
             }
         }
         return $text;
+    }
+
+
+    static private function DOMinnerHTML(DOMNode $element)
+    {
+        $innerHTML = "";
+        $children = $element->childNodes;
+        foreach ($children as $child) {
+            $innerHTML .= $element->ownerDocument->saveHTML($child);
+        }
+
+        return $innerHTML;
     }
 }
 
