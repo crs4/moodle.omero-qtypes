@@ -167,9 +167,8 @@ abstract class qtype_omerocommon extends qtype_multichoice
      */
     public static function normalize_html_text($html, $decode = true)
     {
-
-        $ALLOWED_TAGS = "<p><b><i><br><img><div><span><strike><sub><sup><table><caption><tbody><tr><th><td>";
-        $ELEMENTS_TO_SKIP = array("img");
+        $ALLOWED_TAGS = "<p><b><i><a><br><img><div><span><strike><sub><sup><table><caption><tbody><tr><th><td>";
+        $ELEMENTS_TO_SKIP = array("img", "a");
 
         // decode HTML entities
         if ($decode)
