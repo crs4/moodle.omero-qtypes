@@ -50,5 +50,21 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
         <KEY NAME="questionid" TYPE="foreign-unique" FIELDS="questionid" REFTABLE="question" REFFIELDS="id"/>
       </KEYS>
     </TABLE>
+
+
+
+    <TABLE NAME="question_answers_omemopt" COMMENT="Options for multiple choice questions">
+      <FIELDS>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
+        <FIELD NAME="answerid" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false" COMMENT="Foreign key references question.id"/>
+        <FIELD NAME="images" TYPE="text" NOTNULL="true" SEQUENCE="false" COMMENT="OMERO image URL."/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+        <KEY NAME="answerid" TYPE="foreign-unique" FIELDS="answerid" REFTABLE="question_answers" REFFIELDS="id"/>
+      </KEYS>
+    </TABLE>
+
+
   </TABLES>
 </XMLDB>
