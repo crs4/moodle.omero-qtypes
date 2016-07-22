@@ -30,42 +30,39 @@ define([],
     /* globals $ */
     function () {
 
+        // debug_mode
+        //var debug_mode = M.cfg.developerdebug;
+
         // defines the basic package
         M.qtypes = M.qtypes || {};
 
         // defines the specific package of this module
         M.qtypes.omerocommon = M.qtypes.omerocommon || {};
 
-        // constructor
-        M.qtypes.omerocommon.ImageSelector = function (raw_roi_shape, visible, focusable) {
-            for (var i in raw_roi_shape) {
-                this[i] = raw_roi_shape[i];
-            }
-            this.visible = visible;
-            this.focusable = focusable || false;
+        // the logger instance
+        M.qtypes.omerocommon.logger = {};
+
+
+        M.qtypes.omerocommon.ModalImageSelector = function (id_suffix) {
+            this._id_suffix = id_suffix;
+            this._MODAL_FRAME_ID = "modal-frame" + (id_suffix ? ("-" + id_suffix) : "");
+            this._MODAL_FRAME_TEXT_ID = "modal-frame-text" + (id_suffix ? ("-" + id_suffix) : "");
         };
 
-        // shortcut for the 'class'
-        var TheClass = M.qtypes.omerocommon.ImageSelector;
 
-        //
-        TheClass.toImageSelector = function (roi_shape_list, visible_roi_list, focusable_roi_list) {
-            var result = [];
-            for (var i in roi_shape_list) {
-                for (var j in roi_shape_list[i].shapes) {
-                    var shape = roi_shape_list[i].shapes[j];
-                    result.push(new TheClass(
-                        shape,
-                            visible_roi_list && visible_roi_list.indexOf(shape.id) !== -1,
-                            focusable_roi_list && focusable_roi_list.indexOf(shape.id) !== -1
-                        )
-                    );
-                }
-            }
-            return result;
+        var prototype = M.qtypes.omerocommon.ModalImageSelector.prototype;
+
+        prototype.showDialogMessage = function (message) {
+            $("#" + this._MODAL_FRAME_TEXT_ID).html(message);
+            $("#" + this._MODAL_FRAME_ID).modal("show");
+        };
+
+
+        prototype.hideDialogMessage = function () {
+            $("#" + this._MODAL_FRAME_ID).modal("hide");
         };
 
         // returns the class
-        return M.qtypes.omerocommon.ImageSelector;
+        return M.qtypes.omerocommon.ModalImageSelector;
     }
 );
