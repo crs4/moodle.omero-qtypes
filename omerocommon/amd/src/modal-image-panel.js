@@ -43,12 +43,12 @@ define([],
         M.qtypes.omerocommon.logger = {};
 
 
-        M.qtypes.omerocommon.ModalImageSelector = function (modal_image_selector_panel_id) {
+        M.qtypes.omerocommon.ModalImagePanel = function (modal_image_selector_panel_id) {
             this._modal_image_selector_id = modal_image_selector_panel_id;
         };
 
 
-        var prototype = M.qtypes.omerocommon.ModalImageSelector.prototype;
+        var prototype = M.qtypes.omerocommon.ModalImagePanel.prototype;
 
         prototype._show = function (message) {
             $("#" + this._modal_image_selector_id).modal("show");
@@ -60,6 +60,6 @@ define([],
         };
 
         // returns the class
-        return M.qtypes.omerocommon.ModalImageSelector;
+        return M.qtypes.omerocommon.ModalImagePanel;
     }
 );
