@@ -577,7 +577,7 @@ abstract class qtype_omerocommon_edit_form extends qtype_multichoice_edit_form
   </div>
 </div>
 
-<div class="modal fade" id="modalImageDialogPane" tabindex="-1" role="dialog" aria-labelledby="modalImageDialogLabel">
+<div class="modal fade" id="modalImageDialogPanel" tabindex="-1" role="dialog" aria-labelledby="modalImageDialogLabel">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
