@@ -43,23 +43,20 @@ define([],
         M.qtypes.omerocommon.logger = {};
 
 
-        M.qtypes.omerocommon.ModalImageSelector = function (id_suffix) {
-            this._id_suffix = id_suffix;
-            this._MODAL_FRAME_ID = "modal-frame" + (id_suffix ? ("-" + id_suffix) : "");
-            this._MODAL_FRAME_TEXT_ID = "modal-frame-text" + (id_suffix ? ("-" + id_suffix) : "");
+        M.qtypes.omerocommon.ModalImageSelector = function (modal_image_selector_panel_id) {
+            this._modal_image_selector_id = modal_image_selector_panel_id;
         };
 
 
         var prototype = M.qtypes.omerocommon.ModalImageSelector.prototype;
 
-        prototype.showDialogMessage = function (message) {
-            $("#" + this._MODAL_FRAME_TEXT_ID).html(message);
-            $("#" + this._MODAL_FRAME_ID).modal("show");
+        prototype._show = function (message) {
+            $("#" + this._modal_image_selector_id).modal("show");
         };
 
 
-        prototype.hideDialogMessage = function () {
-            $("#" + this._MODAL_FRAME_ID).modal("hide");
+        prototype._hide = function () {
+            $("#" + this._modal_image_selector_id).modal("hide");
         };
 
         // returns the class
