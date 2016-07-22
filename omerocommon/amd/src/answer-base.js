@@ -28,7 +28,7 @@
  */
 define([
         'jquery',
-        'qtype_omerocommon/modal-image-selector',
+        'qtype_omerocommon/modal-image-panel',
         'qtype_omerocommon/moodle-forms-utils',
         'qtype_omerocommon/multilanguage-element',
         'qtype_omerocommon/multilanguage-attoeditor'
