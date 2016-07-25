@@ -299,6 +299,32 @@ define([
             return 'id_' + this._build_name_of(element_name, answer_index);
         };
 
+        prototype._add_image_selector = function (element_name, answer_index, label, local_map_name, on_click) {
+            var button_name = this._build_name_of("button_" + element_name, answer_index);
+            var button_id = this._build_id_of("button_" + element_name, answer_index);
+
+            var data_name = this._build_name_of("data_" + element_name, answer_index);
+            var data_id = this._build_id_of("data_" + element_name, answer_index);
+
+            var element = '<div style="float: right;">';
+            element += '<input type="hidden" id="' + data_id + '" name="' + data_name + '" ' + ' />';
+            element += '<input ' +
+                'id="' + button_id + '" ' +
+                'name="' + button_name + '" ' +
+                'value="Add Image" ' +
+                'type="button" ' +
+                '/>';
+            element += '</div>';
+
+            this._form_utils.appendElement(this._answer_container, label, element);
+            return {
+                button_id: button_id,
+                button_name: button_name,
+                data_id: data_id,
+                data_name: data_name
+            };
+        };
+
         prototype._build_textarea_of = function (element_name, label, local_map_name) {
             var id = this._build_id_of(element_name);
             var name = this._build_name_of(element_name);
