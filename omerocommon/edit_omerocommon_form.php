@@ -396,6 +396,7 @@ abstract class qtype_omerocommon_edit_form extends qtype_multichoice_edit_form
         $repeated[] = $mform->createElement('hidden', 'feedback');
         $repeated[] = $mform->createElement('hidden', 'answerformat');
         $repeated[] = $mform->createElement('hidden', 'feedbackformat');
+        $repeated[] = $mform->createElement('hidden', 'feedbackimages');
 
         // locale maps answer and feedback
         $repeated[] = $mform->createElement('hidden', 'answer_locale_map');
@@ -406,6 +407,7 @@ abstract class qtype_omerocommon_edit_form extends qtype_multichoice_edit_form
         $mform->setType("feedback", PARAM_TEXT);
         $mform->setType("answerformat", PARAM_RAW);
         $mform->setType("feedbackformat", PARAM_RAW);
+        $mform->setType("feedbackimages", PARAM_RAW);
 
         $mform->setType("answer_locale_map", PARAM_RAW);
         $mform->setType("feedback_locale_map", PARAM_RAW);
