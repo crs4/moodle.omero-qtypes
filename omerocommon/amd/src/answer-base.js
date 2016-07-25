@@ -80,6 +80,9 @@ define([
 
             me._data = {};
 
+            // TODO: relocate the array
+            me._feedback_images = [];
+
             me._fraction_options = fraction_options;
 
             // reference to the container of all answers
@@ -220,6 +223,8 @@ define([
                     document.getElementById($(element).attr("id")).value = value;
                 }
             }
+
+            me._feedback_images = JSON.parse(data["feedbackimages"]);
 
             console.log("Loading multi language elements...");
             for (var editor_element_name in me._editors_map) {
