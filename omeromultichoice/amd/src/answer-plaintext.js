@@ -131,6 +131,11 @@ define([
             me._answer_container = panel;
         };
 
+        prototype.onSelectedImage = function (image_info, picker) {
+            console.log("Selected image", image_info);
+            this._feedback_images.push(image_info.image_id);
+        };
+
         // returns the class
         return M.qtypes.omeromultichoice.AnswerPlaintext;
     }
