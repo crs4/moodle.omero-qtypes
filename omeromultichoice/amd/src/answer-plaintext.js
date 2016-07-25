@@ -105,6 +105,17 @@ define([
             // answer feedback
             me._build_textarea_of("feedback", M.util.get_string("feedback", "question"));
 
+            // answer feedback images
+            var selector_ids = me._add_image_selector("add_images", me._answer_number, "FeedbackImages");
+            me._answer_feedback_filepicker = new M.omero_filepicker({
+                buttonid: selector_ids.button_id,
+                buttonname: selector_ids.button_name,
+                elementid: selector_ids.data_id,
+                elementname: selector_ids.data_name,
+                filename_element: undefined
+            }, {}, true);
+            me._answer_feedback_filepicker.addListener(me);
+
             // answer format
             me._build_hidden_of("feedbackformat", "1");
 
