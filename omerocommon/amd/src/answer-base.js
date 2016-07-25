@@ -111,7 +111,7 @@ define([
         };
 
 
-        prototype._answer_properties = ["answer", "fraction", "feedback"];
+        prototype._answer_properties = ["answer", "fraction", "feedback", "feedbackimages"];
 
         /**
          * Builds the answer
