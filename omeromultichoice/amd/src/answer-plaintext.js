@@ -139,6 +139,11 @@ define([
         prototype.onSelectedImage = function (image_info, picker) {
             console.log("Selected image", image_info);
             this._feedback_images.push(image_info.image_id);
+            this._feedback_image_table.append({
+                id: image_info.image_id,
+                description: "Image name...",
+                visiblerois: ""
+            });
         };
 
         // returns the class
