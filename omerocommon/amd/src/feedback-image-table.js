@@ -156,7 +156,7 @@ define(['jquery', 'qtype_omerocommon/roi-shape-model'],
                         },
                         {
                             field: 'visiblerois',
-                            title: M.util.get_string('roi_description', 'qtype_omerocommon'),
+                            title: M.util.get_string('roi_visible', 'qtype_omerocommon'),
                             //sortable: true,
                             rowspan: 2,
                             align: 'center',
