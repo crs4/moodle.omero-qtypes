@@ -105,6 +105,9 @@ define([
             // answer feedback
             me._build_textarea_of("feedback", M.util.get_string("feedback", "question"));
 
+            // answer format
+            me._build_hidden_of("feedbackformat", "1");
+
             // answer feedback images
             var selector_ids = me._add_image_selector("add_images", me._answer_number, "FeedbackImages");
             me._answer_feedback_filepicker = new M.omero_filepicker({
@@ -116,8 +119,6 @@ define([
             }, {}, true);
             me._answer_feedback_filepicker.addListener(me);
 
-            // answer format
-            me._build_hidden_of("feedbackformat", "1");
 
             // reference to the head
             me._answer_head = $('#head-answer-' + this._answer_number);
