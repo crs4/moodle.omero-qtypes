@@ -277,34 +277,7 @@ define(['jquery', 'qtype_omerocommon/roi-shape-model'],
 
         prototype.eventHandler = function (table) {
             var me = this;
-
-            // Reusable function to handle visibility change
-            function onRoiShapeVisibilityChanged(target, value, row) {
-                // if focus is active then visibility cannot be changed
-                if (row.visible && row.focusable) return;
-
-                row.visible = !row.visible;
-                if (row.visible)
-                    $(target).attr("class", "green glyphicon glyphicon-eye-open");
-                else
-                    $(target).attr("class", "#E9E9E9 glyphicon glyphicon-eye-close");
-
-                notifyListeners(table, {
-                    type: "roiShapeVisibilityChanged",
-                    shape: row,
-                    event: value,
-                    visible: row.visible
-                });
-            }
-
             return {
-                'click .like': function (e, value, row /*, index*/) {
-                    if ($(e.target).attr("class").indexOf("glyphicon-plus-sign") !== -1)
-                        $(e.target).attr("class", "green glyphicon glyphicon-eye-open");
-                    else
-                        $(e.target).attr("class", "red glyphicon glyphicon-eye-close");
-                    console.log('You click like action, row: ' + JSON.stringify(row));
-                },
 
                 /**
                  * Handle the visibility change event !!!
@@ -314,8 +287,13 @@ define(['jquery', 'qtype_omerocommon/roi-shape-model'],
                  * @param row
                  * @param index
                  */
-                'click .roi-shape-visibility': function (e, value, row /*, index*/) {
-                    onRoiShapeVisibilityChanged(e.target, value, row);
+                'click .edit-image-action': function (e, value, row /*, index*/) {
+                    console.log("Editing image: " + row.id);
+                    notifyListeners(table, {
+                        type: "editImage",
+                        image: row,
+                        event: value
+                    });
                 },
 
                 /**
@@ -326,34 +304,13 @@ define(['jquery', 'qtype_omerocommon/roi-shape-model'],
                  * @param row
                  * @param index
                  */
-                'click .roi-shape-focusability': function (e, value, row /*, index*/) {
-                    row.focusable = !row.focusable;
-                    if (row.focusable)
-                        $(e.target).attr("class", "green glyphicon glyphicon-record");
-                    else
-                        $(e.target).attr("class", "#E9E9E9 glyphicon glyphicon-record");
-
-                    console.log("FOCUSability changed: " + row.focusable);
+                'click .delete-image-action': function (e, value, row /*, index*/) {
+                    console.log("Deleting image: " + row.id);
                     notifyListeners(table, {
-                        type: "roiShapeFocusabilityChanged",
-                        shape: row,
-                        event: value,
-                        focusable: row.focusable
+                        type: "deleteImage",
+                        image: row,
+                        event: value
                     });
-
-                    onRoiShapeVisibilityChanged($(e.target).parents("tr").find(".roi-shape-visibility i")[0], value, row);
-                },
-
-                'click .remove': function (e, value, row /*, index*/) {
-                    me.table_element.bootstrapTable('remove', {
-                        field: 'id',
-                        values: [row.id]
-                    });
-                },
-
-                'change .answer-class': function (e, value, row, index) {
-                    console.log(e, value, row, index);
-                    console.log("Changed ROW: ", row);
                 }
             };
         };
