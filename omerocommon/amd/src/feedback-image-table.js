@@ -233,7 +233,7 @@ define(['jquery', 'qtype_omerocommon/roi-shape-model'],
                 console.log(row, args);
             });
             me.remove_element.click(function () {
-                var ids = me.getIdSelections();
+                var ids = me.getSelectionIDs();
                 me.table_element.bootstrapTable('remove', {
                     field: 'id',
                     values: ids
@@ -250,7 +250,7 @@ define(['jquery', 'qtype_omerocommon/roi-shape-model'],
         };
 
 
-        prototype.getIdSelections = function () {
+        prototype.getSelectionIDs = function () {
             return $.map(this.table_element.bootstrapTable('getSelections'), function (row) {
                 return row.id;
             });
