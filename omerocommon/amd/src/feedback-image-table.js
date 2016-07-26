@@ -147,60 +147,50 @@ define(['jquery', 'qtype_omerocommon/roi-shape-model'],
                             formatter: me.idFormatter
                         },
                         {
-                            title: M.util.get_string('roi_shape_details', 'qtype_omerocommon'),
-                            colspan: 4,
+                            field: 'description',
+                            title: M.util.get_string('roi_description', 'qtype_omerocommon'),
+                            rowspan: 2,
+                            align: 'left',
+                            valign: 'middle',
+                            formatter: me.descriptionFormatter
+                        },
+                        {
+                            field: 'visiblerois',
+                            title: M.util.get_string('roi_description', 'qtype_omerocommon'),
+                            //sortable: true,
+                            rowspan: 2,
+                            align: 'center',
+                            valign: 'middle',
+                            formatter: me.descriptionFormatter
+                        },
+                        {
+                            title: "Actions",
+                            colspan: 2,
                             align: 'center'
                         }
                     ],
                     [
                         {
-                            field: 'description',
-                            title: M.util.get_string('roi_description', 'qtype_omerocommon'),
-                            //sortable: true,
-                            align: 'left',
-                            //editable: {
-                            //    type: 'textarea',
-                            //    title: 'ROI Shape Description',
-                            //    width: '200px',
-                            //    resize: 'none',
-                            //    validate: function (value) {
-                            //        value = $.trim(value);
-                            //        if (!value) {
-                            //            return 'This field is required';
-                            //        }
-                            //
-                            //        var data = me.table_element.bootstrapTable('getData'),
-                            //            index = $(this).parents('tr').data('index');
-                            //        console.log(data[index]);
-                            //        return '';
-                            //    }
-                            //},
-                            formatter: me.descriptionFormatter
-                        },
-                        {
-                            field: 'visible',
-                            title: M.util.get_string('roi_visibility', 'qtype_omerocommon'),
+                            //field: 'visible',
+                            title: M.util.get_string('edit', 'core'),
                             width: "20px",
                             align: 'center',
                             valign: 'middle',
                             events: me.eventHandler(me),
-                            formatter: me.visibilityFormatter
+                            formatter: me.editActionFormatter
                         },
                         {
-                            field: 'focusable',
-                            title: M.util.get_string('roi_focus', 'qtype_omerocommon'),
+                            //field: 'focusable',
+                            title: M.util.get_string('delete', 'core'),
                             width: "20px",
                             align: 'center',
                             valign: 'middle',
                             events: me.eventHandler(me),
-                            formatter: me.focusAreaFormatter
+                            formatter: me.deleteActionFormatter
                         }
                     ]
                 ]
             };
-
-            //if (!showColumnSelector)
-            bootstrap_config.columns[1].splice(3, 1);
 
             // Initializes the bootstrap table
             me.table_element.bootstrapTable(bootstrap_config);
