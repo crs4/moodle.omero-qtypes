@@ -137,13 +137,6 @@ define(['jquery', 'qtype_omerocommon/roi-shape-model'],
                 columns: [
                     [
                         {
-                            field: 'state',
-                            checkbox: true,
-                            rowspan: 2,
-                            align: 'center',
-                            valign: 'middle'
-                        },
-                        {
                             title: 'ID',
                             field: 'id',
                             rowspan: 2,
