@@ -150,7 +150,7 @@ define(['jquery', 'qtype_omerocommon/roi-shape-model'],
                             field: 'description',
                             title: M.util.get_string('roi_description', 'qtype_omerocommon'),
                             rowspan: 2,
-                            align: 'left',
+                            align: 'center',
                             valign: 'middle',
                             formatter: me.descriptionFormatter
                         },
