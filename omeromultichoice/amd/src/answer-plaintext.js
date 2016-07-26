@@ -119,6 +119,9 @@ define([
             }, {}, true);
             me._answer_feedback_filepicker.addListener(me);
 
+            // answer feedback image table
+            me._feedback_image_table = new M.qtypes.omerocommon.FeedbackImageTable("table-" + me._answer_number);
+            me._form_utils.appendElement(me._answer_container, "", me._feedback_image_table.drawHtmlTable());
 
             // reference to the head
             me._answer_head = $('#head-answer-' + this._answer_number);
