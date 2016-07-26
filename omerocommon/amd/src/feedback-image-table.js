@@ -356,13 +356,13 @@ define(['jquery', 'qtype_omerocommon/roi-shape-model'],
             ].join(" ");
         };
 
-        prototype.totalNameFormatter = function (data) {
-            return data.length;
-        };
-
-        prototype.totalNameFormatter = function (data) {
-            return data.length;
-        };
+        // prototype.totalNameFormatter = function (data) {
+        //     return data.length;
+        // };
+        //
+        // prototype.totalNameFormatter = function (data) {
+        //     return data.length;
+        // };
 
         prototype.descriptionFormatter = function (data) {
             return data || " ";
