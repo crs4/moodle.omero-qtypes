@@ -128,9 +128,9 @@ define(['jquery', 'qtype_omerocommon/roi-shape-model'],
             else me.hideToolbar();
 
             // Setup the responseHandler
-            me.table_element.attr("data-response-handler", "M.qtypes.omerocommon.FeedbackImageTable.responseHandler");
+            //me.table_element.attr("data-response-handler", "M.qtypes.omerocommon.FeedbackImageTable.responseHandler");
             // Register the detailsFormatter
-            me.table_element.attr("data-detail-formatter", "M.qtypes.omerocommon.FeedbackImageTable.detailFormatter");
+            //me.table_element.attr("data-detail-formatter", "M.qtypes.omerocommon.FeedbackImageTable.detailFormatter");
 
             var bootstrap_config = {
                 height: "400",
