@@ -161,7 +161,7 @@ define(['jquery', 'qtype_omerocommon/roi-shape-model'],
                             rowspan: 2,
                             align: 'center',
                             valign: 'middle',
-                            formatter: me.descriptionFormatter
+                            formatter: me.visibleRoisFormatter
                         },
                         {
                             title: "Actions",
@@ -365,6 +365,10 @@ define(['jquery', 'qtype_omerocommon/roi-shape-model'],
         // };
 
         prototype.descriptionFormatter = function (data) {
+            return data || " ";
+        };
+
+        prototype.visibleRoisFormatter = function (data) {
             return data || " ";
         };
 
