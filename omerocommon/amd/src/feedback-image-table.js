@@ -368,37 +368,24 @@ define(['jquery', 'qtype_omerocommon/roi-shape-model'],
             return data || " ";
         };
 
-        prototype.visibilityFormatter = function (data) {
+        prototype.editActionFormatter = function (data) {
             return [
-                '<a class="roi-shape-visibility" href="javascript:void(0)" title="Visibility">',
-                (data ?
-                    '<i class="green glyphicon glyphicon-eye-open"></i>' :
-                    '<i class="#E9E9E9 glyphicon glyphicon-eye-close"></i>'),
+                '<a class="edit-image-action" href="javascript:void(0)" title="Edit">',
+                '<i class="glyphicon glyphicon-edit" style="color: orange"></i>',
                 '</a> '
             ].join(" ");
         };
 
-        prototype.focusAreaFormatter = function (data) {
+        prototype.deleteActionFormatter = function (data) {
             return [
-                '<a class="roi-shape-focusability" href="javascript:void(0)" title="Focusability">',
-                (data ?
-                    '<i class="green glyphicon glyphicon-record"></i>' :
-                    '<i class="#E9E9E9 glyphicon glyphicon-record"></i>'),
+                '<a class="delete-image-action" href="javascript:void(0)" title="Delete">',
+                '<i class="glyphicon glyphicon-remove-circle" style="color: red"></i>',
                 '</a> '
             ].join(" ");
         };
 
-        prototype.answerClassFormatter = function (/*value, row, index*/) {
-            return [
-                '<select class="answer-class form-control">',
-                '<option>1</option>',
-                '<option>2</option>',
-                '<option>3</option>',
-                '<option>4</option>',
-                '</select>'
-            ].join('');
-        };
 
+        // UTILITY METHODS
         prototype.getHeight = function () {
             return $(window).height() - $('h1').outerHeight(true);
         };
