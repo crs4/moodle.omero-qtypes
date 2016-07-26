@@ -395,26 +395,29 @@ define(['jquery', 'qtype_omerocommon/roi-shape-model'],
         };
 
 
-        prototype.appendRoiShapeList = function (data) {
+        // DATA MANAGEMENT Methods
+
+
+        prototype.setData = function (data) {
+            this.removeAll();
+            this.append(data);
+        };
+
+        prototype.append = function (data) {
             return this.table_element.bootstrapTable('append', data);
         };
 
-        prototype.setRoiShapeList = function (data) {
-            this.removeAll();
-            this.appendRoiShapeList(data);
+        prototype.getImageInfo = function (image_id) {
+            return this.table_element.bootstrapTable('getRowByUniqueId', image_id);
         };
 
-        prototype.getRoiShape = function (roi_shape_id) {
-            return this.table_element.bootstrapTable('getRowByUniqueId', roi_shape_id);
-        };
-
-        prototype.getRoiShapeList = function () {
+        prototype.getData = function () {
             return this.table_element.bootstrapTable('getData');
         };
 
-        prototype.removeRoiShape = function (roi_shapes) {
-            roi_shapes = (roi_shapes instanceof Array) ? roi_shapes : [roi_shapes];
-            return this.table_element.bootstrapTable('remove', {field: 'id', values: roi_shapes});
+        prototype.remove = function (image_id) {
+            image_id = (image_id instanceof Array) ? image_id : [image_id];
+            return this.table_element.bootstrapTable('remove', {field: 'id', values: image_id});
         };
 
         prototype.removeAll = function () {
