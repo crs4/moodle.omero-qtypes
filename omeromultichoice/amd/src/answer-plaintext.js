@@ -109,7 +109,7 @@ define([
             me._build_hidden_of("feedbackformat", "1");
 
             // answer feedback images
-            var selector_ids = me._add_image_selector("add_images", me._answer_number, "FeedbackImages");
+            var selector_ids = me._add_image_selector("add_images", me._answer_number, "Feedback Images");
             me._answer_feedback_filepicker = new M.omero_filepicker({
                 buttonid: selector_ids.button_id,
                 buttonname: selector_ids.button_name,
@@ -122,6 +122,7 @@ define([
             // answer feedback image table
             me._feedback_image_table = new M.qtypes.omerocommon.FeedbackImageTable("table-" + me._answer_number);
             me._form_utils.appendElement(me._answer_container, "", me._feedback_image_table.drawHtmlTable());
+            me._feedback_image_table.initTable();
 
             // reference to the head
             me._answer_head = $('#head-answer-' + this._answer_number);
