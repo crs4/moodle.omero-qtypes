@@ -99,12 +99,11 @@ define(['jquery', 'qtype_omerocommon/roi-shape-model'],
          * @returns {string}
          */
         prototype.drawHtmlTable = function () {
-            var html = '<table id="' + this._table_id + '" data-toolbar="#toolbar" data-search="false" ' +
-                'data-height="400" data-show-refresh="false" data-show-toggle="false" data-show-columns="false" ' +
-                'data-show-export="false" data-detail-view="false" data-minimum-count-columns="2" ' +
-                'data-show-pagination-switch="false" data-pagination="false" data-id-field="id" ' +
-                'data-page-list="[10, 25, 50, 100, ALL]" data-show-footer="false" data-side-pagination="client"> ' +
-                '</table>';
+            var html = '' +
+                '<div id="' + this._table_container_id + '">' +
+                '<table data-toggle="table" width="100%" id="' + this._table_id + '">' +
+                '</table>' +
+                '</div>';
             return html;
         };
 
