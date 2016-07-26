@@ -201,34 +201,34 @@ define(['jquery', 'qtype_omerocommon/roi-shape-model'],
 
 
             me.table_element.on('click-cell.bs.table', function (table, field, e, row, index) {
-                console.log("Click on a table ROW", e, row, index);
-                notifyListeners(me, {
-                    type: "roiShapeFocus",
-                    shape: row,
-                    visible: row.visible
-                });
+                // console.log("Click on a table ROW", e, row, index);
+                // notifyListeners(me, {
+                //     type: "roiShapeFocus",
+                //     shape: row,
+                //     visible: row.visible
+                // });
             });
 
             me.table_element.on('check.bs.table uncheck.bs.table ' +
                 'check-all.bs.table uncheck-all.bs.table', function () {
-                me.remove_element.prop('disabled', !me.table_element.bootstrapTable('getSelections').length);
-
-                // save your data, here just save the current page
-                var selections = me.getIdSelections();
-
-                notifyListeners(me, {
-                    type: "roiShapesSelected",
-                    shapes: selections
-                });
+                // me.remove_element.prop('disabled', !me.table_element.bootstrapTable('getSelections').length);
+                //
+                // // save your data, here just save the current page
+                // var selections = me.getSelectionIDs();
+                //
+                // notifyListeners(me, {
+                //     type: "imageSelected",
+                //     images: selections
+                // });
             });
-            me.table_element.on('expand-row.bs.table', function (e, index, row, $detail) {
-                if (index % 2 == 1) {
-                    $detail.html('Loading from ajax request...');
-                    $.get('LICENSE', function (res) {
-                        $detail.html(res.replace(/\n/g, '<br>'));
-                    });
-                }
-            });
+            // me.table_element.on('expand-row.bs.table', function (e, index, row, $detail) {
+            //     if (index % 2 == 1) {
+            //         $detail.html('Loading from ajax request...');
+            //         $.get('LICENSE', function (res) {
+            //             $detail.html(res.replace(/\n/g, '<br>'));
+            //         });
+            //     }
+            // });
             me.table_element.on('all.bs.table', function (e, row, args) {
                 console.log(row, args);
             });
