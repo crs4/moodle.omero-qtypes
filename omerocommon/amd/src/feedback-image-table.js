@@ -124,8 +124,8 @@ define(['jquery', 'qtype_omerocommon/roi-shape-model'],
             // Sets the endpoint to get the ROI infos
             //me.table_container.attr("data-url", _getRoiShapeDetailInfoUrl());
 
-            // if (!hideToolbar) me.showToolbar();
-            // else me.hideToolbar();
+            if (!hideToolbar) me.showToolbar();
+            else me.hideToolbar();
 
             // Setup the responseHandler
             me.table_element.attr("data-response-handler", "M.qtypes.omerocommon.FeedbackImageTable.responseHandler");
