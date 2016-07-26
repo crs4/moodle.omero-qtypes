@@ -333,10 +333,7 @@ define(['jquery', 'qtype_omerocommon/roi-shape-model'],
 
 
         prototype.show = function () {
-            console.log(this.table_container_element);
-            alert("TableContainerElement....");
             this.table_container_element.removeClass("hidden");
-
         };
 
         prototype.hide = function () {
