@@ -141,7 +141,7 @@ define(['jquery', 'qtype_omerocommon/roi-shape-model'],
                         },
                         {
                             title: M.util.get_string('roi_shape_details', 'qtype_omerocommon'),
-                            colspan: 4,
+                            colspan: 3,
                             align: 'center'
                         }
                     ],
