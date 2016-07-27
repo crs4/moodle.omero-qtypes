@@ -307,10 +307,11 @@ define(['jquery', 'qtype_omerocommon/roi-shape-model'],
                 'click .delete-image-action': function (e, value, row /*, index*/) {
                     console.log("Deleting image: " + row.id);
                     notifyListeners(table, {
-                        type: "deleteImage",
+                        type: "deletedImage",
                         image: row,
                         event: value
                     });
+                    me.remove(row.id);
                 }
             };
         };
@@ -419,9 +420,9 @@ define(['jquery', 'qtype_omerocommon/roi-shape-model'],
             return this.table_element.bootstrapTable('getData');
         };
 
-        prototype.remove = function (image_id) {
-            image_id = (image_id instanceof Array) ? image_id : [image_id];
-            return this.table_element.bootstrapTable('remove', {field: 'id', values: image_id});
+        prototype.remove = function (image) {
+            var image_id = (image instanceof Object) ? image.id : image;
+            this.table_element.bootstrapTable('remove', {field: 'id', values: [image_id]});
         };
 
         prototype.removeAll = function () {
