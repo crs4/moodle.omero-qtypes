@@ -1,0 +1,55 @@
+/*#modalImageDialogPanel .modal-image-title {*/
+/*margin: 0;*/
+/*}*/
+
+/*#modalImageDialogPanel .modal-image-dialog {*/
+/*widht: 100%;*/
+/*height: auto;*/
+/*margin: 0;*/
+/*top: auto;*/
+/*bottom: 0;*/
+/*padding: 0;*/
+/*}*/
+
+#modalImageDialogPanel { /*.modal-image.fade.in {*/
+    top: 14%;
+    height: 915px;
+    left: 30%;
+    width: 1000px;
+}
+
+#modalImageDialogPanel .modal-body {
+    /*max-height: 90%;*/
+    /*height: 90%;*/
+    min-height: 800px;
+    height: 800px;
+}
+
+#modalImageDialogPanel .modal-dialog {
+    /*min-height: 1000px;*/
+}
+
+
+#modalImageDialogPanel-roi-shape-inspector-table-toolbar{
+    margin-top: 500px;
+}
+
+/*@media (min-width: 768px) {*/
+/*#modalImageDialogPanel .modal-image-dialog {*/
+/*width: auto;*/
+/*max-height: 250px;*/
+/*top: auto;*/
+/*padding: 0;*/
+/*}*/
+/*}*/
+
+/*#modalImageDialogPanel .modal-image-backdrop, #modalImageDialogPanel .modal-image-backdrop.fade.in {*/
+/*opacity: 0.6;*/
+/*max-height: 100%;*/
+/*padding: 0;*/
+/*}*/
+
+/*#modalImageDialogPanel .modal-image-body {*/
+/*min-height: 100%;*/
+/*height: 90px;*/
+/*}*/
