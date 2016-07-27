@@ -59,6 +59,16 @@ define([],
             $("#" + this._modal_image_selector_id).modal("hide");
         };
 
+
+        M.qtypes.omerocommon.ModalImagePanel.DEFAULT_ELEMENT_NAME = "modalImageDialogPanel";
+        M.qtypes.omerocommon.ModalImagePanel.getInstance = function () {
+            if (!M.qtypes.omerocommon.ModalImagePanel._default_instance) {
+                M.qtypes.omerocommon.ModalImagePanel._default_instance =
+                    new M.qtypes.omerocommon.ModalImagePanel(M.qtypes.omerocommon.ModalImagePanel.DEFAULT_ELEMENT_NAME);
+            }
+            return M.qtypes.omerocommon.ModalImagePanel._default_instance;
+        };
+
         // returns the class
         return M.qtypes.omerocommon.ModalImagePanel;
     }
