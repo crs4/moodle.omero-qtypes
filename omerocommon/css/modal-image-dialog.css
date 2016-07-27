@@ -15,14 +15,27 @@
 #modalImageDialogPanel .modal-dialog {
 }
 
-
-#modalImageDialogPanel-roi-shape-inspector-table-toolbar{
-    margin-top: 500px;
+#modalImageDialogPanel-toolbar{
+    margin-right: 0px;
+    position: relative;
+    top: 505px;
 }
 
+#modalImageDialogPanel-image-lock-container {
+    float: right;
+    margin-top: 20px;
+}
 
+#modalImageDialogPanel-image-view-lock {
+    margin-left: 5px;
+    width: auto;
+}
 
-/*#modalImageDialogPanel .modal-image-body {*/
-/*min-height: 100%;*/
-/*height: 90px;*/
-/*}*/
+#modalImageDialogPanel-update-image-properties {
+    font-size: small;
+    margin-left: 3px;
+}
+
+#modalImageDialogPanel-roi-shape-inspector-table-toolbar{
+    margin-top: 530px;
+}
