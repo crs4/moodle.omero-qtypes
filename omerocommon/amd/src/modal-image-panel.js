@@ -87,7 +87,7 @@ define(['qtype_omerocommon/image-viewer'],
         };
 
 
-        prototype._hide = function () {
+        prototype.hide = function () {
             $("#" + this._modal_image_selector_id).modal("hide");
         };
 
