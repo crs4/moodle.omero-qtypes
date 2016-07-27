@@ -92,6 +92,121 @@ define(['qtype_omerocommon/image-viewer'],
         };
 
 
+        prototype.onImageModelRoiLoaded = function (data) {
+
+            var me = this;
+
+            // removed_rois
+            var removed_rois = {};
+
+            console.log("ImageROI loaded", data);
+
+            // validate the list of visible ROIs
+            removed_rois.visible = me._image_viewer_controller.checkRois(me._visible_roi_list, true);
+            console.log("Validated ROI Shape List", me._visible_roi_list);
+
+            // validate the list of focusable ROIs
+            removed_rois.focusable = me._image_viewer_controller.checkRois(me._focusable_roi_list, true);
+            console.log("Validated Focusable ROI List", me._focusable_roi_list);
+
+            var roi_list = M.qtypes.omerocommon.RoiShapeModel.toRoiShapeModel(data,
+                me._visible_roi_list, me._focusable_roi_list);
+            console.log("Loaded ROI Shapes Models", roi_list);
+
+            if (!me._roi_shape_table) {
+
+                // FIXME: the tableID must be configurable
+                me._roi_shape_table = new M.qtypes.omerocommon.RoiShapeTableBase(
+                    "modalImageDialogPanel-roi-shape-inspector-table");
+                me._roi_shape_table.initTable(false, me._show_roishape_column_group, true);
+                me._roi_shape_table.addEventListener(me);
+            }
+            me._roi_shape_table.removeAll();
+            me._roi_shape_table.appendRoiShapeList(roi_list);
+            me._image_viewer_controller.showRoiShapes(me._visible_roi_list);
+
+            console.log("Updated ROI table!!!");
+
+            return removed_rois;
+        };
+
+
+        prototype.onRoiShapeVisibilityChanged = function (event) {
+            console.log(event);
+            this.onRoiShapePropertyChanged(event, "visible", this._visible_roi_list);
+        };
+
+
+        prototype.onRoiShapeFocusabilityChanged = function (event) {
+            console.log(event);
+            this.onRoiShapePropertyChanged(event, "focusable", this._focusable_roi_list);
+        };
+
+        prototype.onRoiShapePropertyChanged = function (event, property, visible) {
+            if (event.shape[property]) {
+                if (property === "visible") this._image_viewer_controller.showRoiShapes([event.shape.id]);
+                if (visible.indexOf(event.shape.id) === -1)
+                    visible.push(event.shape.id);
+            } else {
+                if (property === "visible") this._image_viewer_controller.hideRoiShapes([event.shape.id]);
+                var index = visible.indexOf(event.shape.id);
+                if (index > -1)
+                    visible.splice(index, 1);
+            }
+        };
+
+
+        prototype.onRoiShapeFocus = function (event) {
+            this._image_viewer_controller.setFocusOnRoiShape.call(
+                this._image_viewer_controller,
+                event.shape.id
+            );
+        };
+
+
+        prototype._initImagePropertiesControls = function () {
+            var me = this;
+            me._image_properties_element = $("[name^=omeroimageproperties]");
+            me._image_properties = me._image_properties_element.val();
+            if (me._image_properties && me._image_properties.length !== 0) {
+                try {
+                    me._image_properties = JSON.parse(me._image_properties);
+                } catch (e) {
+                    console.error(e);
+                    me._image_properties = {};
+                }
+            } else me._image_properties = {};
+
+            $("#omero-image-viewer-properties").html(me.getFormattedImageProperties());
+
+            $("#omero-image-properties-update").click(function () {
+                me.updateImageProperties();
+            });
+        };
+
+        prototype.getImageProperties = function () {
+            return this._image_properties;
+        };
+
+        prototype.getFormattedImageProperties = function () {
+            var ip = this._image_properties;
+            var result = "";
+            if (ip.center) {
+                result += ("center (x,y): " + ip.center.x + ", " + ip.center.y);
+                result += (", zoom: " + ip.zoom_level);
+                result += (", t: " + ip.t);
+                result += (", z: " + ip.z);
+            }
+            return result;
+        };
+
+        prototype.updateImageProperties = function () {
+            this._image_properties = this._image_viewer_controller.getImageProperties();
+            this._image_properties_element.val(JSON.stringify(this._image_properties));
+            $("#omero-image-viewer-properties").html(this.getFormattedImageProperties());
+        };
+
+
         M.qtypes.omerocommon.ModalImagePanel.DEFAULT_ELEMENT_NAME = "modalImageDialogPanel";
         M.qtypes.omerocommon.ModalImagePanel.getInstance = function () {
             if (!M.qtypes.omerocommon.ModalImagePanel._default_instance) {
