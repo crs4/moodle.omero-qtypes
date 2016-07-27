@@ -58,8 +58,32 @@ define(['qtype_omerocommon/image-viewer'],
 
         var prototype = M.qtypes.omerocommon.ModalImagePanel.prototype;
 
-        prototype._show = function (message) {
+        prototype.show = function (image_id, visible_rois, focusable_rois) {
+
             $("#" + this._modal_image_selector_id).modal("show");
+
+            var me = this;
+
+            me._visible_roi_list = visible_rois ? visible_rois.split(",") : [];
+            me._focusable_roi_list = focusable_rois ? focusable_rois.split(",") : [];
+
+            // clean the old canvas
+            me._image_info_container.html(me._image_info_container_template);
+
+            var viewer_ctrl = new ImageViewer(
+                image_id, undefined,
+                me._image_server || "http://ome-cytest.crs4.it:8080",
+                "modalImageDialogPanel-image-viewer-container", "modalImageDialogPanel-annotations_canvas",
+                me._viewer_model_server || "http://mep.crs4.it/moodle/question/type/omerocommon/viewer/viewer-model.php");
+            me._image_viewer_controller = viewer_ctrl;
+
+            // load and show image and its related ROIs
+            viewer_ctrl.open(true, function (data) {
+                me.onImageModelRoiLoaded(data);
+                //me._initImagePropertiesControls();
+                me._image_viewer_controller.updateViewFromProperties(me._image_properties);
+                //$("#omero-image-viewer-toolbar").removeClass("hidden");
+            });
         };
 
 
