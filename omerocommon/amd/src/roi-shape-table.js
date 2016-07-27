@@ -95,7 +95,7 @@ define(['jquery', 'qtype_omerocommon/roi-shape-model'],
         var prototype = M.qtypes.omerocommon.RoiShapeTableBase.prototype;
 
         // table setup
-        prototype.initTable = function (hideToolbar, showColumnSelector) {
+        prototype.initTable = function (hideToolbar, showColumnSelector, hideFocusAreas) {
 
             var me = this;
 
@@ -193,7 +193,8 @@ define(['jquery', 'qtype_omerocommon/roi-shape-model'],
             };
 
             //if (!showColumnSelector)
-            bootstrap_config.columns[1].splice(3, 1);
+            if (hideFocusAreas)
+                bootstrap_config.columns[1].splice(2, 1);
 
             // Initializes the bootstrap table
             me.table_element.bootstrapTable(bootstrap_config);
