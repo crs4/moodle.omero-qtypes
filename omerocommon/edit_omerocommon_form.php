@@ -631,11 +631,12 @@ abstract class qtype_omerocommon_edit_form extends qtype_multichoice_edit_form
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
         <h4 class="modal-title text-warning" id="modalImageDialogLabel">
-            <i class="glyphicon glyphicon-warning-sign"></i> ' . get_string('validate_warning', 'qtype_omerocommon') .
+            <!--<i class="glyphicon glyphicon-warning-sign"></i>--> ' .
+            get_string('omero_image_viewer', 'qtype_omerocommon') .
             '</h4>
       </div>
       <div class="modal-body text-left">
-        <span id="modal-frame-text">Ciao Bello</span>
+        <div id="modal-frame-text">' . $modal_image_viewer_html . '</div>
       </div>
       <div class="modal-footer text-center">
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
