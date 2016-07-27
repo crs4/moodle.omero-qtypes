@@ -80,9 +80,10 @@ define(['qtype_omerocommon/image-viewer'],
             // load and show image and its related ROIs
             viewer_ctrl.open(true, function (data) {
                 me.onImageModelRoiLoaded(data);
-                //me._initImagePropertiesControls();
+                me._initImagePropertiesControls();
                 me._image_viewer_controller.updateViewFromProperties(me._image_properties);
-                //$("#omero-image-viewer-toolbar").removeClass("hidden");
+                // FIXME: configuration
+                $("#modalImageDialogPanel-toolbar").removeClass("hidden");
             });
         };
 
@@ -166,6 +167,9 @@ define(['qtype_omerocommon/image-viewer'],
 
         prototype._initImagePropertiesControls = function () {
             var me = this;
+
+            // FIXME: image properties has to be initialized using a JSON
+            // ...... we are now using the image properties of the main image related to the question
             me._image_properties_element = $("[name^=omeroimageproperties]");
             me._image_properties = me._image_properties_element.val();
             if (me._image_properties && me._image_properties.length !== 0) {
@@ -175,11 +179,12 @@ define(['qtype_omerocommon/image-viewer'],
                     console.error(e);
                     me._image_properties = {};
                 }
-            } else me._image_properties = {};
+            } else
+                me._image_properties = {};
 
-            $("#omero-image-viewer-properties").html(me.getFormattedImageProperties());
-
-            $("#omero-image-properties-update").click(function () {
+            // FIXME: the ID must be configurable
+            $("#modalImageDialogPanel-image-properties").html(me.getFormattedImageProperties());
+            $("#modalImageDialogPanel-update-image-properties").click(function () {
                 me.updateImageProperties();
             });
         };
@@ -203,7 +208,8 @@ define(['qtype_omerocommon/image-viewer'],
         prototype.updateImageProperties = function () {
             this._image_properties = this._image_viewer_controller.getImageProperties();
             this._image_properties_element.val(JSON.stringify(this._image_properties));
-            $("#omero-image-viewer-properties").html(this.getFormattedImageProperties());
+            // FIXME: the ID must be configurable; use a method to update the image properties
+            $("#modalImageDialogPanel-image-properties").html(this.getFormattedImageProperties());
         };
 
 
