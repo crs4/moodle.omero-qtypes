@@ -689,6 +689,8 @@ abstract class qtype_omerocommon_edit_form extends qtype_multichoice_edit_form
     protected function export_locale_js_strings()
     {
         global $PAGE;
+        $PAGE->requires->string_for_js('edit', 'core');
+        $PAGE->requires->string_for_js('delete', 'core');
         $PAGE->requires->string_for_js('roi_shape_details', 'qtype_omerocommon');
         $PAGE->requires->string_for_js('roi_description', 'qtype_omerocommon');
         $PAGE->requires->string_for_js('roi_visibility', 'qtype_omerocommon');
