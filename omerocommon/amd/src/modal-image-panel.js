@@ -25,10 +25,10 @@
  * @copyright  2015-2016 CRS4
  * @license    https://opensource.org/licenses/mit-license.php MIT license
  */
-define([],
+define(['qtype_omerocommon/image-viewer'],
     /* jshint curly: false */
     /* globals $ */
-    function () {
+    function (ImageViewer) {
 
         // debug_mode
         //var debug_mode = M.cfg.developerdebug;
