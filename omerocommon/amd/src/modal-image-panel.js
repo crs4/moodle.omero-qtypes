@@ -45,6 +45,14 @@ define(['qtype_omerocommon/image-viewer'],
 
         M.qtypes.omerocommon.ModalImagePanel = function (modal_image_selector_panel_id) {
             this._modal_image_selector_id = modal_image_selector_panel_id;
+
+            // FIXME: the id of the image container must be configurable
+            this._image_info_container = $("#modalImageDialogPanel-image-viewer-container");
+            this._image_info_container_template = $("#modalImageDialogPanel-image-viewer-container").html();
+
+            // init properties to host the list of visible/focusable rois
+            this._visible_roi_list = [];
+            this._focusable_roi_list = [];
         };
 
 
