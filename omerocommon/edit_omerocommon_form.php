@@ -558,6 +558,51 @@ abstract class qtype_omerocommon_edit_form extends qtype_multichoice_edit_form
     // definition of the modal frame
     protected function add_modal_frame()
     {
+        $modal_image_dialog_panel_id = "modalImageDialogPanel";
+        $modal_image_graphics_container_id = $modal_image_dialog_panel_id . "-graphics_container";
+        $modal_image_viewer_container = $modal_image_dialog_panel_id . "-image-viewer-container";
+        $modal_image_annotation_canvas = $modal_image_dialog_panel_id . "-annotations_canvas";
+        $modal_image_loading_dialog = $modal_image_dialog_panel_id . "-loading-dialog";
+        $modal_image_roi_inspector_container_id = $modal_image_dialog_panel_id . "-roi-shape-inspector-table-container";
+        $modal_image_roi_inspector_toolbar_id = $modal_image_dialog_panel_id . "-roi-shape-inspector-table-toolbar";
+        $modal_image_roi_inspector_table_id = $modal_image_dialog_panel_id . "-roi-shape-inspector-table";
+
+        $modal_image_viewer_html = '<div id="' . $modal_image_graphics_container_id . '" class="image-viewer-container" style="position: relative;" >
+            <div id="' . $modal_image_viewer_container . '" style="position: absolute; width: 100%; height: 500px; margin: auto;"></div>
+            <canvas id="' . $modal_image_annotation_canvas . '" style="position: absolute; width: 100%; height: 500px; margin: auto;"></canvas>
+            <div id="' . $modal_image_loading_dialog . '" class="image-viewer-loading-dialog"></div>
+        </div>';
+
+
+        $modal_image_viewer_html .= '<div id="' . $modal_image_roi_inspector_container_id . '">
+                <div ><label for="' . $modal_image_roi_inspector_table_id . '"></label></div>
+                <div >
+
+                <!-- TOOLBAR -->
+                <div id="' . $modal_image_roi_inspector_toolbar_id . '" class="hidden">
+
+                </div>
+                <!-- ROI TABLE -->
+                <table id="' . $modal_image_roi_inspector_table_id . '"
+                       data-toolbar="#toolbar"
+                       data-search="true"
+                       data-height="400"
+                       data-show-refresh="true"
+                       data-show-toggle="true"
+                       data-show-columns="true"
+                       data-show-export="true"
+                       data-detail-view="false"
+                       data-minimum-count-columns="2"
+                       data-show-pagination-switch="false"
+                       data-pagination="false"
+                       data-id-field="id"
+                       data-page-list="[10, 25, 50, 100, ALL]"
+                       data-show-footer="false"
+                       data-side-pagination="client">
+                </table>
+              </div>
+            </div>';
+
         return $this->_form->addElement("html", '
 
 <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
