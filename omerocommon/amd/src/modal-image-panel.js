@@ -52,6 +52,7 @@ define(['qtype_omerocommon/image-viewer'],
             var me = this;
 
             me._modal_image_selector_id = modal_image_selector_panel_id;
+            me._listeners = [];
 
             // FIXME: the id of the image container must be configurable
             me._image_info_container = $("#modalImageDialogPanel-image-viewer-container");
@@ -69,6 +70,29 @@ define(['qtype_omerocommon/image-viewer'],
 
         // private reference to the prototype of the ModalImagePanel class.
         var prototype = M.qtypes.omerocommon.ModalImagePanel.prototype;
+
+
+        /**
+         * Add new event listener.
+         *
+         * @param listener
+         */
+        prototype.addListener = function (listener) {
+            if (this._listeners.indexOf(listener) == -1)
+                this._listeners.push(listener);
+        };
+
+
+        /**
+         * Remove an event listener.
+         *
+         * @param listener
+         */
+        prototype.removeListener = function (listener) {
+            var index = this._listeners.indexOf(listener);
+            if (index !== -1)
+                this._listeners.splice(index, 1);
+        };
 
         /**
          * Initialize and enable visibility of this modal panel.
