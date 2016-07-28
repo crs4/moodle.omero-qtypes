@@ -42,23 +42,44 @@ define(['qtype_omerocommon/image-viewer'],
         // the logger instance
         M.qtypes.omerocommon.logger = {};
 
-
+        /**
+         * Build a new instance of ModalImagePanel.
+         *
+         * @param modal_image_selector_panel_id
+         * @constructor
+         */
         M.qtypes.omerocommon.ModalImagePanel = function (modal_image_selector_panel_id) {
-            this._modal_image_selector_id = modal_image_selector_panel_id;
+            var me = this;
+
+            me._modal_image_selector_id = modal_image_selector_panel_id;
 
             // FIXME: the id of the image container must be configurable
-            this._image_info_container = $("#modalImageDialogPanel-image-viewer-container");
-            this._image_info_container_template = $("#modalImageDialogPanel-image-viewer-container").html();
+            me._image_info_container = $("#modalImageDialogPanel-image-viewer-container");
+            me._image_info_container_template = $("#modalImageDialogPanel-image-viewer-container").html();
+
+            me._image_locked_element = $("#modalImageDialogPanel-view-lock");
+            me._image_locked_element.change(function () {
+                me._image_locked_element.val($(this).prop('checked') ? 1 : 0);
+            });
 
             // init properties to host the list of visible/focusable rois
-            this._visible_roi_list = [];
-            this._focusable_roi_list = [];
+            me._visible_roi_list = [];
+            me._focusable_roi_list = [];
         };
 
-
+        // private reference to the prototype of the ModalImagePanel class.
         var prototype = M.qtypes.omerocommon.ModalImagePanel.prototype;
 
-        prototype.show = function (image_id, visible_rois, focusable_rois) {
+        /**
+         * Initialize and enable visibility of this modal panel.
+         *
+         * @param image_id
+         * @param visible_rois
+         * @param focusable_rois
+         * @param image_properties
+         * @param image_lock
+         */
+        prototype.show = function (image_id, visible_rois, focusable_rois, image_properties, image_lock) {
 
             $("#" + this._modal_image_selector_id).modal("show");
 
@@ -94,12 +115,20 @@ define(['qtype_omerocommon/image-viewer'],
             });
         };
 
-
+        /**
+         * Hide this modal panel.
+         */
         prototype.hide = function () {
             $("#" + this._modal_image_selector_id).modal("hide");
         };
 
 
+        /**
+         * Handler for the event 'ImageModelRoiLoaded'.
+         *
+         * @param data
+         * @returns {{}}
+         */
         prototype.onImageModelRoiLoaded = function (data) {
 
             var me = this;
@@ -139,17 +168,35 @@ define(['qtype_omerocommon/image-viewer'],
         };
 
 
+        /**
+         * Handler for the event 'RoiShapeVisibilityChanged'.
+         *
+         * @param event
+         */
         prototype.onRoiShapeVisibilityChanged = function (event) {
             console.log(event);
             this.onRoiShapePropertyChanged(event, "visible", this._visible_roi_list);
         };
 
 
+        /**
+         * Handler for the event 'RoiShapeFocusabilityChanged'.
+         *
+         * @param event
+         */
         prototype.onRoiShapeFocusabilityChanged = function (event) {
             console.log(event);
             this.onRoiShapePropertyChanged(event, "focusable", this._focusable_roi_list);
         };
 
+
+        /**
+         * Reausable method to handle the visibility state of a given ROI.
+         *
+         * @param event
+         * @param property
+         * @param visible
+         */
         prototype.onRoiShapePropertyChanged = function (event, property, visible) {
             if (event.shape[property]) {
                 if (property === "visible") this._image_viewer_controller.showRoiShapes([event.shape.id]);
@@ -164,6 +211,11 @@ define(['qtype_omerocommon/image-viewer'],
         };
 
 
+        /**
+         * Listener which handles the 'changedFocusEvent' triggered on a given ROI.
+         *
+         * @param event
+         */
         prototype.onRoiShapeFocus = function (event) {
             this._image_viewer_controller.setFocusOnRoiShape.call(
                 this._image_viewer_controller,
@@ -171,7 +223,11 @@ define(['qtype_omerocommon/image-viewer'],
             );
         };
 
-
+        /**
+         * Initialize the viewer controls (i.e., image properties and lock update controls).
+         *
+         * @private
+         */
         prototype._initImagePropertiesControls = function () {
             var me = this;
 
@@ -194,23 +250,57 @@ define(['qtype_omerocommon/image-viewer'],
             // update image lock status
             $('#omero-image-view-lock').bootstrapToggle(me._image_lock ? 'on' : 'off');
         };
+
+        /**
+         * Utility function to update the image properties
+         *
+         * @private
+         */
         prototype._updateImageProperties = function () {
             $("#modalImageDialogPanel-image-properties").html(this.getFormattedImageProperties());
         };
 
+        /**
+         * Return the current image properties
+         *
+         * @returns {*|{}|{id, center, t, z, zoom_level}|{id: *, center: {x: *, y: *}, t: number, z: number, zoom_level: *}}
+         */
         prototype.getImageProperties = function () {
             return this._image_properties;
         };
 
+        /**
+         * Get the list of visible ROIs
+         *
+         * @returns {*|Array}
+         */
         prototype.getVisibleROIs = function () {
             return this._visible_roi_list;
         };
+
+        /**
+         * Return the list of focusable ROIs
+         *
+         * @returns {*|Array}
+         */
         prototype.getFocusableROIs = function () {
             return this._focusable_roi_list;
         };
+
+        /**
+         * Return <code>true</code> whether the image is locked; <code>false</code> otherwise.
+         *
+         * @returns {boolean}
+         */
         prototype.isImageLocked = function () {
             return $("#modalImageDialogPanel-view-lock").val() === "1";
         };
+
+        /**
+         * Return the image properties, formatted as a single string
+         *
+         * @returns {string}
+         */
         prototype.getFormattedImageProperties = function () {
             var ip = this._image_properties;
             var result = "";
@@ -223,6 +313,10 @@ define(['qtype_omerocommon/image-viewer'],
             return result;
         };
 
+        /**
+         * Utility method to update the image properties
+         * accordingly to the current image state
+         */
         prototype.updateImageProperties = function () {
             this._image_properties = this._image_viewer_controller.getImageProperties();
             this._image_properties_element.val(JSON.stringify(this._image_properties));
@@ -231,7 +325,19 @@ define(['qtype_omerocommon/image-viewer'],
         };
 
 
+        /**
+         * The name of the current default instance of ModalImagePanel.
+         *
+         * @type {string}
+         */
         M.qtypes.omerocommon.ModalImagePanel.DEFAULT_ELEMENT_NAME = "modalImageDialogPanel";
+
+        /**
+         * Return the current default instance of ModelImagePanel.
+         *
+         * @static
+         * @returns {M.qtypes.omerocommon.ModalImagePanel}
+         */
         M.qtypes.omerocommon.ModalImagePanel.getInstance = function () {
             if (!M.qtypes.omerocommon.ModalImagePanel._default_instance) {
                 M.qtypes.omerocommon.ModalImagePanel._default_instance =
