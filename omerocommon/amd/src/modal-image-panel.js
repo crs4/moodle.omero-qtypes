@@ -194,12 +194,23 @@ define(['qtype_omerocommon/image-viewer'],
             // update image lock status
             $('#omero-image-view-lock').bootstrapToggle(me._image_lock ? 'on' : 'off');
         };
+        prototype._updateImageProperties = function () {
+            $("#modalImageDialogPanel-image-properties").html(this.getFormattedImageProperties());
         };
 
         prototype.getImageProperties = function () {
             return this._image_properties;
         };
 
+        prototype.getVisibleROIs = function () {
+            return this._visible_roi_list;
+        };
+        prototype.getFocusableROIs = function () {
+            return this._focusable_roi_list;
+        };
+        prototype.isImageLocked = function () {
+            return $("#modalImageDialogPanel-view-lock").val() === "1";
+        };
         prototype.getFormattedImageProperties = function () {
             var ip = this._image_properties;
             var result = "";
