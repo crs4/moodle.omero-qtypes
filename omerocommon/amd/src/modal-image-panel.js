@@ -122,13 +122,13 @@ define(['qtype_omerocommon/image-viewer'],
             console.log("Loaded ROI Shapes Models", roi_list);
 
             if (!me._roi_shape_table) {
-
                 // FIXME: the tableID must be configurable
                 me._roi_shape_table = new M.qtypes.omerocommon.RoiShapeTableBase(
                     "modalImageDialogPanel-roi-shape-inspector-table");
-                me._roi_shape_table.initTable(false, me._show_roishape_column_group, true);
+                me._roi_shape_table.initTable(false, me._show_roishape_column_group, false);
                 me._roi_shape_table.addEventListener(me);
             }
+
             me._roi_shape_table.removeAll();
             me._roi_shape_table.appendRoiShapeList(roi_list);
             me._image_viewer_controller.showRoiShapes(me._visible_roi_list);
