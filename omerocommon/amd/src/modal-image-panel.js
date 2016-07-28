@@ -51,8 +51,8 @@ define(['qtype_omerocommon/image-viewer'],
         M.qtypes.omerocommon.ModalImagePanel = function (modal_image_selector_panel_id) {
             var me = this;
 
-            me._modal_image_selector_id = modal_image_selector_panel_id;
             me._listeners = [];
+            me._modal_image_selector_id = modal_image_selector_panel_id || M.qtypes.omerocommon.DEFAULT_ELEMENT_NAME;
 
             // FIXME: the id of the image container must be configurable
             me._image_info_container = $("#modalImageDialogPanel-image-viewer-container");
