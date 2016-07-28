@@ -133,7 +133,7 @@ define(['jquery', 'qtype_omerocommon/roi-shape-model'],
             //me.table_element.attr("data-detail-formatter", "M.qtypes.omerocommon.FeedbackImageTable.detailFormatter");
 
             var bootstrap_config = {
-                height: "400",
+                height: "160",
                 columns: [
                     [
                         {
