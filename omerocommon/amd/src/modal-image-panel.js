@@ -175,25 +175,25 @@ define(['qtype_omerocommon/image-viewer'],
         prototype._initImagePropertiesControls = function () {
             var me = this;
 
-            // FIXME: image properties has to be initialized using a JSON
-            // ...... we are now using the image properties of the main image related to the question
-            me._image_properties_element = $("[name^=omeroimageproperties]");
-            me._image_properties = me._image_properties_element.val();
-            if (me._image_properties && me._image_properties.length !== 0) {
-                try {
-                    me._image_properties = JSON.parse(me._image_properties);
-                } catch (e) {
-                    console.error(e);
-                    me._image_properties = {};
-                }
-            } else
-                me._image_properties = {};
+            // set the reference to the current ImageProperties element
+            me._image_properties_element = $("[name^=modalImageDialogPanel-update-image-properties]");
 
-            // FIXME: the ID must be configurable
-            $("#modalImageDialogPanel-image-properties").html(me.getFormattedImageProperties());
+            // register the listener of the event "switch ON/OFF"
+            $('#omero-image-view-lock').change(function () {
+                me._image_locked_element.val($(this).prop('checked') ? 1 : 0);
+            });
+
+            // register the listener of the event "update-image-properties"
             $("#modalImageDialogPanel-update-image-properties").click(function () {
                 me.updateImageProperties();
             });
+
+            // udpate image properties
+            me._updateImageProperties();
+
+            // update image lock status
+            $('#omero-image-view-lock').bootstrapToggle(me._image_lock ? 'on' : 'off');
+        };
         };
 
         prototype.getImageProperties = function () {
