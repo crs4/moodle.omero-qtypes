@@ -66,6 +66,15 @@ define(['qtype_omerocommon/image-viewer'],
             // init properties to host the list of visible/focusable rois
             me._visible_roi_list = [];
             me._focusable_roi_list = [];
+
+            // notify of listeners when this panel is closed
+            $("#modalImageDialogPanel .close").click(function (data) {
+                for (var i in me._listeners) {
+                    var l = me._listeners[i];
+                    if (l==me._parent && l && l.onClose)
+                        l.onClose();
+                }
+            });
         };
 
         // private reference to the prototype of the ModalImagePanel class.
