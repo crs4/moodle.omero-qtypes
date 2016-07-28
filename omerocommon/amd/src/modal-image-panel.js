@@ -66,6 +66,10 @@ define(['qtype_omerocommon/image-viewer'],
 
             me._visible_roi_list = visible_rois ? visible_rois.split(",") : [];
             me._focusable_roi_list = focusable_rois ? focusable_rois.split(",") : [];
+            me._image_properties = image_properties || {};
+            me._image_lock = image_lock || false;
+
+            me._image_locked_element.bootstrapToggle(me._image_locked ? 'on' : 'off');
 
             // clean the old canvas
             me._image_info_container.html(me._image_info_container_template);
