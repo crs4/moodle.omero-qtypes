@@ -73,6 +73,9 @@ define(['qtype_omerocommon/image-viewer'],
 
             // clean the old canvas
             me._image_info_container.html(me._image_info_container_template);
+            // clean the old table if it exists
+            if (me._roi_shape_table)
+                me._roi_shape_table.removeAll();
 
             var viewer_ctrl = new ImageViewer(
                 image_id, undefined,
