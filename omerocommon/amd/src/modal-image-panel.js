@@ -103,12 +103,13 @@ define(['qtype_omerocommon/image-viewer'],
          * @param image_properties
          * @param image_lock
          */
-        prototype.show = function (image_id, visible_rois, focusable_rois, image_properties, image_lock) {
+        prototype.show = function (parent, image_id, visible_rois, focusable_rois, image_properties, image_lock) {
 
             $("#" + this._modal_image_selector_id).modal("show");
 
             var me = this;
 
+            me._parent = parent;
             me._visible_roi_list = visible_rois ? visible_rois.split(",") : [];
             me._focusable_roi_list = focusable_rois ? focusable_rois.split(",") : [];
             me._image_properties = image_properties || {};
