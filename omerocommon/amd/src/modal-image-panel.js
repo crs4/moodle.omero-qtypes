@@ -51,7 +51,6 @@ define(['qtype_omerocommon/image-viewer'],
         M.qtypes.omerocommon.ModalImagePanel = function (modal_image_selector_panel_id) {
             var me = this;
 
-            me._listeners = [];
             me._modal_image_selector_id = modal_image_selector_panel_id || M.qtypes.omerocommon.DEFAULT_ELEMENT_NAME;
 
             // FIXME: the id of the image container must be configurable
@@ -67,13 +66,10 @@ define(['qtype_omerocommon/image-viewer'],
             me._visible_roi_list = [];
             me._focusable_roi_list = [];
 
-            // notify of listeners when this panel is closed
+            // notify the parent controller when this panel is closed
             $("#modalImageDialogPanel .close").click(function (data) {
-                for (var i in me._listeners) {
-                    var l = me._listeners[i];
-                    if (l==me._parent && l && l.onClose)
-                        l.onClose();
-                }
+                if (me._parent && me._parent.onClose)
+                    me._parent.onClose();
             });
         };
 
@@ -81,27 +77,27 @@ define(['qtype_omerocommon/image-viewer'],
         var prototype = M.qtypes.omerocommon.ModalImagePanel.prototype;
 
 
-        /**
-         * Add new event listener.
-         *
-         * @param listener
-         */
-        prototype.addListener = function (listener) {
-            if (this._listeners.indexOf(listener) == -1)
-                this._listeners.push(listener);
-        };
-
-
-        /**
-         * Remove an event listener.
-         *
-         * @param listener
-         */
-        prototype.removeListener = function (listener) {
-            var index = this._listeners.indexOf(listener);
-            if (index !== -1)
-                this._listeners.splice(index, 1);
-        };
+        // /**
+        //  * Add new event listener.
+        //  *
+        //  * @param listener
+        //  */
+        // prototype.addListener = function (listener) {
+        //     if (this._listeners.indexOf(listener) == -1)
+        //         this._listeners.push(listener);
+        // };
+        //
+        //
+        // /**
+        //  * Remove an event listener.
+        //  *
+        //  * @param listener
+        //  */
+        // prototype.removeListener = function (listener) {
+        //     var index = this._listeners.indexOf(listener);
+        //     if (index !== -1)
+        //         this._listeners.splice(index, 1);
+        // };
 
         /**
          * Initialize and enable visibility of this modal panel.
