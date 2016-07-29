@@ -102,23 +102,26 @@ define(['qtype_omerocommon/image-viewer'],
         /**
          * Initialize and enable visibility of this modal panel.
          *
+         * @param parent
          * @param image_id
-         * @param visible_rois
-         * @param focusable_rois
          * @param image_properties
          * @param image_lock
+         * @param visible_rois
+         * @param focusable_rois
          */
-        prototype.show = function (parent, image_id, visible_rois, focusable_rois, image_properties, image_lock) {
-
-            $("#" + this._modal_image_selector_id).modal("show");
+        prototype.show = function (parent,
+                                   image_id, image_properties, image_lock,
+                                   visible_rois, focusable_rois) {
 
             var me = this;
 
             me._parent = parent;
-            me._visible_roi_list = visible_rois ? visible_rois.split(",") : [];
-            me._focusable_roi_list = focusable_rois ? focusable_rois.split(",") : [];
+            me._visible_roi_list = visible_rois ? visible_rois : [];
+            me._focusable_roi_list = focusable_rois ? focusable_rois : [];
             me._image_properties = image_properties || {};
             me._image_lock = image_lock || false;
+
+            $("#" + this._modal_image_selector_id).modal("show");
 
             me._image_locked_element.bootstrapToggle(me._image_locked ? 'on' : 'off');
 
