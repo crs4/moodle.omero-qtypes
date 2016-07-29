@@ -297,7 +297,7 @@ define([
             }
 
             // serialize answer_feedback_images
-            this._data["feedbackimages"] = JSON.stringify(this._feedback_images);
+            this._data["feedbackimages"] = JSON.stringify(this._getFeedbackImages());
 
             // set
             for (var i in this._answer_properties) {
