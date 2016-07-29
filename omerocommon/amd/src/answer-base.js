@@ -82,7 +82,7 @@ define([
             me._data = {};
 
             // TODO: relocate the array
-            me._feedback_images = [];
+            me._feedback_images = {};
 
             me._fraction_options = fraction_options;
 
@@ -177,6 +177,53 @@ define([
         };
 
         /**
+         * Returns the list of feedback images related to this answer.
+         *
+         * @returns {{}|*}
+         * @private
+         */
+        prototype._getFeedbackImages = function () {
+            var images = [];
+            for (var i in this._feedback_images)
+                images.push(this._feedback_images[i]);
+            return images;
+        };
+
+        /**
+         * Return the image with the value 'image_id' as ID
+         *
+         * @param image_id
+         * @returns object representing an image
+         * @private
+         */
+        prototype._getFeedbackImage = function (image_id) {
+            return image_id ? this._feedback_images[image_id] : null;
+        };
+
+        /**
+         * Add a feedback image.
+         *
+         * @param image
+         * @private
+         */
+        prototype._addFeedbackImage = function (image) {
+            if (image && !this._feedback_images[image.id])
+                this._feedback_images[image.id] = image;
+        };
+
+        /**
+         * Remove a feedback iamge.
+         *
+         * @param image
+         * @private
+         */
+        prototype._removeFeedbackImage = function (image) {
+            console.log("Deleting image", image);
+            if (image)
+                delete this._feedback_images[image.id];
+        };
+
+        /**
          * Returns the map <language, editor>
          * related to this question
          *
@@ -249,6 +296,10 @@ define([
                 return;
             }
 
+            // serialize answer_feedback_images
+            this._data["feedbackimages"] = JSON.stringify(this._feedback_images);
+
+            // set
             for (var i in this._answer_properties) {
                 element_name = this._answer_properties[i];
                 id = this._build_id_of(element_name, answer_index);
