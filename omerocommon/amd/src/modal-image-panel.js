@@ -77,28 +77,6 @@ define(['qtype_omerocommon/image-viewer'],
         var prototype = M.qtypes.omerocommon.ModalImagePanel.prototype;
 
 
-        // /**
-        //  * Add new event listener.
-        //  *
-        //  * @param listener
-        //  */
-        // prototype.addListener = function (listener) {
-        //     if (this._listeners.indexOf(listener) == -1)
-        //         this._listeners.push(listener);
-        // };
-        //
-        //
-        // /**
-        //  * Remove an event listener.
-        //  *
-        //  * @param listener
-        //  */
-        // prototype.removeListener = function (listener) {
-        //     var index = this._listeners.indexOf(listener);
-        //     if (index !== -1)
-        //         this._listeners.splice(index, 1);
-        // };
-
         /**
          * Initialize and enable visibility of this modal panel.
          *
