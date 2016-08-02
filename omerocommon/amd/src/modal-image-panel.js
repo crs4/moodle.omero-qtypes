@@ -264,20 +264,31 @@ define(['qtype_omerocommon/image-viewer', 'qtype_omerocommon/image-viewer-model'
             $("#modalImageDialogPanel-image-properties").html(this.getFormattedImageProperties());
         };
 
-            // udpate image properties
-            me._updateImageProperties();
-
-            // update image lock status
-            $('#omero-image-view-lock').bootstrapToggle(me._image_lock ? 'on' : 'off');
+        /**
+         * Set the current ImageModelManager in use.
+         *
+         * @param ImageModelManager
+         */
+        prototype.setImageModelManager = function (image_model_mgt) {
+            this._image_model_manager = image_model_mgt;
         };
 
         /**
-         * Utility function to update the image properties
+         * Return the current ImageModelManager in use.
          *
-         * @private
+         * @returns {ImageModelManager}
          */
-        prototype._updateImageProperties = function () {
-            $("#modalImageDialogPanel-image-properties").html(this.getFormattedImageProperties());
+        prototype.getImageModelManager = function () {
+            return this._image_model_manager || this._image_viewer_controller.getImageModelManager();
+        };
+
+        /**
+         * Returns the details of the current image.
+         *
+         * @returns {*}
+         */
+        prototype.getImageDetails = function () {
+            return this._image_viewer_controller.getImageDetails();
         };
 
         /**
