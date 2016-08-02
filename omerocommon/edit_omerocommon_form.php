@@ -568,11 +568,39 @@ abstract class qtype_omerocommon_edit_form extends qtype_multichoice_edit_form
         $modal_image_roi_inspector_toolbar_id = $modal_image_dialog_panel_id . "-roi-shape-inspector-table-toolbar";
         $modal_image_roi_inspector_table_id = $modal_image_dialog_panel_id . "-roi-shape-inspector-table";
 
+        $modal_image_toolbar = $modal_image_dialog_panel_id . "-toolbar";
+        $modal_image_update_properties = $modal_image_dialog_panel_id . "-update-image-properties";
+        $modal_image_properties = $modal_image_dialog_panel_id . "-image-properties";
+        $modal_image_view_lock_container = $modal_image_dialog_panel_id . "-image-lock-container";
+        $modal_image_view_lock = $modal_image_dialog_panel_id . "-view-lock";
+
+
         $modal_image_viewer_html = '<div id="' . $modal_image_graphics_container_id . '" class="image-viewer-container" style="position: relative;" >
             <div id="' . $modal_image_viewer_container . '" style="position: absolute; width: 100%; height: 500px; margin: auto;"></div>
             <canvas id="' . $modal_image_annotation_canvas . '" style="position: absolute; width: 100%; height: 500px; margin: auto;"></canvas>
             <div id="' . $modal_image_loading_dialog . '" class="image-viewer-loading-dialog"></div>
         </div>';
+
+        $modal_image_viewer_html .= '
+            <div id="' . $modal_image_toolbar . '" class="hidden">
+                <div class="checkboxx">
+                    <div style="display: inline-block;">
+                        <a id="' . $modal_image_update_properties . '" href="javascript:void(0)" title="Update image center">
+                            <i class="glyphicon glyphicon-screenshot"></i>
+                        </a>
+                        <span id="' . $modal_image_properties . '">x: 123123, y: 12312312, zm: 123123123</span>
+                     </div>
+                     <div id="' . $modal_image_view_lock_container . '">
+                        <label for="omero-image-view-lock">'
+            . get_string('image_viewer_student_navigation', 'qtype_omerocommon') . '
+                        </label>
+                        <input id="' . $modal_image_view_lock . '" name="omero-image-view-lock" data-toggle="toggle"
+                               type="checkbox" data-onstyle="success" data-offstyle="default"
+                               data-on="' . get_string('image_viewer_locked_student_navigation', 'qtype_omerocommon') . '"
+                               data-off="' . get_string('image_viewer_lock_student_navigation', 'qtype_omerocommon') . '">
+                      </div>
+                 </div>
+             </div>';
 
 
         $modal_image_viewer_html .= '<div id="' . $modal_image_roi_inspector_container_id . '">
