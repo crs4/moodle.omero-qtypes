@@ -377,7 +377,7 @@ abstract class qtype_omerointeractive_base_renderer extends qtype_multichoice_re
                                 )
                             ) .
                             format_text($answer_shape_map[$shape->shape_id]->feedback),
-                            array("class" => "outcome", "style" => "display: block-inline; margin: 0 0 10px; padding: 20px 30px 15px;")
+                            array("class" => "outcome")
                         );
                 }
 

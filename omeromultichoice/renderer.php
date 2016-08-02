@@ -280,13 +280,13 @@ abstract class qtype_omeromultichoice_base_renderer extends qtype_multichoice_re
                         html_writer::tag("i", " ",
                             array(
                                 "class" => "pull-left glyphicon glyphicon-record",
-                                "style" => "margin-right: 20px"
+                                "style" => "margin-left: 10px; margin-right: 5px"
                             )
                         ) .
                         format_text($feedback_text),
                         array(
                             "class" => "outcome",
-                            "style" => "display: block-inline; margin: 0 0 10px; padding: 20px 30px 15px;"
+                            "style" => "padding: 20px 15px;"
                         )
                     );
                 }
