@@ -163,7 +163,7 @@ define([
                 me._editor[localized_string_name] = editor;
             }
 
-            me._answers_counter_element = document.forms[0].elements.noanswers;//["noanswers"];
+            me._answers_counter_element = document.forms[0].elements.noanswers;
 
             me._image_locked_element = $("[name^=omeroimagelocked]");
             me._image_locked = me._image_locked_element.val() == "1";
@@ -528,7 +528,7 @@ define([
             me._image_info_container.html(image_info_container);
 
             // clean the existing image-viewer controller
-            if(me._image_viewer_controller)
+            if (me._image_viewer_controller)
                 delete me._image_viewer_controller;
 
             // build the ImaveViewer controller
