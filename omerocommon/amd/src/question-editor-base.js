@@ -28,17 +28,18 @@
 define([
         'jquery',
         'qtype_omerocommon/moodle-forms-utils',
+        'qtype_omerocommon/modal-image-panel',
         'qtype_omerocommon/answer-base',
         'qtype_omerocommon/multilanguage-element',
         'qtype_omerocommon/multilanguage-attoeditor',
         'qtype_omerocommon/roi-shape-model',
         'qtype_omerocommon/roi-shape-table',
         'qtype_omerocommon/image-viewer',
-        'qtype_omerocommon/message-dialog',
+        'qtype_omerocommon/message-dialog'
     ],
     /* jshint curly: false */
     /* globals console, jQuery */
-    function ($, FormUtils, AnswerBase, Mle, Mlae, Rsm, Rst, ImageViewer) {
+    function ($, FormUtils, ModalImagePanel, AnswerBase, Mle, Mlae, Rsm, Rst, ImageViewer) {
 
         // override jQuery definition
         $ = jQuery;
@@ -537,6 +538,8 @@ define([
                 "image-viewer-container", "annotations_canvas",
                 me._viewer_model_server);
             me._image_viewer_controller = viewer_ctrl;
+
+            ModalImagePanel.getInstance().setImageModelManager(viewer_ctrl.getImageModelManager());
 
             // load and show image and its related ROIs
             viewer_ctrl.open(true, function (data) {
