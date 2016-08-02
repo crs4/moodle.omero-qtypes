@@ -461,6 +461,83 @@ define([
             }
         };
 
+        prototype._build_feedback_image_selector = function () {
+            var me = this;
+            var selector_ids = me._add_image_selector("add_images", me._answer_number, "Feedback Images");
+            me._answer_feedback_filepicker = new M.omero_filepicker({
+                buttonid: selector_ids.button_id,
+                buttonname: selector_ids.button_name,
+                elementid: selector_ids.data_id,
+                elementname: selector_ids.data_name,
+                filename_element: undefined
+            }, {}, true);
+            me._answer_feedback_filepicker.addListener(me);
+
+            // answer feedback image table
+            me._feedback_image_table = new M.qtypes.omerocommon.FeedbackImageTable("table-" + me._answer_number);
+            me._form_utils.appendElement(me._answer_container, "", me._feedback_image_table.drawHtmlTable());
+            me._feedback_image_table.initTable();
+            me._feedback_image_table.addEventListener(me);
+
+            // reference to the default ModalImagePanel
+            me._modal_image_panel_ctrl = M.qtypes.omerocommon.ModalImagePanel.getInstance();
+        };
+
+        prototype.onSelectedImage = function (image_info, picker) {
+            console.log("Selected image", image_info);
+            var me = this;
+            me._modal_image_panel_ctrl.getImageModelManager().getImageDetails(function (image_details) {
+                var image = {
+                    id: image_info.image_id,
+                    description: "Image name...",
+                    details: image_details,
+                    visiblerois: [],
+                    focusablerois: [],
+                    properties: {},
+                    lock: false
+                };
+                console.log(image);
+                me._addFeedbackImage(image);
+                me._feedback_image_table.append(image);
+            }, undefined, image_info.image_id);
+        };
+
+
+        prototype.onEditImage = function (event) {
+            var image = this._getFeedbackImage(event.image.id);
+            if (image) {
+                console.log("Selected image to edit", image);
+                this._modal_image_panel_ctrl.show(this,
+                    image.id,
+                    image.properties, image.lock,
+                    image.visiblerois, image.focusablerois
+                );
+            }
+        };
+
+        prototype.onDeletedImage = function (event) {
+            if (event) {
+                console.log("Delete image event...", event);
+                this._removeFeedbackImage(event.image);
+            }
+        };
+
+        prototype.onSave = function (image_id, image_properties, image_lock, visible_rois, focusable_rois) {
+            var image = this._getFeedbackImage(image_id);
+            if (image) {
+                image.properties = image_properties;
+                image.lock = image_lock;
+                image.visiblerois = visible_rois;
+                image.focusablerois = focusable_rois;
+                this._feedback_image_table.updateRow(image);
+                console.log("Saved feedbackimage ... ", image);
+            }
+        };
+
+        prototype.onClose = function () {
+            console.log("Closed ModalImagePanel editor");
+        };
+
         // return the class
         return M.qtypes.omerocommon.AnswerBase;
     }
