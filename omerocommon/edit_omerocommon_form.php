@@ -644,42 +644,6 @@ abstract class qtype_omerocommon_edit_form extends qtype_multichoice_edit_form
     </div>
   </div>
 </div>
-
-
-<div id="fitem_id_omeroimageurl_2" class="fitem fitem_ffilepicker "><div class="fitemtitle"><label for="id_omeroimageurl"> </label></div><div class="felement ffilepicker">
-        <!-- Removes the label -->
-        <script type="text/javascript">$("#fitem_id_omeroimagefilereference div.fitemtitle").css("display", "none");</script>
-
-        <!-- if no URL has been selected yet -->
-        <strong>Current image:</strong>
-
-        <div style="float: right;">
-            <input type="button" class="fp-btn-choose" id="filepicker-button-5791e5b2777bf_2" value="Choose an image" name="omeroimageurlchoose">
-            <!--<span> Maximum size for new files: 2MB </span>-->
-        </div> <span id="omerofilepicker-selected-filename_2">none</span>
-        <div class="filemanager-loading mdl-align" id="filepicker-loading-5791e5b2777bf_2" style="border: none; display: none;">
-            <img class="smallicon" alt="Loading..." title="Loading..." src="http://mep.crs4.it/moodle/theme/image.php/clean/core/1469170198/i/loading_small">
-        </div>
-
-        <div id="filepicker-wrapper-5791e5b2777bf_2" class="mdl-left" style="min-width: 100%;">
-            <!-- if a URL has been selected -->
-            <div id="file_info_5791e5b2777bf_2" class="mdl-left filepicker-filelist" style="border: none; position: relative;">
-                <div class="filepicker-filename" style="border: none;">
-                    <div class="filepicker-container" style="border: none;">
-                        <div class="dndupload-message">You can drag and drop files here to add them. <br>
-                            <div class="dndupload-arrow"></div>
-                        </div>
-                    </div>
-                    <div class="dndupload-progressbars"></div>
-                </div>
-                <div>
-                    <div class="dndupload-target">Drop files here to upload<br>
-                        <div class="dndupload-arrow"></div>
-                    </div>
-                </div>
-            </div>
-        </div><input type="hidden" name="omeroimageurl" id="id_omeroimageurl_2" value="" class="filepickerhidden"><noscript>&lt;div&gt;&lt;object type=\'text/html\' data=\'http://mep.crs4.it/moodle/repository/draftfiles_manager.php?env=filepicker&amp;amp;action=browse&amp;amp;itemid=852555737&amp;amp;subdirs=0&amp;amp;maxbytes=2097152&amp;amp;maxfiles=1&amp;amp;ctx_id=4&amp;amp;course=1&amp;amp;sesskey=O22YwlN53j\' height=\'160\' width=\'600\' style=\'border:1px solid #000\'&gt;&lt;/object&gt;&lt;/div&gt;</noscript></div></div>
-
 ');
     }
 
