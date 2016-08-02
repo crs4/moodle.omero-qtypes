@@ -205,7 +205,8 @@ abstract class qtype_omerocommon extends qtype_multichoice
                 $node->removeAttribute("style");
             }
         }
-        return $dom->saveHTML();
+
+        return self::DOMinnerHTML($dom->getElementsByTagName("body")->item(0));
     }
 
 
