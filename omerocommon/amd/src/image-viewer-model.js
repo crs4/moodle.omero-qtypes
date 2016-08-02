@@ -112,7 +112,7 @@ define(['jquery'], function ($) {
          * @param error_callback
          * @private
          */
-        prototype.loadRoisInfo = function (success_callback, error_callback) {
+        prototype.loadRoisInfo = function (success_callback, error_callback, image_id) {
 
             var me = this;
 
@@ -132,7 +132,7 @@ define(['jquery'], function ($) {
                     //q: "", //FIXME: not required
                     //format: "json",
                     m: "img_details",
-                    id: this._image_id,
+                    id: image_id || this._image_id,
                     rois: true
                 },
 
@@ -182,7 +182,7 @@ define(['jquery'], function ($) {
          * @param error_callback
          * @private
          */
-        prototype.getImageDZI = function (success_callback, error_callback) {
+        prototype.getImageDZI = function (success_callback, error_callback, image_id) {
             var me = this;
 
             $.ajax({
@@ -196,7 +196,7 @@ define(['jquery'], function ($) {
                 data: {
                     format: "json",
                     m: "dzi",
-                    id: this._image_id
+                    id: image_id || this._image_id
                 },
 
                 // Set callback methods
