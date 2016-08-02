@@ -667,7 +667,7 @@ abstract class qtype_omerocommon_edit_form extends qtype_multichoice_edit_form
         <div id="modal-frame-text">' . $modal_image_viewer_html . '</div>
       </div>
       <div class="modal-footer text-center">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="button" class="save btn btn-default" data-dismiss="modal">' . get_string('savechangesandcontinueediting', 'qtype_omerocommon') . '</button>
       </div>
     </div>
   </div>
