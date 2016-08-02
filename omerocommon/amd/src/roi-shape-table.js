@@ -244,11 +244,11 @@ define(['jquery', 'qtype_omerocommon/roi-shape-model'],
                 });
                 me.remove_element.prop('disabled', true);
             });
-            //$(window).resize(function () {
-            //    me.table_element.bootstrapTable('resetView', {
-            //        height: me.getHeight()
-            //    });
-            //});
+            
+            // Adapt the table to window width
+            $(window).resize(function () {
+                me.table_element.bootstrapTable('resetWidth');
+            });
 
             me._initialized = true;
         };
