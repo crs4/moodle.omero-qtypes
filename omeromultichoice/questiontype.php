@@ -94,6 +94,18 @@ class qtype_omeromultichoice extends qtype_omerocommon
             if ($question->fraction[$key] > $maxfraction) {
                 $maxfraction = $question->fraction[$key];
             }
+
+            // NOTICE: our implementation supports at most one 'answer-option' per answer
+            $answer_option = $DB->get_record('question_answers_omemopt', array('answerid' => $answer->id));
+            if(!$answer_option) {
+                $answer_option = new stdClass();
+                $answer_option->answerid = $answer->id;
+                $answer_option->images = $question->feedbackimages[$key];
+                $answer_option->id = $DB->insert_record("question_answers_omemopt", $answer_option);
+            }else{
+                $answer_option->images = $question->feedbackimages[$key];
+                $DB->update_record("question_answers_omemopt", $answer_option);
+            }
         }
 
         // Delete any left over old answer records.
