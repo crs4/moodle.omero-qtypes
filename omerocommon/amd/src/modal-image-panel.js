@@ -57,19 +57,41 @@ define(['qtype_omerocommon/image-viewer', 'qtype_omerocommon/image-viewer-model'
             me._image_info_container = $("#modalImageDialogPanel-image-viewer-container");
             me._image_info_container_template = $("#modalImageDialogPanel-image-viewer-container").html();
 
-            me._image_locked_element = $("#modalImageDialogPanel-view-lock");
-            me._image_locked_element.change(function () {
-                me._image_locked_element.val($(this).prop('checked') ? 1 : 0);
-            });
+            if (!me._image_locked_element) {
+                me._image_locked_element = $("#modalImageDialogPanel-view-lock");
+                console.log(me._image_locked_element);
+                me._image_locked_element.change(function () {
+                    me._image_locked_element.val($(this).prop('checked') ? 1 : 0);
+                    me._image_lock = $(this).prop('checked') ? true : false;
+                });
+            }
 
-            // init properties to host the list of visible/focusable rois
-            me._visible_roi_list = [];
-            me._focusable_roi_list = [];
+            // set the reference to the current ImageProperties element
+            if (!me._image_properties_element) {
+                me._image_properties_element = $("[name^=modalImageDialogPanel-update-image-properties]");
+
+                // register the listener of the event "update-image-properties"
+                $("#modalImageDialogPanel-update-image-properties").click(function () {
+                    me.updateImageProperties();
+                });
+            }
+
+            // notify the parent controller when the submit button is clicked
+            // triggering the event 'save'
+            $("#modalImageDialogPanel .save").click(function (data) {
+                if (me._parent && me._parent.onSave) {
+                    me._parent.onSave(
+                        me._image_id, me._image_properties, me._image_lock,
+                        me._visible_roi_list, me._focusable_roi_list
+                    );
+                }
+            });
 
             // notify the parent controller when this panel is closed
             $("#modalImageDialogPanel .close").click(function (data) {
-                if (me._parent && me._parent.onClose)
+                if (me._parent && me._parent.onClose) {
                     me._parent.onClose();
+                }
             });
         };
 
@@ -94,14 +116,13 @@ define(['qtype_omerocommon/image-viewer', 'qtype_omerocommon/image-viewer-model'
             var me = this;
 
             me._parent = parent;
+            me._image_id = image_id;
             me._visible_roi_list = visible_rois ? visible_rois : [];
             me._focusable_roi_list = focusable_rois ? focusable_rois : [];
             me._image_properties = image_properties || {};
             me._image_lock = image_lock || false;
 
             $("#" + this._modal_image_selector_id).modal("show");
-
-            me._image_locked_element.bootstrapToggle(me._image_locked ? 'on' : 'off');
 
             // clean the old canvas
             me._image_info_container.html(me._image_info_container_template);
@@ -119,9 +140,9 @@ define(['qtype_omerocommon/image-viewer', 'qtype_omerocommon/image-viewer-model'
             // load and show image and its related ROIs
             viewer_ctrl.open(true, function (data) {
                 me.onImageModelRoiLoaded(data);
-                me._initImagePropertiesControls();
+                me._updateImageProperties();
+                me._image_locked_element.bootstrapToggle(me._image_lock ? 'on' : 'off');
                 me._image_viewer_controller.updateViewFromProperties(me._image_properties);
-                // FIXME: configuration
                 $("#modalImageDialogPanel-toolbar").removeClass("hidden");
             });
         };
@@ -150,11 +171,11 @@ define(['qtype_omerocommon/image-viewer', 'qtype_omerocommon/image-viewer-model'
             console.log("ImageROI loaded", data);
 
             // validate the list of visible ROIs
-            removed_rois.visible = me._image_viewer_controller.checkRois(me._visible_roi_list, true);
+            //removed_rois.visible = me._image_viewer_controller.checkRois(me._visible_roi_list, true);
             console.log("Validated ROI Shape List", me._visible_roi_list);
 
             // validate the list of focusable ROIs
-            removed_rois.focusable = me._image_viewer_controller.checkRois(me._focusable_roi_list, true);
+            //removed_rois.focusable = me._image_viewer_controller.checkRois(me._focusable_roi_list, true);
             console.log("Validated Focusable ROI List", me._focusable_roi_list);
 
             var roi_list = M.qtypes.omerocommon.RoiShapeModel.toRoiShapeModel(data,
@@ -235,25 +256,13 @@ define(['qtype_omerocommon/image-viewer', 'qtype_omerocommon/image-viewer-model'
         };
 
         /**
-         * Initialize the viewer controls (i.e., image properties and lock update controls).
+         * Utility function to update the image properties
          *
          * @private
          */
-        prototype._initImagePropertiesControls = function () {
-            var me = this;
-
-            // set the reference to the current ImageProperties element
-            me._image_properties_element = $("[name^=modalImageDialogPanel-update-image-properties]");
-
-            // register the listener of the event "switch ON/OFF"
-            $('#omero-image-view-lock').change(function () {
-                me._image_locked_element.val($(this).prop('checked') ? 1 : 0);
-            });
-
-            // register the listener of the event "update-image-properties"
-            $("#modalImageDialogPanel-update-image-properties").click(function () {
-                me.updateImageProperties();
-            });
+        prototype._updateImageProperties = function () {
+            $("#modalImageDialogPanel-image-properties").html(this.getFormattedImageProperties());
+        };
 
             // udpate image properties
             me._updateImageProperties();
