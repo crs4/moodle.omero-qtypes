@@ -325,13 +325,16 @@ define(['jquery', 'qtype_omerocommon/roi-shape-model'],
             ].join(" ");
         };
 
-
         prototype.descriptionFormatter = function (data) {
-            return data || " ";
+            return (data && data.name) || " ";
+        };
+
+        prototype.focusableRoisFormatter = function (data) {
+            return data.join(", ") || " ";
         };
 
         prototype.visibleRoisFormatter = function (data) {
-            return data || " ";
+            return data.join(", ") || " ";
         };
 
         prototype.editActionFormatter = function (data) {
