@@ -809,7 +809,6 @@ abstract class qtype_omerocommon_edit_form extends qtype_multichoice_edit_form
             $question->feedback[$key] = json_encode(qtype_omerocommon::serialize_to_json_from($answer->feedback));
             $question->feedbackformat[$key] = $answer->feedbackformat;
 
-            // TODO: update with real data: remove the empty array !!!
             $question->feedbackimages[$key] = empty($answer->images) ? json_encode(array()) : $answer->images;
 
             $question->answer_locale_map[$key] = json_encode(qtype_omerocommon::serialize_to_json_from($answer->answer));
