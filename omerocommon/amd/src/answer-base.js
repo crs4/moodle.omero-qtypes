@@ -315,7 +315,7 @@ define([
 
                 hidden = document.getElementById(id);
                 value = FormUtils.htmlspecialchars(value);
-                
+
                 if (hidden) hidden.setAttribute("value", value);
                 else {
                     hidden = '<input ' + 'id="' + id + '" ' + 'name="' + name + '" type="hidden" value="' + value + '">';
