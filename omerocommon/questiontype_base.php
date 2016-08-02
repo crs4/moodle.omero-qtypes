@@ -84,6 +84,11 @@ abstract class qtype_omerocommon extends qtype_multichoice
         );
     }
 
+    public function extra_answer_fields()
+    {
+        return array("question_answers_omemopt", "images");
+    }
+
 
     protected function make_question_instance($questiondata)
     {
