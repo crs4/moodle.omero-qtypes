@@ -219,6 +219,44 @@ define(['jquery'], function ($) {
             });
         };
 
+
+        prototype.getImageDetails = function (success_callback, error_callback, image_id) {
+            var me = this;
+
+            $.ajax({
+                // request URL
+                url: this._image_server,
+
+                // result format
+                dataType: "json",
+
+                // Request parameters
+                data: {
+                    format: "json",
+                    m: "img_details",
+                    id: image_id || this._image_id
+                },
+
+                // Set callback methods
+                success: function (data) {
+
+                    if (success_callback) {
+                        success_callback(data);
+                    }
+
+                    // Notify that ROI info are loaded
+                    me._notifyListeners(new CustomEvent(
+                        "imageDetailsLoaded",
+                        {
+                            detail: data,
+                            bubbles: true
+                        })
+                    );
+                },
+                error: error_callback
+            });
+        };
+
         // returns the class
         return M.qtypes.omerocommon.ImageModelManager;
     }
