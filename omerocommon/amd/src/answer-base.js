@@ -28,15 +28,15 @@
  */
 define([
         'jquery',
-        'qtype_omerocommon/modal-image-panel',
         'qtype_omerocommon/moodle-forms-utils',
         'qtype_omerocommon/multilanguage-element',
         'qtype_omerocommon/multilanguage-attoeditor',
+        'qtype_omerocommon/modal-image-panel',
         'qtype_omerocommon/feedback-image-table'
     ],
     /* jshint curly: false */
     /* globals console, jQuery */
-    function ($) {
+    function ($, FormUtils) {
 
         // override reference to jQuery
         $ = jQuery;
