@@ -274,7 +274,7 @@ define([
 
             // decode the list of feedback images
             var image;
-            var images = JSON.parse(data["feedbackimages"]);
+            var images = JSON.parse(FormUtils.htmlEntityDecode(data["feedbackimages"]));
             // append every feedback image to the table
             for (var j in images) {
                 image = images[j];
