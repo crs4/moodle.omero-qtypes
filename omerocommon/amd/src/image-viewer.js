@@ -29,9 +29,9 @@
 /* globals console, ViewerController, TransformMatrixHelper, TransformMatrixHelper */
 /* globals AnnotationsEventsController, AnnotationsController */
 define([
-    'jquery',
-    'qtype_omerocommon/image-viewer-model'
-], function ($, ImageModelManager) {
+        'jquery',
+        'qtype_omerocommon/image-viewer-model'
+    ], function ($, ImageModelManager) {
 
         /**
          * Utility class
@@ -93,6 +93,9 @@ define([
                 "backgroundColor": 'rgba(255, 255, 255, 0.5)'
             };
 
+            // initializes the ImageModelManager
+            this._model = new ImageModelManager(this._viewer_model_server, this._image_id);
+
             // update the default configuration
             if (viewer_config) {
                 for (var prop in viewer_config) {
@@ -132,9 +135,6 @@ define([
             // initialize the viewer
             me._viewer_controller.buildViewer();
 
-            // initializes the ImageModelManager
-            me._model = new ImageModelManager(me._viewer_model_server, me._image_id);
-
             // open
             me._viewer_controller.viewer.addHandler("open", function () {
 
@@ -155,6 +155,10 @@ define([
                     console.log("Loading openseadragon viewer");
                     var image_mpp = data.image_mpp ? data.image_mpp : 0;
                     me._viewer_controller.enableScalebar(image_mpp, me._scalebar_config);
+                });
+
+                me._model.getImageDetails(function (data) {
+                    me._image_details = data;
                 });
 
                 // loads rois if required
@@ -267,6 +271,34 @@ define([
                     }
                 );
             });
+        };
+
+        /**
+         * Returns the ImageModelManager instance related to this ImageViewerController.
+         * @returns ImageModelManager
+         */
+        prototype.getImageModelManager = function () {
+            return this._model;
+        };
+
+
+        /**
+         * Returns the image details.
+         * If the parameter callback is loaded image details
+         * are refreshed with the data provided by the server
+         * and returned as parameter of the callback function.
+         *
+         * @param callback
+         * @returns {*}
+         */
+        prototype.getImageDetails = function (callback) {
+            var me = this;
+            if (callback)
+                me._model.getImageDetails(function (data) {
+                    me._image_details = data;
+                    callback(data);
+                });
+            return me._image_details;
         };
 
         prototype.isNavigationLocked = function () {
