@@ -370,6 +370,10 @@ define(['jquery', 'qtype_omerocommon/roi-shape-model'],
             this.append(data);
         };
 
+        prototype.updateRow = function (data) {
+            this.table_element.bootstrapTable('updateRow', {index: data.id, row: data});
+        };
+
         prototype.append = function (data) {
             return this.table_element.bootstrapTable('append', data);
         };
