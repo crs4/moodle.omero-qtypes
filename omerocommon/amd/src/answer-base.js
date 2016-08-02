@@ -272,7 +272,15 @@ define([
                 }
             }
 
-            me._feedback_images = JSON.parse(data["feedbackimages"]);
+            // decode the list of feedback images
+            var image;
+            var images = JSON.parse(data["feedbackimages"]);
+            // append every feedback image to the table
+            for (var j in images) {
+                image = images[j];
+                this._feedback_image_table.append(image);
+                me._feedback_images[image.id] = image;
+            }
 
             console.log("Loading multi language elements...");
             for (var editor_element_name in me._editors_map) {
@@ -282,7 +290,6 @@ define([
                 console.log("Loading editor data...", id, locale_map_name);
                 editor.loadDataFromFormInputs(locale_map_name);
             }
-
             this._data = data;
         };
 
