@@ -139,7 +139,6 @@ define(['jquery', 'qtype_omerocommon/roi-shape-model'],
                         {
                             title: 'ID',
                             field: 'id',
-                            rowspan: 2,
                             align: 'center',
                             valign: 'middle',
                             width: '30px',
@@ -147,9 +146,8 @@ define(['jquery', 'qtype_omerocommon/roi-shape-model'],
                             formatter: me.idFormatter
                         },
                         {
-                            field: 'description',
+                            field: 'details',
                             title: M.util.get_string('roi_description', 'qtype_omerocommon'),
-                            rowspan: 2,
                             align: 'center',
                             valign: 'middle',
                             formatter: me.descriptionFormatter
@@ -157,32 +155,28 @@ define(['jquery', 'qtype_omerocommon/roi-shape-model'],
                         {
                             field: 'visiblerois',
                             title: M.util.get_string('roi_visible', 'qtype_omerocommon'),
-                            //sortable: true,
-                            rowspan: 2,
                             align: 'center',
                             valign: 'middle',
                             formatter: me.visibleRoisFormatter
                         },
                         {
-                            title: "Actions",
-                            colspan: 2,
-                            align: 'center'
-                        }
-                    ],
-                    [
+                            field: 'focusablerois',
+                            title: M.util.get_string('roi_focusable', 'qtype_omerocommon'),
+                            align: 'center',
+                            valign: 'middle',
+                            formatter: me.focusableRoisFormatter
+                        },
                         {
-                            //field: 'visible',
                             title: M.util.get_string('edit', 'core'),
-                            width: "35px",
+                            width: "8%",
                             align: 'center',
                             valign: 'middle',
                             events: me.eventHandler(me),
                             formatter: me.editActionFormatter
                         },
                         {
-                            //field: 'focusable',
                             title: M.util.get_string('delete', 'core'),
-                            width: "25px",
+                            width: "8%",
                             align: 'center',
                             valign: 'middle',
                             events: me.eventHandler(me),
