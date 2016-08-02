@@ -306,8 +306,9 @@ define([
                 var name = this._build_name_of(element_name, answer_index);
                 var value = this._data[element_name];
 
-                hidden = document.getElementById(id); //$("#" + id);
-                value = $("<div>").text(value).html();
+                hidden = document.getElementById(id);
+                value = FormUtils.htmlspecialchars(value);
+                
                 if (hidden) hidden.setAttribute("value", value);
                 else {
                     hidden = '<input ' + 'id="' + id + '" ' + 'name="' + name + '" type="hidden" value="' + value + '">';
