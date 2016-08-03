@@ -159,17 +159,17 @@ define([
 
                 me._model.getImageDetails(function (data) {
                     me._image_details = data;
-                });
 
-                // loads rois if required
-                if (load_rois)
-                    me.loadROIs(callback);
-                else {
-                    // notifies listeners
-                    notifyListeners(me._listeners, callback);
-                    // hide loading dialog
-                    me._waiting_dialog.hide();
-                }
+                    // loads rois if required
+                    if (load_rois)
+                        me.loadROIs(callback);
+                    else {
+                        // notifies listeners
+                        notifyListeners(me._listeners, callback);
+                        // hide loading dialog
+                        me._waiting_dialog.hide();
+                    }
+                });
             });
         };
 
