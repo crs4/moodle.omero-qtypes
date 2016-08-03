@@ -265,6 +265,17 @@ abstract class qtype_omeromultichoice_base_renderer extends qtype_multichoice_re
                 ));
             }
 
+            $feedbackimages = array();
+            foreach ($ans->feedbackimages as $image_id => $image) {
+                array_push($feedbackimages, $image_id);
+            }
+            $feedbackimages_html = '<div style="display: block; float: right;">[ '
+                . get_string("see", "qtype_omerocommon") . " "
+                . implode(", ", array_map(function($image){
+                    return '<i class="glyphicon glyphicon-book" style="margin-left: 2px; margin-right: 5px;"></i>' . $image ;
+                }, $feedbackimages))
+                . ' ]</div>';
+
             // Param $options->suppresschoicefeedback is a hack specific to the
             // oumultiresponse question type. It would be good to refactor to
             // avoid refering to it here.
@@ -283,7 +294,7 @@ abstract class qtype_omeromultichoice_base_renderer extends qtype_multichoice_re
                                 "style" => "margin-left: 10px; margin-right: 5px"
                             )
                         ) .
-                        format_text($feedback_text),
+                        format_text($feedback_text) . $feedbackimages_html,
                         array(
                             "class" => "outcome",
                             "style" => "padding: 20px 15px;"
