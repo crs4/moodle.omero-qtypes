@@ -150,7 +150,24 @@ define(['jquery', 'qtype_omerocommon/roi-shape-model'],
                             title: M.util.get_string('roi_description', 'qtype_omerocommon'),
                             align: 'center',
                             valign: 'middle',
-                            formatter: me.descriptionFormatter
+                            formatter: me.descriptionFormatter,
+                            editable: {
+                                type: 'textarea',
+                                title: 'Feedback image description',
+                                width: '200px',
+                                resize: 'none',
+                                validate: function (value) {
+                                    value = $.trim(value);
+                                    if (!value) {
+                                        return M.util.get_string('validate_field_required', 'qtype_omerocommon');
+                                    }
+                                    me.table_element.bootstrapTable('resetView');
+                                    var data = me.table_element.bootstrapTable('getData'),
+                                        index = $(this).parents('tr').data('index');
+                                    console.log("The updated DATA....", data[index]);
+                                    return '';
+                                }
+                            }
                         },
                         {
                             field: 'visiblerois',

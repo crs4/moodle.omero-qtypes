@@ -168,6 +168,7 @@ define([
                     img_el = img_el.parent();
                 me._modal_image_panel.show(me,
                     img_el.attr("imageid"),
+                    img_el.attr("imagedescription"),
                     JSON.parse((img_el.attr("imageproperties"))),
                     img_el.attr("imagelock"),
                     img_el.attr("visiblerois").split(","),
