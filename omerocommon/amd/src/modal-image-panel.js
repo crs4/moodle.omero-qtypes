@@ -191,6 +191,23 @@ define(['qtype_omerocommon/image-viewer',
             $("#" + this._modal_image_selector_id).modal("hide");
         };
 
+        /**
+         * Return the current Image Server URL
+         *
+         * @param string
+         */
+        prototype.setImageServer = function (image_server) {
+            this._image_server = image_server;
+        };
+
+        /**
+         * Set the URL of the Image Server to be used.
+         *
+         * @param image_model_server
+         */
+        prototype.setImageModelServer = function (image_model_server) {
+            this._image_model_server = image_model_server;
+        };
 
         /**
          * Handler for the event 'ImageModelRoiLoaded'.
