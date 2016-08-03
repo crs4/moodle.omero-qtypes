@@ -378,8 +378,11 @@ abstract class qtype_omerointeractive_base_renderer extends qtype_multichoice_re
                                     "style" => "margin-right: 5px"
                                 )
                             ) .
-                            format_text($answer_shape_map[$shape->shape_id]->feedback),
-                            array("class" => "outcome")
+                            format_text($shape_answer->feedback) . $feedbackimages_html,
+                            array(
+                                "class" => "outcome",
+                                "style" => "padding: 20px 30px 20px;"
+                            )
                         );
                 }
 
