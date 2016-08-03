@@ -23,6 +23,7 @@ defined('MOODLE_INTERNAL') || die();
 
 require_once($CFG->dirroot . '/question/type/multichoice/renderer.php');
 require_once($CFG->dirroot . '/question/type/omerocommon/js/modules.php');
+require_once($CFG->dirroot . '/question/type/omerocommon/rendererhelper.php');
 require_once($CFG->dirroot . '/question/type/omerocommon/viewer/viewer_config.php');
 
 /**
@@ -460,6 +461,7 @@ abstract class qtype_omeromultichoice_base_renderer extends qtype_multichoice_re
         init_js_modules("omeromultichoice");
         init_js_imageviewer(get_config('omero', 'omero_restendpoint'));
         $PAGE->requires->css("/question/type/omerocommon/css/question-player-base.css");
+        $PAGE->requires->css("/question/type/omerocommon/css/modal-image-dialog.css");
         $PAGE->requires->css("/question/type/omerocommon/css/message-dialog.css");
         $PAGE->requires->string_for_js('validate_question', 'qtype_omerocommon');
         $PAGE->requires->string_for_js('validate_editor_not_valid', 'qtype_omerocommon');
