@@ -108,7 +108,7 @@ abstract class qtype_omerocommon extends qtype_multichoice
         global $DB;
         $question->options = $DB->get_record($this->get_table_name(),
             array('questionid' => $question->id), '*', MUST_EXIST);
-        question_type::get_question_options($question);
+        return question_type::get_question_options($question);
     }
 
     public function save_question($question, $form)
