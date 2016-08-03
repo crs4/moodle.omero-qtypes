@@ -81,6 +81,7 @@ $string['roi_focusable'] = "Focus Areas";
 # save/update controls
 $string['savechangesandcontinueediting'] = "Save";
 $string['savechangesandexit'] = "Save and Exit";
+$string['close'] = "Close";
 
 # validation messages
 $string['validate_question'] = "Question";
