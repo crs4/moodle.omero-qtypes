@@ -627,6 +627,7 @@ abstract class qtype_omerocommon_edit_form extends qtype_multichoice_edit_form
         $PAGE->requires->string_for_js('roi_visible', 'qtype_omerocommon');
         $PAGE->requires->string_for_js('roi_focusable', 'qtype_omerocommon');
         $PAGE->requires->string_for_js('feedback', 'question');
+        $PAGE->requires->string_for_js('validate_field_required', 'qtype_omerocommon');
         $PAGE->requires->string_for_js('answer', 'core');
         $PAGE->requires->string_for_js('answer_grade', 'qtype_omerocommon');
         $PAGE->requires->string_for_js('answer_choiceno', 'qtype_omerocommon');

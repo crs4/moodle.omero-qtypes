@@ -90,6 +90,7 @@ $string['validate_editor_not_existing_rois'] = "The following ROIs are no longer
 $string['validate_editor_check_question'] = "Please check your question !!!";
 $string['validate_player_not_existing_rois'] = "not valid. <br>Please contact your instructor/examiner !!!";
 $string['validate_warning'] = "Warning";
+$string['validate_field_required'] = "This field is required !!!";
 $string['validate_no_answers'] = "Answers are less than 1 !!!";
 $string['validate_no_image'] = "No image selected !!!";
 $string['validate_at_least_one_100'] = "One of the choices should have grade 100% !!!";

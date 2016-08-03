@@ -90,6 +90,7 @@ $string['validate_editor_not_existing_rois'] = "Le seguenti ROI non sono più di
 $string['validate_editor_check_question'] = "Controlla la domanda !!!";
 $string['validate_player_not_existing_rois'] = "non valida. <br>Contatta il tuo istruttore/esaminatore !!!";
 $string['validate_warning'] = "Avviso";
+$string['validate_field_required'] = "Questo campo è obbligatorio !!!";
 $string['validate_no_answers'] = "Le opzioni di risposta sono meno di 1 !!!";
 $string['validate_no_image'] = "Nessuna immagine selezionata !!!";
 $string['validate_at_least_one_100'] = "Una delle opzioni di risposta dovrebbe avere punteggio 100% !!!";
