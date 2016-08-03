@@ -133,17 +133,27 @@ define(['qtype_omerocommon/image-viewer',
          */
         prototype.show = function (parent,
                                    image_id, image_properties, image_lock,
-                                   visible_rois, focusable_rois) {
-
+                                   visible_rois, focusable_rois,
+                                   disable_roi_table, disable_image_properties, disable_image_lock) {
+            // the reference to current scope
             var me = this;
 
+            // set inner properties
             me._parent = parent;
             me._image_id = image_id;
             me._visible_roi_list = visible_rois ? visible_rois : [];
             me._focusable_roi_list = focusable_rois ? focusable_rois : [];
             me._image_properties = image_properties || {};
             me._image_lock = image_lock || false;
+            me._disable_roi_table = disable_roi_table == true;
+            me._disable_image_lock = disable_image_lock == true;
+            me._disable_image_properties = disable_image_properties == true;
 
+            // clear
+            me._header_title.html(me._initial_title);
+            me._image_info_container.html("");
+
+            // show the modal panel
             $("#" + this._modal_image_selector_id).modal("show");
 
             // clean the old canvas
@@ -152,18 +162,23 @@ define(['qtype_omerocommon/image-viewer',
             if (me._roi_shape_table)
                 me._roi_shape_table.removeAll();
 
+            // inzialize the viewer
             var viewer_ctrl = new ImageViewer(
                 image_id, undefined,
-                me._image_server || "http://ome-cytest.crs4.it:8080",
-                "modalImageDialogPanel-image-viewer-container", "modalImageDialogPanel-annotations_canvas",
-                me._viewer_model_server || "http://mep.crs4.it/moodle/question/type/omerocommon/viewer/viewer-model.php");
+                me._image_server,
+                me._image_viewer_container_id, me._image_viewer_annotations_container_id,
+                me._image_model_server);
             me._image_viewer_controller = viewer_ctrl;
 
             // load and show image and its related ROIs
             viewer_ctrl.open(true, function (data) {
+                var image_info = me._image_viewer_controller.getImageDetails();
+                me._header_title.html(me._initial_title + ": \"" + image_info.name + "\"");
                 me.onImageModelRoiLoaded(data);
-                me._updateImageProperties();
-                me._image_locked_element.bootstrapToggle(me._image_lock ? 'on' : 'off');
+                if (!disable_image_properties)
+                    me._updateImageProperties();
+                if (!disable_image_lock)
+                    me._image_locked_element.bootstrapToggle(me._image_lock ? 'on' : 'off');
                 me._image_viewer_controller.updateViewFromProperties(me._image_properties);
                 $("#modalImageDialogPanel-toolbar").removeClass("hidden");
             });
