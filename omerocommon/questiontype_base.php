@@ -137,11 +137,10 @@ abstract class qtype_omerocommon extends qtype_multichoice
         foreach ($question->answers as $ansid => $answer) {
             $answer->feedbackimages = array();
             $images = isset($questiondata->options->answers[$ansid]->images)
-                ? json_decode($questiondata->options->answers[$ansid]->images) : array();
+                ? json_decode(html_entity_decode($questiondata->options->answers[$ansid]->images)) : array();
             foreach ($images as $image) {
                 $answer->feedbackimages[$image->id] = $image;
             }
-            echo "<br>";
         }
     }
 
