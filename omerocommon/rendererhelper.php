@@ -44,13 +44,21 @@ require_once($CFG->dirroot . '/question/type/multichoice/question.php');
 class qtype_omerocommon_renderer_helper
 {
 
-    public static function modal_viewer($element_id = "modalImageDialogPanel")
+    const MODAL_VIEWER_ELEMENT_ID = "modalImageDialogPanel";
+
+    public static function modal_viewer($hide_save_button = false,
+                                        $hide_toolbar = false,
+                                        $element_id = self::MODAL_VIEWER_ELEMENT_ID)
     {
         $modal_image_dialog_panel_id = $element_id;
+        $modal_image_header_id = $modal_image_dialog_panel_id . "-header";
+        $modal_image_header_title_id = $modal_image_header_id . "-title";
+        $modal_image_body_id = $modal_image_dialog_panel_id . "-body";
+        $modal_image_footer_id = $modal_image_dialog_panel_id . "-footer";
         $modal_image_graphics_container_id = $modal_image_dialog_panel_id . "-graphics_container";
         $modal_image_viewer_container = $modal_image_dialog_panel_id . "-image-viewer-container";
         $modal_image_annotation_canvas = $modal_image_dialog_panel_id . "-annotations_canvas";
-        $modal_image_loading_dialog = $modal_image_dialog_panel_id . "-loading-dialog";
+        $modal_image_loading_dialog = $modal_image_dialog_panel_id . "-image-viewer-container-loading-dialog";
         $modal_image_roi_inspector_container_id = $modal_image_dialog_panel_id . "-roi-shape-inspector-table-container";
         $modal_image_roi_inspector_toolbar_id = $modal_image_dialog_panel_id . "-roi-shape-inspector-table-toolbar";
         $modal_image_roi_inspector_table_id = $modal_image_dialog_panel_id . "-roi-shape-inspector-table";
