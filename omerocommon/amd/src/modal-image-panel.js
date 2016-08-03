@@ -51,7 +51,7 @@ define(['qtype_omerocommon/image-viewer',
          * @param modal_image_selector_panel_id
          * @constructor
          */
-        M.qtypes.omerocommon.ModalImagePanel = function (modal_image_selector_panel_id) {
+        M.qtypes.omerocommon.ModalImagePanel = function (modal_image_selector_panel_id, image_server, image_model_server) {
             var me = this;
 
             me._modal_image_selector_id = modal_image_selector_panel_id || M.qtypes.omerocommon.DEFAULT_ELEMENT_NAME;
