@@ -272,9 +272,15 @@ abstract class qtype_omeromultichoice_base_renderer extends qtype_multichoice_re
             }
             $feedbackimages_html = '<div style="display: block; float: right;">[ '
                 . get_string("see", "qtype_omerocommon") . " "
-                . implode(", ", array_map(function($image){
-                    return '<i class="glyphicon glyphicon-book" style="margin-left: 2px; margin-right: 5px;"></i>' . $image ;
-                }, $feedbackimages))
+                . implode(", ", array_map(function ($image) {
+                    return '<span class="feedback-image" imageid="' . $image->id . '"'
+                    . ' imagelock="' . $image->lock . '"'
+                    . ' imageproperties="' . htmlspecialchars(json_encode($image->properties)) . '"'
+                    . ' visiblerois="' . implode(",", $image->visiblerois) . '"'
+                    . ' focusablerois="' . implode(",", $image->focusablerois) . '"' . '>' .
+                    '<i class="glyphicon glyphicon-book" style="margin-left: 2px; margin-right: 5px;"></i>'
+                    . $image->id . '</span>';
+                }, $ans->feedbackimages))
                 . ' ]</div>';
 
             // Param $options->suppresschoicefeedback is a hack specific to the
@@ -412,6 +418,8 @@ abstract class qtype_omeromultichoice_base_renderer extends qtype_multichoice_re
     </div>
   </div>
 </div>');
+
+        $result .= qtype_omerocommon_renderer_helper::modal_viewer(true, true);
 
         if ($qa->get_state() == question_state::$invalid) {
             $result .= html_writer::nonempty_tag('div',

@@ -324,6 +324,24 @@ abstract class qtype_omerointeractive_base_renderer extends qtype_multichoice_re
         $answer_order = "";
         $answer_options = array();
 
+
+        $feedbackimages = array();
+        foreach ($ans->feedbackimages as $image_id => $image) {
+            array_push($feedbackimages, $image_id);
+        }
+        $feedbackimages_html = '<div style="display: block; float: right;">[ '
+            . get_string("see", "qtype_omerocommon") . " "
+            . implode(", ", array_map(function ($image) {
+                return '<span class="feedback-image" imageid="' . $image->id . '"'
+                . ' imagelock="' . $image->lock . '"'
+                . ' imageproperties="' . htmlspecialchars(json_encode($image->properties)) . '"'
+                . ' visiblerois="' . implode(",", $image->visiblerois) . '"'
+                . ' focusablerois="' . implode(",", $image->focusablerois) . '"' . '>' .
+                '<i class="glyphicon glyphicon-book" style="margin-left: 2px; margin-right: 5px;"></i>'
+                . $image->id . '</span>';
+            }, $ans->feedbackimages))
+            . ' ]</div>';
+
         $feedbackimg = array();
         $classes = array();
 
@@ -370,6 +388,7 @@ abstract class qtype_omerointeractive_base_renderer extends qtype_multichoice_re
                     '</span>';
 
                 if ($shape !== "none" && !empty(strip_tags($answer_shape_map[$shape->shape_id]->feedback))) {
+                    $shape_answer = $answer_shape_map[$shape->shape_id];
                     $marker_correction_text .=
                         html_writer::tag("div",
                             html_writer::tag("i", " ",
@@ -557,8 +576,8 @@ abstract class qtype_omerointeractive_base_renderer extends qtype_multichoice_re
 
         $player_config_element_id = self::to_unique_identifier($qa, "viewer-config");
         $result .= html_writer::empty_tag(
-            "input", array("id"=> $player_config_element_id,
-            "type" => "hidden",
+            "input", array("id" => $player_config_element_id,
+                "type" => "hidden",
                 "value" => json_encode($player_config))
         );
 
@@ -574,7 +593,7 @@ abstract class qtype_omerointeractive_base_renderer extends qtype_multichoice_re
             'value' => $answer_input_name,
         ));
 
-        $result .= qtype_omerocommon_renderer_helper::modal_viewer(true);
+        $result .= qtype_omerocommon_renderer_helper::modal_viewer(true, true);
 
         global $PAGE;
         $PAGE->requires->string_for_js('marker', 'qtype_omerointeractive');
