@@ -146,7 +146,7 @@ define(['jquery', 'qtype_omerocommon/roi-shape-model'],
                             formatter: me.idFormatter
                         },
                         {
-                            field: 'details',
+                            field: 'description',
                             title: M.util.get_string('roi_description', 'qtype_omerocommon'),
                             align: 'center',
                             valign: 'middle',
@@ -331,7 +331,7 @@ define(['jquery', 'qtype_omerocommon/roi-shape-model'],
         };
 
         prototype.descriptionFormatter = function (data) {
-            return (data && data.name) || " ";
+            return (data) || " ";
         };
 
         prototype.focusableRoisFormatter = function (data) {
