@@ -210,13 +210,82 @@ define(['qtype_omerocommon/image-viewer',
         };
 
         /**
+         * Set the default offset to be considered to center to modal panel.
+         *
+         * @param offset
+         */
+        prototype.setDefaultOffeset = function (offset) {
+            this._default_offset = offset;
+        };
+
+        /**
+         * Return the the default offset used to center the modal panel.
+         * @returns {*|number}
+         */
+        prototype.getDefaultOffeset = function () {
+            return this._default_offset;
+        };
+
+        /**
+         * Set the desired height of this modal panel.
+         *
+         * @param height
+         */
+        prototype.setHeight = function (height) {
+            var footer_height = parseInt(this._footer.css("height"));
+            var new_height = height + 110;
+            this._body.css("min-height", height);
+            this._body.css("height", height);
+
+            this._modal_image_panel.css("min-height", new_height);
+            this._modal_image_panel.css("height", new_height);
+        };
+
+        /**
+         * Set the width of this modal panel.
+         *
+         * @param width
+         */
+        prototype.setWidth = function (width) {
+            this._modal_image_panel.css("min-width", width);
+            this._modal_image_panel.css("width", width);
+        };
+
+        /**
+         * Center this modal panel.
+         */
+        prototype.center = function () {
+            var me = this;
+            var offset_fix = me._default_offset;
+            this._modal_image_panel.css(
+                {
+                    left: ($(window).width() - me._modal_image_panel.outerWidth()) / 2 + offset_fix,
+                    top: ($(window).height() - me._modal_image_panel.outerHeight()) / 2 - offset_fix
+                });
+        };
+
+        /**
+         * Enable auto center
+         */
+        prototype.enableCenterAuto = function () {
+            // automatically recenter the modal panel
+            var me = this;
+            if (!me._enableCenterAuto) {
+                $(window).resize(function () {
+                    me.center();
+                });
+                me._enableCenterAuto = true;
+            }
+        };
+
+        /**
          * Handler for the event 'ImageModelRoiLoaded'.
          *
          * @param data
          * @returns {{}}
          */
         prototype.onImageModelRoiLoaded = function (data) {
-
+            // reference to the current scope
             var me = this;
 
             // removed_rois
