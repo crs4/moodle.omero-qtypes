@@ -1,0 +1,60 @@
+#modalImageDialogPanel { /*.modal-image.fade.in {*/
+    position: absolute;
+    top: 14%;
+    /*height: 915px;*/
+    left: 30%;
+    width: 1000px;
+}
+
+#modalImageDialogPanel .modal-body {
+    /*max-height: 90%;*/
+    /*height: 90%;*/
+    /*min-height: 800px;*/
+    /*height: 800px;*/
+}
+
+#modalImageDialogPanel-body {
+    padding: 0 5px 0;
+    margin: 0;
+}
+
+#modalImageDialogPanel-graphics_container {
+    paddding: 0;
+    margin: 0;
+}
+
+#modalImageDialogPanel .modal-dialog {
+}
+
+#modalImageDialogPanel-toolbar {
+    margin-right: 0px;
+    position: relative;
+    top: 505px;
+}
+
+#modalImageDialogPanel-image-lock-container {
+    float: right;
+    margin-top: 20px;
+}
+
+#modalImageDialogPanel-image-view-lock {
+    margin-left: 5px;
+    width: auto;
+}
+
+#modalImageDialogPanel-update-image-properties {
+    font-size: small;
+    margin-left: 3px;
+}
+
+#modalImageDialogPanel-roi-shape-inspector-table-toolbar {
+    margin-top: 530px;
+}
+
+#modalImageDialogPanel div[id*=graphics_container] {
+    height: 20px;
+}
+
+div.bootstrap-table > div.fixed-table-container {
+    padding: 5px 5px 20px;
+}

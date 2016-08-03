@@ -30,7 +30,8 @@ define([
         'qtype_omerocommon/moodle-forms-utils',
         'qtype_omerocommon/answer-base',
         'qtype_omerocommon/multilanguage-element',
-        'qtype_omerocommon/multilanguage-attoeditor'
+        'qtype_omerocommon/multilanguage-attoeditor',
+        'qtype_omerocommon/modal-image-panel'
     ],
 
     /* jshint curly: false */
@@ -108,6 +109,9 @@ define([
             // answer format
             me._build_hidden_of("feedbackformat", "1");
 
+            // answer feedback images
+            me._build_feedback_image_selector();
+
             // reference to the head
             me._answer_head = $('#head-answer-' + this._answer_number);
 
@@ -119,6 +123,7 @@ define([
             // registers the panel as main container
             me._answer_container = panel;
         };
+
 
         // returns the class
         return M.qtypes.omeromultichoice.AnswerPlaintext;

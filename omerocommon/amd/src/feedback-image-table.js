@@ -61,7 +61,7 @@ define(['jquery', 'qtype_omerocommon/roi-shape-model'],
         }
 
         // constructor
-        M.qtypes.omerocommon.RoiShapeTableBase = function (table_id, table_container_id, table_container_toolbar_id) {
+        M.qtypes.omerocommon.FeedbackImageTable = function (table_id, table_container_id, table_container_toolbar_id) {
 
             // Registers a reference to the current scope
             var me = this;
@@ -76,14 +76,14 @@ define(['jquery', 'qtype_omerocommon/roi-shape-model'],
         };
 
 
-        M.qtypes.omerocommon.RoiShapeTableBase.responseHandler = function (res) {
+        M.qtypes.omerocommon.FeedbackImageTable.responseHandler = function (res) {
             $.each(res.rows, function (i, row) {
                 row.state = $.inArray(row.id, this.selections) !== -1;
             });
             return res;
         };
 
-        M.qtypes.omerocommon.RoiShapeTableBase.detailFormatter = function (index, row) {
+        M.qtypes.omerocommon.FeedbackImageTable.detailFormatter = function (index, row) {
             var html = [];
             $.each(row, function (key, value) {
                 html.push('<p><b>' + key + ':</b> ' + value + '</p>');
@@ -92,10 +92,24 @@ define(['jquery', 'qtype_omerocommon/roi-shape-model'],
         };
 
 
-        var prototype = M.qtypes.omerocommon.RoiShapeTableBase.prototype;
+        var prototype = M.qtypes.omerocommon.FeedbackImageTable.prototype;
+
+        /**
+         *
+         * @returns {string}
+         */
+        prototype.drawHtmlTable = function () {
+            var html = '' +
+                '<div id="' + this._table_container_id + '">' +
+                '<table data-toggle="table" width="100%" id="' + this._table_id + '">' +
+                '</table>' +
+                '</div>';
+            return html;
+        };
+
 
         // table setup
-        prototype.initTable = function (hideToolbar, showColumnSelector, hideFocusAreas) {
+        prototype.initTable = function (hideToolbar, showColumnSelector) {
 
             var me = this;
 
@@ -114,25 +128,17 @@ define(['jquery', 'qtype_omerocommon/roi-shape-model'],
             else me.hideToolbar();
 
             // Setup the responseHandler
-            me.table_element.attr("data-response-handler", "M.qtypes.omerocommon.RoiShapeTableBase.responseHandler");
+            //me.table_element.attr("data-response-handler", "M.qtypes.omerocommon.FeedbackImageTable.responseHandler");
             // Register the detailsFormatter
-            me.table_element.attr("data-detail-formatter", "M.qtypes.omerocommon.RoiShapeTableBase.detailFormatter");
+            //me.table_element.attr("data-detail-formatter", "M.qtypes.omerocommon.FeedbackImageTable.detailFormatter");
 
             var bootstrap_config = {
-                height: "400",
+                height: "160",
                 columns: [
                     [
                         {
-                            field: 'state',
-                            checkbox: true,
-                            rowspan: 2,
-                            align: 'center',
-                            valign: 'middle'
-                        },
-                        {
                             title: 'ID',
                             field: 'id',
-                            rowspan: 2,
                             align: 'center',
                             valign: 'middle',
                             width: '30px',
@@ -140,61 +146,62 @@ define(['jquery', 'qtype_omerocommon/roi-shape-model'],
                             formatter: me.idFormatter
                         },
                         {
-                            title: M.util.get_string('roi_shape_details', 'qtype_omerocommon'),
-                            colspan: 3,
-                            align: 'center'
-                        }
-                    ],
-                    [
-                        {
                             field: 'description',
                             title: M.util.get_string('roi_description', 'qtype_omerocommon'),
-                            //sortable: true,
-                            align: 'left',
-                            //editable: {
-                            //    type: 'textarea',
-                            //    title: 'ROI Shape Description',
-                            //    width: '200px',
-                            //    resize: 'none',
-                            //    validate: function (value) {
-                            //        value = $.trim(value);
-                            //        if (!value) {
-                            //            return 'This field is required';
-                            //        }
-                            //
-                            //        var data = me.table_element.bootstrapTable('getData'),
-                            //            index = $(this).parents('tr').data('index');
-                            //        console.log(data[index]);
-                            //        return '';
-                            //    }
-                            //},
-                            formatter: me.descriptionFormatter
+                            align: 'center',
+                            valign: 'middle',
+                            formatter: me.descriptionFormatter,
+                            editable: {
+                                type: 'textarea',
+                                title: 'Feedback image description',
+                                width: '200px',
+                                resize: 'none',
+                                validate: function (value) {
+                                    value = $.trim(value);
+                                    if (!value) {
+                                        return M.util.get_string('validate_field_required', 'qtype_omerocommon');
+                                    }
+                                    me.table_element.bootstrapTable('resetView');
+                                    var data = me.table_element.bootstrapTable('getData'),
+                                        index = $(this).parents('tr').data('index');
+                                    console.log("The updated DATA....", data[index]);
+                                    return '';
+                                }
+                            }
                         },
                         {
-                            field: 'visible',
-                            title: M.util.get_string('roi_visibility', 'qtype_omerocommon'),
-                            width: "20px",
+                            field: 'visiblerois',
+                            title: M.util.get_string('roi_visible', 'qtype_omerocommon'),
+                            align: 'center',
+                            valign: 'middle',
+                            formatter: me.visibleRoisFormatter
+                        },
+                        {
+                            field: 'focusablerois',
+                            title: M.util.get_string('roi_focusable', 'qtype_omerocommon'),
+                            align: 'center',
+                            valign: 'middle',
+                            formatter: me.focusableRoisFormatter
+                        },
+                        {
+                            title: M.util.get_string('edit', 'core'),
+                            width: "8%",
                             align: 'center',
                             valign: 'middle',
                             events: me.eventHandler(me),
-                            formatter: me.visibilityFormatter
+                            formatter: me.editActionFormatter
                         },
                         {
-                            field: 'focusable',
-                            title: M.util.get_string('roi_focus', 'qtype_omerocommon'),
-                            width: "20px",
+                            title: M.util.get_string('delete', 'core'),
+                            width: "8%",
                             align: 'center',
                             valign: 'middle',
                             events: me.eventHandler(me),
-                            formatter: me.focusAreaFormatter
+                            formatter: me.deleteActionFormatter
                         }
                     ]
                 ]
             };
-
-            //if (!showColumnSelector)
-            if (hideFocusAreas)
-                bootstrap_config.columns[1].splice(2, 1);
 
             // Initializes the bootstrap table
             me.table_element.bootstrapTable(bootstrap_config);
@@ -205,46 +212,25 @@ define(['jquery', 'qtype_omerocommon/roi-shape-model'],
 
 
             me.table_element.on('click-cell.bs.table', function (table, field, e, row, index) {
-                console.log("Click on a table ROW", e, row, index);
-                notifyListeners(me, {
-                    type: "roiShapeFocus",
-                    shape: row,
-                    visible: row.visible
-                });
             });
 
             me.table_element.on('check.bs.table uncheck.bs.table ' +
                 'check-all.bs.table uncheck-all.bs.table', function () {
-                me.remove_element.prop('disabled', !me.table_element.bootstrapTable('getSelections').length);
-
-                // save your data, here just save the current page
-                var selections = me.getIdSelections();
-
-                notifyListeners(me, {
-                    type: "roiShapesSelected",
-                    shapes: selections
-                });
             });
-            me.table_element.on('expand-row.bs.table', function (e, index, row, $detail) {
-                if (index % 2 == 1) {
-                    $detail.html('Loading from ajax request...');
-                    $.get('LICENSE', function (res) {
-                        $detail.html(res.replace(/\n/g, '<br>'));
-                    });
-                }
-            });
+
             me.table_element.on('all.bs.table', function (e, row, args) {
                 console.log(row, args);
             });
+
             me.remove_element.click(function () {
-                var ids = me.getIdSelections();
+                var ids = me.getSelectionIDs();
                 me.table_element.bootstrapTable('remove', {
                     field: 'id',
                     values: ids
                 });
                 me.remove_element.prop('disabled', true);
             });
-            
+
             // Adapt the table to window width
             $(window).resize(function () {
                 me.table_element.bootstrapTable('resetWidth');
@@ -254,7 +240,7 @@ define(['jquery', 'qtype_omerocommon/roi-shape-model'],
         };
 
 
-        prototype.getIdSelections = function () {
+        prototype.getSelectionIDs = function () {
             return $.map(this.table_element.bootstrapTable('getSelections'), function (row) {
                 return row.id;
             });
@@ -281,34 +267,7 @@ define(['jquery', 'qtype_omerocommon/roi-shape-model'],
 
         prototype.eventHandler = function (table) {
             var me = this;
-
-            // Reusable function to handle visibility change
-            function onRoiShapeVisibilityChanged(target, value, row) {
-                // if focus is active then visibility cannot be changed
-                if (row.visible && row.focusable) return;
-
-                row.visible = !row.visible;
-                if (row.visible)
-                    $(target).attr("class", "green glyphicon glyphicon-eye-open");
-                else
-                    $(target).attr("class", "#E9E9E9 glyphicon glyphicon-eye-close");
-
-                notifyListeners(table, {
-                    type: "roiShapeVisibilityChanged",
-                    shape: row,
-                    event: value,
-                    visible: row.visible
-                });
-            }
-
             return {
-                'click .like': function (e, value, row /*, index*/) {
-                    if ($(e.target).attr("class").indexOf("glyphicon-plus-sign") !== -1)
-                        $(e.target).attr("class", "green glyphicon glyphicon-eye-open");
-                    else
-                        $(e.target).attr("class", "red glyphicon glyphicon-eye-close");
-                    console.log('You click like action, row: ' + JSON.stringify(row));
-                },
 
                 /**
                  * Handle the visibility change event !!!
@@ -318,8 +277,13 @@ define(['jquery', 'qtype_omerocommon/roi-shape-model'],
                  * @param row
                  * @param index
                  */
-                'click .roi-shape-visibility': function (e, value, row /*, index*/) {
-                    onRoiShapeVisibilityChanged(e.target, value, row);
+                'click .edit-image-action': function (e, value, row /*, index*/) {
+                    console.log("Editing image: " + row.id);
+                    notifyListeners(table, {
+                        type: "editImage",
+                        image: row,
+                        event: value
+                    });
                 },
 
                 /**
@@ -330,34 +294,14 @@ define(['jquery', 'qtype_omerocommon/roi-shape-model'],
                  * @param row
                  * @param index
                  */
-                'click .roi-shape-focusability': function (e, value, row /*, index*/) {
-                    row.focusable = !row.focusable;
-                    if (row.focusable)
-                        $(e.target).attr("class", "green glyphicon glyphicon-record");
-                    else
-                        $(e.target).attr("class", "#E9E9E9 glyphicon glyphicon-record");
-
-                    console.log("FOCUSability changed: " + row.focusable);
+                'click .delete-image-action': function (e, value, row /*, index*/) {
+                    console.log("Deleting image: " + row.id);
                     notifyListeners(table, {
-                        type: "roiShapeFocusabilityChanged",
-                        shape: row,
-                        event: value,
-                        focusable: row.focusable
+                        type: "deletedImage",
+                        image: row,
+                        event: value
                     });
-
-                    onRoiShapeVisibilityChanged($(e.target).parents("tr").find(".roi-shape-visibility i")[0], value, row);
-                },
-
-                'click .remove': function (e, value, row /*, index*/) {
-                    me.table_element.bootstrapTable('remove', {
-                        field: 'id',
-                        values: [row.id]
-                    });
-                },
-
-                'change .answer-class': function (e, value, row, index) {
-                    console.log(e, value, row, index);
-                    console.log("Changed ROW: ", row);
+                    me.remove(row.id);
                 }
             };
         };
@@ -403,49 +347,36 @@ define(['jquery', 'qtype_omerocommon/roi-shape-model'],
             ].join(" ");
         };
 
-        prototype.totalNameFormatter = function (data) {
-            return data.length;
-        };
-
-        prototype.totalNameFormatter = function (data) {
-            return data.length;
-        };
-
         prototype.descriptionFormatter = function (data) {
-            return data || " ";
+            return (data) || " ";
         };
 
-        prototype.visibilityFormatter = function (data) {
+        prototype.focusableRoisFormatter = function (data) {
+            return data.join(", ") || " ";
+        };
+
+        prototype.visibleRoisFormatter = function (data) {
+            return data.join(", ") || " ";
+        };
+
+        prototype.editActionFormatter = function (data) {
             return [
-                '<a class="roi-shape-visibility" href="javascript:void(0)" title="Visibility">',
-                (data ?
-                    '<i class="green glyphicon glyphicon-eye-open"></i>' :
-                    '<i class="#E9E9E9 glyphicon glyphicon-eye-close"></i>'),
+                '<a class="edit-image-action" href="javascript:void(0)" title="Edit">',
+                '<i class="glyphicon glyphicon-edit" style="color: orange"></i>',
                 '</a> '
             ].join(" ");
         };
 
-        prototype.focusAreaFormatter = function (data) {
+        prototype.deleteActionFormatter = function (data) {
             return [
-                '<a class="roi-shape-focusability" href="javascript:void(0)" title="Focusability">',
-                (data ?
-                    '<i class="green glyphicon glyphicon-record"></i>' :
-                    '<i class="#E9E9E9 glyphicon glyphicon-record"></i>'),
+                '<a class="delete-image-action" href="javascript:void(0)" title="Delete">',
+                '<i class="glyphicon glyphicon-remove-circle" style="color: red"></i>',
                 '</a> '
             ].join(" ");
         };
 
-        prototype.answerClassFormatter = function (/*value, row, index*/) {
-            return [
-                '<select class="answer-class form-control">',
-                '<option>1</option>',
-                '<option>2</option>',
-                '<option>3</option>',
-                '<option>4</option>',
-                '</select>'
-            ].join('');
-        };
 
+        // UTILITY METHODS
         prototype.getHeight = function () {
             return $(window).height() - $('h1').outerHeight(true);
         };
@@ -455,26 +386,31 @@ define(['jquery', 'qtype_omerocommon/roi-shape-model'],
         };
 
 
-        prototype.appendRoiShapeList = function (data) {
+        // DATA MANAGEMENT Methods
+        prototype.setData = function (data) {
+            this.removeAll();
+            this.append(data);
+        };
+
+        prototype.updateRow = function (data) {
+            this.table_element.bootstrapTable('updateRow', {index: data.id, row: data});
+        };
+
+        prototype.append = function (data) {
             return this.table_element.bootstrapTable('append', data);
         };
 
-        prototype.setRoiShapeList = function (data) {
-            this.removeAll();
-            this.appendRoiShapeList(data);
+        prototype.getImageInfo = function (image_id) {
+            return this.table_element.bootstrapTable('getRowByUniqueId', image_id);
         };
 
-        prototype.getRoiShape = function (roi_shape_id) {
-            return this.table_element.bootstrapTable('getRowByUniqueId', roi_shape_id);
-        };
-
-        prototype.getRoiShapeList = function () {
+        prototype.getData = function () {
             return this.table_element.bootstrapTable('getData');
         };
 
-        prototype.removeRoiShape = function (roi_shapes) {
-            roi_shapes = (roi_shapes instanceof Array) ? roi_shapes : [roi_shapes];
-            return this.table_element.bootstrapTable('remove', {field: 'id', values: roi_shapes});
+        prototype.remove = function (image) {
+            var image_id = (image instanceof Object) ? image.id : image;
+            this.table_element.bootstrapTable('remove', {field: 'id', values: [image_id]});
         };
 
         prototype.removeAll = function () {
@@ -482,7 +418,7 @@ define(['jquery', 'qtype_omerocommon/roi-shape-model'],
         };
 
         // returns the class
-        return M.qtypes.omerocommon.RoiShapeTableBase;
+        return M.qtypes.omerocommon.FeedbackImageTable;
     }
 );
 

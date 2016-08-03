@@ -84,6 +84,11 @@ abstract class qtype_omerocommon extends qtype_multichoice
         );
     }
 
+    public function extra_answer_fields()
+    {
+        return array("question_answers_omemopt", "images");
+    }
+
 
     protected function make_question_instance($questiondata)
     {
@@ -103,7 +108,7 @@ abstract class qtype_omerocommon extends qtype_multichoice
         global $DB;
         $question->options = $DB->get_record($this->get_table_name(),
             array('questionid' => $question->id), '*', MUST_EXIST);
-        question_type::get_question_options($question);
+        return question_type::get_question_options($question);
     }
 
     public function save_question($question, $form)
@@ -122,6 +127,21 @@ abstract class qtype_omerocommon extends qtype_multichoice
     protected function initialise_question_instance(question_definition $question, $questiondata)
     {
         parent::initialise_question_instance($question, $questiondata);
+    }
+
+    protected function initialise_question_answers(question_definition $question,
+                                                   $questiondata, $forceplaintextanswers = true)
+    {
+        parent::initialise_question_answers($question, $questiondata, $forceplaintextanswers);
+        // set extra fields of answer options
+        foreach ($question->answers as $ansid => $answer) {
+            $answer->feedbackimages = array();
+            $images = isset($questiondata->options->answers[$ansid]->images)
+                ? json_decode(html_entity_decode($questiondata->options->answers[$ansid]->images)) : array();
+            foreach ($images as $image) {
+                $answer->feedbackimages[$image->id] = $image;
+            }
+        }
     }
 
 
@@ -200,7 +220,8 @@ abstract class qtype_omerocommon extends qtype_multichoice
                 $node->removeAttribute("style");
             }
         }
-        return $dom->saveHTML();
+
+        return self::DOMinnerHTML($dom->getElementsByTagName("body")->item(0));
     }
 
 

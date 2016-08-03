@@ -23,6 +23,7 @@ defined('MOODLE_INTERNAL') || die();
 
 require_once($CFG->dirroot . '/question/type/multichoice/renderer.php');
 require_once($CFG->dirroot . '/question/type/omerocommon/js/modules.php');
+require_once($CFG->dirroot . '/question/type/omerocommon/rendererhelper.php');
 require_once($CFG->dirroot . '/question/type/omerocommon/viewer/viewer_config.php');
 
 /**
@@ -265,6 +266,24 @@ abstract class qtype_omeromultichoice_base_renderer extends qtype_multichoice_re
                 ));
             }
 
+            $feedbackimages = array();
+            foreach ($ans->feedbackimages as $image_id => $image) {
+                array_push($feedbackimages, $image_id);
+            }
+            $feedbackimages_html = '<div style="display: block; float: right;">[ '
+                . get_string("see", "qtype_omerocommon") . " "
+                . implode(", ", array_map(function ($image) {
+                    return '<span class="feedback-image" imageid="' . $image->id . '"'
+                    . ' imagedescription="' . $image->description . '"'
+                    . ' imagelock="' . $image->lock . '"'
+                    . ' imageproperties="' . htmlspecialchars(json_encode($image->properties)) . '"'
+                    . ' visiblerois="' . implode(",", $image->visiblerois) . '"'
+                    . ' focusablerois="' . implode(",", $image->focusablerois) . '"' . '>' .
+                    '<i class="glyphicon glyphicon-book" style="margin-left: 2px; margin-right: 5px;"></i>'
+                    . '"' . $image->description . '"</span>';
+                }, $ans->feedbackimages))
+                . ' ]</div>';
+
             // Param $options->suppresschoicefeedback is a hack specific to the
             // oumultiresponse question type. It would be good to refactor to
             // avoid refering to it here.
@@ -280,13 +299,13 @@ abstract class qtype_omeromultichoice_base_renderer extends qtype_multichoice_re
                         html_writer::tag("i", " ",
                             array(
                                 "class" => "pull-left glyphicon glyphicon-record",
-                                "style" => "margin-right: 20px"
+                                "style" => "margin-left: 10px; margin-right: 5px"
                             )
                         ) .
-                        format_text($feedback_text),
+                        format_text($feedback_text) . $feedbackimages_html,
                         array(
                             "class" => "outcome",
-                            "style" => "display: block-inline; margin: 0 0 10px; padding: 20px 30px 15px;"
+                            "style" => "padding: 20px 15px;"
                         )
                     );
                 }
@@ -401,6 +420,8 @@ abstract class qtype_omeromultichoice_base_renderer extends qtype_multichoice_re
   </div>
 </div>');
 
+        $result .= qtype_omerocommon_renderer_helper::modal_viewer(true, true);
+
         if ($qa->get_state() == question_state::$invalid) {
             $result .= html_writer::nonempty_tag('div',
                 $question->get_validation_error($qa->get_last_qt_data()),
@@ -449,6 +470,7 @@ abstract class qtype_omeromultichoice_base_renderer extends qtype_multichoice_re
         init_js_modules("omeromultichoice");
         init_js_imageviewer(get_config('omero', 'omero_restendpoint'));
         $PAGE->requires->css("/question/type/omerocommon/css/question-player-base.css");
+        $PAGE->requires->css("/question/type/omerocommon/css/modal-image-dialog.css");
         $PAGE->requires->css("/question/type/omerocommon/css/message-dialog.css");
         $PAGE->requires->string_for_js('validate_question', 'qtype_omerocommon');
         $PAGE->requires->string_for_js('validate_editor_not_valid', 'qtype_omerocommon');

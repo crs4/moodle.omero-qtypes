@@ -132,7 +132,7 @@ define(['jquery'],
 
             // appends inner content
             newContainer.html([
-                '<div class="fitemtitle"><label for="' + element_obj.attr("id") + '">' + label + '</label></div>',
+                label ? '<div class="fitemtitle"><label for="' + element_obj.attr("id") + '">' + label + '</label></div>' : "",
                 '<div class="felement">',
                 '<div>',
                 element_obj.get(0).outerHTML,
