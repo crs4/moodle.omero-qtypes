@@ -30,6 +30,7 @@
 
 defined('MOODLE_INTERNAL') || die();
 
+require_once($CFG->dirroot . '/question/type/omerocommon/rendererhelper.php');
 require_once($CFG->dirroot . '/question/type/omerocommon/question.php');
 require_once($CFG->dirroot . '/question/type/omerocommon/questiontype_base.php');
 require_once($CFG->dirroot . '/question/type/multichoice/edit_multichoice_form.php');
@@ -552,127 +553,16 @@ abstract class qtype_omerocommon_edit_form extends qtype_multichoice_edit_form
             $mform->hardFreezeAllVisibleExcept(array('categorymoveto', 'buttonar', 'currentgrp'));
         }
         // Modal frame to show dialog messages
-        $this->add_modal_frame();
+        $this->add_modal_frames();
     }
 
 
     // definition of the modal frame
-    protected function add_modal_frame()
+    protected function add_modal_frames()
     {
-        $modal_image_dialog_panel_id = "modalImageDialogPanel";
-        $modal_image_graphics_container_id = $modal_image_dialog_panel_id . "-graphics_container";
-        $modal_image_viewer_container = $modal_image_dialog_panel_id . "-image-viewer-container";
-        $modal_image_annotation_canvas = $modal_image_dialog_panel_id . "-annotations_canvas";
-        $modal_image_loading_dialog = $modal_image_dialog_panel_id . "-loading-dialog";
-        $modal_image_roi_inspector_container_id = $modal_image_dialog_panel_id . "-roi-shape-inspector-table-container";
-        $modal_image_roi_inspector_toolbar_id = $modal_image_dialog_panel_id . "-roi-shape-inspector-table-toolbar";
-        $modal_image_roi_inspector_table_id = $modal_image_dialog_panel_id . "-roi-shape-inspector-table";
-
-        $modal_image_toolbar = $modal_image_dialog_panel_id . "-toolbar";
-        $modal_image_update_properties = $modal_image_dialog_panel_id . "-update-image-properties";
-        $modal_image_properties = $modal_image_dialog_panel_id . "-image-properties";
-        $modal_image_view_lock_container = $modal_image_dialog_panel_id . "-image-lock-container";
-        $modal_image_view_lock = $modal_image_dialog_panel_id . "-view-lock";
-
-
-        $modal_image_viewer_html = '<div id="' . $modal_image_graphics_container_id . '" class="image-viewer-container" style="position: relative;" >
-            <div id="' . $modal_image_viewer_container . '" style="position: absolute; width: 100%; height: 500px; margin: auto;"></div>
-            <canvas id="' . $modal_image_annotation_canvas . '" style="position: absolute; width: 100%; height: 500px; margin: auto;"></canvas>
-            <div id="' . $modal_image_loading_dialog . '" class="image-viewer-loading-dialog"></div>
-        </div>';
-
-        $modal_image_viewer_html .= '
-            <div id="' . $modal_image_toolbar . '" class="hidden">
-                <div class="checkboxx">
-                    <div style="display: inline-block;">
-                        <a id="' . $modal_image_update_properties . '" href="javascript:void(0)" title="Update image center">
-                            <i class="glyphicon glyphicon-screenshot"></i>
-                        </a>
-                        <span id="' . $modal_image_properties . '">x: 123123, y: 12312312, zm: 123123123</span>
-                     </div>
-                     <div id="' . $modal_image_view_lock_container . '">
-                        <label for="omero-image-view-lock">'
-            . get_string('image_viewer_student_navigation', 'qtype_omerocommon') . '
-                        </label>
-                        <input id="' . $modal_image_view_lock . '" name="omero-image-view-lock" data-toggle="toggle"
-                               type="checkbox" data-onstyle="success" data-offstyle="default"
-                               data-on="' . get_string('image_viewer_locked_student_navigation', 'qtype_omerocommon') . '"
-                               data-off="' . get_string('image_viewer_lock_student_navigation', 'qtype_omerocommon') . '">
-                      </div>
-                 </div>
-             </div>';
-
-
-        $modal_image_viewer_html .= '<div id="' . $modal_image_roi_inspector_container_id . '">
-                <div ><label for="' . $modal_image_roi_inspector_table_id . '"></label></div>
-                <div >
-
-                <!-- TOOLBAR -->
-                <div id="' . $modal_image_roi_inspector_toolbar_id . '" class="hidden">
-
-                </div>
-                <!-- ROI TABLE -->
-                <table id="' . $modal_image_roi_inspector_table_id . '"
-                       data-toolbar="#toolbar"
-                       data-search="true"
-                       data-height="400"
-                       data-show-refresh="true"
-                       data-show-toggle="true"
-                       data-show-columns="true"
-                       data-show-export="true"
-                       data-detail-view="false"
-                       data-minimum-count-columns="2"
-                       data-show-pagination-switch="false"
-                       data-pagination="false"
-                       data-id-field="id"
-                       data-page-list="[10, 25, 50, 100, ALL]"
-                       data-show-footer="false"
-                       data-side-pagination="client">
-                </table>
-              </div>
-            </div>';
-
-        return $this->_form->addElement("html", '
-
-<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title text-warning" id="myModalLabel">
-            <i class="glyphicon glyphicon-warning-sign"></i> ' . get_string('validate_warning', 'qtype_omerocommon') .
-            '</h4>
-      </div>
-      <div class="modal-body text-left">
-        <span id="modal-frame-text"></span>
-      </div>
-      <div class="modal-footer text-center">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-      </div>
-    </div>
-  </div>
-</div>
-
-<div class="modal fade" id="modalImageDialogPanel" tabindex="-1" role="dialog" aria-labelledby="modalImageDialogLabel">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title text-warning" id="modalImageDialogLabel">
-            <!--<i class="glyphicon glyphicon-warning-sign"></i>--> ' .
-            get_string('omero_image_viewer', 'qtype_omerocommon') .
-            '</h4>
-      </div>
-      <div class="modal-body text-left">
-        <div id="modal-frame-text">' . $modal_image_viewer_html . '</div>
-      </div>
-      <div class="modal-footer text-center">
-        <button type="button" class="save btn btn-default" data-dismiss="modal">' . get_string('savechangesandcontinueediting', 'qtype_omerocommon') . '</button>
-      </div>
-    </div>
-  </div>
-</div>
-');
+        $modal_dialog = qtype_omerocommon_renderer_helper::modal_dialog();
+        $modal_viewer = qtype_omerocommon_renderer_helper::modal_viewer();
+        return $this->_form->addElement("html", $modal_dialog . "\n" . $modal_viewer);
     }
 
 
