@@ -85,17 +85,18 @@ class qtype_omerocommon_renderer_helper
                         </a>
                         <span id="' . $modal_image_properties . '">x: 123123, y: 12312312, zm: 123123123</span>
                      </div>
-                     <div id="' . $modal_image_view_lock_container . '">
+                <div id="' . $modal_image_view_lock_container . '">
                         <label for="omero-image-view-lock">'
-            . get_string('image_viewer_student_navigation', 'qtype_omerocommon') . '
+                . get_string('image_viewer_student_navigation', 'qtype_omerocommon') . '
                         </label>
                         <input id="' . $modal_image_view_lock . '" name="omero-image-view-lock" data-toggle="toggle"
                                type="checkbox" data-onstyle="success" data-offstyle="default"
                                data-on="' . get_string('image_viewer_locked_student_navigation', 'qtype_omerocommon') . '"
                                data-off="' . get_string('image_viewer_lock_student_navigation', 'qtype_omerocommon') . '">
                       </div>
-                 </div>
-             </div>';
+                    </div>
+                 </div>';
+        }
 
 
         $modal_image_viewer_html .= '<div id="' . $modal_image_roi_inspector_container_id . '">
