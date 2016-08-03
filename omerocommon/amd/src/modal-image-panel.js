@@ -132,7 +132,7 @@ define(['qtype_omerocommon/image-viewer',
          * @param focusable_rois
          */
         prototype.show = function (parent,
-                                   image_id, image_properties, image_lock,
+                                   image_id, image_description, image_properties, image_lock,
                                    visible_rois, focusable_rois,
                                    disable_roi_table, disable_image_properties, disable_image_lock) {
             // the reference to current scope
@@ -173,7 +173,7 @@ define(['qtype_omerocommon/image-viewer',
             // load and show image and its related ROIs
             viewer_ctrl.open(true, function (data) {
                 var image_info = me._image_viewer_controller.getImageDetails();
-                me._header_title.html(me._initial_title + ": \"" + image_info.name + "\"");
+                me._header_title.html(me._initial_title + ": \"" + image_description + "\"");
                 me.onImageModelRoiLoaded(data);
                 if (!disable_image_properties)
                     me._updateImageProperties();

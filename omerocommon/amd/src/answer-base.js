@@ -508,7 +508,7 @@ define([
             if (image) {
                 console.log("Selected image to edit", image);
                 this._modal_image_panel_ctrl.show(this,
-                    image.id,
+                    image.id, image.description,
                     image.properties, image.lock,
                     image.visiblerois, image.focusablerois
                 );
