@@ -127,23 +127,30 @@ class qtype_omerocommon_renderer_helper
               </div>
             </div>';
 
+        $save_button = !$hide_save_button
+            ? '<button type="button" class="save btn btn-default" data-dismiss="modal">' .
+            get_string('savechangesandcontinueediting', 'qtype_omerocommon') . '</button>'
+            : "";
+
+        $close_button = '<button type="button" class="btn btn-default" data-dismiss="modal">' .
+            get_string('close', 'qtype_omerocommon') . '</button>';
+
         $container = '
-            <div class="modal fade" id="modalImageDialogPanel" tabindex="-1" role="dialog" aria-labelledby="modalImageDialogLabel">
-              <div class="modal-dialog" role="document">
+            <div class="modal fade" id="' . $modal_image_dialog_panel_id .
+            '" tabindex="-1" role="dialog" aria-labelledby="modalImageDialogLabel">
+              <div id="' . $modal_image_header_id . '" class="modal-dialog" role="document">
                 <div class="modal-content">
                   <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title text-warning" id="modalImageDialogLabel">
+                    <h4 id="' . $modal_image_header_title_id . '" class="modal-title text-warning" id="modalImageDialogLabel">
                         <!--<i class="glyphicon glyphicon-warning-sign"></i>--> ' .
             get_string('omero_image_viewer', 'qtype_omerocommon') .
             '</h4>
                   </div>
-                  <div class="modal-body text-left">
-                    <div id="modal-frame-text">' . $modal_image_viewer_html . '</div>
+                  <div id="' . $modal_image_body_id . '" class="modal-body text-left">
+                    <div class="modal-frame-text">' . $modal_image_viewer_html . '</div>
                   </div>
-                  <div class="modal-footer text-center">
-                    <button type="button" class="save btn btn-default" data-dismiss="modal">' . get_string('savechangesandcontinueediting', 'qtype_omerocommon') . '</button>
-                  </div>
+                  <div id="' . $modal_image_footer_id . '" class="modal-footer text-center"> ' . $save_button . $close_button . '</div>
                 </div>
               </div>
             </div>';
