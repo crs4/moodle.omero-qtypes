@@ -539,7 +539,11 @@ define([
                 me._viewer_model_server);
             me._image_viewer_controller = viewer_ctrl;
 
-            ModalImagePanel.getInstance().setImageModelManager(viewer_ctrl.getImageModelManager());
+            me._modal_image_panel = ModalImagePanel.getInstance();
+            me._modal_image_panel.setImageModelManager(viewer_ctrl.getImageModelManager());
+            me._modal_image_panel.setImageServer(me._image_server);
+            me._modal_image_panel.setImageModelServer(me._viewer_model_server);
+            me._modal_image_panel.setHeight(700);
 
             // load and show image and its related ROIs
             viewer_ctrl.open(true, function (data) {
