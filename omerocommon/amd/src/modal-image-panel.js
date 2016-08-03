@@ -25,7 +25,10 @@
  * @copyright  2015-2016 CRS4
  * @license    https://opensource.org/licenses/mit-license.php MIT license
  */
-define(['qtype_omerocommon/image-viewer', 'qtype_omerocommon/image-viewer-model'],
+define(['qtype_omerocommon/image-viewer',
+        'qtype_omerocommon/image-viewer-model',
+        'qtype_omerocommon/roi-shape-table'
+    ],
     /* jshint curly: false */
     /* globals $ */
     function (ImageViewer, ImageModelManager) {
