@@ -54,14 +54,33 @@ define(['qtype_omerocommon/image-viewer',
         M.qtypes.omerocommon.ModalImagePanel = function (modal_image_selector_panel_id, image_server, image_model_server) {
             var me = this;
 
+            // URLs of the required servers
+            me._image_server = image_server;
+            me._image_model_server = image_model_server;
+
+            // set IDs of the main HTML elements
             me._modal_image_selector_id = modal_image_selector_panel_id || M.qtypes.omerocommon.DEFAULT_ELEMENT_NAME;
+            me._image_viewer_container_id = me._modal_image_selector_id + "-image-viewer-container";
+            me._image_viewer_annotations_container_id = me._modal_image_selector_id + "-annotations_canvas";
 
-            // FIXME: the id of the image container must be configurable
-            me._image_info_container = $("#modalImageDialogPanel-image-viewer-container");
-            me._image_info_container_template = $("#modalImageDialogPanel-image-viewer-container").html();
+            // set references to HTML elements
+            me._modal_image_panel = $("#" + me._modal_image_selector_id);
+            me._image_info_container = $("#" + me._image_viewer_container_id);
+            me._header = $("#" + me._modal_image_selector_id + "-header");
+            me._header_title = $("#" + me._modal_image_selector_id + "-header-title");
+            me._body = $("#" + me._modal_image_selector_id + "-body");
+            me._footer = $("#" + me._modal_image_selector_id + "-footer");
 
+            // save the original title
+            me._initial_title = me._header_title.html();
+
+            // init default offset
+            me._default_offset = 0;
+
+            // set the reference to the 'view-lock' HTML element
+            // and register the callback to handle its value changes
             if (!me._image_locked_element) {
-                me._image_locked_element = $("#modalImageDialogPanel-view-lock");
+                me._image_locked_element = $("#" + me._modal_image_selector_id + "-view-lock");
                 console.log(me._image_locked_element);
                 me._image_locked_element.change(function () {
                     me._image_locked_element.val($(this).prop('checked') ? 1 : 0);
@@ -69,19 +88,19 @@ define(['qtype_omerocommon/image-viewer',
                 });
             }
 
-            // set the reference to the current ImageProperties element
+            // set the reference to the 'image-properties' HTML element
+            // and register the callback to handle its value changes
             if (!me._image_properties_element) {
-                me._image_properties_element = $("[name^=modalImageDialogPanel-update-image-properties]");
-
+                me._image_properties_element = $("[name^=" + me._modal_image_selector_id + "-update-image-properties]");
                 // register the listener of the event "update-image-properties"
-                $("#modalImageDialogPanel-update-image-properties").click(function () {
+                $("#" + me._modal_image_selector_id + "-update-image-properties").click(function () {
                     me.updateImageProperties();
                 });
             }
 
-            // notify the parent controller when the submit button is clicked
+            // notify the parent controller when the 'save' button is clicked
             // triggering the event 'save'
-            $("#modalImageDialogPanel .save").click(function (data) {
+            $("#" + me._modal_image_selector_id + " .save").click(function (data) {
                 if (me._parent && me._parent.onSave) {
                     me._parent.onSave(
                         me._image_id, me._image_properties, me._image_lock,
@@ -91,7 +110,7 @@ define(['qtype_omerocommon/image-viewer',
             });
 
             // notify the parent controller when this panel is closed
-            $("#modalImageDialogPanel .close").click(function (data) {
+            $("#" + me._modal_image_selector_id + " .close").click(function (data) {
                 if (me._parent && me._parent.onClose) {
                     me._parent.onClose();
                 }
