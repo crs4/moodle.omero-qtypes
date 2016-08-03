@@ -154,6 +154,25 @@ define([
             this._image_viewer_controller = viewer_ctrl;
 
             this._message_dialog = new M.qtypes.omerocommon.MessageDialog(config.image_frame_id);
+            me._modal_image_panel = M.qtypes.omerocommon.ModalImagePanel.getInstance();
+            me._modal_image_panel.setImageServer(config.image_server);
+            me._modal_image_panel.setImageModelServer(config.viewer_model_server);
+            me._modal_image_panel.setImageModelManager(viewer_ctrl.getImageModelManager());
+            $(".feedback-image").click(function (event) {
+                var img_el = $(event.target);
+                if (img_el.prop("tagName").toUpperCase() == "I")
+                    img_el = img_el.parent();
+                me._modal_image_panel.show(me,
+                    img_el.attr("imageid"),
+                    JSON.parse((img_el.attr("imageproperties"))),
+                    img_el.attr("imagelock"),
+                    img_el.attr("visiblerois").split(","),
+                    img_el.attr("focusablerois").split(","));
+            });
+            me._modal_image_panel.setHeight(500);
+            me._modal_image_panel.setDefaultOffeset(115);
+            me._modal_image_panel.center();
+            me._modal_image_panel.enableCenterAuto();
 
             this._invalidator_panel = $("#" + config.question_answer_container + "-invalidator-panel");
         };
