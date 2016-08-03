@@ -33,10 +33,11 @@ define([
         'qtype_omerocommon/multilanguage-attoeditor',
         'qtype_omerocommon/image-viewer',
         'qtype_omerocommon/message-dialog',
+        'qtype_omerocommon/modal-image-panel'
     ],
     /* jshint curly: false */
     /* globals console, jQuery, document */
-    function (jQ, Editor, FormUtils, mle, mlat, ImageViewer) {
+    function (jQ, FormUtils, ab, mle, mlat, ImageViewer) {
 
         // jQuery reference
         var $ = jQuery;
