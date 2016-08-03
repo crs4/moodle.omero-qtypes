@@ -129,6 +129,22 @@ abstract class qtype_omerocommon extends qtype_multichoice
         parent::initialise_question_instance($question, $questiondata);
     }
 
+    protected function initialise_question_answers(question_definition $question,
+                                                   $questiondata, $forceplaintextanswers = true)
+    {
+        parent::initialise_question_answers($question, $questiondata, $forceplaintextanswers);
+        // set extra fields of answer options
+        foreach ($question->answers as $ansid => $answer) {
+            $answer->feedbackimages = array();
+            $images = isset($questiondata->options->answers[$ansid]->images)
+                ? json_decode($questiondata->options->answers[$ansid]->images) : array();
+            foreach ($images as $image) {
+                $answer->feedbackimages[$image->id] = $image;
+            }
+            echo "<br>";
+        }
+    }
+
 
     public function delete_question($questionid, $contextid)
     {
