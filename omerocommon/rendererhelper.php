@@ -75,7 +75,8 @@ class qtype_omerocommon_renderer_helper
             <div id="' . $modal_image_loading_dialog . '" class="image-viewer-loading-dialog"></div>
         </div>';
 
-        $modal_image_viewer_html .= '
+        if (!$hide_toolbar) {
+            $modal_image_viewer_html .= '
             <div id="' . $modal_image_toolbar . '" class="hidden">
                 <div class="checkboxx">
                     <div style="display: inline-block;">
