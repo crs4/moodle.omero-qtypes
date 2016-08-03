@@ -489,7 +489,7 @@ define([
             me._modal_image_panel_ctrl.getImageModelManager().getImageDetails(function (image_details) {
                 var image = {
                     id: image_info.image_id,
-                    description: "Image name...",
+                    description: image_details.name,
                     details: image_details,
                     visiblerois: [],
                     focusablerois: [],
