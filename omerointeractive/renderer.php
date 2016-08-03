@@ -333,12 +333,13 @@ abstract class qtype_omerointeractive_base_renderer extends qtype_multichoice_re
             . get_string("see", "qtype_omerocommon") . " "
             . implode(", ", array_map(function ($image) {
                 return '<span class="feedback-image" imageid="' . $image->id . '"'
+                . ' imagedescription="' . $image->description . '"'
                 . ' imagelock="' . $image->lock . '"'
                 . ' imageproperties="' . htmlspecialchars(json_encode($image->properties)) . '"'
                 . ' visiblerois="' . implode(",", $image->visiblerois) . '"'
                 . ' focusablerois="' . implode(",", $image->focusablerois) . '"' . '>' .
                 '<i class="glyphicon glyphicon-book" style="margin-left: 2px; margin-right: 5px;"></i>'
-                . $image->id . '</span>';
+                . '"' . $image->description . '"</span>';
             }, $ans->feedbackimages))
             . ' ]</div>';
 
