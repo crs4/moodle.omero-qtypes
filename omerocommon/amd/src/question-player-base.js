@@ -176,8 +176,7 @@ define([
             });
             me._modal_image_panel.setHeight(500);
             me._modal_image_panel.setDefaultOffeset(115);
-            me._modal_image_panel.center();
-            me._modal_image_panel.enableCenterAuto();
+            me._modal_image_panel.center(true);
 
             me._invalidator_panel = $("#" + config.question_answer_container + "-invalidator-panel");
         };

@@ -543,7 +543,9 @@ define([
             me._modal_image_panel.setImageModelManager(viewer_ctrl.getImageModelManager());
             me._modal_image_panel.setImageServer(me._image_server);
             me._modal_image_panel.setImageModelServer(me._viewer_model_server);
-            me._modal_image_panel.setHeight(700);
+            me._modal_image_panel.setDefaultOffeset(-200);
+            me._modal_image_panel.maximizeHeight(true);
+            me._modal_image_panel.vcenter(true);
 
             // load and show image and its related ROIs
             viewer_ctrl.open(true, function (data) {
