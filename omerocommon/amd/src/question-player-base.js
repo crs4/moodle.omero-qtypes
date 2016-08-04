@@ -158,11 +158,11 @@ define([
 
             me._message_dialog = new M.qtypes.omerocommon.MessageDialog(config.image_frame_id);
 
-            me._modal_image_panel = M.qtypes.omerocommon.ModalImagePanel.getInstance();
+            me._modal_image_panel = new M.qtypes.omerocommon.ModalImagePanel(config.modal_image_panel_id);
             me._modal_image_panel.setImageServer(config.image_server);
             me._modal_image_panel.setImageModelServer(config.viewer_model_server);
             me._modal_image_panel.setImageModelManager(viewer_ctrl.getImageModelManager());
-            $(".feedback-image").click(function (event) {
+            $("." + config.feedback_image_class).click(function (event) {
                 var img_el = $(event.target);
                 if (img_el.prop("tagName").toUpperCase() == "I")
                     img_el = img_el.parent();
