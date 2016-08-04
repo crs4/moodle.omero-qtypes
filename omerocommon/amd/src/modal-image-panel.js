@@ -75,7 +75,8 @@ define(['qtype_omerocommon/image-viewer',
             me._initial_title = me._header_title.html();
 
             // init default offset
-            me._default_offset = 0;
+            me._default_hoffset = 0;
+            me._default_voffset = 0;
 
             // default padding
             me._default_padding = 100;
