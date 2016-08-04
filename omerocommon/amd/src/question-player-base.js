@@ -175,9 +175,6 @@ define([
                     img_el.attr("focusablerois").split(","));
             });
 
-            var qz = $(".quizreviewsummary");
-            me._modal_image_panel.setDefaultHOffset((qz && qz.length == 1) ? 280 : 115);
-            me._modal_image_panel.setDefaultVOffset((qz && qz.length == 1) ? -100 : 115);
             me._modal_image_panel.setHeight(500);
             me._modal_image_panel.center(true);
 
