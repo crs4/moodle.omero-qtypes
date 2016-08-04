@@ -418,6 +418,10 @@ define([
                     me._image_viewer_controller.updateViewFromProperties(config.image_properties);
                 });
 
+                // update the HOffset and center again
+                me._modal_image_panel.setDefaultHOffset(280);
+                me._modal_image_panel.center();
+
                 // configure the test mode
                 if (!config.correction_mode) {
                     var form = $("#" + config.enable_add_makers_ctrl_id).parents("form");
