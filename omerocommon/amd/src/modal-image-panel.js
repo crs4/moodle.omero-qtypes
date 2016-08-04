@@ -222,8 +222,29 @@ define(['qtype_omerocommon/image-viewer',
          *
          * @param offset
          */
-        prototype.setDefaultOffeset = function (offset) {
-            this._default_offset = offset;
+        prototype.setDefaultOffset = function (offset) {
+            this.setDefaultVOffset(offset);
+            this.setDefaultHOffset(offset);
+        };
+
+
+        /**
+         * Set the default horizontal offset to be considered to center to modal panel.
+         *
+         * @param offset
+         */
+        prototype.setDefaultHOffset = function (offset) {
+            this._default_hoffset = offset;
+        };
+
+
+        /**
+         * Set the default vertical offset to be considered to center to modal panel.
+         *
+         * @param offset
+         */
+        prototype.setDefaultVOffset = function (offset) {
+            this._default_voffset = offset;
         };
 
         /**
@@ -266,7 +287,7 @@ define(['qtype_omerocommon/image-viewer',
             var me = this;
             this._modal_image_panel.css(
                 {
-                    top: ($(window).height() - me._modal_image_panel.outerHeight()) / 2 - (me._default_offset)
+                    top: ($(window).height() - me._modal_image_panel.outerHeight()) / 2 - (me._default_voffset)
                 });
             if (auto != undefined)
                 this._auto_vcenter = auto == true;
@@ -279,7 +300,7 @@ define(['qtype_omerocommon/image-viewer',
             var me = this;
             this._modal_image_panel.css(
                 {
-                    left: ($(window).width() - me._modal_image_panel.outerWidth()) / 2 + me._default_offset,
+                    left: ($(window).width() - me._modal_image_panel.outerWidth()) / 2 + me._default_hoffset,
                 });
             if (auto != undefined)
                 this._auto_hcenter = auto == true;
