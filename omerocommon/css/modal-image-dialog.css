@@ -2,14 +2,15 @@ div[id$=modalImageDialogPanel] { /*.modal-image.fade.in {*/
     position: absolute;
     margin: 0;
     padding: 0;
+    top: 40%;
     width: 1000px;
-
 }
 
 div[id$=modalImageDialogPanel] .modal-body {
 }
 
 div[id$=modalImageDialogPanel-body] {
+    position: relative;
     padding: 0 5px 0;
     margin: 0;
 }
