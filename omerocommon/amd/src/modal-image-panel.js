@@ -74,10 +74,6 @@ define(['qtype_omerocommon/image-viewer',
             // save the original title
             me._initial_title = me._header_title.html();
 
-            // init default offset
-            me._default_hoffset = 0;
-            me._default_voffset = 0;
-
             // default padding
             me._default_padding = 100;
 
@@ -216,44 +212,6 @@ define(['qtype_omerocommon/image-viewer',
          */
         prototype.setImageModelServer = function (image_model_server) {
             this._image_model_server = image_model_server;
-        };
-
-        /**
-         * Set the default offset to be considered to center to modal panel.
-         *
-         * @param offset
-         */
-        prototype.setDefaultOffset = function (offset) {
-            this.setDefaultVOffset(offset);
-            this.setDefaultHOffset(offset);
-        };
-
-
-        /**
-         * Set the default horizontal offset to be considered to center to modal panel.
-         *
-         * @param offset
-         */
-        prototype.setDefaultHOffset = function (offset) {
-            this._default_hoffset = offset;
-        };
-
-
-        /**
-         * Set the default vertical offset to be considered to center to modal panel.
-         *
-         * @param offset
-         */
-        prototype.setDefaultVOffset = function (offset) {
-            this._default_voffset = offset;
-        };
-
-        /**
-         * Return the the default offset used to center the modal panel.
-         * @returns {*|number}
-         */
-        prototype.getDefaultOffeset = function () {
-            return this._default_offset;
         };
 
         /**
