@@ -166,6 +166,7 @@ define([
                 var img_el = $(event.target);
                 if (img_el.prop("tagName").toUpperCase() == "I")
                     img_el = img_el.parent();
+                me._modal_image_panel.center();
                 me._modal_image_panel.show(me,
                     img_el.attr("imageid"),
                     img_el.attr("imagedescription"),
