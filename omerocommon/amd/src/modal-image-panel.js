@@ -77,6 +77,9 @@ define(['qtype_omerocommon/image-viewer',
             // init default offset
             me._default_offset = 0;
 
+            // default padding
+            me._default_padding = 100;
+
             // set the reference to the 'view-lock' HTML element
             // and register the callback to handle its value changes
             if (!me._image_locked_element) {
@@ -114,6 +117,11 @@ define(['qtype_omerocommon/image-viewer',
                 if (me._parent && me._parent.onClose) {
                     me._parent.onClose();
                 }
+            });
+
+            // register the handler of the 'window resize' event
+            $(window).resize(function () {
+                me._auto_resize();
             });
         };
 
@@ -252,31 +260,83 @@ define(['qtype_omerocommon/image-viewer',
         };
 
         /**
-         * Center this modal panel.
+         * Center vertically this modal panel.
          */
-        prototype.center = function () {
+        prototype.vcenter = function (auto) {
             var me = this;
-            var offset_fix = me._default_offset;
             this._modal_image_panel.css(
                 {
-                    left: ($(window).width() - me._modal_image_panel.outerWidth()) / 2 + offset_fix,
-                    top: ($(window).height() - me._modal_image_panel.outerHeight()) / 2 - offset_fix
+                    top: ($(window).height() - me._modal_image_panel.outerHeight()) / 2 - (me._default_offset)
                 });
+            if (auto != undefined)
+                this._auto_vcenter = auto == true;
         };
 
         /**
-         * Enable auto center
+         * Center horizontally this modal panel.
          */
-        prototype.enableCenterAuto = function () {
-            // automatically recenter the modal panel
+        prototype.hcenter = function (auto) {
             var me = this;
-            if (!me._enableCenterAuto) {
-                $(window).resize(function () {
-                    me.center();
+            this._modal_image_panel.css(
+                {
+                    left: ($(window).width() - me._modal_image_panel.outerWidth()) / 2 + me._default_offset,
                 });
-                me._enableCenterAuto = true;
-            }
+            if (auto != undefined)
+                this._auto_hcenter = auto == true;
         };
+
+        /**
+         * Center this modal panel.
+         *
+         * @param auto
+         */
+        prototype.center = function (auto) {
+            this.vcenter(auto);
+            this.hcenter(auto);
+        };
+
+        /**
+         * Maximize width
+         */
+        prototype.maximizeHeight = function (auto) {
+            this.setHeight($(window).height() - (2 * this._default_padding));
+            if (auto != undefined) this._auto_maximize_height = auto == true;
+        };
+
+
+        /**
+         * Maximize height
+         */
+        prototype.maximizeWidth = function (auto) {
+            this.setWidth($(window).width() - (2 * this._default_padding));
+            if (auto != undefined) this._auto_maximize_width = auto == true;
+        };
+
+
+        /**
+         * Maximize the ModalPanel (height & width).
+         */
+        prototype.maximize = function (auto) {
+            this.maximizeWidth(auto);
+            this.maximizeHeight(auto);
+        };
+
+
+        /**
+         * Update size and position of the panel.
+         * @private
+         */
+        prototype._auto_resize = function () {
+            if (this._auto_maximize_height)
+                this.maximizeHeight();
+            if (this._auto_maximize_width)
+                this.maximizeWidth();
+            if (this._auto_hcenter)
+                this.hcenter();
+            if (this._auto_vcenter)
+                this.vcenter();
+        };
+
 
         /**
          * Handler for the event 'ImageModelRoiLoaded'.
