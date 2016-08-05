@@ -266,6 +266,13 @@ abstract class qtype_omerointeractive_base_renderer extends qtype_multichoice_re
 
         // set the ID of the OmeroImageViewer
         $omero_frame_id = self::to_unique_identifier($qa, "omero-image-viewer");
+
+        // set the ID the ModalImagePanel
+        $modal_image_panel_id = $omero_frame_id . "-" . qtype_omerocommon_renderer_helper::MODAL_VIEWER_ELEMENT_ID;
+
+        // set the name of the feedback image class
+        $feedback_image_class = $omero_frame_id . "-feedbackimage";
+
         // ID of the question answer container
         $question_answer_container = self::to_unique_identifier($qa, "omero-interactive-question-container");
 
@@ -330,9 +337,10 @@ abstract class qtype_omerointeractive_base_renderer extends qtype_multichoice_re
             array_push($feedbackimages, $image_id);
         }
         $feedbackimages_html = '<div style="display: block; float: right;">[ '
-            . get_string("see", "qtype_omerocommon") . " "
-            . implode(", ", array_map(function ($image) {
-                return '<span class="feedback-image" imageid="' . $image->id . '"'
+            . get_string("see", "qtype_omerocommon") . " ";
+
+        foreach ($ans->feedbackimages as $image) {
+            $feedbackimages_html .= '<span class="' . $feedback_image_class . '" imageid="' . $image->id . '"'
                 . ' imagedescription="' . $image->description . '"'
                 . ' imagelock="' . $image->lock . '"'
                 . ' imageproperties="' . htmlspecialchars(json_encode($image->properties)) . '"'
@@ -340,8 +348,8 @@ abstract class qtype_omerointeractive_base_renderer extends qtype_multichoice_re
                 . ' focusablerois="' . implode(",", $image->focusablerois) . '"' . '>' .
                 '<i class="glyphicon glyphicon-book" style="margin-left: 2px; margin-right: 5px;"></i>'
                 . '"' . $image->description . '"</span>';
-            }, $ans->feedbackimages))
-            . ' ]</div>';
+        }
+        $feedbackimages_html .= ' ]</div>';
 
         $feedbackimg = array();
         $classes = array();
@@ -440,6 +448,9 @@ abstract class qtype_omerointeractive_base_renderer extends qtype_multichoice_re
          */
         $result = '';
 
+        // add the ModalImagePanel template
+        $result .= qtype_omerocommon_renderer_helper::modal_viewer(true, true, $modal_image_panel_id);
+
         // main question_answer_container
         $result .= html_writer::start_tag('div', array('id' => $question_answer_container, 'class' => 'ablock'));
 
@@ -527,23 +538,22 @@ abstract class qtype_omerointeractive_base_renderer extends qtype_multichoice_re
         // support for dialog message
         $result .= html_writer::tag('div', '
          <div class="modal fade" id="modal-frame-' . $omero_frame_id . '" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title text-warning" id="modal-frame-label-' . $omero_frame_id . '">
-            <i class="glyphicon glyphicon-warning-sign"></i> ' . get_string('validate_warning', 'qtype_omerocommon') .
+              <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title text-warning" id="modal-frame-label-' . $omero_frame_id . '">
+                        <i class="glyphicon glyphicon-warning-sign"></i> ' . get_string('validate_warning', 'qtype_omerocommon') .
             '</h4>
-      </div>
-      <div class="modal-body text-left">
-        <span id="modal-frame-text-' . $omero_frame_id . '"></span>
-      </div>
-      <div class="modal-footer text-center">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-      </div>
-    </div>
-  </div>
-</div>');
+                  </div>
+                  <div class="modal-body text-left">
+                    <span id="modal-frame-text-' . $omero_frame_id . '"></span>
+                  </div>
+                  <div class="modal-footer text-center">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                  </div>
+              </div>
+         </div>');
 
 
         $player_config = array(
@@ -551,6 +561,8 @@ abstract class qtype_omerointeractive_base_renderer extends qtype_multichoice_re
             "image_properties" => json_decode($question->omeroimageproperties),
             "image_frame_id" => $omero_frame_id,
             "image_annotations_canvas_id" => self::to_unique_identifier($qa, "annotations_canvas"),
+            "modal_image_panel_id" => $modal_image_panel_id,
+            "feedback_image_class" => $feedback_image_class,
             "image_server" => $OMERO_SERVER,
             "image_viewer_container" => self::to_unique_identifier($qa, self::IMAGE_VIEWER_CONTAINER),
             "image_navigation_locked" => (bool)$question->omeroimagelocked,
@@ -593,8 +605,6 @@ abstract class qtype_omerointeractive_base_renderer extends qtype_multichoice_re
             'name' => "answer_input_name",
             'value' => $answer_input_name,
         ));
-
-        $result .= qtype_omerocommon_renderer_helper::modal_viewer(true, true);
 
         global $PAGE;
         $PAGE->requires->string_for_js('marker', 'qtype_omerointeractive');

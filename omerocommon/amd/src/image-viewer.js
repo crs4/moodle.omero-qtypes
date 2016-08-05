@@ -132,6 +132,9 @@ define([
                 me._viewer_config
             );
 
+            // show 'loading...'
+            me._waiting_dialog.show();
+
             // initialize the viewer
             me._viewer_controller.buildViewer();
 
