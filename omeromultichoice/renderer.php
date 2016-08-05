@@ -23,6 +23,7 @@ defined('MOODLE_INTERNAL') || die();
 
 require_once($CFG->dirroot . '/question/type/multichoice/renderer.php');
 require_once($CFG->dirroot . '/question/type/omerocommon/js/modules.php');
+require_once($CFG->dirroot . '/question/type/omerocommon/rendererhelper.php');
 require_once($CFG->dirroot . '/question/type/omerocommon/viewer/viewer_config.php');
 
 /**
@@ -198,6 +199,13 @@ abstract class qtype_omeromultichoice_base_renderer extends qtype_multichoice_re
         // set the ID of the OmeroImageViewer
         $omero_frame_id = self::to_unique_identifier($qa, "omero-image-viewer");
 
+        // set the ID of the ModalImagePanel
+        $modal_image_panel_id = $omero_frame_id . "-" . qtype_omerocommon_renderer_helper::MODAL_VIEWER_ELEMENT_ID;
+
+        // set the name of feedback image class
+        $feedback_image_class = $omero_frame_id . "-feedbackimage";
+
+        // set the ID of the answer container
         $question_answer_container = self::to_unique_identifier($qa, "omero-multichoice-question-container");
 
         // the OMERO image URL
@@ -265,6 +273,26 @@ abstract class qtype_omeromultichoice_base_renderer extends qtype_multichoice_re
                 ));
             }
 
+            $feedbackimages = array();
+            foreach ($ans->feedbackimages as $image_id => $image) {
+                array_push($feedbackimages, $image_id);
+            }
+
+            $feedbackimages_html = '<div style="display: block; float: right;">[ '
+                . get_string("see", "qtype_omerocommon") . " ";
+
+            foreach ($ans->feedbackimages as $image) {
+                $feedbackimages_html .= '<span class="' . $feedback_image_class . '" imageid="' . $image->id . '"'
+                    . ' imagedescription="' . $image->description . '"'
+                    . ' imagelock="' . $image->lock . '"'
+                    . ' imageproperties="' . htmlspecialchars(json_encode($image->properties)) . '"'
+                    . ' visiblerois="' . implode(",", $image->visiblerois) . '"'
+                    . ' focusablerois="' . implode(",", $image->focusablerois) . '"' . '>' .
+                    '<i class="glyphicon glyphicon-book" style="margin-left: 2px; margin-right: 5px;"></i>'
+                    . '"' . $image->description . '"</span>';
+            }
+            $feedbackimages_html .= ' ]</div>';
+
             // Param $options->suppresschoicefeedback is a hack specific to the
             // oumultiresponse question type. It would be good to refactor to
             // avoid refering to it here.
@@ -280,13 +308,13 @@ abstract class qtype_omeromultichoice_base_renderer extends qtype_multichoice_re
                         html_writer::tag("i", " ",
                             array(
                                 "class" => "pull-left glyphicon glyphicon-record",
-                                "style" => "margin-right: 20px"
+                                "style" => "margin-left: 10px; margin-right: 5px"
                             )
                         ) .
-                        format_text($feedback_text),
+                        format_text($feedback_text) . $feedbackimages_html,
                         array(
                             "class" => "outcome",
-                            "style" => "display: block-inline; margin: 0 0 10px; padding: 20px 30px 15px;"
+                            "style" => "padding: 20px 15px;"
                         )
                     );
                 }
@@ -321,6 +349,9 @@ abstract class qtype_omeromultichoice_base_renderer extends qtype_multichoice_re
          * Render the question
          */
         $result = '';
+
+        // add the ModalImagePanel
+        $result .= qtype_omerocommon_renderer_helper::modal_viewer(true, true, $modal_image_panel_id);
 
         // main question_answer_container
         $result .= html_writer::start_tag('div', array('id' => $question_answer_container, 'class' => 'ablock'));
@@ -413,6 +444,8 @@ abstract class qtype_omeromultichoice_base_renderer extends qtype_multichoice_re
             "image_properties" => json_decode($question->omeroimageproperties),
             "image_frame_id" => $omero_frame_id,
             "image_annotations_canvas_id" => self::to_unique_identifier($qa, "annotations_canvas"),
+            "modal_image_panel_id" => $modal_image_panel_id,
+            "feedback_image_class" => $feedback_image_class,
             "image_server" => $OMERO_SERVER,
             "viewer_model_server" => $CFG->omero_image_server,
             "image_viewer_container" => self::to_unique_identifier($qa, self::IMAGE_VIEWER_CONTAINER),
@@ -449,6 +482,7 @@ abstract class qtype_omeromultichoice_base_renderer extends qtype_multichoice_re
         init_js_modules("omeromultichoice");
         init_js_imageviewer(get_config('omero', 'omero_restendpoint'));
         $PAGE->requires->css("/question/type/omerocommon/css/question-player-base.css");
+        $PAGE->requires->css("/question/type/omerocommon/css/modal-image-dialog.css");
         $PAGE->requires->css("/question/type/omerocommon/css/message-dialog.css");
         $PAGE->requires->string_for_js('validate_question', 'qtype_omerocommon');
         $PAGE->requires->string_for_js('validate_editor_not_valid', 'qtype_omerocommon');

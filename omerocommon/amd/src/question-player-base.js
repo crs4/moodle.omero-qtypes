@@ -33,10 +33,11 @@ define([
         'qtype_omerocommon/multilanguage-attoeditor',
         'qtype_omerocommon/image-viewer',
         'qtype_omerocommon/message-dialog',
+        'qtype_omerocommon/modal-image-panel'
     ],
     /* jshint curly: false */
     /* globals console, jQuery, document */
-    function (jQ, Editor, FormUtils, mle, mlat, ImageViewer) {
+    function (jQ, FormUtils, ab, mle, mlat, ImageViewer) {
 
         // jQuery reference
         var $ = jQuery;
@@ -70,7 +71,7 @@ define([
                     var focus_area_info_el = $('<div id="' + marker_info_container + '">' +
                         '<i id="' + cid(config, CONTROL_KEYS.GOTO) + focus_area_id + '_btn" ' +
                         ' class="glyphicon glyphicon-map-marker" ' + color + '></i>' +
-                            //label +
+                        //label +
                         ((parseInt(i) + 1) != config.focusable_rois.length ? ", " : " ") +
                         "</div>");
                     me._focus_areas_container.append(focus_area_info_el);
@@ -138,23 +139,47 @@ define([
          * Initialization
          */
         prototype.initialize = function (config) {
+            // scope reference
+            var me = this;
+
             // set tht configuration
-            this._config = config;
+            me._config = config;
             console.log("Configuration", config);
 
             // identifier of the focus area container
-            this._focus_areas_container = $("#" + config.focus_areas_container);
+            me._focus_areas_container = $("#" + config.focus_areas_container);
 
             // build the ImaveViewer controller
             var viewer_ctrl = new ImageViewer(
                 config.image_id, config.image_properties,
                 config.image_server, config.image_viewer_container, config.image_annotations_canvas_id,
                 config.viewer_model_server);
-            this._image_viewer_controller = viewer_ctrl;
+            me._image_viewer_controller = viewer_ctrl;
 
-            this._message_dialog = new M.qtypes.omerocommon.MessageDialog(config.image_frame_id);
+            me._message_dialog = new M.qtypes.omerocommon.MessageDialog(config.image_frame_id);
 
-            this._invalidator_panel = $("#" + config.question_answer_container + "-invalidator-panel");
+            me._modal_image_panel = new M.qtypes.omerocommon.ModalImagePanel(config.modal_image_panel_id);
+            me._modal_image_panel.setImageServer(config.image_server);
+            me._modal_image_panel.setImageModelServer(config.viewer_model_server);
+            me._modal_image_panel.setImageModelManager(viewer_ctrl.getImageModelManager());
+            $("." + config.feedback_image_class).click(function (event) {
+                var img_el = $(event.target);
+                if (img_el.prop("tagName").toUpperCase() == "I")
+                    img_el = img_el.parent();
+                me._modal_image_panel.center();
+                me._modal_image_panel.show(me,
+                    img_el.attr("imageid"),
+                    img_el.attr("imagedescription"),
+                    JSON.parse((img_el.attr("imageproperties"))),
+                    img_el.attr("imagelock"),
+                    img_el.attr("visiblerois").split(","),
+                    img_el.attr("focusablerois").split(","));
+            });
+
+            me._modal_image_panel.setHeight(500);
+            me._modal_image_panel.center(true);
+
+            me._invalidator_panel = $("#" + config.question_answer_container + "-invalidator-panel");
         };
 
         /**

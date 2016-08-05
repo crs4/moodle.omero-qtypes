@@ -255,6 +255,8 @@ class qtype_omerointeractive_edit_form extends qtype_omerocommon_edit_form
             $question->feedback[$key] = ($answer->feedback);
             $question->feedbackformat[$key] = $answer->feedbackformat;
 
+            $question->feedbackimages[$key] = empty($answer->images) ? json_encode(array()) : $answer->images;
+
             $question->feedback_locale_map[$key] = json_encode(qtype_omerocommon::serialize_to_json_from($answer->feedback));
 
             $key++;

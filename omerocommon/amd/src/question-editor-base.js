@@ -28,17 +28,18 @@
 define([
         'jquery',
         'qtype_omerocommon/moodle-forms-utils',
+        'qtype_omerocommon/modal-image-panel',
         'qtype_omerocommon/answer-base',
         'qtype_omerocommon/multilanguage-element',
         'qtype_omerocommon/multilanguage-attoeditor',
         'qtype_omerocommon/roi-shape-model',
         'qtype_omerocommon/roi-shape-table',
         'qtype_omerocommon/image-viewer',
-        'qtype_omerocommon/message-dialog',
+        'qtype_omerocommon/message-dialog'
     ],
     /* jshint curly: false */
     /* globals console, jQuery */
-    function ($, FormUtils, AnswerBase, Mle, Mlae, Rsm, Rst, ImageViewer) {
+    function ($, FormUtils, ModalImagePanel, AnswerBase, Mle, Mlae, Rsm, Rst, ImageViewer) {
 
         // override jQuery definition
         $ = jQuery;
@@ -162,7 +163,7 @@ define([
                 me._editor[localized_string_name] = editor;
             }
 
-            me._answers_counter_element = document.forms[0].elements.noanswers;//["noanswers"];
+            me._answers_counter_element = document.forms[0].elements.noanswers;
 
             me._image_locked_element = $("[name^=omeroimagelocked]");
             me._image_locked = me._image_locked_element.val() == "1";
@@ -527,7 +528,7 @@ define([
             me._image_info_container.html(image_info_container);
 
             // clean the existing image-viewer controller
-            if(me._image_viewer_controller)
+            if (me._image_viewer_controller)
                 delete me._image_viewer_controller;
 
             // build the ImaveViewer controller
@@ -537,6 +538,13 @@ define([
                 "image-viewer-container", "annotations_canvas",
                 me._viewer_model_server);
             me._image_viewer_controller = viewer_ctrl;
+
+            me._modal_image_panel = ModalImagePanel.getInstance();
+            me._modal_image_panel.setImageModelManager(viewer_ctrl.getImageModelManager());
+            me._modal_image_panel.setImageServer(me._image_server);
+            me._modal_image_panel.setImageModelServer(me._viewer_model_server);
+            me._modal_image_panel.maximizeHeight(true);
+            me._modal_image_panel.center(true);
 
             // load and show image and its related ROIs
             viewer_ctrl.open(true, function (data) {

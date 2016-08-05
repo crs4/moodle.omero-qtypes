@@ -30,6 +30,7 @@
 
 defined('MOODLE_INTERNAL') || die();
 
+require_once($CFG->dirroot . '/question/type/omerocommon/rendererhelper.php');
 require_once($CFG->dirroot . '/question/type/omerocommon/question.php');
 require_once($CFG->dirroot . '/question/type/omerocommon/questiontype_base.php');
 require_once($CFG->dirroot . '/question/type/multichoice/edit_multichoice_form.php');
@@ -105,6 +106,7 @@ abstract class qtype_omerocommon_edit_form extends qtype_multichoice_edit_form
         global $CFG, $PAGE;
         // CSS
         $PAGE->requires->css(new moodle_url("$CFG->wwwroot/question/type/omerocommon/css/message-dialog.css"));
+        $PAGE->requires->css(new moodle_url("$CFG->wwwroot/question/type/omerocommon/css/modal-image-dialog.css"));
         $PAGE->requires->css(new moodle_url("$CFG->wwwroot/question/type/omerocommon/css/common-question-editor.css"));
         // Javascript
         init_js_modules("omerocommon");
@@ -396,6 +398,7 @@ abstract class qtype_omerocommon_edit_form extends qtype_multichoice_edit_form
         $repeated[] = $mform->createElement('hidden', 'feedback');
         $repeated[] = $mform->createElement('hidden', 'answerformat');
         $repeated[] = $mform->createElement('hidden', 'feedbackformat');
+        $repeated[] = $mform->createElement('hidden', 'feedbackimages');
 
         // locale maps answer and feedback
         $repeated[] = $mform->createElement('hidden', 'answer_locale_map');
@@ -406,6 +409,7 @@ abstract class qtype_omerocommon_edit_form extends qtype_multichoice_edit_form
         $mform->setType("feedback", PARAM_TEXT);
         $mform->setType("answerformat", PARAM_RAW);
         $mform->setType("feedbackformat", PARAM_RAW);
+        $mform->setType("feedbackimages", PARAM_RAW);
 
         $mform->setType("answer_locale_map", PARAM_RAW);
         $mform->setType("feedback_locale_map", PARAM_RAW);
@@ -549,33 +553,16 @@ abstract class qtype_omerocommon_edit_form extends qtype_multichoice_edit_form
             $mform->hardFreezeAllVisibleExcept(array('categorymoveto', 'buttonar', 'currentgrp'));
         }
         // Modal frame to show dialog messages
-        $this->add_modal_frame();
+        $this->add_modal_frames();
     }
 
 
     // definition of the modal frame
-    protected function add_modal_frame()
+    protected function add_modal_frames()
     {
-        return $this->_form->addElement("html", '
-
-     <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title text-warning" id="myModalLabel">
-            <i class="glyphicon glyphicon-warning-sign"></i> ' . get_string('validate_warning', 'qtype_omerocommon') .
-            '</h4>
-      </div>
-      <div class="modal-body text-left">
-        <span id="modal-frame-text"></span>
-      </div>
-      <div class="modal-footer text-center">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-      </div>
-    </div>
-  </div>
-</div>');
+        $modal_dialog = qtype_omerocommon_renderer_helper::modal_dialog();
+        $modal_viewer = qtype_omerocommon_renderer_helper::modal_viewer();
+        return $this->_form->addElement("html", $modal_dialog . "\n" . $modal_viewer);
     }
 
 
@@ -631,6 +618,8 @@ abstract class qtype_omerocommon_edit_form extends qtype_multichoice_edit_form
     protected function export_locale_js_strings()
     {
         global $PAGE;
+        $PAGE->requires->string_for_js('edit', 'core');
+        $PAGE->requires->string_for_js('delete', 'core');
         $PAGE->requires->string_for_js('roi_shape_details', 'qtype_omerocommon');
         $PAGE->requires->string_for_js('roi_description', 'qtype_omerocommon');
         $PAGE->requires->string_for_js('roi_visibility', 'qtype_omerocommon');
@@ -638,6 +627,7 @@ abstract class qtype_omerocommon_edit_form extends qtype_multichoice_edit_form
         $PAGE->requires->string_for_js('roi_visible', 'qtype_omerocommon');
         $PAGE->requires->string_for_js('roi_focusable', 'qtype_omerocommon');
         $PAGE->requires->string_for_js('feedback', 'question');
+        $PAGE->requires->string_for_js('validate_field_required', 'qtype_omerocommon');
         $PAGE->requires->string_for_js('answer', 'core');
         $PAGE->requires->string_for_js('answer_grade', 'qtype_omerocommon');
         $PAGE->requires->string_for_js('answer_choiceno', 'qtype_omerocommon');
@@ -709,6 +699,8 @@ abstract class qtype_omerocommon_edit_form extends qtype_multichoice_edit_form
             // answer feedback
             $question->feedback[$key] = json_encode(qtype_omerocommon::serialize_to_json_from($answer->feedback));
             $question->feedbackformat[$key] = $answer->feedbackformat;
+
+            $question->feedbackimages[$key] = empty($answer->images) ? json_encode(array()) : $answer->images;
 
             $question->answer_locale_map[$key] = json_encode(qtype_omerocommon::serialize_to_json_from($answer->answer));
             $question->feedback_locale_map[$key] = json_encode(qtype_omerocommon::serialize_to_json_from($answer->feedback));

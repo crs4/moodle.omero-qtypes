@@ -107,9 +107,6 @@ define([
             // roi id list
             me._build_list_of_rois("answer", M.util.get_string("answer_group_of_rois", "qtype_omerointeractive"));
 
-            // answer format
-            //me._build_hidden_of("answerformat", "1");
-
             // answer grade
             me._build_select_of("fraction", M.util.get_string("answer_grade", "qtype_omerocommon"));
 
@@ -117,7 +114,10 @@ define([
             me._build_textarea_of("feedback", M.util.get_string("feedback", "question"));
 
             // answer format
-            //me._build_hidden_of("feedbackformat", "1");
+            me._build_hidden_of("feedbackformat", "1");
+
+            // answer feedback images
+            me._build_feedback_image_selector();
 
             // reference to the head
             me._answer_head = $('#head-answer-' + this._answer_number);

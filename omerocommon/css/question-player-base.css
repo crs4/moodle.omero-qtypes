@@ -19,7 +19,7 @@
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-div[id*=question-container]{
+div[id*=question-container] {
     position: relative;
 }
 
@@ -77,7 +77,7 @@ div.qtext {
 }
 
 div.question-summary {
-    margin: 40px 0 20px;
+    margin: 40px 0 0;
     min-height: 80px;
 }
 
@@ -107,15 +107,30 @@ div[id*=goto_marker_ctrl_id] {
 }
 
 div.multichoice-options-container {
-    margin: 20px 10px 40px;
+    /*margin: 20px 10px 40px;*/
 }
 
 div.multichoice-options-container .prompt {
+    margin-top: 25px;
     margin-bottom: 10px;
 }
 
+div.multichoice-options-container .answer {
+    margin-bottom: 25px;
+}
+
 div.outcome {
-    margin-top: 20px;
+    margin: 0 0 10px;
+    padding: 20px 30px 20px;
+}
+
+div.content > div.outcome.clearfix {
+    margin: 10px 25px;
+}
+
+div.rightanswer {
+    margin: 0 0 10px;
+    padding: 10px 15px 5px;
 }
 
 .content .formulation {

@@ -133,5 +133,32 @@ function xmldb_qtype_omerointeractive_upgrade($oldversion)
         upgrade_plugin_savepoint(true, 2016012101, 'qtype', 'omerointeractive');
     }
 
+    if ($oldversion < 2016080400) {
+
+        $table_name = "question_answers_omemopt";
+        $transaction = $DB->start_delegated_transaction();
+
+        try {
+
+            if (!$dbman->table_exists($table_name)) {
+                $schema = $dbman->get_install_xml_schema();
+                $table = $schema->getTable($table_name);
+                $dbman->create_table($table);
+            }
+
+            // Assuming that all updates are OK!!!.
+            $transaction->allow_commit();
+
+        } catch (Exception $e) {
+            // abort the current transaction
+            $transaction->rollback($e);
+            error_log($e->getMessage());
+            return false;
+        }
+
+        // Shortanswer savepoint reached.
+        upgrade_plugin_savepoint(true, 2016080400, 'qtype', 'omerointeractive');
+    }
+
     return true;
 }

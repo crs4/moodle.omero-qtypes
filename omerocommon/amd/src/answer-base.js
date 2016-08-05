@@ -30,11 +30,13 @@ define([
         'jquery',
         'qtype_omerocommon/moodle-forms-utils',
         'qtype_omerocommon/multilanguage-element',
-        'qtype_omerocommon/multilanguage-attoeditor'
+        'qtype_omerocommon/multilanguage-attoeditor',
+        'qtype_omerocommon/modal-image-panel',
+        'qtype_omerocommon/feedback-image-table'
     ],
     /* jshint curly: false */
     /* globals console, jQuery */
-    function ($) {
+    function ($, FormUtils) {
 
         // override reference to jQuery
         $ = jQuery;
@@ -79,6 +81,9 @@ define([
 
             me._data = {};
 
+            // TODO: relocate the array
+            me._feedback_images = {};
+
             me._fraction_options = fraction_options;
 
             // reference to the container of all answers
@@ -110,7 +115,7 @@ define([
         };
 
 
-        prototype._answer_properties = ["answer", "fraction", "feedback"];
+        prototype._answer_properties = ["answer", "fraction", "feedback", "feedbackimages"];
 
         /**
          * Builds the answer
@@ -172,6 +177,53 @@ define([
         };
 
         /**
+         * Returns the list of feedback images related to this answer.
+         *
+         * @returns {{}|*}
+         * @private
+         */
+        prototype._getFeedbackImages = function () {
+            var images = [];
+            for (var i in this._feedback_images)
+                images.push(this._feedback_images[i]);
+            return images;
+        };
+
+        /**
+         * Return the image with the value 'image_id' as ID
+         *
+         * @param image_id
+         * @returns object representing an image
+         * @private
+         */
+        prototype._getFeedbackImage = function (image_id) {
+            return image_id ? this._feedback_images[image_id] : null;
+        };
+
+        /**
+         * Add a feedback image.
+         *
+         * @param image
+         * @private
+         */
+        prototype._addFeedbackImage = function (image) {
+            if (image && !this._feedback_images[image.id])
+                this._feedback_images[image.id] = image;
+        };
+
+        /**
+         * Remove a feedback iamge.
+         *
+         * @param image
+         * @private
+         */
+        prototype._removeFeedbackImage = function (image) {
+            console.log("Deleting image", image);
+            if (image)
+                delete this._feedback_images[image.id];
+        };
+
+        /**
          * Returns the map <language, editor>
          * related to this question
          *
@@ -220,6 +272,16 @@ define([
                 }
             }
 
+            // decode the list of feedback images
+            var image;
+            var images = JSON.parse(FormUtils.htmlEntityDecode(data.feedbackimages));
+            // append every feedback image to the table
+            for (var j in images) {
+                image = images[j];
+                this._feedback_image_table.append(image);
+                me._feedback_images[image.id] = image;
+            }
+
             console.log("Loading multi language elements...");
             for (var editor_element_name in me._editors_map) {
                 var editor = me._editors_map[editor_element_name];
@@ -228,7 +290,6 @@ define([
                 console.log("Loading editor data...", id, locale_map_name);
                 editor.loadDataFromFormInputs(locale_map_name);
             }
-
             this._data = data;
         };
 
@@ -242,14 +303,19 @@ define([
                 return;
             }
 
+            // serialize answer_feedback_images
+            this._data.feedbackimages = JSON.stringify(this._getFeedbackImages());
+
+            // set
             for (var i in this._answer_properties) {
                 element_name = this._answer_properties[i];
                 id = this._build_id_of(element_name, answer_index);
                 var name = this._build_name_of(element_name, answer_index);
                 var value = this._data[element_name];
 
-                hidden = document.getElementById(id); //$("#" + id);
-                value = $("<div>").text(value).html();
+                hidden = document.getElementById(id);
+                value = FormUtils.htmlspecialchars(value);
+
                 if (hidden) hidden.setAttribute("value", value);
                 else {
                     hidden = '<input ' + 'id="' + id + '" ' + 'name="' + name + '" type="hidden" value="' + value + '">';
@@ -296,6 +362,32 @@ define([
 
         prototype._build_id_of = function (element_name, answer_index) {
             return 'id_' + this._build_name_of(element_name, answer_index);
+        };
+
+        prototype._add_image_selector = function (element_name, answer_index, label) {
+            var button_name = this._build_name_of("button_" + element_name, answer_index);
+            var button_id = this._build_id_of("button_" + element_name, answer_index);
+
+            var data_name = this._build_name_of("data_" + element_name, answer_index);
+            var data_id = this._build_id_of("data_" + element_name, answer_index);
+
+            var element = '<div style="float: right;">';
+            element += '<input type="hidden" id="' + data_id + '" name="' + data_name + '" ' + ' />';
+            element += '<input ' +
+                'id="' + button_id + '" ' +
+                'name="' + button_name + '" ' +
+                'value="Add Image" ' +
+                'type="button" ' +
+                '/>';
+            element += '</div>';
+
+            this._form_utils.appendElement(this._answer_container, label, element);
+            return {
+                button_id: button_id,
+                button_name: button_name,
+                data_id: data_id,
+                data_name: data_name
+            };
         };
 
         prototype._build_textarea_of = function (element_name, label, local_map_name) {
@@ -367,6 +459,83 @@ define([
                     'id="' + id + '" ' + 'name="' + name + '" type="hidden" >';
                 this._form_utils.appendElement(this._answer_container, "", hidden, false);
             }
+        };
+
+        prototype._build_feedback_image_selector = function () {
+            var me = this;
+            var selector_ids = me._add_image_selector("add_images", me._answer_number, "Feedback Images");
+            me._answer_feedback_filepicker = new M.omero_filepicker({
+                buttonid: selector_ids.button_id,
+                buttonname: selector_ids.button_name,
+                elementid: selector_ids.data_id,
+                elementname: selector_ids.data_name,
+                filename_element: undefined
+            }, {}, true);
+            me._answer_feedback_filepicker.addListener(me);
+
+            // answer feedback image table
+            me._feedback_image_table = new M.qtypes.omerocommon.FeedbackImageTable("table-" + me._answer_number);
+            me._form_utils.appendElement(me._answer_container, "", me._feedback_image_table.drawHtmlTable());
+            me._feedback_image_table.initTable();
+            me._feedback_image_table.addEventListener(me);
+
+            // reference to the default ModalImagePanel
+            me._modal_image_panel_ctrl = M.qtypes.omerocommon.ModalImagePanel.getInstance();
+        };
+
+        prototype.onSelectedImage = function (image_info) {
+            console.log("Selected image", image_info);
+            var me = this;
+            me._modal_image_panel_ctrl.getImageModelManager().getImageDetails(function (image_details) {
+                var image = {
+                    id: image_info.image_id,
+                    description: image_details.name,
+                    details: image_details,
+                    visiblerois: [],
+                    focusablerois: [],
+                    properties: {},
+                    lock: false
+                };
+                console.log(image);
+                me._addFeedbackImage(image);
+                me._feedback_image_table.append(image);
+            }, undefined, image_info.image_id);
+        };
+
+
+        prototype.onEditImage = function (event) {
+            var image = this._getFeedbackImage(event.image.id);
+            if (image) {
+                console.log("Selected image to edit", image);
+                this._modal_image_panel_ctrl.show(this,
+                    image.id, image.description,
+                    image.properties, image.lock,
+                    image.visiblerois, image.focusablerois
+                );
+            }
+        };
+
+        prototype.onDeletedImage = function (event) {
+            if (event) {
+                console.log("Delete image event...", event);
+                this._removeFeedbackImage(event.image);
+            }
+        };
+
+        prototype.onSave = function (image_id, image_properties, image_lock, visible_rois, focusable_rois) {
+            var image = this._getFeedbackImage(image_id);
+            if (image) {
+                image.properties = image_properties;
+                image.lock = image_lock;
+                image.visiblerois = visible_rois;
+                image.focusablerois = focusable_rois;
+                this._feedback_image_table.updateRow(image);
+                console.log("Saved feedbackimage ... ", image);
+            }
+        };
+
+        prototype.onClose = function () {
+            console.log("Closed ModalImagePanel editor");
         };
 
         // return the class

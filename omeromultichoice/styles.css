@@ -25,12 +25,6 @@
     background: #FFF3BF;
 }
 
-.que.omeromultichoice .answer div.r0,
-.que.omeromultichoice .answer div.r1 {
-    padding: 0.3em 0 0.3em 25px;
-    text-indent: -25px;
-}
-
 .que.omeromultichoice .answer div.r0 label,
 .que.omeromultichoice .answer div.r1 label,
 .que.omeromultichoice .answer div.r0 div.specificfeedback,
@@ -38,18 +32,6 @@
     /* In Chrome and IE, the text-indent above is applied to any embedded table
        cells or <li>s, which screws up the intended layout. This fixes it again. */
     text-indent: 0;
-}
-
-.que.omeromultichoice .answer div.r0 input,
-.que.omeromultichoice .answer div.r1 input {
-    margin: 0 5px;
-    padding: 0;
-    width: 15px;
-}
-
-.dir-rtl .que.omeromultichoice .answer div.r0,
-.dir-rtl .que.omeromultichoice .answer div.r1 {
-    padding: 0.3em 25px 0.3em 0;
 }
 
 /* Editing form. */
@@ -167,28 +149,14 @@ body#page-question-type-omeromultichoice div[id^=fitem_id_][id*=feedback_] {
 }
 
 
-#fitem_id_omeroimagefilereference .fitemtitle{
+
+#fitem_id_omeroimagefilereference .fitemtitle {
     display: none;
 }
 
-body#page-question-type-omeromultichoice div[id="fitem_id_omeroimagefilereference"]{
+body#page-question-type-omeromultichoice div[id="fitem_id_omeroimagefilereference"] {
     /*display: none;*/
 }
-
-
-/*
-.omeromultichoice-qanswer-roi-details-container .fitem{
-    display: inline-block;
-    padding: 0;
-    margin: 5px;
-}
-
-.omeromultichoice-qanswer-roi-details-container .fitemtitle{
-    display: inline-block;
-    padding: 0;
-    margin: 5px;
-}
-*/
 
 .omeromultichoice-qanswer-roi-based-answer-container .fitem .fitemtitle .fstaticlabel {
     margin-left: 15px;
