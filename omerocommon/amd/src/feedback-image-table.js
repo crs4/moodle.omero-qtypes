@@ -211,12 +211,12 @@ define(['jquery', 'qtype_omerocommon/roi-shape-model'],
             }, 200);
 
 
-            me.table_element.on('click-cell.bs.table', function (table, field, e, row, index) {
-            });
-
-            me.table_element.on('check.bs.table uncheck.bs.table ' +
-                'check-all.bs.table uncheck-all.bs.table', function () {
-            });
+            // me.table_element.on('click-cell.bs.table', function (table, field, e, row, index) {
+            // });
+            //
+            // me.table_element.on('check.bs.table uncheck.bs.table ' +
+            //     'check-all.bs.table uncheck-all.bs.table', function () {
+            // });
 
             me.table_element.on('all.bs.table', function (e, row, args) {
                 console.log(row, args);
@@ -359,7 +359,7 @@ define(['jquery', 'qtype_omerocommon/roi-shape-model'],
             return data.join(", ") || " ";
         };
 
-        prototype.editActionFormatter = function (data) {
+        prototype.editActionFormatter = function (/*data*/) {
             return [
                 '<a class="edit-image-action" href="javascript:void(0)" title="Edit">',
                 '<i class="glyphicon glyphicon-edit" style="color: orange"></i>',
@@ -367,7 +367,7 @@ define(['jquery', 'qtype_omerocommon/roi-shape-model'],
             ].join(" ");
         };
 
-        prototype.deleteActionFormatter = function (data) {
+        prototype.deleteActionFormatter = function (/*data*/) {
             return [
                 '<a class="delete-image-action" href="javascript:void(0)" title="Delete">',
                 '<i class="glyphicon glyphicon-remove-circle" style="color: red"></i>',

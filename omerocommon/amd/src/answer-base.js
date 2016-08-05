@@ -274,7 +274,7 @@ define([
 
             // decode the list of feedback images
             var image;
-            var images = JSON.parse(FormUtils.htmlEntityDecode(data["feedbackimages"]));
+            var images = JSON.parse(FormUtils.htmlEntityDecode(data.feedbackimages));
             // append every feedback image to the table
             for (var j in images) {
                 image = images[j];
@@ -304,7 +304,7 @@ define([
             }
 
             // serialize answer_feedback_images
-            this._data["feedbackimages"] = JSON.stringify(this._getFeedbackImages());
+            this._data.feedbackimages = JSON.stringify(this._getFeedbackImages());
 
             // set
             for (var i in this._answer_properties) {
@@ -364,7 +364,7 @@ define([
             return 'id_' + this._build_name_of(element_name, answer_index);
         };
 
-        prototype._add_image_selector = function (element_name, answer_index, label, local_map_name, on_click) {
+        prototype._add_image_selector = function (element_name, answer_index, label) {
             var button_name = this._build_name_of("button_" + element_name, answer_index);
             var button_id = this._build_id_of("button_" + element_name, answer_index);
 
@@ -483,7 +483,7 @@ define([
             me._modal_image_panel_ctrl = M.qtypes.omerocommon.ModalImagePanel.getInstance();
         };
 
-        prototype.onSelectedImage = function (image_info, picker) {
+        prototype.onSelectedImage = function (image_info) {
             console.log("Selected image", image_info);
             var me = this;
             me._modal_image_panel_ctrl.getImageModelManager().getImageDetails(function (image_details) {

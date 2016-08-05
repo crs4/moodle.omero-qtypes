@@ -211,7 +211,7 @@ function xmldb_qtype_omeromultichoice_upgrade($oldversion)
         upgrade_plugin_savepoint(true, 2016012101, 'qtype', 'omeromultichoice');
     }
 
-    if ($oldversion < 2016071902) {
+    if ($oldversion < 2016080400) {
 
         $table_name = "question_answers_omemopt";
         $transaction = $DB->start_delegated_transaction();
@@ -235,7 +235,7 @@ function xmldb_qtype_omeromultichoice_upgrade($oldversion)
         }
 
         // Shortanswer savepoint reached.
-        upgrade_plugin_savepoint(true, 2016071902, 'qtype', 'omeromultichoice');
+        upgrade_plugin_savepoint(true, 2016080400, 'qtype', 'omeromultichoice');
     }
 
     return true;

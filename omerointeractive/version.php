@@ -31,6 +31,6 @@
 defined('MOODLE_INTERNAL') || die();
 
 $plugin->component = 'qtype_omerointeractive';
-$plugin->version   = 2016071900;        // The current plugin version (Date: YYYYMMDDXX).
+$plugin->version   = 2016080400;        // The current plugin version (Date: YYYYMMDDXX).
 $plugin->requires  = 2015051100;        // Requires this Moodle version.
 $plugin->maturity  = MATURITY_ALPHA;
