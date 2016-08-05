@@ -30,8 +30,8 @@ define(['qtype_omerocommon/image-viewer',
         'qtype_omerocommon/roi-shape-table'
     ],
     /* jshint curly: false */
-    /* globals $ */
-    function (ImageViewer, ImageModelManager) {
+    /* globals $,console */
+    function (ImageViewer/*, ImageModelManager*/) {
 
         // debug_mode
         //var debug_mode = M.cfg.developerdebug;
@@ -100,7 +100,7 @@ define(['qtype_omerocommon/image-viewer',
 
             // notify the parent controller when the 'save' button is clicked
             // triggering the event 'save'
-            $("#" + me._modal_image_selector_id + " .save").click(function (data) {
+            $("#" + me._modal_image_selector_id + " .save").click(function (/*data*/) {
                 if (me._parent && me._parent.onSave) {
                     me._parent.onSave(
                         me._image_id, me._image_properties, me._image_lock,
@@ -110,7 +110,7 @@ define(['qtype_omerocommon/image-viewer',
             });
 
             // notify the parent controller when this panel is closed
-            $("#" + me._modal_image_selector_id + " .close").click(function (data) {
+            $("#" + me._modal_image_selector_id + " .close").click(function (/*data*/) {
                 if (me._parent && me._parent.onClose) {
                     me._parent.onClose();
                 }
@@ -150,9 +150,9 @@ define(['qtype_omerocommon/image-viewer',
             me._focusable_roi_list = focusable_rois ? focusable_rois : [];
             me._image_properties = image_properties || {};
             me._image_lock = image_lock || false;
-            me._disable_roi_table = disable_roi_table == true;
-            me._disable_image_lock = disable_image_lock == true;
-            me._disable_image_properties = disable_image_properties == true;
+            me._disable_roi_table = disable_roi_table === true;
+            me._disable_image_lock = disable_image_lock === true;
+            me._disable_image_properties = disable_image_properties === true;
 
             // clear
             me._header_title.html(me._initial_title);
@@ -177,7 +177,6 @@ define(['qtype_omerocommon/image-viewer',
 
             // load and show image and its related ROIs
             viewer_ctrl.open(true, function (data) {
-                var image_info = me._image_viewer_controller.getImageDetails();
                 me._header_title.html(me._initial_title + ": \"" + image_description + "\"");
                 me.onImageModelRoiLoaded(data);
                 if (!disable_image_properties)
@@ -220,7 +219,6 @@ define(['qtype_omerocommon/image-viewer',
          * @param height
          */
         prototype.setHeight = function (height) {
-            var footer_height = parseInt(this._footer.css("height"));
             var new_height = height + 110;
             this._body.css("min-height", height);
             this._body.css("height", height);
@@ -248,8 +246,8 @@ define(['qtype_omerocommon/image-viewer',
                 {
                     top: ($(window).height() - me._modal_image_panel.outerHeight()) / 2 + $(window).scrollTop()
                 });
-            if (auto != undefined)
-                this._auto_vcenter = auto == true;
+            if (auto !== undefined)
+                this._auto_vcenter = auto === true;
         };
 
         /**
@@ -261,8 +259,8 @@ define(['qtype_omerocommon/image-viewer',
                 {
                     left: ($(window).width() - me._modal_image_panel.outerWidth()) / 2 + $(window).scrollLeft()
                 });
-            if (auto != undefined)
-                this._auto_hcenter = auto == true;
+            if (auto !== undefined)
+                this._auto_hcenter = auto === true;
         };
 
         /**
@@ -280,7 +278,7 @@ define(['qtype_omerocommon/image-viewer',
          */
         prototype.maximizeHeight = function (auto) {
             this.setHeight($(window).height() - (2 * this._default_padding));
-            if (auto != undefined) this._auto_maximize_height = auto == true;
+            if (auto !== undefined) this._auto_maximize_height = auto === true;
         };
 
 
@@ -289,7 +287,7 @@ define(['qtype_omerocommon/image-viewer',
          */
         prototype.maximizeWidth = function (auto) {
             this.setWidth($(window).width() - (2 * this._default_padding));
-            if (auto != undefined) this._auto_maximize_width = auto == true;
+            if (auto !== undefined) this._auto_maximize_width = auto === true;
         };
 
 
