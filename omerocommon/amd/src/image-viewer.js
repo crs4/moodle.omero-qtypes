@@ -79,6 +79,14 @@ define([
             this._lock_navigation = false;
             this._visible_roi_shape_ids = [];
 
+            // set the url retrieve the static resources
+            this._image_server_static_resources = this._image_server + "/static/ome_seadragon/img/openseadragon/";
+
+            // set the url to retrieve the DZI
+            if (this._image_server_api_version == "OmeSeadragonGatewayImageRepository")
+                this._image_server_dzi = this._image_server + "/api/deepzoom/" + this._image_id + "/";
+            else this._image_server_dzi = this._image_server + "/ome_seadragon/deepzoom/get/" + this._image_id + ".dzi";
+
             // default viewer configuration
             this._viewer_config = {
                 'showNavigator': true,
@@ -129,8 +137,8 @@ define([
             // TODO: to change with the controller initialization
             me._viewer_controller = new ViewerController(
                 me._image_viewer_container_id,
-                me._image_server + "/static/ome_seadragon/img/openseadragon/",
-                me._image_server + "/ome_seadragon/deepzoom/get/" + me._image_id + ".dzi",
+                me._image_server_static_resources,
+                me._image_server_dzi,
                 me._viewer_config
             );
 
