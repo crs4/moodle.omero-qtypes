@@ -63,11 +63,13 @@ define([
          */
         M.qtypes.omerocommon.ImageViewer = function (image_id, image_properties,
                                                      image_server,
+                                                     image_server_api_version,
                                                      image_viewer_container_id,
                                                      image_viewer_annotations_canvas_id,
                                                      viewer_model_server,
                                                      viewer_config) {
             this._image_server = image_server;
+            this._image_server_api_version = image_server_api_version;
             this._image_viewer_container_id = image_viewer_container_id;
             this._image_viewer_annotations_canvas_id = image_viewer_annotations_canvas_id;
             this._image_id = image_id;
