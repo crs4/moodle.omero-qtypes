@@ -37,7 +37,7 @@ if (!isloggedin()) {
 }
 
 // omero server
-$omero_server = new omero();
+$omero_server = OmeroImageRepository::get_instance();
 
 // get method
 $method = required_param("m", PARAM_TEXT);
