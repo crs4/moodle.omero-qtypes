@@ -133,6 +133,7 @@ define([
             me._config = config;
 
             me._image_server = config.image_server;
+            me._image_server_api_version = config.image_server_api_version;
             me._viewer_model_server = config.viewer_model_server;
 
             // the ID of the answer serction
@@ -535,6 +536,7 @@ define([
             var viewer_ctrl = new ImageViewer(
                 image_id, undefined,
                 me._image_server,
+                me._image_server_api_version,
                 "image-viewer-container", "annotations_canvas",
                 me._viewer_model_server);
             me._image_viewer_controller = viewer_ctrl;
