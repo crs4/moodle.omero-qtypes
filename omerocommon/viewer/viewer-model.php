@@ -20,7 +20,7 @@
 // CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 // set the Moodle root directory
-$MOODLEROOT=dirname(dirname(dirname(dirname(dirname(__FILE__)))));
+$MOODLEROOT = dirname(dirname(dirname(dirname(dirname(__FILE__)))));
 
 // load dependencies
 require_once("$MOODLEROOT/config.php");
