@@ -510,8 +510,10 @@ define([
                 console.log("Selected image to edit", image);
                 this._modal_image_panel_ctrl.show(this,
                     image.id, image.description,
+                    image.description_locale_map,
                     image.properties, image.lock,
-                    image.visiblerois, image.focusablerois
+                    image.visiblerois, image.focusablerois,
+                    "en"
                 );
             }
         };
@@ -523,9 +525,11 @@ define([
             }
         };
 
-        prototype.onSave = function (image_id, image_properties, image_lock, visible_rois, focusable_rois) {
+        prototype.onSave = function (image_id, image_description_locale_map,
+                                     image_properties, image_lock, visible_rois, focusable_rois) {
             var image = this._getFeedbackImage(image_id);
             if (image) {
+                image.description_locale_map = image_description_locale_map;
                 image.properties = image_properties;
                 image.lock = image_lock;
                 image.visiblerois = visible_rois;
