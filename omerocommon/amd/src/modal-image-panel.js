@@ -62,6 +62,8 @@ define(['qtype_omerocommon/image-viewer',
             me._modal_image_selector_id = modal_image_selector_panel_id || M.qtypes.omerocommon.DEFAULT_ELEMENT_NAME;
             me._image_viewer_container_id = me._modal_image_selector_id + "-image-viewer-container";
             me._image_viewer_annotations_container_id = me._modal_image_selector_id + "-annotations_canvas";
+            me._language_selector_id = me._modal_image_selector_id + "-language-selector";
+            me._description_textarea_id = me._modal_image_selector_id + "-image-description";
 
             // set references to HTML elements
             me._modal_image_panel = $("#" + me._modal_image_selector_id);
