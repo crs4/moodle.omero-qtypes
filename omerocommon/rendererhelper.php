@@ -107,27 +107,67 @@ class qtype_omerocommon_renderer_helper
                 <div >
 
                 <!-- TOOLBAR -->
-                <div id="' . $modal_image_roi_inspector_toolbar_id . '" class="hidden">
-
+                <div id="' . $modal_image_roi_inspector_toolbar_id . '" class="hidden"></div>
+                
+                <!-- IMAGE DESCRIPTION -->
+                <div class="panel-group">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                        <h4 class="panel-title">
+                            <a data-toggle="collapse" href="#collapse2">Description</a>
+                        </h4>
+                        </div>
+                        <div id="collapse2" class="panel-collapse collapse">
+                            <div class="panel-body">
+                                <div class="form-group">
+                                  <label for="' . $modal_image_language_selector . '">Select list:</label>
+                                  <select class="form-control" id="' . $modal_image_language_selector . '">
+                                    <option>1</option>
+                                    <option>2</option>
+                                    <option>3</option>
+                                    <option>4</option>
+                                  </select>
+                                </div>
+                                <div>
+                                    <textarea id="id_' . $modal_image_description . '"></textarea>
+                                    <input type="hidden" id="description-feedback-image-locale-mep" value="{}"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
+                                
                 <!-- ROI TABLE -->
-                <table id="' . $modal_image_roi_inspector_table_id . '"
-                       data-toolbar="#toolbar"
-                       data-search="true"
-                       data-height="400"
-                       data-show-refresh="true"
-                       data-show-toggle="true"
-                       data-show-columns="true"
-                       data-show-export="true"
-                       data-detail-view="false"
-                       data-minimum-count-columns="2"
-                       data-show-pagination-switch="false"
-                       data-pagination="false"
-                       data-id-field="id"
-                       data-page-list="[10, 25, 50, 100, ALL]"
-                       data-show-footer="false"
-                       data-side-pagination="client">
-                </table>
+                <div class="panel-group">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                        <h4 class="panel-title">
+                            <a data-toggle="collapse" href="#collapse1">ROI Table Inspector</a>
+                        </h4>
+                        </div>
+                        <div id="collapse1" class="panel-collapse collapse">
+                            <div class="panel-body">
+                                <table id="' . $modal_image_roi_inspector_table_id . '"
+                                       data-toolbar="#toolbar"
+                                       data-search="true"
+                                       data-height="400"
+                                       data-show-refresh="true"
+                                       data-show-toggle="true"
+                                       data-show-columns="true"
+                                       data-show-export="true"
+                                       data-detail-view="false"
+                                       data-minimum-count-columns="2"
+                                       data-show-pagination-switch="false"
+                                       data-pagination="false"
+                                       data-id-field="id"
+                                       data-page-list="[10, 25, 50, 100, ALL]"
+                                       data-show-footer="false"
+                                       data-side-pagination="client">
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
               </div>
             </div>';
 
