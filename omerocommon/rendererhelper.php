@@ -63,6 +63,9 @@ class qtype_omerocommon_renderer_helper
         $modal_image_roi_inspector_toolbar_id = $modal_image_dialog_panel_id . "-roi-shape-inspector-table-toolbar";
         $modal_image_roi_inspector_table_id = $modal_image_dialog_panel_id . "-roi-shape-inspector-table";
 
+        $modal_image_language_selector = $modal_image_dialog_panel_id . "-language-selector";
+        $modal_image_description = $modal_image_dialog_panel_id . "-image-description";
+
         $modal_image_toolbar = $modal_image_dialog_panel_id . "-toolbar";
         $modal_image_update_properties = $modal_image_dialog_panel_id . "-update-image-properties";
         $modal_image_properties = $modal_image_dialog_panel_id . "-image-properties";
