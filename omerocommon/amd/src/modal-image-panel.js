@@ -73,6 +73,18 @@ define(['qtype_omerocommon/image-viewer',
             me._body = $("#" + me._modal_image_selector_id + "-body");
             me._footer = $("#" + me._modal_image_selector_id + "-footer");
 
+            me._language_selector = $("#" + me._language_selector_id);
+            me._description_textarea = $("#" + me._description_textarea_id);
+
+            // init the description editor
+            me._description_editor = new M.qtypes.omerocommon.MultilanguageAttoEditor(
+                me._description_textarea_id, "description-feedback-image-locale-mep");
+
+            // handler of the 'change-language' event
+            me._language_selector.on("change", function () {
+                me._description_editor.onLanguageChanged(me._language_selector.val());
+            });
+
             // save the original title
             me._initial_title = me._header_title.html();
 
