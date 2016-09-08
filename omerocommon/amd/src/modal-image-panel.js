@@ -115,9 +115,11 @@ define(['qtype_omerocommon/image-viewer',
             // notify the parent controller when the 'save' button is clicked
             // triggering the event 'save'
             $("#" + me._modal_image_selector_id + " .save").click(function (/*data*/) {
+                me._description_editor.save();
                 if (me._parent && me._parent.onSave) {
                     me._parent.onSave(
-                        me._image_id, me._image_properties, me._image_lock,
+                        me._image_id, me._description_editor.getLocaleTextMap(),
+                        me._image_properties, me._image_lock,
                         me._visible_roi_list, me._focusable_roi_list
                     );
                 }
@@ -151,8 +153,9 @@ define(['qtype_omerocommon/image-viewer',
          * @param focusable_rois
          */
         prototype.show = function (parent,
-                                   image_id, image_description, image_properties, image_lock,
-                                   visible_rois, focusable_rois,
+                                   image_id, image_description, image_description_locale_map,
+                                   image_properties, image_lock,
+                                   visible_rois, focusable_rois, current_language,
                                    disable_roi_table, disable_image_properties, disable_image_lock) {
             // the reference to current scope
             var me = this;
@@ -167,6 +170,12 @@ define(['qtype_omerocommon/image-viewer',
             me._disable_roi_table = disable_roi_table === true;
             me._disable_image_lock = disable_image_lock === true;
             me._disable_image_properties = disable_image_properties === true;
+
+            // set the current language
+            me._language_selector.val(current_language);
+
+            // init editor
+            me._description_editor.init(current_language, undefined, image_description_locale_map);
 
             // clear
             me._header_title.html(me._initial_title);
