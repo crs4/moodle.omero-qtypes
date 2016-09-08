@@ -490,6 +490,7 @@ define([
                 var image = {
                     id: image_info.image_id,
                     description: image_details.name,
+                    description_locale_map: {},
                     details: image_details,
                     visiblerois: [],
                     focusablerois: [],
