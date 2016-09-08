@@ -129,7 +129,7 @@ class qtype_omerocommon_renderer_helper
                                   </select>
                                 </div>
                                 <div>
-                                    <textarea id="id_' . $modal_image_description . '"></textarea>
+                                    <textarea id="id_' . $modal_image_description . '" rows="4"></textarea>
                                     <input type="hidden" id="description-feedback-image-locale-mep" value="{}"/>
                                 </div>
                             </div>
