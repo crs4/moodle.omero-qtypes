@@ -102,6 +102,11 @@ class qtype_omerocommon_renderer_helper
         }
 
 
+        $language_option_list = "";
+        foreach (get_string_manager()->get_list_of_translations() as $k => $v) {
+            $language_option_list .= "<option value=\"$k\">$v</option>";
+        }
+
         $modal_image_viewer_html .= '<div id="' . $modal_image_roi_inspector_container_id . '">
                 <div ><label for="' . $modal_image_roi_inspector_table_id . '"></label></div>
                 <div >
@@ -120,13 +125,8 @@ class qtype_omerocommon_renderer_helper
                         <div id="collapse2" class="panel-collapse collapse">
                             <div class="panel-body">
                                 <div class="form-group">
-                                  <label for="' . $modal_image_language_selector . '">Select list:</label>
-                                  <select class="form-control" id="' . $modal_image_language_selector . '">
-                                    <option>1</option>
-                                    <option>2</option>
-                                    <option>3</option>
-                                    <option>4</option>
-                                  </select>
+                                  <label for="' . $modal_image_language_selector . '">' . get_string('language', 'qtype_omerocommon') . ':</label>
+                                  <select class="form-control" id="' . $modal_image_language_selector . '">' . $language_option_list . '</select>
                                 </div>
                                 <div>
                                     <textarea id="id_' . $modal_image_description . '" rows="4"></textarea>
