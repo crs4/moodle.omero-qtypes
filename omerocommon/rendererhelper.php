@@ -121,14 +121,12 @@ class qtype_omerocommon_renderer_helper
                 <div id="' . $modal_image_roi_inspector_toolbar_id . '" class="hidden"></div>
                                 
                 <!-- ROI TABLE -->
-                <div id="' . $modal_image_roitable_panel_container  .'" class="panel-group">
+                <div id="' . $modal_image_roitable_panel_container . '" class="panel-group">
                     <div class="panel panel-default">
                         <div class="panel-heading">
-                        <h4 class="panel-title">
-                            ROI Table Inspector
-                        </h4>
+                        <h4 class="panel-title">' . get_string('roi_shape_inspector', 'qtype_omerocommon') . '</h4>
                         </div>
-                        <div id="' . $modal_image_roitable_panel  .'" class="panel">
+                        <div id="' . $modal_image_roitable_panel . '" class="panel">
                             <div class="panel-body">
                                 <table id="' . $modal_image_roi_inspector_table_id . '"
                                        data-toolbar="#toolbar"
@@ -151,14 +149,12 @@ class qtype_omerocommon_renderer_helper
                         </div>
                     </div>
                 </div>
-                
+                                
                  <!-- IMAGE DESCRIPTION -->
                 <div id="' . $modal_image_description_panel_container . '" class="panel-group">
                     <div class="panel panel-default">
                         <div class="panel-heading">
-                        <h4 class="panel-title">
-                            Description
-                        </h4>
+                        <h4 class="panel-title">' . get_string('feedbackimagedescription', 'qtype_omerocommon') . '</h4>
                         </div>
                         <div id="' . $modal_image_description_panel . '" class="panel">
                             <div class="panel-body">

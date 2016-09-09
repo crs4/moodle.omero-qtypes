@@ -463,7 +463,8 @@ define([
 
         prototype._build_feedback_image_selector = function () {
             var me = this;
-            var selector_ids = me._add_image_selector("add_images", me._answer_number, "Feedback Images");
+            var selector_ids = me._add_image_selector("add_images", me._answer_number,
+                M.util.get_string("feedbackimages", "qtype_omerocommon"));
             me._answer_feedback_filepicker = new M.omero_filepicker({
                 buttonid: selector_ids.button_id,
                 buttonname: selector_ids.button_name,
