@@ -210,13 +210,11 @@ define(['jquery', 'qtype_omerocommon/roi-shape-model'],
                 me.table_element.bootstrapTable('resetView');
             }, 200);
 
-
-            // me.table_element.on('click-cell.bs.table', function (table, field, e, row, index) {
-            // });
-            //
-            // me.table_element.on('check.bs.table uncheck.bs.table ' +
-            //     'check-all.bs.table uncheck-all.bs.table', function () {
-            // });
+            // fix table height to fit its content
+            me.table_element.on('reset-view.bs.table', function (event) {
+                $(event.target).closest(".fixed-table-container").css("height", "auto");
+                $(event.target).closest(".fixed-table-container").css("padding-bottom", "0");
+            });
 
             me.table_element.on('all.bs.table', function (e, row, args) {
                 console.log(row, args);
