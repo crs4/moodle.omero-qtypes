@@ -169,14 +169,22 @@ define([
                 me._modal_image_panel.center();
                 me._modal_image_panel.show(me,
                     img_el.attr("imageid"),
+                    img_el.attr("imagename"),
                     img_el.attr("imagedescription"),
                     JSON.parse((img_el.attr("imageproperties"))),
-                    img_el.attr("imagelock"),
+                    img_el.attr("imagelock") === "true",
                     img_el.attr("visiblerois").split(","),
-                    img_el.attr("focusablerois").split(","));
+                    img_el.attr("focusablerois").split(","),
+                    img_el.attr("currentlanguage"),
+                    true,
+                    true,
+                    true,
+                    true,
+                    true
+                );
             });
 
-            me._modal_image_panel.setHeight(500);
+            me._modal_image_panel.setHeight(700);
             me._modal_image_panel.center(true);
 
             me._invalidator_panel = $("#" + config.question_answer_container + "-invalidator-panel");
