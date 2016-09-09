@@ -48,6 +48,7 @@ class qtype_omerocommon_renderer_helper
 
     public static function modal_viewer($hide_save_button = false,
                                         $hide_toolbar = false,
+                                        $show_locale_description_panel = false,
                                         $element_id = self::MODAL_VIEWER_ELEMENT_ID)
     {
         $modal_image_dialog_panel_id = $element_id;
@@ -65,6 +66,7 @@ class qtype_omerocommon_renderer_helper
 
         $modal_image_language_selector = $modal_image_dialog_panel_id . "-language-selector";
         $modal_image_description = $modal_image_dialog_panel_id . "-image-description";
+        $modal_image_locale_description_panel = $modal_image_dialog_panel_id . "-image-locale-description-panel";
         $modal_image_description_panel = $modal_image_dialog_panel_id . "-image-description-panel";
         $modal_image_description_panel_container = $modal_image_dialog_panel_id . "-image-description-panel-container";
         $modal_image_roitable_panel = $modal_image_dialog_panel_id . "-roitable-panel";
@@ -105,6 +107,13 @@ class qtype_omerocommon_renderer_helper
                  </div>';
         }
 
+
+        $modal_image_viewer_html .= '<div class="modal-image-details-viewer">';
+
+        if ($show_locale_description_panel) {
+            $modal_image_viewer_html .= '
+                <div id="' . $modal_image_locale_description_panel . '"></div>';
+        }
 
         $language_option_list = "";
         foreach (get_string_manager()->get_list_of_translations() as $k => $v) {
@@ -174,6 +183,9 @@ class qtype_omerocommon_renderer_helper
                 
               </div>
             </div>';
+        }
+
+        $modal_image_viewer_html .= '</div>';
 
         $save_button = !$hide_save_button
             ? '<button type="button" class="save btn btn-default" data-dismiss="modal">' .
