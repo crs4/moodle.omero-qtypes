@@ -65,6 +65,10 @@ class qtype_omerocommon_renderer_helper
 
         $modal_image_language_selector = $modal_image_dialog_panel_id . "-language-selector";
         $modal_image_description = $modal_image_dialog_panel_id . "-image-description";
+        $modal_image_description_panel = $modal_image_dialog_panel_id . "-image-description-panel";
+        $modal_image_description_panel_container = $modal_image_dialog_panel_id . "-image-description-panel-container";
+        $modal_image_roitable_panel = $modal_image_dialog_panel_id . "-roitable-panel";
+        $modal_image_roitable_panel_container = $modal_image_dialog_panel_id . "-roitable-panel-container";
 
         $modal_image_toolbar = $modal_image_dialog_panel_id . "-toolbar";
         $modal_image_update_properties = $modal_image_dialog_panel_id . "-update-image-properties";
@@ -107,45 +111,24 @@ class qtype_omerocommon_renderer_helper
             $language_option_list .= "<option value=\"$k\">$v</option>";
         }
 
-        $modal_image_viewer_html .= '<div id="' . $modal_image_roi_inspector_container_id . '">
+        $modal_image_viewer_html .= '
+                <!-- MODAL IMAGE PANEL -->
+                <div id="' . $modal_image_roi_inspector_container_id . '">
                 <div ><label for="' . $modal_image_roi_inspector_table_id . '"></label></div>
-                <div >
-
+                <div>
+                
                 <!-- TOOLBAR -->
                 <div id="' . $modal_image_roi_inspector_toolbar_id . '" class="hidden"></div>
-                
-                <!-- IMAGE DESCRIPTION -->
-                <div class="panel-group">
-                    <div class="panel panel-default">
-                        <div class="panel-heading">
-                        <h4 class="panel-title">
-                            <a data-toggle="collapse" href="#collapse2">Description</a>
-                        </h4>
-                        </div>
-                        <div id="collapse2" class="panel-collapse collapse">
-                            <div class="panel-body">
-                                <div class="form-group">
-                                  <label for="' . $modal_image_language_selector . '">' . get_string('language', 'qtype_omerocommon') . ':</label>
-                                  <select class="form-control" id="' . $modal_image_language_selector . '">' . $language_option_list . '</select>
-                                </div>
-                                <div>
-                                    <textarea id="id_' . $modal_image_description . '" rows="4"></textarea>
-                                    <input type="hidden" id="description-feedback-image-locale-mep" value="{}"/>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
                                 
                 <!-- ROI TABLE -->
-                <div class="panel-group">
+                <div id="' . $modal_image_roitable_panel_container  .'" class="panel-group">
                     <div class="panel panel-default">
                         <div class="panel-heading">
                         <h4 class="panel-title">
-                            <a data-toggle="collapse" href="#collapse1">ROI Table Inspector</a>
+                            ROI Table Inspector
                         </h4>
                         </div>
-                        <div id="collapse1" class="panel-collapse collapse">
+                        <div id="' . $modal_image_roitable_panel  .'" class="panel">
                             <div class="panel-body">
                                 <table id="' . $modal_image_roi_inspector_table_id . '"
                                        data-toolbar="#toolbar"
@@ -168,6 +151,30 @@ class qtype_omerocommon_renderer_helper
                         </div>
                     </div>
                 </div>
+                
+                 <!-- IMAGE DESCRIPTION -->
+                <div id="' . $modal_image_description_panel_container . '" class="panel-group">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                        <h4 class="panel-title">
+                            Description
+                        </h4>
+                        </div>
+                        <div id="' . $modal_image_description_panel . '" class="panel">
+                            <div class="panel-body">
+                                <div class="form-group">
+                                  <label for="' . $modal_image_language_selector . '">' . get_string('language', 'qtype_omerocommon') . ':</label>
+                                  <select class="form-control" id="' . $modal_image_language_selector . '">' . $language_option_list . '</select>
+                                </div>
+                                <div>
+                                    <textarea id="id_' . $modal_image_description . '" rows="4"></textarea>
+                                    <input type="hidden" id="description-feedback-image-locale-mep" value="{}"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
               </div>
             </div>';
 
