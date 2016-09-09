@@ -342,6 +342,7 @@ abstract class qtype_omerointeractive_base_renderer extends qtype_multichoice_re
         foreach ($ans->feedbackimages as $image) {
             $feedbackimages_html .= '<span class="' . $feedback_image_class . '" imageid="' . $image->id . '"'
                 . ' imagedescription="' . $image->description . '"'
+                . ' imagename="' . $image->name . '"'
                 . ' imagelock="' . $image->lock . '"'
                 . ' imageproperties="' . htmlspecialchars(json_encode($image->properties)) . '"'
                 . ' visiblerois="' . implode(",", $image->visiblerois) . '"'

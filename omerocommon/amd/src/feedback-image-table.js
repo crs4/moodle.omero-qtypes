@@ -146,14 +146,14 @@ define(['jquery', 'qtype_omerocommon/roi-shape-model'],
                             formatter: me.idFormatter
                         },
                         {
-                            field: 'description',
-                            title: M.util.get_string('roi_description', 'qtype_omerocommon'),
+                            field: 'name',
+                            title: M.util.get_string('feedbackimagename', 'qtype_omerocommon'),
                             align: 'center',
                             valign: 'middle',
-                            formatter: me.descriptionFormatter,
+                            formatter: me.nameFormatter,
                             editable: {
                                 type: 'textarea',
-                                title: 'Feedback image description',
+                                title: M.util.get_string('feedbackimagename', 'qtype_omerocommon'),
                                 width: '200px',
                                 resize: 'none',
                                 validate: function (value) {
@@ -345,7 +345,7 @@ define(['jquery', 'qtype_omerocommon/roi-shape-model'],
             ].join(" ");
         };
 
-        prototype.descriptionFormatter = function (data) {
+        prototype.nameFormatter = function (data) {
             return (data) || " ";
         };
 

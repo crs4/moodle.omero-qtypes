@@ -285,6 +285,7 @@ abstract class qtype_omeromultichoice_base_renderer extends qtype_multichoice_re
                 $feedbackimages_html .= '<span class="' . $feedback_image_class . '" imageid="' . $image->id . '"'
                     . ' imagedescription="' . $image->description . '"'
                     . ' imagelock="' . $image->lock . '"'
+                    . ' imagename="' . $image->name . '"'
                     . ' imageproperties="' . htmlspecialchars(json_encode($image->properties)) . '"'
                     . ' visiblerois="' . implode(",", $image->visiblerois) . '"'
                     . ' focusablerois="' . implode(",", $image->focusablerois) . '"' . '>' .

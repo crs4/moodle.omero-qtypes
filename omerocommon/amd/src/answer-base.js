@@ -489,7 +489,7 @@ define([
             me._modal_image_panel_ctrl.getImageModelManager().getImageDetails(function (image_details) {
                 var image = {
                     id: image_info.image_id,
-                    description: image_details.name,
+                    name: image_details.name,
                     description_locale_map: {},
                     details: image_details,
                     visiblerois: [],
@@ -509,7 +509,7 @@ define([
             if (image) {
                 console.log("Selected image to edit", image);
                 this._modal_image_panel_ctrl.show(this,
-                    image.id, image.description,
+                    image.id, image.name,
                     image.description_locale_map,
                     image.properties, image.lock,
                     image.visiblerois, image.focusablerois,
