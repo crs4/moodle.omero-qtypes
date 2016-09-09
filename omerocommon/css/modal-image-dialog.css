@@ -48,10 +48,19 @@ div[id$=modalImageDialogPanel-roi-shape-inspector-table-toolbar] {
     margin-top: 530px;
 }
 
+div[id$=modalImageDialogPanel-roitable-panel-container] {
+    margin-top: 530px;
+}
+
+div[id$=modalImageDialogPanel-image-description-panel-container] {
+    /*margin-top: 530px;*/
+}
+
+
 div[id$=modalImageDialogPanel] div[id*=graphics_container] {
     height: 20px;
 }
 
 div.bootstrap-table > div.fixed-table-container {
-    padding: 5px 5px 20px;
+    /*padding: 5px 5px 20px;*/
 }
