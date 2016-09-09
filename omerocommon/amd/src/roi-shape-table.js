@@ -204,6 +204,12 @@ define(['jquery', 'qtype_omerocommon/roi-shape-model'],
             }, 200);
 
 
+            me.table_element.on('reset-view.bs.table', function (event) {
+                // fix table height to fit its content
+                $(event.target).closest(".fixed-table-container").css("height", "auto");
+                $(event.target).closest(".fixed-table-container").css("padding-bottom", "0");
+            });
+
             me.table_element.on('click-cell.bs.table', function (table, field, e, row, index) {
                 console.log("Click on a table ROW", e, row, index);
                 notifyListeners(me, {
