@@ -44,16 +44,27 @@ div[id$=modalImageDialogPanel-update-image-properties] {
     margin-left: 3px;
 }
 
-div[id$=modalImageDialogPanel-roi-shape-inspector-table-toolbar] {
+div.modal-image-details-viewer{
     margin-top: 530px;
 }
 
+div[id$=modalImageDialogPanel-roi-shape-inspector-table-toolbar] {
+    /*margin-top: 530px;*/
+}
+
 div[id$=modalImageDialogPanel-roitable-panel-container] {
-    margin-top: 530px;
+    /*margin-top: 530px;*/
 }
 
 div[id$=modalImageDialogPanel-image-description-panel-container] {
     /*margin-top: 530px;*/
+}
+
+div[id$=modalImageDialogPanel-image-locale-description-panel] {
+    /*margin-top: 530px;*/
+    padding: 0px;
+    overflow: auto;
+    margin-top: -35px;
 }
 
 
