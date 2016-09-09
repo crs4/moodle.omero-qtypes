@@ -515,6 +515,7 @@ define([
                     image.visiblerois, image.focusablerois,
                     "en"
                 );
+                this._modal_image_panel_ctrl.center();
             }
         };
 
