@@ -64,6 +64,7 @@ define(['qtype_omerocommon/image-viewer',
             me._image_viewer_annotations_container_id = me._modal_image_selector_id + "-annotations_canvas";
             me._language_selector_id = me._modal_image_selector_id + "-language-selector";
             me._description_textarea_id = me._modal_image_selector_id + "-image-description";
+            me._locale_description_id = me._modal_image_selector_id + "-image-locale-description-panel";
 
             // set references to HTML elements
             me._modal_image_panel = $("#" + me._modal_image_selector_id);
@@ -72,18 +73,20 @@ define(['qtype_omerocommon/image-viewer',
             me._header_title = $("#" + me._modal_image_selector_id + "-header-title");
             me._body = $("#" + me._modal_image_selector_id + "-body");
             me._footer = $("#" + me._modal_image_selector_id + "-footer");
-
+            me._locale_description = $("#" + me._locale_description_id);
             me._language_selector = $("#" + me._language_selector_id);
             me._description_textarea = $("#" + me._description_textarea_id);
 
             // init the description editor
-            me._description_editor = new M.qtypes.omerocommon.MultilanguageAttoEditor(
-                me._description_textarea_id, "description-feedback-image-locale-mep");
+            if ($("#id_" + me._description_textarea_id).length !== 0) {
+                me._description_editor = new M.qtypes.omerocommon.MultilanguageAttoEditor(
+                    me._description_textarea_id, "description-feedback-image-locale-mep");
 
-            // handler of the 'change-language' event
-            me._language_selector.on("change", function () {
-                me._description_editor.onLanguageChanged(me._language_selector.val());
-            });
+                // handler of the 'change-language' event
+                me._language_selector.on("change", function () {
+                    me._description_editor.onLanguageChanged(me._language_selector.val());
+                });
+            }
 
             // save the original title
             me._initial_title = me._header_title.html();
@@ -153,10 +156,10 @@ define(['qtype_omerocommon/image-viewer',
          * @param focusable_rois
          */
         prototype.show = function (parent,
-                                   image_id, image_description, image_description_locale_map,
+                                   image_id, image_name, image_description_locale_map,
                                    image_properties, image_lock,
-                                   visible_rois, focusable_rois, current_language,
-                                   disable_roi_table, disable_image_properties, disable_image_lock) {
+                                   visible_rois, focusable_rois, current_language, show_locale_description,
+                                   disable_roi_table, disable_image_properties, disable_image_lock, disable_description_editor) {
             // the reference to current scope
             var me = this;
 
@@ -167,15 +170,11 @@ define(['qtype_omerocommon/image-viewer',
             me._focusable_roi_list = focusable_rois ? focusable_rois : [];
             me._image_properties = image_properties || {};
             me._image_lock = image_lock || false;
+            me._show_locale_description = show_locale_description || false;
             me._disable_roi_table = disable_roi_table === true;
             me._disable_image_lock = disable_image_lock === true;
             me._disable_image_properties = disable_image_properties === true;
-
-            // set the current language
-            me._language_selector.val(current_language);
-
-            // init editor
-            me._description_editor.init(current_language, undefined, image_description_locale_map);
+            me._disable_description_editor = disable_description_editor === true;
 
             // clear
             me._header_title.html(me._initial_title);
@@ -200,14 +199,31 @@ define(['qtype_omerocommon/image-viewer',
 
             // load and show image and its related ROIs
             viewer_ctrl.open(true, function (data) {
-                me._header_title.html(me._initial_title + ": \"" + image_description + "\"");
+                me._header_title.html(me._initial_title + ": \"" + image_name + "\"");
                 me.onImageModelRoiLoaded(data);
                 if (!disable_image_properties)
                     me._updateImageProperties();
                 if (!disable_image_lock)
                     me._image_locked_element.bootstrapToggle(me._image_lock ? 'on' : 'off');
+                if (me._description_textarea && !disable_description_editor) {
+                    // set the current language
+                    me._language_selector.val(current_language);
+                    // init editor
+                    me._description_editor.init(current_language, undefined, image_description_locale_map);
+                }
+                if (show_locale_description) {
+                    me._locale_description.html(image_description_locale_map);
+                }
+
+                // initialize marking tools
+                me._image_viewer_controller.configureMarkingTool({}, 0);
+                // recenter image
                 me._image_viewer_controller.updateViewFromProperties(me._image_properties);
-                $("#modalImageDialogPanel-toolbar").removeClass("hidden");
+                // configure image navigation
+                me._image_viewer_controller.setNavigationLock(me._image_lock);
+
+                if (!disable_image_lock)
+                    $("#modalImageDialogPanel-toolbar").removeClass("hidden");
             });
         };
 
@@ -380,7 +396,6 @@ define(['qtype_omerocommon/image-viewer',
             }
 
             me._image_viewer_controller.showRoiShapes(me._visible_roi_list);
-
             console.log("Updated ROI table!!!");
 
             return removed_rois;
