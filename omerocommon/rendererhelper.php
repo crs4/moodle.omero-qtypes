@@ -111,7 +111,8 @@ class qtype_omerocommon_renderer_helper
             $language_option_list .= "<option value=\"$k\">$v</option>";
         }
 
-        $modal_image_viewer_html .= '
+        if (!$hide_toolbar) {
+            $modal_image_viewer_html .= '
                 <!-- MODAL IMAGE PANEL -->
                 <div id="' . $modal_image_roi_inspector_container_id . '">
                 <div ><label for="' . $modal_image_roi_inspector_table_id . '"></label></div>
