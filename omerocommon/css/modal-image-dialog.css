@@ -44,7 +44,7 @@ div[id$=modalImageDialogPanel-update-image-properties] {
     margin-left: 3px;
 }
 
-div.modal-image-details-viewer{
+div.modal-image-details-viewer {
     margin-top: 530px;
 }
 
@@ -67,11 +67,16 @@ div[id$=modalImageDialogPanel-image-locale-description-panel] {
     margin-top: -35px;
 }
 
-
 div[id$=modalImageDialogPanel] div[id*=graphics_container] {
     height: 20px;
 }
 
 div.bootstrap-table > div.fixed-table-container {
     /*padding: 5px 5px 20px;*/
+}
+
+div.table-row-feedback-image-description {
+    height: 200px;
+    width: 100%;
+    overflow: auto;
 }
