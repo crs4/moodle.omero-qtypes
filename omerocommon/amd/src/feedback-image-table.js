@@ -83,14 +83,6 @@ define(['jquery', 'qtype_omerocommon/roi-shape-model'],
             return res;
         };
 
-        M.qtypes.omerocommon.FeedbackImageTable.detailFormatter = function (index, row) {
-            var html = [];
-            $.each(row, function (key, value) {
-                html.push('<p><b>' + key + ':</b> ' + value + '</p>');
-            });
-            return html.join('');
-        };
-
 
         var prototype = M.qtypes.omerocommon.FeedbackImageTable.prototype;
 
