@@ -131,6 +131,15 @@ define(['jquery', 'qtype_omerocommon/roi-shape-model'],
 
             var bootstrap_config = {
                 height: "160",
+                detailView: true,
+                detailFormatter: function (index, row) {
+                    return '<div class="panel panel-default table-row-feedback-image-description">'
+                        + '<div class="panel-body">'
+                        + ( (row.description_locale_map && row.description_locale_map[me._current_language])
+                            ? row.description_locale_map[me._current_language] : "")
+                        + '</div>'
+                        + '</div>';
+                },
                 columns: [
                     [
                         {
