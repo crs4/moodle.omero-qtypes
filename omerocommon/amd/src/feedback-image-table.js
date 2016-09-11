@@ -73,6 +73,13 @@ define(['jquery', 'qtype_omerocommon/roi-shape-model'],
             me._table_container_id = table_container_id || (table_id + "-container");
 
             me._event_listener_list = [];
+
+            // A reference to the languageSelector
+            me._language_selector = $("#id_question_language");
+            me._current_language = me._language_selector.val();
+            me._language_selector.on("change", function (event) {
+                me._current_language = $(event.target).val();
+            });
         };
 
 
