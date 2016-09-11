@@ -128,8 +128,6 @@ define(['jquery', 'qtype_omerocommon/roi-shape-model'],
 
             // Setup the responseHandler
             //me.table_element.attr("data-response-handler", "M.qtypes.omerocommon.FeedbackImageTable.responseHandler");
-            // Register the detailsFormatter
-            //me.table_element.attr("data-detail-formatter", "M.qtypes.omerocommon.FeedbackImageTable.detailFormatter");
 
             var bootstrap_config = {
                 height: "160",
@@ -251,7 +249,6 @@ define(['jquery', 'qtype_omerocommon/roi-shape-model'],
             this.table_element.bootstrapTable('uncheckAll');
         };
 
-
         /**
          * Build an event handler
          *
@@ -327,7 +324,6 @@ define(['jquery', 'qtype_omerocommon/roi-shape-model'],
         prototype.hide = function () {
             this.table_container_element.addClass("hidden");
         };
-
 
         prototype.showToolbar = function () {
             this.table_toolbar_container_element.removeClass("hidden");
