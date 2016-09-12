@@ -52,6 +52,11 @@ $string['answerhowmany'] = 'One or multiple correct answers?';
 $string['answersingleno'] = 'Multiple correct answers allowed';
 $string['answersingleyes'] = 'One correct answer only';
 
+# feedback images
+$string['feedbackimages'] = 'Feedback Images';
+$string['feedbackimagename'] = 'Image Name';
+$string['feedbackimagedescription'] = 'Image Description';
+
 # feedback
 $string['general_and_combined_feedback'] = 'General and combined feedback';
 $string['notice_your_answer'] = 'Notice your answer: ';

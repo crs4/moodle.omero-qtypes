@@ -73,6 +73,16 @@ define(['jquery', 'qtype_omerocommon/roi-shape-model'],
             me._table_container_id = table_container_id || (table_id + "-container");
 
             me._event_listener_list = [];
+
+            // A reference to the languageSelector
+            me._language_selector = $("#id_question_language");
+            me._current_language = me._language_selector.val();
+            me._language_selector.on("change", function (event) {
+                me._current_language = $(event.target).val();
+                $.each($(".detail-icon .glyphicon-minus"), function (index, value) {
+                    $(value).parent().trigger("click");
+                });
+            });
         };
 
 
@@ -81,14 +91,6 @@ define(['jquery', 'qtype_omerocommon/roi-shape-model'],
                 row.state = $.inArray(row.id, this.selections) !== -1;
             });
             return res;
-        };
-
-        M.qtypes.omerocommon.FeedbackImageTable.detailFormatter = function (index, row) {
-            var html = [];
-            $.each(row, function (key, value) {
-                html.push('<p><b>' + key + ':</b> ' + value + '</p>');
-            });
-            return html.join('');
         };
 
 
@@ -129,11 +131,18 @@ define(['jquery', 'qtype_omerocommon/roi-shape-model'],
 
             // Setup the responseHandler
             //me.table_element.attr("data-response-handler", "M.qtypes.omerocommon.FeedbackImageTable.responseHandler");
-            // Register the detailsFormatter
-            //me.table_element.attr("data-detail-formatter", "M.qtypes.omerocommon.FeedbackImageTable.detailFormatter");
 
             var bootstrap_config = {
                 height: "160",
+                detailView: true,
+                detailFormatter: function (index, row) {
+                    return '<div class="panel panel-default table-row-feedback-image-description">'
+                        + '<div class="panel-body">'
+                        + ( (row.description_locale_map && row.description_locale_map[me._current_language])
+                            ? row.description_locale_map[me._current_language] : "")
+                        + '</div>'
+                        + '</div>';
+                },
                 columns: [
                     [
                         {
@@ -146,14 +155,14 @@ define(['jquery', 'qtype_omerocommon/roi-shape-model'],
                             formatter: me.idFormatter
                         },
                         {
-                            field: 'description',
-                            title: M.util.get_string('roi_description', 'qtype_omerocommon'),
+                            field: 'name',
+                            title: M.util.get_string('feedbackimagename', 'qtype_omerocommon'),
                             align: 'center',
                             valign: 'middle',
-                            formatter: me.descriptionFormatter,
+                            formatter: me.nameFormatter,
                             editable: {
                                 type: 'textarea',
-                                title: 'Feedback image description',
+                                title: M.util.get_string('feedbackimagename', 'qtype_omerocommon'),
                                 width: '200px',
                                 resize: 'none',
                                 validate: function (value) {
@@ -210,13 +219,11 @@ define(['jquery', 'qtype_omerocommon/roi-shape-model'],
                 me.table_element.bootstrapTable('resetView');
             }, 200);
 
-
-            // me.table_element.on('click-cell.bs.table', function (table, field, e, row, index) {
-            // });
-            //
-            // me.table_element.on('check.bs.table uncheck.bs.table ' +
-            //     'check-all.bs.table uncheck-all.bs.table', function () {
-            // });
+            // fix table height to fit its content
+            me.table_element.on('reset-view.bs.table', function (event) {
+                $(event.target).closest(".fixed-table-container").css("height", "auto");
+                $(event.target).closest(".fixed-table-container").css("padding-bottom", "0");
+            });
 
             me.table_element.on('all.bs.table', function (e, row, args) {
                 console.log(row, args);
@@ -253,7 +260,6 @@ define(['jquery', 'qtype_omerocommon/roi-shape-model'],
         prototype.deselectAll = function () {
             this.table_element.bootstrapTable('uncheckAll');
         };
-
 
         /**
          * Build an event handler
@@ -331,7 +337,6 @@ define(['jquery', 'qtype_omerocommon/roi-shape-model'],
             this.table_container_element.addClass("hidden");
         };
 
-
         prototype.showToolbar = function () {
             this.table_toolbar_container_element.removeClass("hidden");
         };
@@ -347,7 +352,7 @@ define(['jquery', 'qtype_omerocommon/roi-shape-model'],
             ].join(" ");
         };
 
-        prototype.descriptionFormatter = function (data) {
+        prototype.nameFormatter = function (data) {
             return (data) || " ";
         };
 
