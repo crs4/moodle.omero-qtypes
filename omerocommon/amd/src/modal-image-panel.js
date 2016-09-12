@@ -102,6 +102,7 @@ define(['qtype_omerocommon/image-viewer',
                 me._image_locked_element.change(function () {
                     me._image_locked_element.val($(this).prop('checked') ? 1 : 0);
                     me._image_lock = $(this).prop('checked') ? true : false;
+                    me._image_viewer_controller.setNavigationLock(me._image_lock);
                 });
             }
 
@@ -205,12 +206,16 @@ define(['qtype_omerocommon/image-viewer',
 
             // load and show image and its related ROIs
             viewer_ctrl.open(true, function (data) {
+                // update panel title
                 me._header_title.html(me._initial_title + ": \"" + image_name + "\"");
 
                 // initialize marking tools
                 me._image_viewer_controller.configureMarkingTool({}, 0);
 
+                // update ROI view
                 me.onImageModelRoiLoaded(data);
+
+                // init controls
                 if (!disable_image_properties)
                     me._updateImageProperties();
                 if (!disable_image_lock)
