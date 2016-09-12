@@ -196,7 +196,7 @@ class qtype_omerocommon_renderer_helper
 
         $container = '
             <div class="modal fade" id="' . $modal_image_dialog_panel_id .
-            '" tabindex="-1" role="dialog" aria-labelledby="modalImageDialogLabel">
+            '" style="overflow: hidden;" tabindex="-1" role="dialog" aria-labelledby="modalImageDialogLabel">
               <div id="' . $modal_image_header_id . '" class="modal-dialog" role="document">
                 <div class="modal-content">
                   <div class="modal-header">

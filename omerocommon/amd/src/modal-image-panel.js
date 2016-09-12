@@ -181,6 +181,7 @@ define(['qtype_omerocommon/image-viewer',
             me._header_title.html(me._initial_title);
             me._image_info_container.html("");
             me._locale_description.html("");
+            me._body.css("overflow", "hidden");
 
             // show the modal panel
             $("#" + this._modal_image_selector_id).modal("show");
@@ -234,6 +235,9 @@ define(['qtype_omerocommon/image-viewer',
 
                 if (!disable_image_lock)
                     $("#modalImageDialogPanel-toolbar").removeClass("hidden");
+
+                // restore body overflow
+                me._body.css("overflow", "auto");
             });
         };
 
