@@ -65,6 +65,7 @@ define(['qtype_omerocommon/image-viewer',
             me._language_selector_id = me._modal_image_selector_id + "-language-selector";
             me._description_textarea_id = me._modal_image_selector_id + "-image-description";
             me._locale_description_id = me._modal_image_selector_id + "-image-locale-description-panel";
+            me._locale_description_container_id = me._modal_image_selector_id + "-image-description-panel-container";
 
             // set references to HTML elements
             me._modal_image_panel = $("#" + me._modal_image_selector_id);
@@ -74,6 +75,7 @@ define(['qtype_omerocommon/image-viewer',
             me._body = $("#" + me._modal_image_selector_id + "-body");
             me._footer = $("#" + me._modal_image_selector_id + "-footer");
             me._locale_description = $("#" + me._locale_description_id);
+            me._locale_description_container = $("#" + me._locale_description_container_id);
             me._language_selector = $("#" + me._language_selector_id);
             me._description_textarea = $("#" + me._description_textarea_id);
 
@@ -179,9 +181,11 @@ define(['qtype_omerocommon/image-viewer',
 
             // clear
             me._header_title.html(me._initial_title);
+            me._body.scrollTop(0);
             me._image_info_container.html("");
             me._locale_description.html("");
             me._body.css("overflow", "hidden");
+            me._locale_description_container.hide();
 
             // show the modal panel
             $("#" + this._modal_image_selector_id).modal("show");
@@ -216,6 +220,11 @@ define(['qtype_omerocommon/image-viewer',
                 // update ROI view
                 me.onImageModelRoiLoaded(data);
 
+                // recenter image
+                me._image_viewer_controller.updateViewFromProperties(me._image_properties);
+                // configure image navigation
+                me._image_viewer_controller.setNavigationLock(me._image_lock);
+
                 // init controls
                 if (!disable_image_properties)
                     me._updateImageProperties();
@@ -228,16 +237,13 @@ define(['qtype_omerocommon/image-viewer',
                     me._description_editor.init(current_language, undefined, image_description_locale_map);
                 }
 
-                // recenter image
-                me._image_viewer_controller.updateViewFromProperties(me._image_properties);
-                // configure image navigation
-                me._image_viewer_controller.setNavigationLock(me._image_lock);
-
                 if (!disable_image_lock)
                     $("#modalImageDialogPanel-toolbar").removeClass("hidden");
 
                 // restore body overflow
+                me._body.scrollTop(0);
                 me._body.css("overflow", "auto");
+                me._locale_description_container.show();
             });
         };
 
