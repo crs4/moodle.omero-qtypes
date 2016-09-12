@@ -206,6 +206,10 @@ define(['qtype_omerocommon/image-viewer',
             // load and show image and its related ROIs
             viewer_ctrl.open(true, function (data) {
                 me._header_title.html(me._initial_title + ": \"" + image_name + "\"");
+
+                // initialize marking tools
+                me._image_viewer_controller.configureMarkingTool({}, 0);
+
                 me.onImageModelRoiLoaded(data);
                 if (!disable_image_properties)
                     me._updateImageProperties();
@@ -218,8 +222,6 @@ define(['qtype_omerocommon/image-viewer',
                     me._description_editor.init(current_language, undefined, image_description_locale_map);
                 }
 
-                // initialize marking tools
-                me._image_viewer_controller.configureMarkingTool({}, 0);
                 // recenter image
                 me._image_viewer_controller.updateViewFromProperties(me._image_properties);
                 // configure image navigation
