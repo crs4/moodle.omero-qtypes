@@ -198,6 +198,11 @@ define(['qtype_omerocommon/image-viewer',
                 me._image_model_server);
             me._image_viewer_controller = viewer_ctrl;
 
+            // show image description
+            if (show_locale_description) {
+                me._locale_description.html(image_description_locale_map);
+            }
+
             // load and show image and its related ROIs
             viewer_ctrl.open(true, function (data) {
                 me._header_title.html(me._initial_title + ": \"" + image_name + "\"");
@@ -211,9 +216,6 @@ define(['qtype_omerocommon/image-viewer',
                     me._language_selector.val(current_language);
                     // init editor
                     me._description_editor.init(current_language, undefined, image_description_locale_map);
-                }
-                if (show_locale_description) {
-                    me._locale_description.html(image_description_locale_map);
                 }
 
                 // initialize marking tools
