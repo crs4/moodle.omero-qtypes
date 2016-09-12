@@ -59,11 +59,20 @@ define(['qtype_omerocommon/moodle-forms-utils'],
 
 
         var prototype = M.qtypes.omerocommon.MultilanguageElement.prototype;
-        prototype.init = function (current_language, input_data_element_name) {
+        prototype.init = function (current_language, input_data_element_name, locale_text_map) {
 
             // initializes the map of localized strings
             this._locale_text_map = {};
-            console.log("Multilanguage data element: ", input_data_element_name, "language:", current_language);
+            if (typeof locale_text_map !== 'undefined') {
+                for (var k in locale_text_map) {
+                    this._locale_text_map[k] = locale_text_map[k];
+                }
+            }
+            console.log(
+                "Multilanguage data element: ", input_data_element_name,
+                "Current language:", current_language,
+                "Description locale map:", locale_text_map
+            );
 
             // clear textarea
             this._editor.setText("");

@@ -48,6 +48,7 @@ class qtype_omerocommon_renderer_helper
 
     public static function modal_viewer($hide_save_button = false,
                                         $hide_toolbar = false,
+                                        $show_locale_description_panel = false,
                                         $element_id = self::MODAL_VIEWER_ELEMENT_ID)
     {
         $modal_image_dialog_panel_id = $element_id;
@@ -63,6 +64,14 @@ class qtype_omerocommon_renderer_helper
         $modal_image_roi_inspector_toolbar_id = $modal_image_dialog_panel_id . "-roi-shape-inspector-table-toolbar";
         $modal_image_roi_inspector_table_id = $modal_image_dialog_panel_id . "-roi-shape-inspector-table";
 
+        $modal_image_language_selector = $modal_image_dialog_panel_id . "-language-selector";
+        $modal_image_description = $modal_image_dialog_panel_id . "-image-description";
+        $modal_image_locale_description_panel = $modal_image_dialog_panel_id . "-image-locale-description-panel";
+        $modal_image_description_panel = $modal_image_dialog_panel_id . "-image-description-panel";
+        $modal_image_description_panel_container = $modal_image_dialog_panel_id . "-image-description-panel-container";
+        $modal_image_roitable_panel = $modal_image_dialog_panel_id . "-roitable-panel";
+        $modal_image_roitable_panel_container = $modal_image_dialog_panel_id . "-roitable-panel-container";
+
         $modal_image_toolbar = $modal_image_dialog_panel_id . "-toolbar";
         $modal_image_update_properties = $modal_image_dialog_panel_id . "-update-image-properties";
         $modal_image_properties = $modal_image_dialog_panel_id . "-image-properties";
@@ -72,7 +81,6 @@ class qtype_omerocommon_renderer_helper
         $modal_image_viewer_html = '<div id="' . $modal_image_graphics_container_id . '" class="image-viewer-container" style="position: relative;" >
             <div id="' . $modal_image_viewer_container . '" style="position: absolute; width: 100%; height: 500px; margin: auto;"></div>
             <canvas id="' . $modal_image_annotation_canvas . '" style="position: absolute; width: 100%; height: 500px; margin: auto;"></canvas>
-            <div id="' . $modal_image_loading_dialog . '" class="image-viewer-loading-dialog"></div>
         </div>';
 
         if (!$hide_toolbar) {
@@ -99,34 +107,84 @@ class qtype_omerocommon_renderer_helper
         }
 
 
-        $modal_image_viewer_html .= '<div id="' . $modal_image_roi_inspector_container_id . '">
+        $modal_image_viewer_html .= '<div class="modal-image-details-viewer">';
+
+        if ($show_locale_description_panel) {
+            $modal_image_viewer_html .= '
+                <div id="' . $modal_image_locale_description_panel . '"></div>';
+        }
+
+        $language_option_list = "";
+        foreach (get_string_manager()->get_list_of_translations() as $k => $v) {
+            $language_option_list .= "<option value=\"$k\">$v</option>";
+        }
+
+        if (!$hide_toolbar) {
+            $modal_image_viewer_html .= '
+                <!-- MODAL IMAGE PANEL -->
+                <div id="' . $modal_image_roi_inspector_container_id . '">
                 <div ><label for="' . $modal_image_roi_inspector_table_id . '"></label></div>
-                <div >
-
+                <div>
+                
                 <!-- TOOLBAR -->
-                <div id="' . $modal_image_roi_inspector_toolbar_id . '" class="hidden">
-
-                </div>
+                <div id="' . $modal_image_roi_inspector_toolbar_id . '" class="hidden"></div>
+                                
                 <!-- ROI TABLE -->
-                <table id="' . $modal_image_roi_inspector_table_id . '"
-                       data-toolbar="#toolbar"
-                       data-search="true"
-                       data-height="400"
-                       data-show-refresh="true"
-                       data-show-toggle="true"
-                       data-show-columns="true"
-                       data-show-export="true"
-                       data-detail-view="false"
-                       data-minimum-count-columns="2"
-                       data-show-pagination-switch="false"
-                       data-pagination="false"
-                       data-id-field="id"
-                       data-page-list="[10, 25, 50, 100, ALL]"
-                       data-show-footer="false"
-                       data-side-pagination="client">
-                </table>
+                <div id="' . $modal_image_roitable_panel_container . '" class="panel-group">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                        <h4 class="panel-title">' . get_string('roi_shape_inspector', 'qtype_omerocommon') . '</h4>
+                        </div>
+                        <div id="' . $modal_image_roitable_panel . '" class="panel">
+                            <div class="panel-body">
+                                <table id="' . $modal_image_roi_inspector_table_id . '"
+                                       data-toolbar="#toolbar"
+                                       data-search="true"
+                                       data-height="400"
+                                       data-show-refresh="true"
+                                       data-show-toggle="true"
+                                       data-show-columns="true"
+                                       data-show-export="true"
+                                       data-detail-view="false"
+                                       data-minimum-count-columns="2"
+                                       data-show-pagination-switch="false"
+                                       data-pagination="false"
+                                       data-id-field="id"
+                                       data-page-list="[10, 25, 50, 100, ALL]"
+                                       data-show-footer="false"
+                                       data-side-pagination="client">
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                                
+                 <!-- IMAGE DESCRIPTION -->
+                <div id="' . $modal_image_description_panel_container . '" class="panel-group">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                        <h4 class="panel-title">' . get_string('feedbackimagedescription', 'qtype_omerocommon') . '</h4>
+                        </div>
+                        <div id="' . $modal_image_description_panel . '" class="panel">
+                            <div class="panel-body">
+                                <div class="form-group">
+                                  <label for="' . $modal_image_language_selector . '">' . get_string('language', 'qtype_omerocommon') . ':</label>
+                                  <select class="form-control" id="' . $modal_image_language_selector . '">' . $language_option_list . '</select>
+                                </div>
+                                <div>
+                                    <textarea id="id_' . $modal_image_description . '" rows="4"></textarea>
+                                    <input type="hidden" id="description-feedback-image-locale-mep" value="{}"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
               </div>
             </div>';
+        }
+
+        $modal_image_viewer_html .= '</div>';
 
         $save_button = !$hide_save_button
             ? '<button type="button" class="save btn btn-default" data-dismiss="modal">' .
@@ -138,7 +196,7 @@ class qtype_omerocommon_renderer_helper
 
         $container = '
             <div class="modal fade" id="' . $modal_image_dialog_panel_id .
-            '" tabindex="-1" role="dialog" aria-labelledby="modalImageDialogLabel">
+            '" style="overflow: hidden;" tabindex="-1" role="dialog" aria-labelledby="modalImageDialogLabel">
               <div id="' . $modal_image_header_id . '" class="modal-dialog" role="document">
                 <div class="modal-content">
                   <div class="modal-header">
@@ -149,7 +207,8 @@ class qtype_omerocommon_renderer_helper
             '</h4>
                   </div>
                   <div id="' . $modal_image_body_id . '" class="modal-body text-left">
-                    <div class="modal-frame-text">' . $modal_image_viewer_html . '</div>
+                    <div id="' . $modal_image_loading_dialog . '" style="position: absolute; width: 100%; height: 100%; z-index: 1;" class="image-viewer-loading-dialog"></div>
+                    <div class="modal-frame-text" style="z-index: 0;">' . $modal_image_viewer_html . '</div>
                   </div>
                   <div id="' . $modal_image_footer_id . '" class="modal-footer text-center"> ' . $save_button . $close_button . '</div>
                 </div>

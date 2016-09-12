@@ -339,15 +339,17 @@ abstract class qtype_omerointeractive_base_renderer extends qtype_multichoice_re
         $feedbackimages_html = '<div style="display: block; float: right;">[ '
             . get_string("see", "qtype_omerocommon") . " ";
 
+        $current_language = current_language();
         foreach ($ans->feedbackimages as $image) {
             $feedbackimages_html .= '<span class="' . $feedback_image_class . '" imageid="' . $image->id . '"'
-                . ' imagedescription="' . $image->description . '"'
+                . ' imagename="' . $image->name . '"'
+                . ' imagedescription="' . $image->description_locale_map->$current_language . '"'
                 . ' imagelock="' . $image->lock . '"'
                 . ' imageproperties="' . htmlspecialchars(json_encode($image->properties)) . '"'
                 . ' visiblerois="' . implode(",", $image->visiblerois) . '"'
                 . ' focusablerois="' . implode(",", $image->focusablerois) . '"' . '>' .
                 '<i class="glyphicon glyphicon-book" style="margin-left: 2px; margin-right: 5px;"></i>'
-                . '"' . $image->description . '"</span>';
+                . '"' . $image->name . '"</span>';
         }
         $feedbackimages_html .= ' ]</div>';
 
@@ -449,7 +451,7 @@ abstract class qtype_omerointeractive_base_renderer extends qtype_multichoice_re
         $result = '';
 
         // add the ModalImagePanel template
-        $result .= qtype_omerocommon_renderer_helper::modal_viewer(true, true, $modal_image_panel_id);
+        $result .= qtype_omerocommon_renderer_helper::modal_viewer(true, true, true, $modal_image_panel_id);
 
         // main question_answer_container
         $result .= html_writer::start_tag('div', array('id' => $question_answer_container, 'class' => 'ablock'));

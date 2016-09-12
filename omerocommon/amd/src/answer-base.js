@@ -304,7 +304,7 @@ define([
             }
 
             // serialize answer_feedback_images
-            this._data.feedbackimages = JSON.stringify(this._getFeedbackImages());
+            this._data.feedbackimages = $("<div>").text(JSON.stringify(this._getFeedbackImages())).html();
 
             // set
             for (var i in this._answer_properties) {
@@ -463,7 +463,8 @@ define([
 
         prototype._build_feedback_image_selector = function () {
             var me = this;
-            var selector_ids = me._add_image_selector("add_images", me._answer_number, "Feedback Images");
+            var selector_ids = me._add_image_selector("add_images", me._answer_number,
+                M.util.get_string("feedbackimages", "qtype_omerocommon"));
             me._answer_feedback_filepicker = new M.omero_filepicker({
                 buttonid: selector_ids.button_id,
                 buttonname: selector_ids.button_name,
@@ -489,7 +490,8 @@ define([
             me._modal_image_panel_ctrl.getImageModelManager().getImageDetails(function (image_details) {
                 var image = {
                     id: image_info.image_id,
-                    description: image_details.name,
+                    name: image_details.name,
+                    description_locale_map: {},
                     details: image_details,
                     visiblerois: [],
                     focusablerois: [],
@@ -508,10 +510,13 @@ define([
             if (image) {
                 console.log("Selected image to edit", image);
                 this._modal_image_panel_ctrl.show(this,
-                    image.id, image.description,
+                    image.id, image.name,
+                    image.description_locale_map,
                     image.properties, image.lock,
-                    image.visiblerois, image.focusablerois
+                    image.visiblerois, image.focusablerois,
+                    "en"
                 );
+                this._modal_image_panel_ctrl.center();
             }
         };
 
@@ -522,9 +527,11 @@ define([
             }
         };
 
-        prototype.onSave = function (image_id, image_properties, image_lock, visible_rois, focusable_rois) {
+        prototype.onSave = function (image_id, image_description_locale_map,
+                                     image_properties, image_lock, visible_rois, focusable_rois) {
             var image = this._getFeedbackImage(image_id);
             if (image) {
+                image.description_locale_map = image_description_locale_map;
                 image.properties = image_properties;
                 image.lock = image_lock;
                 image.visiblerois = visible_rois;

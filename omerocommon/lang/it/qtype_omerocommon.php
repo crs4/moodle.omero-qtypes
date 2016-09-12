@@ -52,6 +52,11 @@ $string['answerhowmany'] = 'Una sola o più risposte corrette?';
 $string['answersingleno'] = 'Consenti risposte corrette multiple';
 $string['answersingleyes'] = 'Una sola risposta corretta';
 
+# feedback images
+$string['feedbackimages'] = 'Immagini di Feedback';
+$string['feedbackimagename'] = 'Nome Immagine';
+$string['feedbackimagedescription'] = 'Descrizione immagine';
+
 # feedback
 $string['general_and_combined_feedback'] = 'Feedback generale e combinato';
 $string['notice_your_answer'] = 'Presta attenzione alla tua risposta: ';
