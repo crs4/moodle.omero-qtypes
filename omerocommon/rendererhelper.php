@@ -81,7 +81,6 @@ class qtype_omerocommon_renderer_helper
         $modal_image_viewer_html = '<div id="' . $modal_image_graphics_container_id . '" class="image-viewer-container" style="position: relative;" >
             <div id="' . $modal_image_viewer_container . '" style="position: absolute; width: 100%; height: 500px; margin: auto;"></div>
             <canvas id="' . $modal_image_annotation_canvas . '" style="position: absolute; width: 100%; height: 500px; margin: auto;"></canvas>
-            <div id="' . $modal_image_loading_dialog . '" class="image-viewer-loading-dialog"></div>
         </div>';
 
         if (!$hide_toolbar) {
@@ -208,7 +207,8 @@ class qtype_omerocommon_renderer_helper
             '</h4>
                   </div>
                   <div id="' . $modal_image_body_id . '" class="modal-body text-left">
-                    <div class="modal-frame-text">' . $modal_image_viewer_html . '</div>
+                    <div id="' . $modal_image_loading_dialog . '" style="position: absolute; width: 100%; height: 100%; z-index: 1;" class="image-viewer-loading-dialog"></div>
+                    <div class="modal-frame-text" style="z-index: 0;">' . $modal_image_viewer_html . '</div>
                   </div>
                   <div id="' . $modal_image_footer_id . '" class="modal-footer text-center"> ' . $save_button . $close_button . '</div>
                 </div>
