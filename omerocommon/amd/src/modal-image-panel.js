@@ -179,6 +179,7 @@ define(['qtype_omerocommon/image-viewer',
             // clear
             me._header_title.html(me._initial_title);
             me._image_info_container.html("");
+            me._locale_description.html("");
 
             // show the modal panel
             $("#" + this._modal_image_selector_id).modal("show");
