@@ -79,6 +79,9 @@ define(['jquery', 'qtype_omerocommon/roi-shape-model'],
             me._current_language = me._language_selector.val();
             me._language_selector.on("change", function (event) {
                 me._current_language = $(event.target).val();
+                $.each($(".detail-icon .glyphicon-minus"), function (index, value) {
+                    $(value).parent().trigger("click");
+                });
             });
         };
 
