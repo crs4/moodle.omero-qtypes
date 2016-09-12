@@ -304,7 +304,7 @@ define([
             }
 
             // serialize answer_feedback_images
-            this._data.feedbackimages = JSON.stringify(this._getFeedbackImages());
+            this._data.feedbackimages = $("<div>").text(JSON.stringify(this._getFeedbackImages())).html();
 
             // set
             for (var i in this._answer_properties) {
