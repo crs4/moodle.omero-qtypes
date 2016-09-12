@@ -184,7 +184,7 @@ define([
                 );
             });
 
-            me._modal_image_panel.setHeight(700);
+            me._modal_image_panel.setHeight(590);
             me._modal_image_panel.center(true);
 
             me._invalidator_panel = $("#" + config.question_answer_container + "-invalidator-panel");
