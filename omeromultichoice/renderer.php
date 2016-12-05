@@ -344,7 +344,8 @@ abstract class qtype_omeromultichoice_base_renderer extends qtype_multichoice_re
                 ,
                 array('for' => $inputattributes['id']));
 
-            $radiobuttons[] = $hidden . html_writer::empty_tag('input', $inputattributes) . $radiobutton_label;
+            $radiobuttons[] = $hidden . html_writer::empty_tag('input', $inputattributes) .
+                qtype_omeromultichoice_base_renderer::number_answer($value, $question->answernumbering) . $radiobutton_label;
         }
 
 
@@ -524,7 +525,7 @@ abstract class qtype_omeromultichoice_base_renderer extends qtype_multichoice_re
             default:
                 return 'ERR';
         }
-        return "($number)";
+        return "<span style='font-weight: bold;'>($number)</span> ";
     }
 }
 
