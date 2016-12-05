@@ -132,6 +132,17 @@ class qtype_omeromultichoice_multi_renderer extends qtype_multichoice_multi_rend
         return $this->get_input_name($qa, $value);
     }
 
+    public function num_parts_correct(question_attempt $qa)
+    {
+        $a = new stdClass();
+        list($a->num, $a->outof) = $qa->get_question()->get_num_parts_right($qa->get_last_qt_data());
+        if (is_null($a->outof)) {
+            return '';
+        } else {
+            return get_string('correctanswersno', 'qtype_omeromultichoice') .
+                '<span class="font-weight: bold">' . $a->num . '</span>';
+        }
+    }
 
     public function correct_response(question_attempt $qa)
     {
@@ -149,7 +160,7 @@ class qtype_omeromultichoice_multi_renderer extends qtype_multichoice_multi_rend
             }
 
             if (!empty($right)) {
-                $result = get_string('correctansweris', 'qtype_multichoice', implode(' + ', $right));
+                $result = get_string('correctandcompleteansweris', 'qtype_omeromultichoice') . implode(' + ', $right);
             }
         }
         return $result;
