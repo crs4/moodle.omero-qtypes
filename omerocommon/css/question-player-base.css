@@ -50,6 +50,10 @@ div[id*=marker_removers_container] {
     display: block;
 }
 
+div.numpartscorrect{
+    margin: 10px 15px 0;
+}
+
 span.yourmarkers-text {
     font-weight: bold;
 }
