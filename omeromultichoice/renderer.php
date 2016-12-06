@@ -69,6 +69,16 @@ class qtype_omeromultichoice_single_renderer extends qtype_multichoice_single_re
         return $qa->get_qt_field_name('answer' . $value);
     }
 
+    protected function general_feedback(question_attempt $qa)
+    {
+        return trim(html_entity_decode(parent::general_feedback($qa)), " \t\n\r\0\x0B\xC2\xA0");
+    }
+
+    public function specific_feedback(question_attempt $qa)
+    {
+        return trim(html_entity_decode(parent::specific_feedback($qa)), " \t\n\r\0\x0B\xC2\xA0");
+    }
+
     public function correct_response(question_attempt $qa)
     {
         $result = "";
@@ -111,7 +121,6 @@ class qtype_omeromultichoice_multi_renderer extends qtype_multichoice_multi_rend
         return qtype_omeromultichoice_base_renderer::impl_formulation_and_controls($this, $qa, $options);
     }
 
-
     public function get_input_type()
     {
         return 'checkbox';
@@ -143,6 +152,17 @@ class qtype_omeromultichoice_multi_renderer extends qtype_multichoice_multi_rend
                 '<span class="font-weight: bold">' . $a->num . '</span>';
         }
     }
+
+    protected function general_feedback(question_attempt $qa)
+    {
+        return trim(html_entity_decode(parent::general_feedback($qa)), " \t\n\r\0\x0B\xC2\xA0");
+    }
+
+    public function specific_feedback(question_attempt $qa)
+    {
+        return trim(html_entity_decode(parent::specific_feedback($qa)), " \t\n\r\0\x0B\xC2\xA0");
+    }
+
 
     public function correct_response(question_attempt $qa)
     {

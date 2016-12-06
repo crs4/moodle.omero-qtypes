@@ -88,6 +88,17 @@ class qtype_omerointeractive_single_renderer extends qtype_multichoice_single_re
         return $qa->get_qt_field_name('answer' . $value);
     }
 
+
+    protected function general_feedback(question_attempt $qa)
+    {
+        return trim(html_entity_decode(parent::general_feedback($qa)), " \t\n\r\0\x0B\xC2\xA0");
+    }
+
+    public function specific_feedback(question_attempt $qa)
+    {
+        return trim(html_entity_decode(parent::specific_feedback($qa)), " \t\n\r\0\x0B\xC2\xA0");
+    }
+
     public function correct_response(question_attempt $qa)
     {
         $right = array();
@@ -172,6 +183,15 @@ class qtype_omerointeractive_multi_renderer extends qtype_multichoice_multi_rend
         return $this->get_input_name($qa, $value);
     }
 
+    protected function general_feedback(question_attempt $qa)
+    {
+        return trim(html_entity_decode(parent::general_feedback($qa)), " \t\n\r\0\x0B\xC2\xA0");
+    }
+
+    public function specific_feedback(question_attempt $qa)
+    {
+        return trim(html_entity_decode(parent::specific_feedback($qa)), " \t\n\r\0\x0B\xC2\xA0");
+    }
 
     public function correct_response(question_attempt $qa)
     {
