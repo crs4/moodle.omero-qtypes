@@ -289,23 +289,26 @@ abstract class qtype_omeromultichoice_base_renderer extends qtype_multichoice_re
                 array_push($feedbackimages, $image_id);
             }
 
-            $feedbackimages_html = '<div style="display: block; float: right;">[ '
-                . get_string("see", "qtype_omerocommon") . " ";
+            $feedbackimages_html = "";
+            if (count($ans->feedbackimages) > 0) {
+                $feedbackimages_html = '<div style="display: block; float: right;">[ '
+                    . get_string("see", "qtype_omerocommon") . " ";
 
-            $current_language = current_language();
-            foreach ($ans->feedbackimages as $image) {
-                $feedbackimages_html .= '<span class="' . $feedback_image_class . '" imageid="' . $image->id . '"'
-                    . ' currentlanguage="' . $current_language . '"'
-                    . ' imagename="' . $image->name . '"'
-                    . ' imagedescription="' . htmlspecialchars($image->description_locale_map->$current_language) . '"'
-                    . ' imagelock="' . ($image->lock ? "true" : "false") . '"'
-                    . ' imageproperties="' . htmlspecialchars(json_encode($image->properties)) . '"'
-                    . ' visiblerois="' . implode(",", $image->visiblerois) . '"'
-                    . ' focusablerois="' . implode(",", $image->focusablerois) . '"' . '>' .
-                    '<i class="glyphicon glyphicon-book" style="margin-left: 2px; margin-right: 5px;"></i>'
-                    . '"' . $image->name . '"</span>';
+                $current_language = current_language();
+                foreach ($ans->feedbackimages as $image) {
+                    $feedbackimages_html .= '<span class="' . $feedback_image_class . '" imageid="' . $image->id . '"'
+                        . ' currentlanguage="' . $current_language . '"'
+                        . ' imagename="' . $image->name . '"'
+                        . ' imagedescription="' . htmlspecialchars($image->description_locale_map->$current_language) . '"'
+                        . ' imagelock="' . ($image->lock ? "true" : "false") . '"'
+                        . ' imageproperties="' . htmlspecialchars(json_encode($image->properties)) . '"'
+                        . ' visiblerois="' . implode(",", $image->visiblerois) . '"'
+                        . ' focusablerois="' . implode(",", $image->focusablerois) . '"' . '>' .
+                        '<i class="glyphicon glyphicon-book" style="margin-left: 2px; margin-right: 5px;"></i>'
+                        . '"' . $image->name . '"</span>';
+                }
+                $feedbackimages_html .= ' ]</div>';
             }
-            $feedbackimages_html .= ' ]</div>';
 
             // Param $options->suppresschoicefeedback is a hack specific to the
             // oumultiresponse question type. It would be good to refactor to
