@@ -50,7 +50,7 @@ div[id*=marker_removers_container] {
     display: block;
 }
 
-div.numpartscorrect{
+div.generalfeedback, div.specificfeedback, div.numpartscorrect, div.extra-feedback {
     margin: 10px 15px 0;
 }
 
