@@ -69,6 +69,16 @@ class qtype_omeromultichoice_single_renderer extends qtype_multichoice_single_re
         return $qa->get_qt_field_name('answer' . $value);
     }
 
+    protected function general_feedback(question_attempt $qa)
+    {
+        return trim(html_entity_decode(parent::general_feedback($qa)), " \t\n\r\0\x0B\xC2\xA0");
+    }
+
+    public function specific_feedback(question_attempt $qa)
+    {
+        return trim(html_entity_decode(parent::specific_feedback($qa)), " \t\n\r\0\x0B\xC2\xA0");
+    }
+
     public function correct_response(question_attempt $qa)
     {
         $result = "";
@@ -111,7 +121,6 @@ class qtype_omeromultichoice_multi_renderer extends qtype_multichoice_multi_rend
         return qtype_omeromultichoice_base_renderer::impl_formulation_and_controls($this, $qa, $options);
     }
 
-
     public function get_input_type()
     {
         return 'checkbox';
@@ -132,6 +141,28 @@ class qtype_omeromultichoice_multi_renderer extends qtype_multichoice_multi_rend
         return $this->get_input_name($qa, $value);
     }
 
+    public function num_parts_correct(question_attempt $qa)
+    {
+        $a = new stdClass();
+        list($a->num, $a->outof) = $qa->get_question()->get_num_parts_right($qa->get_last_qt_data());
+        if (is_null($a->outof)) {
+            return '';
+        } else {
+            return get_string('correctanswersno', 'qtype_omeromultichoice') .
+                '<span class="font-weight: bold">' . $a->num . '</span>';
+        }
+    }
+
+    protected function general_feedback(question_attempt $qa)
+    {
+        return trim(html_entity_decode(parent::general_feedback($qa)), " \t\n\r\0\x0B\xC2\xA0");
+    }
+
+    public function specific_feedback(question_attempt $qa)
+    {
+        return trim(html_entity_decode(parent::specific_feedback($qa)), " \t\n\r\0\x0B\xC2\xA0");
+    }
+
 
     public function correct_response(question_attempt $qa)
     {
@@ -149,7 +180,7 @@ class qtype_omeromultichoice_multi_renderer extends qtype_multichoice_multi_rend
             }
 
             if (!empty($right)) {
-                $result = get_string('correctansweris', 'qtype_multichoice', implode(' + ', $right));
+                $result = get_string('correctandcompleteansweris', 'qtype_omeromultichoice') . implode(' + ', $right);
             }
         }
         return $result;
@@ -278,23 +309,26 @@ abstract class qtype_omeromultichoice_base_renderer extends qtype_multichoice_re
                 array_push($feedbackimages, $image_id);
             }
 
-            $feedbackimages_html = '<div style="display: block; float: right;">[ '
-                . get_string("see", "qtype_omerocommon") . " ";
+            $feedbackimages_html = "";
+            if (count($ans->feedbackimages) > 0) {
+                $feedbackimages_html = '<div style="display: block; float: right;">[ '
+                    . get_string("see", "qtype_omerocommon") . " ";
 
-            $current_language = current_language();
-            foreach ($ans->feedbackimages as $image) {
-                $feedbackimages_html .= '<span class="' . $feedback_image_class . '" imageid="' . $image->id . '"'
-                    . ' currentlanguage="' . $current_language . '"'
-                    . ' imagename="' . $image->name . '"'
-                    . ' imagedescription="' . htmlspecialchars($image->description_locale_map->$current_language) . '"'
-                    . ' imagelock="' . ($image->lock ? "true" : "false") . '"'
-                    . ' imageproperties="' . htmlspecialchars(json_encode($image->properties)) . '"'
-                    . ' visiblerois="' . implode(",", $image->visiblerois) . '"'
-                    . ' focusablerois="' . implode(",", $image->focusablerois) . '"' . '>' .
-                    '<i class="glyphicon glyphicon-book" style="margin-left: 2px; margin-right: 5px;"></i>'
-                    . '"' . $image->name . '"</span>';
+                $current_language = current_language();
+                foreach ($ans->feedbackimages as $image) {
+                    $feedbackimages_html .= '<span class="' . $feedback_image_class . '" imageid="' . $image->id . '"'
+                        . ' currentlanguage="' . $current_language . '"'
+                        . ' imagename="' . $image->name . '"'
+                        . ' imagedescription="' . htmlspecialchars($image->description_locale_map->$current_language) . '"'
+                        . ' imagelock="' . ($image->lock ? "true" : "false") . '"'
+                        . ' imageproperties="' . htmlspecialchars(json_encode($image->properties)) . '"'
+                        . ' visiblerois="' . implode(",", $image->visiblerois) . '"'
+                        . ' focusablerois="' . implode(",", $image->focusablerois) . '"' . '>' .
+                        '<i class="glyphicon glyphicon-book" style="margin-left: 2px; margin-right: 5px;"></i>'
+                        . '"' . $image->name . '"</span>';
+                }
+                $feedbackimages_html .= ' ]</div>';
             }
-            $feedbackimages_html .= ' ]</div>';
 
             // Param $options->suppresschoicefeedback is a hack specific to the
             // oumultiresponse question type. It would be good to refactor to
@@ -344,7 +378,8 @@ abstract class qtype_omeromultichoice_base_renderer extends qtype_multichoice_re
                 ,
                 array('for' => $inputattributes['id']));
 
-            $radiobuttons[] = $hidden . html_writer::empty_tag('input', $inputattributes) . $radiobutton_label;
+            $radiobuttons[] = $hidden . html_writer::empty_tag('input', $inputattributes) .
+                qtype_omeromultichoice_base_renderer::number_answer($value, $question->answernumbering) . $radiobutton_label;
         }
 
 
@@ -524,7 +559,7 @@ abstract class qtype_omeromultichoice_base_renderer extends qtype_multichoice_re
             default:
                 return 'ERR';
         }
-        return "($number)";
+        return "<span style='font-weight: bold;'>($number)</span> ";
     }
 }
 

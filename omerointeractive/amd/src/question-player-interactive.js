@@ -117,7 +117,7 @@ define([
                         console.log("Shape id: " + k);
                         var shape = me._image_viewer_controller.getShape(config.shape_groups[group].shapes[k]);
                         console.log("Checking against ", shape, marked_shapes, shape.id in marked_shapes);
-                        if (!(shape.id in marked_shapes) && shape.contains(center.x, center.y)) {
+                        if (!(shape.id in marked_shapes) && shape.containsPoint(center.x, center.y)) {
                             console.log("Contained in shape " + shape.id);
                             matched_shape = {
                                 shape_id: shape.id,
