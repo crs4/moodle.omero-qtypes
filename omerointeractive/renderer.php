@@ -88,6 +88,17 @@ class qtype_omerointeractive_single_renderer extends qtype_multichoice_single_re
         return $qa->get_qt_field_name('answer' . $value);
     }
 
+
+    protected function general_feedback(question_attempt $qa)
+    {
+        return trim(html_entity_decode(parent::general_feedback($qa)), " \t\n\r\0\x0B\xC2\xA0");
+    }
+
+    public function specific_feedback(question_attempt $qa)
+    {
+        return trim(html_entity_decode(parent::specific_feedback($qa)), " \t\n\r\0\x0B\xC2\xA0");
+    }
+
     public function correct_response(question_attempt $qa)
     {
         $right = array();
@@ -172,6 +183,15 @@ class qtype_omerointeractive_multi_renderer extends qtype_multichoice_multi_rend
         return $this->get_input_name($qa, $value);
     }
 
+    protected function general_feedback(question_attempt $qa)
+    {
+        return trim(html_entity_decode(parent::general_feedback($qa)), " \t\n\r\0\x0B\xC2\xA0");
+    }
+
+    public function specific_feedback(question_attempt $qa)
+    {
+        return trim(html_entity_decode(parent::specific_feedback($qa)), " \t\n\r\0\x0B\xC2\xA0");
+    }
 
     public function correct_response(question_attempt $qa)
     {
@@ -336,22 +356,26 @@ abstract class qtype_omerointeractive_base_renderer extends qtype_multichoice_re
         foreach ($ans->feedbackimages as $image_id => $image) {
             array_push($feedbackimages, $image_id);
         }
-        $feedbackimages_html = '<div style="display: block; float: right;">[ '
-            . get_string("see", "qtype_omerocommon") . " ";
 
-        $current_language = current_language();
-        foreach ($ans->feedbackimages as $image) {
-            $feedbackimages_html .= '<span class="' . $feedback_image_class . '" imageid="' . $image->id . '"'
-                . ' imagename="' . $image->name . '"'
-                . ' imagedescription="' . $image->description_locale_map->$current_language . '"'
-                . ' imagelock="' . $image->lock . '"'
-                . ' imageproperties="' . htmlspecialchars(json_encode($image->properties)) . '"'
-                . ' visiblerois="' . implode(",", $image->visiblerois) . '"'
-                . ' focusablerois="' . implode(",", $image->focusablerois) . '"' . '>' .
-                '<i class="glyphicon glyphicon-book" style="margin-left: 2px; margin-right: 5px;"></i>'
-                . '"' . $image->name . '"</span>';
+        $feedbackimages_html = "";
+        if (count($ans->feedbackimages) > 0) {
+            $feedbackimages_html = '<div style="display: block; float: right;">[ '
+                . get_string("see", "qtype_omerocommon") . " ";
+
+            $current_language = current_language();
+            foreach ($ans->feedbackimages as $image) {
+                $feedbackimages_html .= '<span class="' . $feedback_image_class . '" imageid="' . $image->id . '"'
+                    . ' imagename="' . $image->name . '"'
+                    . ' imagedescription="' . $image->description_locale_map->$current_language . '"'
+                    . ' imagelock="' . $image->lock . '"'
+                    . ' imageproperties="' . htmlspecialchars(json_encode($image->properties)) . '"'
+                    . ' visiblerois="' . implode(",", $image->visiblerois) . '"'
+                    . ' focusablerois="' . implode(",", $image->focusablerois) . '"' . '>' .
+                    '<i class="glyphicon glyphicon-book" style="margin-left: 2px; margin-right: 5px;"></i>'
+                    . '"' . $image->name . '"</span>';
+            }
+            $feedbackimages_html .= ' ]</div>';
         }
-        $feedbackimages_html .= ' ]</div>';
 
         $feedbackimg = array();
         $classes = array();

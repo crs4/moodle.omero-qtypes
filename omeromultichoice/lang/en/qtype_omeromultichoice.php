@@ -41,5 +41,7 @@ $string['add_answers'] = 'Add answers';
 $string['answer_text'] = 'Text';
 
 # feedback
+$string['correctanswersno'] = "Number of correct answers: ";
 $string['correctansweris'] = 'The only correct answer is: ';
+$string['correctandcompleteansweris'] = 'The correct and complete answer is: ';
 $string['correctanswerare'] = 'The correct answers are only: ';

@@ -242,37 +242,6 @@ define([
 
                 // hide loading dialog
                 me._waiting_dialog.hide();
-
-                // handle resize event
-                me._viewer_controller.viewer.addHandler("resize",
-                    function () {
-
-                        // retrieve the list of shapes to display
-                        var marker_ids = me.getMarkerIds();
-                        var shapes = me._annotations_controller.getShapesJSON().filter(
-                            function (value) {
-                                return (marker_ids && marker_ids.indexOf(value.shape_id) !== -1)
-                                    || (me._visible_roi_shape_ids.indexOf(String(value.shape_id)) !== -1);
-                            }
-                        );
-
-                        // clean and rebuild canvas
-                        me._annotations_controller.clear();
-                        me._annotations_controller.canvas = undefined;
-                        me._annotations_controller.buildAnnotationsCanvas(me._viewer_controller);
-
-                        // update the center
-                        var img_zoom = me._viewer_controller.getImageZoom();
-                        me._annotations_controller.setZoom(img_zoom);
-                        var center = me._viewer_controller.getCenter();
-                        me._annotations_controller.setCenter(center.x, center.y);
-
-                        // redraw shapes
-                        me._annotations_controller.drawShapesFromJSON(shapes);
-                        if (marker_ids.length > 0)
-                            me._annotations_controller.shapesToMarkers(marker_ids);
-                    }
-                );
             });
         };
 
