@@ -192,6 +192,17 @@ define(['jquery'], function ($) {
         };
 
 
+        /**
+         * Load info of ROIs related to the current image
+         *
+         * @param image_id
+         * @param success_callback
+         * @param error_callback
+         * @private
+         */
+        prototype.getImageMetadata = function (success_callback, error_callback, image_id) {
+            this._makeRequest("meta", image_id, success_callback, error_callback, {}, "imageMetadataLoaded");
+        };
 
         /**
          * Load info of ROIs related to the current image
