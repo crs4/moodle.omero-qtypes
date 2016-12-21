@@ -114,65 +114,45 @@ define(['jquery'], function ($) {
          */
         prototype.loadRoisInfo = function (success_callback, error_callback, image_id) {
 
+        prototype._makeRequest = function (request, image_id, success_callback, error_callback, extra_params, event_name) {
             var me = this;
 
+            var data = $.extend({
+                format: "json",
+                m: request,
+                id: image_id || me._image_id
+            }, extra_params);
+
             $.ajax({
-                //url: this._image_server + "/webgateway/get_rois_json/" + this._image_id,
-                //url: this._image_server + "/ome_seadragon/get/image/" + this._image_id,
+                // request URL
                 url: this._image_server,
 
-                //// The name of the callback parameter, as specified by the YQL service
-                //jsonp: "callback",
-
-                // Tell jQuery we're expecting JSONP
+                // result format
                 dataType: "json",
 
                 // Request parameters
-                data: {
-                    //q: "", //FIXME: not required
-                    //format: "json",
-                    m: "img_details",
-                    id: image_id || this._image_id,
-                    rois: true
-                },
+                data: data,
 
                 // Set callback methods
                 success: function (data) {
 
-                    // post process data:
-                    // adapt the model removing OMERO complexity
-                    var result = [];
-                    $.each(data.rois, function (index) {
-                        var obj = $(this)[0];
-                        result[index] = obj.shapes[0];
-                    });
-
                     if (success_callback) {
-                        success_callback(data.rois);
+                        success_callback(data);
                     }
 
-                    // Notify that ROI info are loaded
-                    me._notifyListeners(new CustomEvent(
-                        "imageModelLoaded",
-                        {
-                            detail: data,
-                            bubbles: true
-                        })
-                    );
-
-                    // Notify that ROI info are loaded
-                    me._notifyListeners(new CustomEvent(
-                        "imageModelRoiLoaded",
-                        {
-                            detail: data.rois,
-                            bubbles: true
-                        })
-                    );
+                    // Notify event
+                    if (event_name && event_name.length > 0)
+                        me._notifyListeners(new CustomEvent(
+                            event_name,
+                            {
+                                detail: data,
+                                bubbles: true
+                            })
+                        );
                 },
                 error: error_callback
             });
         };
-
 
         /**
          * Load info of ROIs related to the current image
