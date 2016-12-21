@@ -134,54 +134,54 @@ define([
         prototype.open = function (load_rois, callback) {
             var me = this;
 
-            // TODO: to change with the controller initialization
-            me._viewer_controller = new ViewerController(
-                me._image_viewer_container_id,
-                me._image_server_static_resources,
-                me._image_server_dzi,
-                me._viewer_config
-            );
+            // retrieve image metadata and initialize the viewer using them
+            me._model.getImageMetadata(function (metadata) {
 
-            // show 'loading...'
-            me._waiting_dialog.show();
+                // TODO: to change with the controller initialization
+                me._viewer_controller = new ViewerController(
+                    me._image_viewer_container_id,
+                    me._image_server_static_resources,
+                    metadata.tile_sources, //me._image_server_dzi,
+                    me._viewer_config
+                );
 
-            // initialize the viewer
-            me._viewer_controller.buildViewer();
+                // show 'loading...'
+                me._waiting_dialog.show();
 
-            // open
-            me._viewer_controller.viewer.addHandler("open", function () {
+                // initialize the viewer
+                me._viewer_controller.buildViewer();
 
-                // Ignore lowest-resolution levels in order to improve load times
-                me._viewer_controller.setMinDZILevel(8);
+                // open
+                me._viewer_controller.viewer.addHandler("open", function () {
 
-                // Adds the annotation controller
-                me._annotations_controller = new AnnotationsController(me._image_viewer_annotations_canvas_id);
-                window.annotation_canvas = me._annotations_controller;
-                me._annotations_controller.buildAnnotationsCanvas(me._viewer_controller);
-                me._viewer_controller.addAnnotationsController(me._annotations_controller, true);
+                    // Ignore lowest-resolution levels in order to improve load times
+                    me._viewer_controller.setMinDZILevel(8);
 
-                // update the center and zoom level
-                me.updateViewFromProperties(me._image_properties);
+                    // Adds the annotation controller
+                    me._annotations_controller = new AnnotationsController(me._image_viewer_annotations_canvas_id);
+                    window.annotation_canvas = me._annotations_controller;
+                    me._annotations_controller.buildAnnotationsCanvas(me._viewer_controller);
+                    me._viewer_controller.addAnnotationsController(me._annotations_controller, true);
 
-                // initialize the scalebar
-                me._model.getImageDZI(function (data) {
-                    console.log("Loading openseadragon viewer");
-                    var image_mpp = data.image_mpp ? data.image_mpp : 0;
-                    me._viewer_controller.enableScalebar(image_mpp, me._scalebar_config);
-                });
+                    // update the center and zoom level
+                    me.updateViewFromProperties(me._image_properties);
 
-                me._model.getImageDetails(function (data) {
-                    me._image_details = data;
+                    // initialize the scalebar
+                    me._viewer_controller.enableScalebar(metadata.image_mpp || 0, me._scalebar_config);
 
-                    // loads rois if required
-                    if (load_rois)
-                        me.loadROIs(callback);
-                    else {
-                        // notifies listeners
-                        notifyListeners(me._listeners, callback);
-                        // hide loading dialog
-                        me._waiting_dialog.hide();
-                    }
+                    me._model.getImageDetails(function (data) {
+                        me._image_details = data;
+
+                        // loads rois if required
+                        if (load_rois)
+                            me.loadROIs(callback);
+                        else {
+                            // notifies listeners
+                            notifyListeners(me._listeners, callback);
+                            // hide loading dialog
+                            me._waiting_dialog.hide();
+                        }
+                    });
                 });
             });
         };
