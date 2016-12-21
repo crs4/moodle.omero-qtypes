@@ -50,8 +50,12 @@ header('Content-Type: application/json');
 
 if ($method == "img_details")
     echo $omero_server->get_image($image_id, true, false);
+else if ($method == "meta")
+    echo $omero_server->get_image_metadata($image_id, false);
 else if ($method == "dzi")
     echo $omero_server->get_image_dzi($image_id, false);
+else if ($method == "mpp")
+    echo $omero_server->get_image_mpp($image_id, false);
 else
     echo json_encode(array("error" => "Not supported method!!!"));
 exit;
