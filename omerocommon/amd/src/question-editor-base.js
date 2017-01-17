@@ -536,7 +536,6 @@ define([
             var viewer_ctrl = new ImageViewer(
                 image_id, undefined,
                 me._image_server,
-                me._image_server_api_version,
                 "image-viewer-container", "annotations_canvas",
                 me._viewer_model_server);
             me._image_viewer_controller = viewer_ctrl;

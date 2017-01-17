@@ -152,7 +152,7 @@ define([
             // build the ImaveViewer controller
             var viewer_ctrl = new ImageViewer(
                 config.image_id, config.image_properties,
-                config.image_server, config.image_server_api_version,
+                config.image_server,
                 config.image_viewer_container, config.image_annotations_canvas_id,
                 config.viewer_model_server);
             me._image_viewer_controller = viewer_ctrl;
