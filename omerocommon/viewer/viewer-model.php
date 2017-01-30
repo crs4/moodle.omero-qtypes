@@ -20,7 +20,7 @@
 // CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 // set the Moodle root directory
-$MOODLEROOT=dirname(dirname(dirname(dirname(dirname(__FILE__)))));
+$MOODLEROOT = dirname(dirname(dirname(dirname(dirname(__FILE__)))));
 
 // load dependencies
 require_once("$MOODLEROOT/config.php");
@@ -37,7 +37,7 @@ if (!isloggedin()) {
 }
 
 // omero server
-$omero_server = new omero();
+$omero_server = OmeroImageRepository::get_instance();
 
 // get method
 $method = required_param("m", PARAM_TEXT);
@@ -48,10 +48,14 @@ $image_id = required_param("id", PARAM_INT);
 // set the response header
 header('Content-Type: application/json');
 
-if($method == "img_details")
-    echo $omero_server->process_request(PathUtils::build_image_detail_url($image_id), false);
-else if($method == "dzi")
-    echo $omero_server->process_request(PathUtils::build_image_dzi_url($image_id), false);
+if ($method == "img_details")
+    echo $omero_server->get_image($image_id, true, false);
+else if ($method == "meta")
+    echo $omero_server->get_image_metadata($image_id, false);
+else if ($method == "dzi")
+    echo $omero_server->get_image_dzi($image_id, false);
+else if ($method == "mpp")
+    echo $omero_server->get_image_mpp($image_id, false);
 else
-    echo json_encode(array("error"=>"Not supported method!!!"));
+    echo json_encode(array("error" => "Not supported method!!!"));
 exit;

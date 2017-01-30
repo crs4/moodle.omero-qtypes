@@ -104,6 +104,46 @@ define(['jquery'], function ($) {
         };
 
 
+        prototype._makeRequest = function (request, image_id, success_callback, error_callback, extra_params, event_name) {
+            var me = this;
+
+            var data = $.extend({
+                format: "json",
+                m: request,
+                id: image_id || me._image_id
+            }, extra_params);
+
+            $.ajax({
+                // request URL
+                url: this._image_server,
+
+                // result format
+                dataType: "json",
+
+                // Request parameters
+                data: data,
+
+                // Set callback methods
+                success: function (data) {
+
+                    if (success_callback) {
+                        success_callback(data);
+                    }
+
+                    // Notify event
+                    if (event_name && event_name.length > 0)
+                        me._notifyListeners(new CustomEvent(
+                            event_name,
+                            {
+                                detail: data,
+                                bubbles: true
+                            })
+                        );
+                },
+                error: error_callback
+            });
+        };
+
         /**
          * Load info of ROIs related to the current image
          *
@@ -116,61 +156,39 @@ define(['jquery'], function ($) {
 
             var me = this;
 
-            $.ajax({
-                //url: this._image_server + "/webgateway/get_rois_json/" + this._image_id,
-                //url: this._image_server + "/ome_seadragon/get/image/" + this._image_id,
-                url: this._image_server,
+            me._makeRequest("img_details", image_id, function (data) {
 
-                //// The name of the callback parameter, as specified by the YQL service
-                //jsonp: "callback",
+                // post process data:
+                // adapt the model removing OMERO complexity
+                var result = [];
+                $.each(data.rois, function (index) {
+                    var obj = $(this)[0];
+                    result[index] = obj.shapes[0];
+                });
 
-                // Tell jQuery we're expecting JSONP
-                dataType: "json",
+                if (success_callback) {
+                    success_callback(data.rois);
+                }
 
-                // Request parameters
-                data: {
-                    //q: "", //FIXME: not required
-                    //format: "json",
-                    m: "img_details",
-                    id: image_id || this._image_id,
-                    rois: true
-                },
+                // Notify that ROI info are loaded
+                me._notifyListeners(new CustomEvent(
+                    "imageModelLoaded",
+                    {
+                        detail: data,
+                        bubbles: true
+                    })
+                );
 
-                // Set callback methods
-                success: function (data) {
+                // Notify that ROI info are loaded
+                me._notifyListeners(new CustomEvent(
+                    "imageModelRoiLoaded",
+                    {
+                        detail: data.rois,
+                        bubbles: true
+                    })
+                );
 
-                    // post process data:
-                    // adapt the model removing OMERO complexity
-                    var result = [];
-                    $.each(data.rois, function (index) {
-                        var obj = $(this)[0];
-                        result[index] = obj.shapes[0];
-                    });
-
-                    if (success_callback) {
-                        success_callback(data.rois);
-                    }
-
-                    // Notify that ROI info are loaded
-                    me._notifyListeners(new CustomEvent(
-                        "imageModelLoaded",
-                        {
-                            detail: data,
-                            bubbles: true
-                        })
-                    );
-
-                    // Notify that ROI info are loaded
-                    me._notifyListeners(new CustomEvent(
-                        "imageModelRoiLoaded",
-                        {
-                            detail: data.rois,
-                            bubbles: true
-                        })
-                    );
-                },
-                error: error_callback
-            });
+            }, error_callback, {rois: true});
         };
 
 
@@ -182,79 +200,38 @@ define(['jquery'], function ($) {
          * @param error_callback
          * @private
          */
+        prototype.getImageMetadata = function (success_callback, error_callback, image_id) {
+            this._makeRequest("meta", image_id, success_callback, error_callback, {}, "imageMetadataLoaded");
+        };
+
+        /**
+         * Load info of ROIs related to the current image
+         *
+         * @param image_id
+         * @param success_callback
+         * @param error_callback
+         * @private
+         */
         prototype.getImageDZI = function (success_callback, error_callback, image_id) {
-            var me = this;
+            this._makeRequest("dzi", image_id, success_callback, error_callback, {}, "imageDziLoaded");
+        };
 
-            $.ajax({
-                // request URL
-                url: this._image_server,
 
-                // result format
-                dataType: "json",
-
-                // Request parameters
-                data: {
-                    format: "json",
-                    m: "dzi",
-                    id: image_id || this._image_id
-                },
-
-                // Set callback methods
-                success: function (data) {
-
-                    if (success_callback) {
-                        success_callback(data);
-                    }
-
-                    // Notify that ROI info are loaded
-                    me._notifyListeners(new CustomEvent(
-                        "imageDziLoaded",
-                        {
-                            detail: data,
-                            bubbles: true
-                        })
-                    );
-                },
-                error: error_callback
-            });
+        /**
+         * Load info of ROIs related to the current image
+         *
+         * @param image_id
+         * @param success_callback
+         * @param error_callback
+         * @private
+         */
+        prototype.getImageMPP = function (success_callback, error_callback, image_id) {
+            this._makeRequest("mpp", image_id, success_callback, error_callback, {}, "imageMppLoaded");
         };
 
 
         prototype.getImageDetails = function (success_callback, error_callback, image_id) {
-            var me = this;
-
-            $.ajax({
-                // request URL
-                url: this._image_server,
-
-                // result format
-                dataType: "json",
-
-                // Request parameters
-                data: {
-                    format: "json",
-                    m: "img_details",
-                    id: image_id || this._image_id
-                },
-
-                // Set callback methods
-                success: function (data) {
-
-                    if (success_callback) {
-                        success_callback(data);
-                    }
-
-                    // Notify that ROI info are loaded
-                    me._notifyListeners(new CustomEvent(
-                        "imageDetailsLoaded",
-                        {
-                            detail: data,
-                            bubbles: true
-                        })
-                    );
-                },
-                error: error_callback
-            });
+            this._makeRequest("img_details", image_id, success_callback, error_callback, {}, "imageDetailsLoaded");
         };
 
         // returns the class
