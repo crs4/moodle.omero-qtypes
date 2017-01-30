@@ -384,6 +384,8 @@ define(['jquery'],
             //   example 1: get_html_translation_table('HTML_SPECIALCHARS');
             //   returns 1: {'"': '&quot;', '&': '&amp;', '<': '&lt;', '>': '&gt;'}
 
+            if (!string) return false;
+
             var hash_map = {},
                 symbol = '',
                 tmp_str = '',
@@ -449,7 +451,7 @@ define(['jquery'],
 
             useTable = !isNaN(table) ? constMappingTable[table] : table ? table.toUpperCase() : 'HTML_SPECIALCHARS';
             useQuoteStyle = !isNaN(quote_style) ? constMappingQuoteStyle[quote_style] : quote_style ? quote_style.toUpperCase() :
-                'ENT_COMPAT';
+                    'ENT_COMPAT';
 
             if (useTable !== 'HTML_SPECIALCHARS' && useTable !== 'HTML_ENTITIES') {
                 throw new Error('Table: ' + useTable + ' not supported');

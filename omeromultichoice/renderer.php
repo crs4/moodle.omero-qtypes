@@ -485,6 +485,7 @@ abstract class qtype_omeromultichoice_base_renderer extends qtype_multichoice_re
             "modal_image_panel_id" => $modal_image_panel_id,
             "feedback_image_class" => $feedback_image_class,
             "image_server" => $OMERO_SERVER,
+            "image_server_api_version" => get_config('omero', 'omero_apiversion'),
             "viewer_model_server" => $CFG->omero_image_server,
             "image_viewer_container" => self::to_unique_identifier($qa, self::IMAGE_VIEWER_CONTAINER),
             "image_navigation_locked" => (bool)$question->omeroimagelocked,
