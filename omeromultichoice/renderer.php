@@ -375,11 +375,8 @@ abstract class qtype_omeromultichoice_base_renderer extends qtype_multichoice_re
             $classes[] = $class;
 
             $radiobutton_label = html_writer::tag('label',
-                $question->format_text(
-                    $renderer->number_in_style($value, $question->answernumbering) .
-                    preg_replace('/<p[^>]*>(.*)<\/p[^>]*>/i', '$1', $ans->answer), $ans->answerformat,
-                    $qa, 'question', 'answer', $ansid)
-                ,
+                qtype_omerocommon_renderer_helper::strip_first_paragraph(
+                    qtype_omerocommon_renderer_helper::filter_lang($ans->answer, $current_language)),
                 array('for' => $inputattributes['id']));
 
             $radiobuttons[] = $hidden . html_writer::empty_tag('input', $inputattributes) .
