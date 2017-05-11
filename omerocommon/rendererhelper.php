@@ -247,6 +247,13 @@ class qtype_omerocommon_renderer_helper
         return preg_replace('~<(?:!DOCTYPE|/?(?:html|body))[^>]*>\s*~i', $html);
     }
 
+    public static function strip_first_paragraph($html)
+    {
+        #return replaceFirst(replaceFirst($html, '<p>', ''), '</p>', '');
+
+        return preg_replace('@<p>(.*?)</p>(.*)@', '$1', $html);
+    }
+
     public static function filter_lang($multialang_array, $language, $filter_doc_body = false)
     {
         $dom = new DOMDocument();
