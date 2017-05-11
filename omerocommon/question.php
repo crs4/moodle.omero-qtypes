@@ -84,6 +84,24 @@ abstract class qtype_omerocommon_single_question extends qtype_multichoice_singl
         $text = qtype_omerocommon_question::localize_text($text, $format, $qa, $component, $filearea, $itemid, $clean);
         return parent::format_text($text, $format, $qa, $component, $filearea, $itemid, $clean);
     }
+
+    protected function format_multilanguage_text($qa, $field, $format, $language = null)
+    {
+        $language = empty($language) ? current_language() : $language;
+        $text = qtype_omerocommon_renderer_helper::filter_lang($this->{$field}, $language);
+        return $this->format_text($text, $format, $qa, 'question', $field, $this->id);
+    }
+
+    public function format_questiontext($qa, $language = null)
+    {
+        return $this->format_multilanguage_text($qa, "questiontext", $this->questiontextformat, $language);
+    }
+
+    public function format_generalfeedback($qa, $language = null)
+    {
+        return $this->format_multilanguage_text($qa, "generalfeeback", $this->questiontextformat, $language);
+    }
+
 }
 
 abstract class qtype_omerocommon_multi_question extends qtype_multichoice_multi_question
