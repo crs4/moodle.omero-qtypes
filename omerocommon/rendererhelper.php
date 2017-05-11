@@ -249,8 +249,6 @@ class qtype_omerocommon_renderer_helper
 
     public static function strip_first_paragraph($html)
     {
-        #return replaceFirst(replaceFirst($html, '<p>', ''), '</p>', '');
-
         return preg_replace('@<p>(.*?)</p>(.*)@', '$1', $html);
     }
 
