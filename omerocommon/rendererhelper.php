@@ -257,15 +257,16 @@ class qtype_omerocommon_renderer_helper
     public static function filter_lang($multialang_array, $language, $filter_doc_body = false)
     {
         $dom = new DOMDocument();
-        $dom->loadHTML($multialang_array);
+        $dom->strictErrorChecking = FALSE;
+        $dom->loadHTML('<?xml encoding="utf-8" ?>' . $multialang_array);
         $xpath = new DOMXPath($dom);
         $tags = $xpath->query("//div[@lang=\"$language\"]");
         $result = "";
         foreach ($tags as $tag) {
             if ($filter_doc_body)
-                $result .= trim(self::filter_lang($tag->textContent));
+                $result .= trim(self::filter_doc_body($dom->saveHTML($tag)));
             else
-                $result .= trim($tag->textContent);
+                $result .= trim($dom->saveHTML($tag));
         }
         return $result;
     }
