@@ -342,13 +342,14 @@ abstract class qtype_omeromultichoice_base_renderer extends qtype_multichoice_re
                     ('<span class="pull-right">' . $renderer->feedback_image($renderer->is_right($ans)) . '</span>')
                     : "");
 
-                $feedback_text = qtype_omerocommon_renderer_helper::filter_lang($ans->feedback, $current_language);
+                $feedback_text = qtype_omerocommon_renderer_helper::strip_first_paragraph(
+                    qtype_omerocommon_renderer_helper::filter_lang($ans->feedback, $current_language));
                 if (!empty($feedback_text)) {
                     $feedback_content .= html_writer::tag("div",
                         html_writer::tag("i", " ",
                             array(
                                 "class" => "pull-left glyphicon glyphicon-record",
-                                "style" => "margin-left: 10px; margin-right: 5px;"
+                                "style" => "margin-left: 10px; margin-right: 5px; margin-top: 2.8px;"
                             )
                         ) .
                         format_text($feedback_text) . $feedbackimages_html,
@@ -398,9 +399,7 @@ abstract class qtype_omeromultichoice_base_renderer extends qtype_multichoice_re
         $result .= html_writer::start_tag('div', array('id' => $question_answer_container, 'class' => 'ablock'));
 
         // question text
-        $result .= html_writer::tag('div', // $question->format_questiontext($qa),
-            qtype_omerocommon_renderer_helper::filter_lang($question->questiontext, $current_language),
-            array('class' => 'qtext'));
+        $result .= html_writer::tag('div', $question->format_questiontext($qa), array('class' => 'qtext'));
 
         // viewer of the question image
         $result .= '<div class="image-viewer-with-controls-container">';

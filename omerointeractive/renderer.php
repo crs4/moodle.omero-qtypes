@@ -426,14 +426,15 @@ abstract class qtype_omerointeractive_base_renderer extends qtype_multichoice_re
 
                 if ($shape !== "none") {
                     $shape_answer = $answer_shape_map[$shape->shape_id];
-                    $txt = qtype_omerocommon_renderer_helper::filter_lang($shape_answer->feedback, $current_language);
+                    $txt = qtype_omerocommon_renderer_helper::strip_first_paragraph(
+                        qtype_omerocommon_renderer_helper::filter_lang($shape_answer->feedback, $current_language));
                     if (!empty($txt)) {
                         $marker_correction_text .=
                             html_writer::tag("div",
                                 html_writer::tag("i", " ",
                                     array(
                                         "class" => "pull-left glyphicon glyphicon-record",
-                                        "style" => "margin-right: 5px;"
+                                        "style" => "margin-right: 5px; margin-top: 2.8px;"
                                     )
                                 ) .
                                 format_text($txt) . $feedbackimages_html,
@@ -486,9 +487,7 @@ abstract class qtype_omerointeractive_base_renderer extends qtype_multichoice_re
         $result .= html_writer::start_tag('div', array('id' => $question_answer_container, 'class' => 'ablock'));
 
         // question text
-        $result .= html_writer::tag('div', //$question->format_questiontext($qa),
-            qtype_omerocommon_renderer_helper::filter_lang($question->questiontext, $current_language),
-            array('class' => 'qtext'));
+        $result .= html_writer::tag('div', $question->format_questiontext($qa), array('class' => 'qtext'));
 
         // viewer of the question image
         $result .= '<div class="image-viewer-with-controls-container">';
