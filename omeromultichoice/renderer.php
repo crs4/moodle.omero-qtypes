@@ -442,8 +442,9 @@ abstract class qtype_omeromultichoice_base_renderer extends qtype_multichoice_re
 
         $result .= html_writer::start_tag('div', array('class' => 'answer'));
         foreach ($radiobuttons as $key => $radio) {
-            $result .= html_writer::tag('div', $radio . ' ' . $feedback[$key],
-                array('class' => $classes[$key]));
+            $result .= html_writer::tag('div', $radio . ' ' .
+                qtype_omerocommon_renderer_helper::strip_first_paragraph($feedback[$key]),
+                array('class' => $classes[$key], 'style' => "padding: 8px;"));
         }
         $result .= html_writer::end_tag('div'); // Answer.
 
