@@ -249,7 +249,14 @@ class qtype_omerocommon_renderer_helper
 
     public static function strip_first_paragraph($html)
     {
-        return preg_replace('@<p>(.*?)</p>(.*)@', '$1', $html);
+        # remove the outer <DIV>
+        $result =  preg_replace("/(^<div[^>]*>|<\/div>$)/i", "", $html);
+        # remove the outer <P>
+        $result =  preg_replace("/(<p[^>]*>|<\/p>$)/i", "", $result);
+        # remove the first <BR>
+        $result = preg_replace("/<br\W*?\/>/", "", $result);
+        return $result;
+
     }
 
     public static function filter_lang($multialang_array, $language, $filter_doc_body = false)
