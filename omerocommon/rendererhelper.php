@@ -240,5 +240,40 @@ class qtype_omerocommon_renderer_helper
   </div>
 </div>';
     }
+
+
+    public static function filter_doc_body($html)
+    {
+        return preg_replace('~<(?:!DOCTYPE|/?(?:html|body))[^>]*>\s*~i', $html);
+    }
+
+    public static function strip_first_paragraph($html)
+    {
+        # remove the outer <DIV>
+        $result =  preg_replace("/(^<div[^>]*>|<\/div>$)/i", "", $html);
+        # remove the outer <P>
+        $result =  preg_replace("/(<p[^>]*>|<\/p>$)/i", "", $result);
+        # remove the first <BR>
+        $result = preg_replace("/<br\W*?\/>/", "", $result);
+        return $result;
+
+    }
+
+    public static function filter_lang($multialang_array, $language, $filter_doc_body = false)
+    {
+        $dom = new DOMDocument();
+        $dom->strictErrorChecking = FALSE;
+        $dom->loadHTML('<?xml encoding="utf-8" ?>' . $multialang_array);
+        $xpath = new DOMXPath($dom);
+        $tags = $xpath->query("//div[@lang=\"$language\"]");
+        $result = "";
+        foreach ($tags as $tag) {
+            if ($filter_doc_body)
+                $result .= trim(self::filter_doc_body($dom->saveHTML($tag)));
+            else
+                $result .= trim($dom->saveHTML($tag));
+        }
+        return $result;
+    }
 }
 
