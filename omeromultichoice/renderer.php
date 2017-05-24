@@ -245,6 +245,9 @@ abstract class qtype_omeromultichoice_base_renderer extends qtype_multichoice_re
         // extract the omero server
         $OMERO_SERVER = get_config('omero', 'omero_restendpoint');
 
+        // current language
+        $current_language = current_language();
+
         // parse the URL to get the image ID and its related params
         $matches = array();
         $pattern = '/\/([0123456789]+)(\?.*)?/';
@@ -314,7 +317,6 @@ abstract class qtype_omeromultichoice_base_renderer extends qtype_multichoice_re
                 $feedbackimages_html = '<div style="display: block; float: right;">[ '
                     . get_string("see", "qtype_omerocommon") . " ";
 
-                $current_language = current_language();
                 foreach ($ans->feedbackimages as $image) {
                     $feedbackimages_html .= '<span class="' . $feedback_image_class . '" imageid="' . $image->id . '"'
                         . ' currentlanguage="' . $current_language . '"'
@@ -339,13 +341,15 @@ abstract class qtype_omeromultichoice_base_renderer extends qtype_multichoice_re
                 $feedback_content = ($isselected ?
                     ('<span class="pull-right">' . $renderer->feedback_image($renderer->is_right($ans)) . '</span>')
                     : "");
-                $feedback_text = trim($ans->feedback);
-                if (!empty(strip_tags($feedback_text))) {
+
+                $feedback_text = qtype_omerocommon_renderer_helper::strip_first_paragraph(
+                    qtype_omerocommon_renderer_helper::filter_lang($ans->feedback, $current_language));
+                if (!empty($feedback_text)) {
                     $feedback_content .= html_writer::tag("div",
                         html_writer::tag("i", " ",
                             array(
                                 "class" => "pull-left glyphicon glyphicon-record",
-                                "style" => "margin-left: 10px; margin-right: 5px"
+                                "style" => "margin-left: 10px; margin-right: 5px; margin-top: 2.8px;"
                             )
                         ) .
                         format_text($feedback_text) . $feedbackimages_html,
@@ -371,11 +375,8 @@ abstract class qtype_omeromultichoice_base_renderer extends qtype_multichoice_re
             $classes[] = $class;
 
             $radiobutton_label = html_writer::tag('label',
-                $question->format_text(
-                    $renderer->number_in_style($value, $question->answernumbering) .
-                    preg_replace('/<p[^>]*>(.*)<\/p[^>]*>/i', '$1', $ans->answer), $ans->answerformat,
-                    $qa, 'question', 'answer', $ansid)
-                ,
+                qtype_omerocommon_renderer_helper::strip_first_paragraph(
+                    qtype_omerocommon_renderer_helper::filter_lang($ans->answer, $current_language)),
                 array('for' => $inputattributes['id']));
 
             $radiobuttons[] = $hidden . html_writer::empty_tag('input', $inputattributes) .
@@ -438,8 +439,9 @@ abstract class qtype_omeromultichoice_base_renderer extends qtype_multichoice_re
 
         $result .= html_writer::start_tag('div', array('class' => 'answer'));
         foreach ($radiobuttons as $key => $radio) {
-            $result .= html_writer::tag('div', $radio . ' ' . $feedback[$key],
-                array('class' => $classes[$key]));
+            $result .= html_writer::tag('div', $radio . ' ' .
+                qtype_omerocommon_renderer_helper::strip_first_paragraph($feedback[$key]),
+                array('class' => $classes[$key], 'style' => "padding: 8px;"));
         }
         $result .= html_writer::end_tag('div'); // Answer.
 

@@ -281,6 +281,9 @@ abstract class qtype_omerointeractive_base_renderer extends qtype_multichoice_re
         // get the response
         $response = $question->get_response($qa);
 
+        // current language
+        $current_language = current_language();
+
         // answer prefix
         $answer_input_name = $qa->get_qt_field_name('answer');
 
@@ -362,7 +365,6 @@ abstract class qtype_omerointeractive_base_renderer extends qtype_multichoice_re
             $feedbackimages_html = '<div style="display: block; float: right;">[ '
                 . get_string("see", "qtype_omerocommon") . " ";
 
-            $current_language = current_language();
             foreach ($ans->feedbackimages as $image) {
                 $feedbackimages_html .= '<span class="' . $feedback_image_class . '" imageid="' . $image->id . '"'
                     . ' imagename="' . $image->name . '"'
@@ -422,22 +424,26 @@ abstract class qtype_omerointeractive_base_renderer extends qtype_multichoice_re
                     ) .
                     '</span>';
 
-                if ($shape !== "none" && !empty(strip_tags($answer_shape_map[$shape->shape_id]->feedback))) {
+                if ($shape !== "none") {
                     $shape_answer = $answer_shape_map[$shape->shape_id];
-                    $marker_correction_text .=
-                        html_writer::tag("div",
-                            html_writer::tag("i", " ",
+                    $txt = qtype_omerocommon_renderer_helper::strip_first_paragraph(
+                        qtype_omerocommon_renderer_helper::filter_lang($shape_answer->feedback, $current_language));
+                    if (!empty($txt)) {
+                        $marker_correction_text .=
+                            html_writer::tag("div",
+                                html_writer::tag("i", " ",
+                                    array(
+                                        "class" => "pull-left glyphicon glyphicon-record",
+                                        "style" => "margin-right: 5px; margin-top: 2.8px;"
+                                    )
+                                ) .
+                                format_text($txt) . $feedbackimages_html,
                                 array(
-                                    "class" => "pull-left glyphicon glyphicon-record",
-                                    "style" => "margin-right: 5px"
+                                    "class" => "outcome",
+                                    "style" => "padding: 20px 30px 20px;"
                                 )
-                            ) .
-                            format_text($shape_answer->feedback) . $feedbackimages_html,
-                            array(
-                                "class" => "outcome",
-                                "style" => "padding: 20px 30px 20px;"
-                            )
-                        );
+                            );
+                    }
                 }
 
                 $marker_correction .= html_writer::tag('label', $marker_correction_text);
