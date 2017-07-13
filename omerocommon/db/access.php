@@ -29,15 +29,30 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-
 $CAPABILITY_PREFIX = "mod/qtype_omerocommon";
 $QUESTION_AUTHOR = "$CAPABILITY_PREFIX:author";
 $QUESTION_TRANSLATOR = "$CAPABILITY_PREFIX:translator";
 
 
-$capabilities = array(
+class qtype_omerocommon_capabilities
+{
 
-    $QUESTION_AUTHOR => array(
+    public static $CAPABILITY_PREFIX = "mod/qtype_omerocommon";
+
+    public static function get_question_author_capability()
+    {
+        return self::$CAPABILITY_PREFIX . ":author";
+    }
+
+    public static function get_question_translator_capability($lang_code = null)
+    {
+        return self::$CAPABILITY_PREFIX . ":translator" . (is_null($lang_code) ? "" : "_$lang_code");
+    }
+}
+
+
+$capabilities = array(
+    qtype_omerocommon_capabilities::get_question_author_capability() => array(
         'captype' => 'write',
         'contextlevel' => CONTEXT_MODULE,
         'archetypes' => array(
@@ -49,7 +64,7 @@ $capabilities = array(
 
 $languages = get_string_manager()->get_list_of_languages();
 foreach ($languages as $lang_code => $language) {
-    $locale_translator_capability = get_question_translator_capability($lang_code);
+    $locale_translator_capability = qtype_omerocommon_capabilities::get_question_translator_capability($lang_code);
     $capabilities[$locale_translator_capability] = array(
         'captype' => 'write',
         'contextlevel' => CONTEXT_MODULE,
@@ -59,21 +74,18 @@ foreach ($languages as $lang_code => $language) {
     );
 }
 
-function get_question_translator_capability($lang_code)
-{
-    global $QUESTION_TRANSLATOR;
-    return $QUESTION_TRANSLATOR . "_" . $lang_code;
-}
-
 function is_question_author($context, $lang_code = null)
 {
-    global $CFG, $QUESTION_AUTHOR;
-    if (!has_capability($QUESTION_AUTHOR, $context))
+    echo "<br>Checking capability.....<br>";
+    global $CFG, $USER;
+    if (!has_capability(qtype_omerocommon_capabilities::get_question_author_capability(), $context, $USER->id))
         return false;
+    else return true;
 
     // set the default system language if $lang_code is undefined
     if (is_null($lang_code))
         $lang_code = $CFG->lang;
+    echo "<br> LANG: $lang_code";
 
     // check translation capabilities
     $lang_codes = is_string($lang_code) ? array($lang_code) : $lang_code;
@@ -87,14 +99,14 @@ function is_question_author($context, $lang_code = null)
 }
 
 
-function is_question_translator($context, $lang_code=null)
+function is_question_translator($context, $lang_code = null)
 {
     if (is_null($lang_code)) $lang_codes = array_keys(get_string_manager()->get_list_of_languages());
     else $lang_codes = is_string($lang_code) ? array($lang_code) : $lang_code;
     foreach ($lang_codes as $lang) {
         if (!array_key_exists($lang))
             throw new RuntimeException("The language code '$lang' is not supported");
-        if (!has_capability(get_question_translator_capability($lang), $context))
+        if (!has_capability(qtype_omerocommon_capabilities::get_question_translator_capability($lang), $context))
             return false;
     }
     return true;
