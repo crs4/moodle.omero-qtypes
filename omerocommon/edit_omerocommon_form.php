@@ -203,7 +203,7 @@ abstract class qtype_omerocommon_edit_form extends qtype_multichoice_edit_form
 
         // question name
         $mform->addElement('text', 'name', get_string('questionname', 'question'),
-            array('size' => 50, 'maxlength' => 255, "style" => "width: 98%;", "disabled" => !$this->is_author_mode()));
+            array('size' => 50, 'maxlength' => 255, "style" => "width: 98%;", !$this->is_author_mode() ? "readonly" : "editable" => 1));
         $mform->setType('name', PARAM_TEXT);
         $mform->addRule('name', null, 'required', null, 'client');
 
@@ -298,18 +298,19 @@ abstract class qtype_omerocommon_edit_form extends qtype_multichoice_edit_form
         );
         $mform->addElement('select', 'single',
             get_string('answerhowmany', 'qtype_omerocommon'), $menu,
-            array("disabled" => !$this->is_author_mode()));
+            array($this->is_author_mode() ? "enabled" : "disabled" => !$this->is_author_mode()));
         $mform->setDefault('single', 1);
 
         // how to number answer options
         $mform->addElement('select', 'answernumbering',
             get_string('answernumbering', 'qtype_multichoice'),
-            qtype_multichoice::get_numbering_styles(), array("disabled" => !$this->is_author_mode()));
+            qtype_multichoice::get_numbering_styles(),
+            array($this->is_author_mode() ? "enabled" : "disabled" => !$this->is_author_mode()));
         $mform->setDefault('answernumbering', 'abc');
 
         // default mark
         $mform->addElement('text', 'defaultmark', get_string('defaultmark', 'question'),
-            array('size' => 7, "disabled" => !$this->is_author_mode()));
+            array('size' => 7, !$this->is_author_mode() ? "readonly" : "editable" => 1));
         $mform->setType('defaultmark', PARAM_FLOAT);
         $mform->setDefault('defaultmark', 1);
         $mform->addRule('defaultmark', null, 'required', null, 'client');
@@ -317,7 +318,7 @@ abstract class qtype_omerocommon_edit_form extends qtype_multichoice_edit_form
         // flag to set the shuffling of answer options
         $mform->addElement('advcheckbox', 'shuffleanswers',
             get_string('shuffleanswers', 'qtype_multichoice'), null,
-            array("disabled" => !$this->is_author_mode()), array(0, 1));
+            array($this->is_author_mode() ? "enabled" : "disabled" => !$this->is_author_mode()), array(0, 1));
         $mform->addHelpButton('shuffleanswers', 'shuffleanswers', 'qtype_multichoice');
         $mform->setDefault('shuffleanswers', 1);
 
@@ -592,7 +593,7 @@ abstract class qtype_omerocommon_edit_form extends qtype_multichoice_edit_form
         }
         $mform->addElement('select', 'penalty',
             get_string('penaltyforeachincorrecttry', 'question'), $penaltyoptions,
-            array("disabled" => !$this->is_author_mode()));
+            array($this->is_author_mode() ? "enabled" : "disabled" => !$this->is_author_mode()));
         $mform->addHelpButton('penalty', 'penaltyforeachincorrecttry', 'question');
         $mform->setDefault('penalty', 0.3333333);
 
