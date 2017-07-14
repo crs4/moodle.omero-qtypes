@@ -105,6 +105,9 @@ abstract class qtype_omerocommon_edit_form extends qtype_multichoice_edit_form
      */
     protected function definition()
     {
+        // set view mode
+        $this->set_view_mode();
+
         // CSS and JS requirements
         $this->set_form_requirements();
 
