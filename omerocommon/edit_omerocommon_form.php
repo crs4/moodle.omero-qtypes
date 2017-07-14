@@ -176,7 +176,15 @@ abstract class qtype_omerocommon_edit_form extends qtype_multichoice_edit_form
 
         // language selector
         $languages = array();
-        $languages += get_string_manager()->get_list_of_translations();
+        $available_languages = get_string_manager()->get_list_of_translations();
+        if ($this->is_view_mode()) {
+            $languages += $available_languages;
+        } else {
+            $languages["en"] = $available_languages["en"];
+            if ($this->is_translate_mode())
+                $languages += $this->get_allowed_translation_languages();
+        }
+
         $mform->addElement('select', 'question_language',
             get_string('language', 'qtype_omerocommon'), $languages,
             array("class" => "question-language-selector"));
