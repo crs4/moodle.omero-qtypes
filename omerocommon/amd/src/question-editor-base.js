@@ -55,12 +55,19 @@ define([
         var _supported_languages = null;
 
         /**
+         * List of allowed languages for text translations
+         *
+         * @private
+         */
+        var _allowed_translation_languages = null;
+
+        /**
          * Initializes the list of supported languages
          * and sets the currently selected language
          *
          * @private
          */
-        function initializeSupportedLanguages() {
+        function initializeSupportedLanguages(obj) {
 
             // initializes the list of supported languages
             if (!_supported_languages) {
@@ -70,6 +77,17 @@ define([
                 for (var i = 0; i < language_options.length; i++) {
                     _supported_languages.push(language_options[i].value);
                 }
+            }
+
+            _allowed_translation_languages =
+                _supported_languages.filter(function (lang_code) {
+                    return lang_code !== "en";
+                });
+
+            // register values
+            if (obj) {
+                obj._supported_lanuguages = _supported_languages;
+                obj._allowed_editing_languages = _allowed_translation_languages;
             }
 
             // handles the event 'language changed'
@@ -147,7 +165,7 @@ define([
             me._answers = [];
             me._answer_ids = {};
 
-            initializeSupportedLanguages();
+            initializeSupportedLanguages(me);
 
             me._build_answer_controls();
 
