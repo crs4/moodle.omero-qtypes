@@ -79,7 +79,8 @@ class qtype_omerointeractive_edit_form extends qtype_omerocommon_edit_form
                     "answer_header" => "id_answergroupsheader",
                     "fraction_options" => question_bank::fraction_options_full(),
                     "add_to_group_element_id" => self::ADD_ROI_TO_GROUP,
-                    "add_to_group_list_element_id" => self::ADD_ROI_GROUP_LIST_OPTIONS
+                    "add_to_group_list_element_id" => self::ADD_ROI_GROUP_LIST_OPTIONS,
+                    "view_mode" => $this->get_view_mode()
                 )
             )
         );
@@ -107,17 +108,19 @@ class qtype_omerointeractive_edit_form extends qtype_omerocommon_edit_form
         for ($i = 1; $i <= 10; $i++)
             array_push($options, "<li><a value=\"$i\" href=\"#\">$i</a></li>");
 
-        $mform->addElement('html', '
+        if ($this->is_author_mode()) {
+            $mform->addElement('html', '
             <div id="answers_toolbar" class="panel" style="text-align: right;">
             <div id="add_answer_button" class="btn-group" style="margin-bottom: 20px;">
               <button type="button" class="btn btn-info dropdown-toggle"
                       data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">' .
-            get_string('add_answers', 'qtype_omerointeractive') .
-            ' <span class="caret"></span>
+                get_string('add_answers', 'qtype_omerointeractive') .
+                ' <span class="caret"></span>
               </button>
               <ul class="dropdown-menu">' . implode($options) . '</ul>' .
-            '</div></div>'
-        );
+                '</div></div>'
+            );
+        }
     }
 
     protected function define_answers_section()
