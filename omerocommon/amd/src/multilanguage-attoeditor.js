@@ -45,6 +45,9 @@ define([
             // the reference to this scope
             var me = this;
 
+            // initialized allowed languages
+            me._allowed_editing_languages = null;
+
             // Call the parent constructor
             M.qtypes.omerocommon.MultilanguageElement.call(this, element_id, locale_map_element_name);
 
@@ -84,6 +87,11 @@ define([
         prototype.save = function () {
             var text = this._editor.getText();
             this.setLocaleText(text, this._current_language);
+        };
+
+        prototype.setAllowedEditingLanguages = function (languages) {
+            this._allowed_editing_languages = languages;
+            this.checkAllowTranslationLanguages(this._current_language);
         };
 
         /**
