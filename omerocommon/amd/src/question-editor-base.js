@@ -169,8 +169,8 @@ define([
 
             me._build_answer_controls();
 
-
             me._editor = {};
+            var supported_languages = me.getSupportedLanguages();
             for (i in me._localized_string_names) {
                 var localized_string_name = me._localized_string_names[i];
                 var editor = new M.qtypes.omerocommon.MultilanguageAttoEditor(
@@ -178,6 +178,12 @@ define([
                 editor.init(language_selector.val(), localized_string_name + "_locale_map");
                 editor.loadDataFromFormInputs(localized_string_name + "_locale_map");
                 editor.onLanguageChanged(language_selector.val());
+
+                // filter languages and selected the editable ones
+                if (me._config["view_mode"] != "author") {
+                    editor.setAllowedEditingLanguages(_allowed_translation_languages);
+                }
+
                 // registers a reference to the editor instance
                 me._editor[localized_string_name] = editor;
             }
