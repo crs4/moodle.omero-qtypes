@@ -44,13 +44,15 @@ define([
          * Defines MoodleFormUtils class
          * @type {{}}
          */
-        M.qtypes.omerocommon.MoodleAttoEditor = function (editor_container_id) {
+        M.qtypes.omerocommon.MoodleAttoEditor = function (editor_container_id, editing_disabled) {
 
             // the reference to this scope
             var me = this;
 
             // the input element containing data to edit
             me.input_data_element_name = editor_container_id;
+
+            me.editing_disabled = editing_disabled === true;
 
             // initialization function
             me.init = function () {
@@ -231,12 +233,12 @@ define([
 
             me.setText = function (text, async) {
                 console.log("Setting text: " + text + " within the textarea: " + me.input_data_element_name + "editable");
-                if(!async){
+                if (!async) {
                     var data_element = document.getElementById(me.input_data_element_name + "editable");
                     if (!data_element) console.warn("AttoEditor of " +
                         me.input_data_element_name + " seems not initialized!");
                     else data_element.innerHTML = text;
-                }else {
+                } else {
                     var count = 0;
                     var timeoutVar = setInterval(
                         function setText() {
@@ -246,6 +248,8 @@ define([
                                 console.log("AttoEditor of " +
                                     me.input_data_element_name + " seems initialized!", "Attempt: " + (count));
                                 clearTimeout(timeoutVar);
+                                if (me.editing_disabled)
+                                    data_element.setAttribute("contenteditable", false);
                             } else {
                                 console.log("AttoEditor of " +
                                     me.input_data_element_name + " seems not initialized!", "Attempt: " + (++count));
@@ -261,6 +265,11 @@ define([
                     console.warn("AttoEditor of " + me.input_data_element_name + " seems not initialized!");
                     return undefined;
                 } else return data_element.innerHTML;
+            };
+
+            me.enableEditing = function (enabled) {
+                var data_element = document.getElementById(me.input_data_element_name + "editable");
+                data_element.setAttribute("contenteditable", enabled);
             };
 
             me.on = function (eventName, callback) {
