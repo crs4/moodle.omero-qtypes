@@ -120,3 +120,14 @@ function is_question_translator($context, $lang_code = null)
     return true;
 }
 
+function get_allowed_translation_languages($context)
+{
+    $result = array();
+    $languages = get_string_manager()->get_list_of_languages();
+    foreach ($languages as $lang_code => $lang_name) {
+        if (is_question_translator($context, $lang_code))
+            $result[$lang_code] = $lang_name;
+    }
+    return $result;
+}
+
