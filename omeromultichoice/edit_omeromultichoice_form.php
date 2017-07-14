@@ -158,17 +158,19 @@ class qtype_omeromultichoice_edit_form extends qtype_omerocommon_edit_form
         for ($i = 1; $i <= 10; $i++)
             array_push($options, "<li><a value=\"$i\" href=\"#\">$i</a></li>");
 
-        $mform->addElement('html', '
+        if($this->is_author_mode()) {
+            $mform->addElement('html', '
             <div id="answers_toolbar" class="panel" style="text-align: right;">
             <div id="add_answer_button" class="btn-group" style="margin-bottom: 20px;">
               <button type="button" class="btn btn-info dropdown-toggle"
                       data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">' .
-            get_string('add_answers', 'qtype_omeromultichoice') .
-            ' <span class="caret"></span>
+                get_string('add_answers', 'qtype_omeromultichoice') .
+                ' <span class="caret"></span>
               </button>
               <ul class="dropdown-menu">' . implode($options) . '</ul>' .
-            '</div></div>'
-        );
+                '</div></div>'
+            );
+        }
     }
 
 
