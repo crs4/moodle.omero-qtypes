@@ -98,6 +98,15 @@ define([
             // update the editor with the current locale text
             var text = this._locale_text_map[language] || "";
             this._editor.setText(text, true);
+            this.checkAllowTranslationLanguages(language);
+        };
+
+        prototype.checkAllowTranslationLanguages = function (language) {
+            if (this._allowed_editing_languages) {
+                if (this._allowed_editing_languages.indexOf(language) >= 0) {
+                    this._editor.enableEditing(true);
+                } else this._editor.enableEditing(false);
+            }
         };
 
         // returns the class
