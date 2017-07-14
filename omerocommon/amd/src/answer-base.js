@@ -433,14 +433,12 @@ define([
                     (value == i ? 'selected="selected"' : "") + '>' +
                     this._fraction_options[i] + '</option>';
             select += '</select>';
-            var fraction_selector = $(select);
-            this._form_utils.appendElement(this._answer_container, label, fraction_selector, false);
-
-            this._inputs[element_name] = select;
+            var select_element = $(select);
+            this._form_utils.appendElement(this._answer_container, label, select_element, false);
 
             var me = this;
-            fraction_selector = document.getElementById(id + "_select");
-            fraction_selector.onchange = function (data) {
+            select_element = document.getElementById(id + "_select");
+            select_element.onchange = function (data) {
                 console.log("Changed grade", data);
                 me._data[element_name] = fraction_selector.options[fraction_selector.selectedIndex].value;
             };
