@@ -37,7 +37,7 @@ $QUESTION_TRANSLATOR = "$CAPABILITY_PREFIX:translator";
 class qtype_omerocommon_capabilities
 {
 
-    public static $CAPABILITY_PREFIX = "mod/qtype_omerocommon";
+    public static $CAPABILITY_PREFIX = "question/qtype_omerocommon";
 
     public static function get_question_author_capability()
     {
@@ -46,13 +46,20 @@ class qtype_omerocommon_capabilities
 
     public static function get_question_translator_capability($lang_code = null)
     {
-        return self::$CAPABILITY_PREFIX . ":translator" . (is_null($lang_code) ? "" : "_$lang_code");
+        return self::$CAPABILITY_PREFIX . ":translate" . (is_null($lang_code) ? "" : "_$lang_code");
     }
 }
 
 
 $capabilities = array(
     qtype_omerocommon_capabilities::get_question_author_capability() => array(
+        'captype' => 'write',
+        'contextlevel' => CONTEXT_MODULE,
+        'archetypes' => array(
+            'teacher' => CAP_ALLOW
+        )
+    ),
+    qtype_omerocommon_capabilities::get_question_translator_capability() => array(
         'captype' => 'write',
         'contextlevel' => CONTEXT_MODULE,
         'archetypes' => array(
