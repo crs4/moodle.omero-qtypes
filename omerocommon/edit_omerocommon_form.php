@@ -192,7 +192,7 @@ abstract class qtype_omerocommon_edit_form extends qtype_multichoice_edit_form
 
         // question name
         $mform->addElement('text', 'name', get_string('questionname', 'question'),
-            array('size' => 50, 'maxlength' => 255, "style" => "width: 98%;"));
+            array('size' => 50, 'maxlength' => 255, "style" => "width: 98%;", "disabled" => !$this->is_author_mode()));
         $mform->setType('name', PARAM_TEXT);
         $mform->addRule('name', null, 'required', null, 'client');
 
@@ -220,23 +220,26 @@ abstract class qtype_omerocommon_edit_form extends qtype_multichoice_edit_form
                 $contexts = $this->contexts->having_cap('moodle/question:add');
             }
             // Adding question.
-            $mform->addElement('questioncategory', 'category', get_string('category', 'question'),
-                array('contexts' => $contexts));
+            $mform->addElement('questioncategory', 'category',
+                get_string('category', 'question'), array('contexts' => $contexts));
         } else if (!($this->question->formoptions->canmove ||
             $this->question->formoptions->cansaveasnew)
         ) {
+
             // Editing question with no permission to move from category.
-            $mform->addElement('questioncategory', 'category', get_string('category', 'question'),
-                array('contexts' => array($this->categorycontext)));
+            $mform->addElement('questioncategory', 'category',
+                get_string('category', 'question'),
+                array('contexts' => array($this->categorycontext)), array("disabled" => !$this->is_author_mode()));
             $mform->addElement('hidden', 'usecurrentcat', 1);
             $mform->setType('usecurrentcat', PARAM_BOOL);
             $mform->setConstant('usecurrentcat', 1);
         } else {
+
             // Editing question with permission to move from category or save as new q.
             $currentgrp = array();
             $currentgrp[0] = $mform->createElement('questioncategory', 'category',
                 get_string('categorycurrent', 'question'),
-                array('contexts' => array($this->categorycontext)));
+                array('contexts' => array($this->categorycontext)), array("disabled" => !$this->is_author_mode()));
             if ($this->question->formoptions->canedit ||
                 $this->question->formoptions->cansaveasnew
             ) {
@@ -252,7 +255,7 @@ abstract class qtype_omerocommon_edit_form extends qtype_multichoice_edit_form
 
             $mform->addElement('questioncategory', 'categorymoveto',
                 get_string('categorymoveto', 'question'),
-                array('contexts' => array($this->categorycontext)));
+                array('contexts' => array($this->categorycontext)), array("disabled" => !$this->is_author_mode()));
             if ($this->question->formoptions->canedit ||
                 $this->question->formoptions->cansaveasnew
             ) {
@@ -283,25 +286,27 @@ abstract class qtype_omerocommon_edit_form extends qtype_multichoice_edit_form
             get_string('answersingleyes', 'qtype_omerocommon'),
         );
         $mform->addElement('select', 'single',
-            get_string('answerhowmany', 'qtype_omerocommon'), $menu);
+            get_string('answerhowmany', 'qtype_omerocommon'), $menu,
+            array("disabled" => !$this->is_author_mode()));
         $mform->setDefault('single', 1);
 
         // how to number answer options
         $mform->addElement('select', 'answernumbering',
             get_string('answernumbering', 'qtype_multichoice'),
-            qtype_multichoice::get_numbering_styles());
+            qtype_multichoice::get_numbering_styles(), array("disabled" => !$this->is_author_mode()));
         $mform->setDefault('answernumbering', 'abc');
 
         // default mark
         $mform->addElement('text', 'defaultmark', get_string('defaultmark', 'question'),
-            array('size' => 7));
+            array('size' => 7, "disabled" => !$this->is_author_mode()));
         $mform->setType('defaultmark', PARAM_FLOAT);
         $mform->setDefault('defaultmark', 1);
         $mform->addRule('defaultmark', null, 'required', null, 'client');
 
         // flag to set the shuffling of answer options
         $mform->addElement('advcheckbox', 'shuffleanswers',
-            get_string('shuffleanswers', 'qtype_multichoice'), null, null, array(0, 1));
+            get_string('shuffleanswers', 'qtype_multichoice'), null,
+            array("disabled" => !$this->is_author_mode()), array(0, 1));
         $mform->addHelpButton('shuffleanswers', 'shuffleanswers', 'qtype_multichoice');
         $mform->setDefault('shuffleanswers', 1);
 
@@ -323,6 +328,7 @@ abstract class qtype_omerocommon_edit_form extends qtype_multichoice_edit_form
         // file picker
         $picker = $mform->addElement('omerofilepicker', 'omeroimageurl', ' ', null,
             array('accepted_types' => array('*'),
+                'disable_image_selection' => !$this->is_author_mode(),
                 'return_types' => array(FILE_EXTERNAL),
                 'omero_image_server' => get_config('omero', 'omero_restendpoint')
             )
@@ -332,7 +338,8 @@ abstract class qtype_omerocommon_edit_form extends qtype_multichoice_edit_form
         $this->image_info_container_id = $picker->getFileInfoContainerId();
 
         // build the ROI table inspector
-        $this->define_roi_table_inspector();
+        if ($this->is_author_mode())
+            $this->define_roi_table_inspector();
 
         // set as expanded by default
         $mform->setExpanded('omeroimageheader');
@@ -482,10 +489,12 @@ abstract class qtype_omerocommon_edit_form extends qtype_multichoice_edit_form
         $mform = $this->_form;
 
         // header
-        $mform->addElement('header', 'feedbackheader', get_string('general_and_combined_feedback', 'qtype_omerocommon'));
+        $mform->addElement('header', 'feedbackheader',
+            get_string('general_and_combined_feedback', 'qtype_omerocommon'));
 
         // general feedback
-        $mform->addElement('editor', 'generalfeedback', get_string('generalfeedback', 'question'),
+        $mform->addElement('editor', 'generalfeedback',
+            get_string('generalfeedback', 'question'),
             array('rows' => 10), $this->editoroptions);
         $mform->setType('generalfeedback', PARAM_RAW);
         $mform->addHelpButton('generalfeedback', 'generalfeedback', 'question');
@@ -532,14 +541,68 @@ abstract class qtype_omerocommon_edit_form extends qtype_multichoice_edit_form
     {
         global $CFG;
         $mform = $this->_form;
-        if (!empty($CFG->usetags)) {
-            $mform->addElement('header', 'tagsheader', get_string('questionclassifiers', "qtype_omerocommon"));
-            $mform->addElement('omeroquestiontags', 'tags', "", "officialtags",
-                get_string('selectquestionclassifiers', "qtype_omerocommon"),
-                get_string('editquestionclassifiers', "qtype_omerocommon"),
-                array("display" => "onlyofficial")
-            );
-            $mform->setExpanded('tagsheader');
+        if ($this->is_author_mode()) {
+            if (!empty($CFG->usetags)) {
+                $mform->addElement('header', 'tagsheader', get_string('questionclassifiers', "qtype_omerocommon"));
+                $mform->addElement('omeroquestiontags', 'tags', "", "officialtags",
+                    get_string('selectquestionclassifiers', "qtype_omerocommon"),
+                    get_string('editquestionclassifiers', "qtype_omerocommon"),
+                    array("display" => "onlyofficial")
+                );
+                $mform->setExpanded('tagsheader');
+            }
+        }
+    }
+
+    protected function add_interactive_settings($withclearwrong = false,
+                                                $withshownumpartscorrect = false)
+    {
+        $mform = $this->_form;
+
+        $mform->addElement('header', 'multitriesheader',
+            get_string('settingsformultipletries', 'question'));
+
+        $penalties = array(
+            1.0000000,
+            0.5000000,
+            0.3333333,
+            0.2500000,
+            0.2000000,
+            0.1000000,
+            0.0000000
+        );
+        if (!empty($this->question->penalty) && !in_array($this->question->penalty, $penalties)) {
+            $penalties[] = $this->question->penalty;
+            sort($penalties);
+        }
+        $penaltyoptions = array();
+        foreach ($penalties as $penalty) {
+            $penaltyoptions["{$penalty}"] = (100 * $penalty) . '%';
+        }
+        $mform->addElement('select', 'penalty',
+            get_string('penaltyforeachincorrecttry', 'question'), $penaltyoptions,
+            array("disabled" => !$this->is_author_mode()));
+        $mform->addHelpButton('penalty', 'penaltyforeachincorrecttry', 'question');
+        $mform->setDefault('penalty', 0.3333333);
+
+        if (isset($this->question->hints)) {
+            $counthints = count($this->question->hints);
+        } else {
+            $counthints = 0;
+        }
+
+        if ($this->question->formoptions->repeatelements) {
+            $repeatsatstart = max(self::DEFAULT_NUM_HINTS, $counthints);
+        } else {
+            $repeatsatstart = $counthints;
+        }
+
+        if ($this->is_author_mode()) {
+            // TODO: show these fields also in view and translate mode
+            list($repeated, $repeatedoptions) = $this->get_hint_fields(
+                $withclearwrong, $withshownumpartscorrect);
+            $this->repeat_elements($repeated, $repeatsatstart, $repeatedoptions,
+                'numhints', 'addhint', 1, get_string('addanotherhint', 'question'), true);
         }
     }
 
