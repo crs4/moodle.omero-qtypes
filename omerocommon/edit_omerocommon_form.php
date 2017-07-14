@@ -44,9 +44,9 @@ require_once($CFG->dirroot . '/question/type/omerocommon/db/access.php');
 abstract class qtype_omerocommon_edit_form extends qtype_multichoice_edit_form
 {
     const EDITOR_INFO_ELEMENT_NAME = "id_editor_info";
-
     protected $image_info_container_id;
     protected $image_selector_id;
+    protected $view_mode = "view";
 
     private $localized_strings = array(
         "questiontext", "generalfeedback",
@@ -56,6 +56,44 @@ abstract class qtype_omerocommon_edit_form extends qtype_multichoice_edit_form
     public function qtype()
     {
         return 'omerocommon';
+    }
+
+    public function get_view_mode()
+    {
+        return $this->view_mode;
+    }
+
+    public function is_author_mode()
+    {
+        return $this->view_mode === "author";
+    }
+
+    public function is_translate_mode()
+    {
+        return $this->view_mode === "translate";
+    }
+
+    public function is_view_mode()
+    {
+        echo "INNER pROPERTY: $this->view_mode";
+        return $this->get_view_mode() === "view";
+    }
+
+    private function get_allowed_translation_languages()
+    {
+        return get_allowed_translation_languages($this->context);
+    }
+
+    protected function set_view_mode()
+    {
+        echo "<br>Checking capability START.....<br>";
+        echo "AUTHOR " . ((is_question_author($this->context)) ? "YES" : "NO");
+        echo "<br>Checking capability END.....<br>";
+
+        $this->view_mode = optional_param('mode', "view", PARAM_RAW);
+        echo "<br>EDIT mode: " . $this->get_view_mode() . " ---> " . $this->is_translate_mode();
+
+        echo "<br>ALLOWED TRANSLATIONS: " . implode(", ", $this->get_allowed_translation_languages());
     }
 
     /**
