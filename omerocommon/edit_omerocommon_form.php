@@ -86,10 +86,6 @@ abstract class qtype_omerocommon_edit_form extends qtype_multichoice_edit_form
 
     protected function set_view_mode()
     {
-        echo "<br>Checking capability START.....<br>";
-        echo "AUTHOR " . ((is_question_author($this->context)) ? "YES" : "NO");
-        echo "<br>Checking capability END.....<br>";
-
         $view_mode = optional_param('mode', null, PARAM_RAW);
         if (!is_null($view_mode)) {
             $this->view_mode = optional_param('mode', "view", PARAM_RAW);
@@ -100,11 +96,6 @@ abstract class qtype_omerocommon_edit_form extends qtype_multichoice_edit_form
             $this->view_mode = "author";
             $_SESSION["view_mode"] = $this->view_mode;
         }
-        echo "<br>EDIT mode: " . $this->get_view_mode() . " ---> " . $this->is_translate_mode();
-
-        echo "<br>ALLOWED TRANSLATIONS: " . implode(", ", $this->get_allowed_translation_languages());
-
-
     }
 
     /**
