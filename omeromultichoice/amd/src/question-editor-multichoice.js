@@ -90,6 +90,15 @@ define([
             }
         };
 
+
+        prototype.onAddAnswer = function (answer) {
+            if (this._config["view_mode"] != "author") {
+                answer.setAllowedEditingLanguages(this._allowed_editing_languages);
+                answer.enableEditingControls(false);
+            }
+        };
+
+
         M.qtypes.omeromultichoice.QuestionEditorMultichoice.main = function (config_element_id) {
             // extract configuration
             var c = document.getElementsByName(config_element_id)[0];

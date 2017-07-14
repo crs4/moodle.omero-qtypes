@@ -124,6 +124,13 @@ define([
             me._answer_container = panel;
         };
 
+        prototype.enableEditingControls = function (enable) {
+            this._inputs["fraction"].setAttribute("disabled", enable);
+            document.getElementById(this._inputs["feedback_image_selector"].button_id)
+                .style.visibility = enable ? "visible" : "hidden";
+            $("#delete-answer-" + this._answer_number).css("visibility", enable ? "visible" : "hidden");
+        };
+
 
         // returns the class
         return M.qtypes.omeromultichoice.AnswerPlaintext;
