@@ -112,7 +112,7 @@ function is_question_translator($context, $lang_code = null)
     if (is_null($lang_code)) $lang_codes = array_keys(get_string_manager()->get_list_of_languages());
     else $lang_codes = is_string($lang_code) ? array($lang_code) : $lang_code;
     foreach ($lang_codes as $lang) {
-        if (!array_key_exists($lang))
+        if (!in_array($lang, $lang_codes))
             throw new RuntimeException("The language code '$lang' is not supported");
         if (!has_capability(qtype_omerocommon_capabilities::get_question_translator_capability($lang), $context, $USER->id))
             return false;
