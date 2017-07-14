@@ -468,7 +468,8 @@ define([
                 buttonname: selector_ids.button_name,
                 elementid: selector_ids.data_id,
                 elementname: selector_ids.data_name,
-                filename_element: undefined
+                filename_element: undefined,
+                disable_image_selection: false
             }, {}, true);
             me._answer_feedback_filepicker.addListener(me);
 
