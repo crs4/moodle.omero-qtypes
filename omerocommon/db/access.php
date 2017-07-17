@@ -123,7 +123,7 @@ function is_question_translator($context, $lang_code = null)
 function get_allowed_translation_languages($context)
 {
     $result = array();
-    $languages = get_string_manager()->get_list_of_languages();
+    $languages = get_string_manager()->get_list_of_translations();
     foreach ($languages as $lang_code => $lang_name) {
         if (is_question_translator($context, $lang_code))
             $result[$lang_code] = $lang_name;
