@@ -537,7 +537,7 @@ define([
         };
 
 
-        prototype.enableEditingControls = function (enable) {
+        prototype.enableEditingControls = function () {
         };
 
         prototype.setAllowedEditingLanguages = function (allowed_translation_languages) {

@@ -172,7 +172,7 @@ define([
             answer.updateROIList();
             answer.addListener(this);
             updateGroupButton(this);
-            if (this._config["view_mode"] != "author") {
+            if (this._config.view_mode != "author") {
                 answer.setAllowedEditingLanguages(this._allowed_editing_languages);
                 answer.enableEditingControls(false);
             }

@@ -132,9 +132,9 @@ define([
         };
 
         prototype.enableEditingControls = function (enable) {
-            this._inputs["fraction"].setAttribute("disabled", enable);
+            this._inputs.fraction.setAttribute("disabled", enable);
             this.enableRoiListContextMenu(enable);
-            document.getElementById(this._inputs["feedback_image_selector"].button_id)
+            document.getElementById(this._inputs.feedback_image_selector.button_id)
                 .style.visibility = enable ? "visible" : "hidden";
             $("#delete-answer-" + this._answer_number).css("visibility", enable ? "visible" : "hidden");
         };

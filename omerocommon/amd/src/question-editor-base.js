@@ -167,12 +167,11 @@ define([
             me._answers = [];
             me._answer_ids = {};
 
-            initializeSupportedLanguages(config["default_language"], config["view_mode"], me);
+            initializeSupportedLanguages(config.default_language, config.view_mode, me);
 
             me._build_answer_controls();
 
             me._editor = {};
-            var supported_languages = me.getSupportedLanguages();
             for (i in me._localized_string_names) {
                 var localized_string_name = me._localized_string_names[i];
                 var editor = new M.qtypes.omerocommon.MultilanguageAttoEditor(
@@ -182,7 +181,7 @@ define([
                 editor.onLanguageChanged(language_selector.val());
 
                 // filter languages and selected the editable ones
-                if (me._config["view_mode"] != "author") {
+                if (me._config.view_mode != "author") {
                     editor.setAllowedEditingLanguages(_allowed_translation_languages);
                 }
 
@@ -572,9 +571,9 @@ define([
             me._modal_image_panel.setImageModelServer(me._viewer_model_server);
             me._modal_image_panel.maximizeHeight(true);
             me._modal_image_panel.center(true);
-            if (me._config["view_mode"] != "author")
+            if (me._config.view_mode != "author")
                 me._modal_image_panel.setAllowedTranslationLanguages(_allowed_translation_languages);
-            else me._modal_image_panel.setAllowedTranslationLanguages([me._config["default_language"]]);
+            else me._modal_image_panel.setAllowedTranslationLanguages([me._config.default_language]);
 
 
             // load and show image and its related ROIs
