@@ -542,9 +542,11 @@ define([
 
         prototype.setAllowedEditingLanguages = function (allowed_translation_languages) {
             var editor;
-            for (var e in this._editors_map) {
-                editor = this._editors_map[e];
-                editor.setAllowedEditingLanguages(allowed_translation_languages);
+            if (allowed_translation_languages) {
+                for (var e in this._editors_map) {
+                    editor = this._editors_map[e];
+                    editor.setAllowedEditingLanguages(allowed_translation_languages);
+                }
             }
         };
 
