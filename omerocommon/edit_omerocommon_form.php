@@ -105,7 +105,7 @@ abstract class qtype_omerocommon_edit_form extends qtype_multichoice_edit_form
         if (!is_null($view_mode)) {
             $this->view_mode = optional_param('mode', "view", PARAM_RAW);
             $_SESSION["view_mode"] = $this->view_mode;
-        } else if (isset($_SESSION["view_mode"])) {
+        } else if (!empty($this->question->id) && isset($_SESSION["view_mode"])) {
             $this->view_mode = $_SESSION["view_mode"];
         } else {
             $this->view_mode = "author";
