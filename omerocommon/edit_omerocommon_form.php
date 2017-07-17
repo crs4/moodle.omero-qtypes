@@ -85,13 +85,15 @@ abstract class qtype_omerocommon_edit_form extends qtype_multichoice_edit_form
 
     protected function get_visible_languages()
     {
+        global $USER;
         $languages = array();
         $available_languages = get_string_manager()->get_list_of_translations();
         if ($this->is_view_mode()) {
             $languages += $available_languages;
         } else {
             $languages["en"] = $available_languages["en"];
-            if ($this->is_translate_mode())
+            if ($this->is_translate_mode() ||
+                !has_capability('question/qtype_omerocommon:author', $this->context, $USER))
                 $languages += $this->get_allowed_translation_languages();
         }
         return $languages;
