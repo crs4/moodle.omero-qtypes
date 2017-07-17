@@ -599,13 +599,14 @@ abstract class qtype_omerocommon_edit_form extends qtype_multichoice_edit_form
             $repeatsatstart = $counthints;
         }
 
-        if ($this->is_author_mode()) {
-            // TODO: show these fields also in view and translate mode
-            list($repeated, $repeatedoptions) = $this->get_hint_fields(
-                $withclearwrong, $withshownumpartscorrect);
-            $this->repeat_elements($repeated, $repeatsatstart, $repeatedoptions,
-                'numhints', 'addhint', 1, get_string('addanotherhint', 'question'), true);
-        }
+        // We do not use these fields: thus, we disable them by default
+//        if ($this->is_author_mode()) {
+//            // TODO: show these fields also in view and translate mode
+//            list($repeated, $repeatedoptions) = $this->get_hint_fields(
+//                $withclearwrong, $withshownumpartscorrect);
+//            $this->repeat_elements($repeated, $repeatsatstart, $repeatedoptions,
+//                'numhints', 'addhint', 1, get_string('addanotherhint', 'question'), true);
+//        }
     }
 
 
