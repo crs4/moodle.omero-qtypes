@@ -40,7 +40,7 @@ class MoodleQuickForm_omeroquestiontags extends MoodleQuickForm_tags
                                                $selectElementLabel = null,
                                                $elementDescription = null,
                                                $editElementLabel = null,
-                                               $options = array(), $attributes = null)
+                                               $options = array(), $attributes = array())
     {
         parent::MoodleQuickForm_tags($elementName, $elementLabel, $options, $attributes);
         $this->elementLabel = $elementLabel;
