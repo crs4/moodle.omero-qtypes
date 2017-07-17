@@ -75,6 +75,10 @@ div.bootstrap-table > div.fixed-table-container {
     /*padding: 5px 5px 20px;*/
 }
 
+div.fixed-table-container > div.fixed-table-body{
+    height: auto;
+}
+
 div.table-row-feedback-image-description {
     height: 200px;
     width: 100%;
