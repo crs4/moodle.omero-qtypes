@@ -39,6 +39,11 @@ class qtype_omerocommon_capabilities
 
     public static $CAPABILITY_PREFIX = "question/qtype_omerocommon";
 
+    public static function get_question_view_capability()
+    {
+        return self::$CAPABILITY_PREFIX . ":view";
+    }
+
     public static function get_question_author_capability()
     {
         return self::$CAPABILITY_PREFIX . ":author";
@@ -50,21 +55,22 @@ class qtype_omerocommon_capabilities
     }
 }
 
-
 $capabilities = array(
+
+    qtype_omerocommon_capabilities::get_question_view_capability() => array(
+        'captype' => 'read',
+        'contextlevel' => CONTEXT_MODULE,
+        'archetypes' => array()
+    ),
     qtype_omerocommon_capabilities::get_question_author_capability() => array(
         'captype' => 'write',
         'contextlevel' => CONTEXT_MODULE,
-        'archetypes' => array(
-            'teacher' => CAP_ALLOW
-        )
+        'archetypes' => array()
     ),
     qtype_omerocommon_capabilities::get_question_translator_capability() => array(
         'captype' => 'write',
         'contextlevel' => CONTEXT_MODULE,
-        'archetypes' => array(
-            'teacher' => CAP_ALLOW
-        )
+        'archetypes' => array()
     )
 );
 
@@ -92,7 +98,6 @@ function is_question_author($context, $lang_code = null)
     // set the default system language if $lang_code is undefined
     if (is_null($lang_code))
         $lang_code = $CFG->lang;
-    echo "<br> LANG: $lang_code";
 
     // check translation capabilities
     $lang_codes = is_string($lang_code) ? array($lang_code) : $lang_code;
