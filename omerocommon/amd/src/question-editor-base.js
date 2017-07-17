@@ -67,7 +67,7 @@ define([
          *
          * @private
          */
-        function initializeSupportedLanguages(default_language, obj) {
+        function initializeSupportedLanguages(default_language, view_mode, obj) {
 
             // initializes the list of supported languages
             if (!_supported_languages) {
@@ -79,7 +79,9 @@ define([
                 }
             }
 
-            _allowed_translation_languages =
+            if (view_mode === "view")
+                _allowed_translation_languages = [];
+            else _allowed_translation_languages =
                 _supported_languages.filter(function (lang_code) {
                     return lang_code !== default_language;
                 });
@@ -165,7 +167,7 @@ define([
             me._answers = [];
             me._answer_ids = {};
 
-            initializeSupportedLanguages(config["default_language"], me);
+            initializeSupportedLanguages(config["default_language"], config["view_mode"], me);
 
             me._build_answer_controls();
 
