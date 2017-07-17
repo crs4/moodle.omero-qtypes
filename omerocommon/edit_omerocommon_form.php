@@ -683,7 +683,7 @@ abstract class qtype_omerocommon_edit_form extends qtype_multichoice_edit_form
     protected function add_modal_frames()
     {
         $modal_dialog = qtype_omerocommon_renderer_helper::modal_dialog();
-        $modal_viewer = qtype_omerocommon_renderer_helper::modal_viewer();
+        $modal_viewer = qtype_omerocommon_renderer_helper::modal_viewer($this->get_visible_languages());
         return $this->_form->addElement("html", $modal_dialog . "\n" . $modal_viewer);
     }
 
