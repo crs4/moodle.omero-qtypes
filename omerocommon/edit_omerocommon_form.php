@@ -75,7 +75,6 @@ abstract class qtype_omerocommon_edit_form extends qtype_multichoice_edit_form
 
     public function is_view_mode()
     {
-        echo "INNER pROPERTY: $this->view_mode";
         return $this->get_view_mode() === "view";
     }
 
