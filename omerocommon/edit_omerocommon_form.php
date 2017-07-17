@@ -664,11 +664,19 @@ abstract class qtype_omerocommon_edit_form extends qtype_multichoice_edit_form
 
         // defines the set of control buttons
         $buttonarray = array();
-        $buttonarray[] = $mform->createElement('submit', 'updatebutton',
-            get_string('savechangesandcontinueediting', 'qtype_omerocommon'));
-        $buttonarray[] = $mform->createElement('submit', 'submitbutton', get_string('savechangesandexit', "qtype_omerocommon"));
-        $buttonarray[] = $mform->createElement('cancel');
-        $mform->addGroup($buttonarray, 'buttonar', ' ', array(' '), false);
+        if (!$this->is_view_mode()) {
+            $buttonarray[] = $mform->createElement('submit', 'updatebutton',
+                get_string('savechangesandcontinueediting', 'qtype_omerocommon'));
+            $buttonarray[] = $mform->createElement('submit', 'submitbutton',
+                get_string('savechangesandexit', "qtype_omerocommon"));
+            $buttonarray[] = $mform->createElement('cancel');
+            $mform->addGroup($buttonarray, 'buttonar', ' ', array(' '), false);
+            $mform->closeHeaderBefore('buttonar');
+        } else {
+            $buttonarray[] = $mform->addElement('cancel');
+            $mform->closeHeaderBefore('cancel');
+        }
+
         $mform->closeHeaderBefore('buttonar');
 
         if ((!empty($this->question->id)) && (!($this->question->formoptions->canedit ||
