@@ -80,7 +80,8 @@ class qtype_omerointeractive_edit_form extends qtype_omerocommon_edit_form
                     "fraction_options" => question_bank::fraction_options_full(),
                     "add_to_group_element_id" => self::ADD_ROI_TO_GROUP,
                     "add_to_group_list_element_id" => self::ADD_ROI_GROUP_LIST_OPTIONS,
-                    "view_mode" => $this->get_view_mode()
+                    "view_mode" => $this->get_view_mode(),
+                    "default_language" => $CFG->lang
                 )
             )
         );

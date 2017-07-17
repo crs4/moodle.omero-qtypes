@@ -77,7 +77,8 @@ class qtype_omeromultichoice_edit_form extends qtype_omerocommon_edit_form
                     "image_selector_id" => $this->image_selector_id,
                     "answer_header" => "id_answerhdr",
                     "fraction_options" => question_bank::fraction_options_full(),
-                    "view_mode" => $this->get_view_mode()
+                    "view_mode" => $this->get_view_mode(),
+                    "default_language" => $CFG->lang
                 )
             )
         );
