@@ -83,6 +83,20 @@ abstract class qtype_omerocommon_edit_form extends qtype_multichoice_edit_form
         return get_allowed_translation_languages($this->context);
     }
 
+    protected function get_visible_languages()
+    {
+        $languages = array();
+        $available_languages = get_string_manager()->get_list_of_translations();
+        if ($this->is_view_mode()) {
+            $languages += $available_languages;
+        } else {
+            $languages["en"] = $available_languages["en"];
+            if ($this->is_translate_mode())
+                $languages += $this->get_allowed_translation_languages();
+        }
+        return $languages;
+    }
+
     protected function set_view_mode()
     {
         $view_mode = optional_param('mode', null, PARAM_RAW);
@@ -176,15 +190,7 @@ abstract class qtype_omerocommon_edit_form extends qtype_multichoice_edit_form
         $this->define_category_selector();
 
         // language selector
-        $languages = array();
-        $available_languages = get_string_manager()->get_list_of_translations();
-        if ($this->is_view_mode()) {
-            $languages += $available_languages;
-        } else {
-            $languages["en"] = $available_languages["en"];
-            if ($this->is_translate_mode())
-                $languages += $this->get_allowed_translation_languages();
-        }
+        $languages = $this->get_visible_languages();
 
         $mform->addElement('select', 'question_language',
             get_string('language', 'qtype_omerocommon'), $languages,
