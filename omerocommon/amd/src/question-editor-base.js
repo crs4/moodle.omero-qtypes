@@ -67,7 +67,7 @@ define([
          *
          * @private
          */
-        function initializeSupportedLanguages(obj) {
+        function initializeSupportedLanguages(default_language, obj) {
 
             // initializes the list of supported languages
             if (!_supported_languages) {
@@ -81,7 +81,7 @@ define([
 
             _allowed_translation_languages =
                 _supported_languages.filter(function (lang_code) {
-                    return lang_code !== "en";
+                    return lang_code !== default_language;
                 });
 
             // register values
@@ -165,7 +165,7 @@ define([
             me._answers = [];
             me._answer_ids = {};
 
-            initializeSupportedLanguages(me);
+            initializeSupportedLanguages(config["default_language"], me);
 
             me._build_answer_controls();
 
@@ -570,6 +570,10 @@ define([
             me._modal_image_panel.setImageModelServer(me._viewer_model_server);
             me._modal_image_panel.maximizeHeight(true);
             me._modal_image_panel.center(true);
+            if (me._config["view_mode"] != "author")
+                me._modal_image_panel.setAllowedTranslationLanguages(_allowed_translation_languages);
+            else me._modal_image_panel.setAllowedTranslationLanguages([me._config["default_language"]]);
+
 
             // load and show image and its related ROIs
             viewer_ctrl.open(true, function (data) {
