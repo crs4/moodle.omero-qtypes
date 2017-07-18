@@ -49,6 +49,11 @@ class qtype_omerocommon_capabilities
         return self::$CAPABILITY_PREFIX . ":author";
     }
 
+    public static function get_question_review_capability()
+    {
+        return self::$CAPABILITY_PREFIX . ":review";
+    }
+
     public static function get_question_translator_capability($lang_code = null)
     {
         return self::$CAPABILITY_PREFIX . ":translate" . (is_null($lang_code) ? "" : "_$lang_code");
@@ -63,6 +68,11 @@ $capabilities = array(
         'archetypes' => array()
     ),
     qtype_omerocommon_capabilities::get_question_author_capability() => array(
+        'captype' => 'write',
+        'contextlevel' => CONTEXT_MODULE,
+        'archetypes' => array()
+    ),
+    qtype_omerocommon_capabilities::get_question_review_capability() => array(
         'captype' => 'write',
         'contextlevel' => CONTEXT_MODULE,
         'archetypes' => array()
