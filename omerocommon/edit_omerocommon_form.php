@@ -88,8 +88,14 @@ abstract class qtype_omerocommon_edit_form extends qtype_multichoice_edit_form
         global $USER;
         $languages = array();
         $available_languages = get_string_manager()->get_list_of_translations();
-        if ($this->is_view_mode() || ($this->is_translate_mode()
-                && !has_capability('question/qtype_omerocommon:view', $this->context, $USER))) {
+        if ($this->is_view_mode()
+            || ($this->is_translate_mode()
+                && !has_capability('question/qtype_omerocommon:view', $this->context, $USER))
+            || ($this->is_author_mode()
+                && !has_capability('question/qtype_omerocommon:author', $this->context, $USER)
+                && !has_capability('question/qtype_omerocommon:review', $this->context, $USER)
+            )
+        ) {
             $languages += $available_languages;
         } else {
             $languages["en"] = $available_languages["en"];
