@@ -673,7 +673,8 @@ abstract class qtype_omerocommon_edit_form extends qtype_multichoice_edit_form
             $mform->addGroup($buttonarray, 'buttonar', ' ', array(' '), false);
             $mform->closeHeaderBefore('buttonar');
         } else {
-            $buttonarray[] = $mform->addElement('cancel');
+            $buttonarray[] = $mform->addElement('cancel', "cancelbutton",
+                get_string("close", 'qtype_omerocommon'));
             $mform->closeHeaderBefore('cancel');
         }
 
