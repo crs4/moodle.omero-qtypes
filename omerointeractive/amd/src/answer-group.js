@@ -117,7 +117,7 @@ define([
             me._build_hidden_of("feedbackformat", "1");
 
             // answer feedback images
-            me._build_feedback_image_selector();
+            me._build_feedback_image_selector("feedback_image_selector");
 
             // reference to the head
             me._answer_head = $('#head-answer-' + this._answer_number);
@@ -131,6 +131,13 @@ define([
             me._answer_container = panel;
         };
 
+        prototype.enableEditingControls = function (enable) {
+            this._inputs.fraction.setAttribute("disabled", enable);
+            this.enableRoiListContextMenu(enable);
+            document.getElementById(this._inputs.feedback_image_selector.button_id)
+                .style.visibility = enable ? "visible" : "hidden";
+            $("#delete-answer-" + this._answer_number).css("visibility", enable ? "visible" : "hidden");
+        };
 
         prototype.addROIsToGroup = function (roi_id_list) {
             var me = this;
@@ -221,11 +228,11 @@ define([
             el_list.innerHTML = (list.join(", "));
             $("[name*=answer\\[" + this._answer_number + "\\]]").val(this._roi_id_list.join(","));
             this._data.answer = this._roi_id_list.join(",");
-            this._initContextMenuOn();
+            this.enableRoiListContextMenu();
         };
 
 
-        prototype._initContextMenuOn = function () {
+        prototype.enableRoiListContextMenu = function (enable) {
             var me = this;
 
             var onMenuSelected = function (invokedOn, selectedMenu) {
@@ -242,10 +249,12 @@ define([
 
             for (var i in this._roi_id_list) {
                 var selector = "#" + this._roi_id_list[i] + "-roi-shape-answer-option";
-                $(selector).contextMenu({
-                    menuSelector: "#roishape-answer-option-ctx-menu",
-                    menuSelected: onMenuSelected
-                });
+                if (enable) {
+                    $(selector).contextMenu({
+                        menuSelector: "#roishape-answer-option-ctx-menu",
+                        menuSelected: onMenuSelected
+                    });
+                } else $(selector).contextMenu(false);
             }
         };
 

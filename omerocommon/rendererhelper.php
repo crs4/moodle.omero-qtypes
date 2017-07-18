@@ -46,7 +46,8 @@ class qtype_omerocommon_renderer_helper
 
     const MODAL_VIEWER_ELEMENT_ID = "modalImageDialogPanel";
 
-    public static function modal_viewer($hide_save_button = false,
+    public static function modal_viewer($visible_languages = null,
+                                        $hide_save_button = false,
                                         $hide_toolbar = false,
                                         $show_locale_description_panel = false,
                                         $element_id = self::MODAL_VIEWER_ELEMENT_ID)
@@ -115,7 +116,8 @@ class qtype_omerocommon_renderer_helper
         }
 
         $language_option_list = "";
-        foreach (get_string_manager()->get_list_of_translations() as $k => $v) {
+        $lang_opts = is_null($visible_languages) ? get_string_manager()->get_list_of_translations() : $visible_languages;
+        foreach ($lang_opts as $k => $v) {
             $language_option_list .= "<option value=\"$k\">$v</option>";
         }
 
@@ -228,7 +230,7 @@ class qtype_omerocommon_renderer_helper
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
         <h4 class="modal-title text-warning" id="myModalLabel">
             <i class="glyphicon glyphicon-warning-sign"></i> ' . get_string('validate_warning', 'qtype_omerocommon') .
-        '</h4>
+            '</h4>
       </div>
       <div class="modal-body text-left">
         <span id="modal-frame-text"></span>
@@ -250,9 +252,9 @@ class qtype_omerocommon_renderer_helper
     public static function strip_first_paragraph($html)
     {
         # remove the outer <DIV>
-        $result =  preg_replace("/(^<div[^>]*>|<\/div>$)/i", "", $html);
+        $result = preg_replace("/(^<div[^>]*>|<\/div>$)/i", "", $html);
         # remove the outer <P>
-        $result =  preg_replace("/(<p[^>]*>|<\/p>$)/i", "", $result);
+        $result = preg_replace("/(<p[^>]*>|<\/p>$)/i", "", $result);
         # remove the first <BR>
         $result = preg_replace("/<br\W*?\/>/", "", $result);
         return $result;

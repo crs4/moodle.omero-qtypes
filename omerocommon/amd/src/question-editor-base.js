@@ -55,12 +55,19 @@ define([
         var _supported_languages = null;
 
         /**
+         * List of allowed languages for text translations
+         *
+         * @private
+         */
+        var _allowed_translation_languages = null;
+
+        /**
          * Initializes the list of supported languages
          * and sets the currently selected language
          *
          * @private
          */
-        function initializeSupportedLanguages() {
+        function initializeSupportedLanguages(default_language, view_mode, obj) {
 
             // initializes the list of supported languages
             if (!_supported_languages) {
@@ -70,6 +77,19 @@ define([
                 for (var i = 0; i < language_options.length; i++) {
                     _supported_languages.push(language_options[i].value);
                 }
+            }
+
+            if (view_mode === "view")
+                _allowed_translation_languages = [];
+            else _allowed_translation_languages =
+                _supported_languages.filter(function (lang_code) {
+                    return lang_code !== default_language;
+                });
+
+            // register values
+            if (obj) {
+                obj._supported_lanuguages = _supported_languages;
+                obj._allowed_editing_languages = _allowed_translation_languages;
             }
 
             // handles the event 'language changed'
@@ -147,10 +167,9 @@ define([
             me._answers = [];
             me._answer_ids = {};
 
-            initializeSupportedLanguages();
+            initializeSupportedLanguages(config.default_language, config.view_mode, me);
 
             me._build_answer_controls();
-
 
             me._editor = {};
             for (i in me._localized_string_names) {
@@ -160,6 +179,12 @@ define([
                 editor.init(language_selector.val(), localized_string_name + "_locale_map");
                 editor.loadDataFromFormInputs(localized_string_name + "_locale_map");
                 editor.onLanguageChanged(language_selector.val());
+
+                // filter languages and selected the editable ones
+                if (me._config.view_mode != "author") {
+                    editor.setAllowedEditingLanguages(_allowed_translation_languages);
+                }
+
                 // registers a reference to the editor instance
                 me._editor[localized_string_name] = editor;
             }
@@ -546,6 +571,10 @@ define([
             me._modal_image_panel.setImageModelServer(me._viewer_model_server);
             me._modal_image_panel.maximizeHeight(true);
             me._modal_image_panel.center(true);
+            if (me._config.view_mode != "author")
+                me._modal_image_panel.setAllowedTranslationLanguages(_allowed_translation_languages);
+            else me._modal_image_panel.setAllowedTranslationLanguages([me._config.default_language]);
+
 
             // load and show image and its related ROIs
             viewer_ctrl.open(true, function (data) {

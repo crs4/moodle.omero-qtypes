@@ -172,6 +172,10 @@ define([
             answer.updateROIList();
             answer.addListener(this);
             updateGroupButton(this);
+            if (this._config.view_mode != "author") {
+                answer.setAllowedEditingLanguages(this._allowed_editing_languages);
+                answer.enableEditingControls(false);
+            }
         };
 
 
@@ -215,20 +219,20 @@ define([
 
 
         M.qtypes.omerointeractive.QuestionEditorInteractive.main = function (config_element_id) {
-                // extract configuration
-                var c = document.getElementsByName(config_element_id)[0];
-                var config = JSON.parse(c.value);
-                console.log("QuestionEditorInteractive configuration", config);
+            // extract configuration
+            var c = document.getElementsByName(config_element_id)[0];
+            var config = JSON.parse(c.value);
+            console.log("QuestionEditorInteractive configuration", config);
 
-                $(document).ready(
-                    function () {
-                        var instance = new M.qtypes.omerointeractive.QuestionEditorInteractive();
-                        instance.initialize(config);
-                        if (M.cfg.developerdebug)
-                            window.qei = instance;
-                    }
-                );
-            };
+            $(document).ready(
+                function () {
+                    var instance = new M.qtypes.omerointeractive.QuestionEditorInteractive();
+                    instance.initialize(config);
+                    if (M.cfg.developerdebug)
+                        window.qei = instance;
+                }
+            );
+        };
 
         return M.qtypes.omerointeractive.QuestionEditorInteractive;
     }

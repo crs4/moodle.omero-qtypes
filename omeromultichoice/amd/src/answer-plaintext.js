@@ -110,7 +110,7 @@ define([
             me._build_hidden_of("feedbackformat", "1");
 
             // answer feedback images
-            me._build_feedback_image_selector();
+            me._build_feedback_image_selector("feedback_image_selector");
 
             // reference to the head
             me._answer_head = $('#head-answer-' + this._answer_number);
@@ -122,6 +122,13 @@ define([
 
             // registers the panel as main container
             me._answer_container = panel;
+        };
+
+        prototype.enableEditingControls = function (enable) {
+            this._inputs.fraction.setAttribute("disabled", enable);
+            document.getElementById(this._inputs.feedback_image_selector.button_id)
+                .style.visibility = enable ? "visible" : "hidden";
+            $("#delete-answer-" + this._answer_number).css("visibility", enable ? "visible" : "hidden");
         };
 
 

@@ -390,7 +390,7 @@ abstract class qtype_omeromultichoice_base_renderer extends qtype_multichoice_re
         $result = '';
 
         // add the ModalImagePanel
-        $result .= qtype_omerocommon_renderer_helper::modal_viewer(true, true, true, $modal_image_panel_id);
+        $result .= qtype_omerocommon_renderer_helper::modal_viewer(null, true, true, true, $modal_image_panel_id);
 
         // main question_answer_container
         $result .= html_writer::start_tag('div', array('id' => $question_answer_container, 'class' => 'ablock'));

@@ -375,6 +375,10 @@ define(['qtype_omerocommon/image-viewer',
         };
 
 
+        prototype.setAllowedTranslationLanguages = function (languages){
+            this._description_editor.setAllowedEditingLanguages(languages);
+        };
+
         /**
          * Handler for the event 'ImageModelRoiLoaded'.
          *

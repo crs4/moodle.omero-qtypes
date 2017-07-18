@@ -45,6 +45,9 @@ define([
             // the reference to this scope
             var me = this;
 
+            // initialized allowed languages
+            me._allowed_editing_languages = null;
+
             // Call the parent constructor
             M.qtypes.omerocommon.MultilanguageElement.call(this, element_id, locale_map_element_name);
 
@@ -86,6 +89,11 @@ define([
             this.setLocaleText(text, this._current_language);
         };
 
+        prototype.setAllowedEditingLanguages = function (languages) {
+            this._allowed_editing_languages = languages;
+            this.checkAllowTranslationLanguages(this._current_language);
+        };
+
         /**
          * Updates the viewer to show the current localized text
          *
@@ -98,6 +106,15 @@ define([
             // update the editor with the current locale text
             var text = this._locale_text_map[language] || "";
             this._editor.setText(text, true);
+            this.checkAllowTranslationLanguages(language);
+        };
+
+        prototype.checkAllowTranslationLanguages = function (language) {
+            if (this._allowed_editing_languages) {
+                if (this._allowed_editing_languages.indexOf(language) >= 0) {
+                    this._editor.enableEditing(true);
+                } else this._editor.enableEditing(false);
+            }
         };
 
         // returns the class

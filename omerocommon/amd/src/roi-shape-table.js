@@ -451,9 +451,9 @@ define(['jquery', 'qtype_omerocommon/roi-shape-model'],
             ].join('');
         };
 
-        prototype.getHeight = function () {
-            return $(window).height() - $('h1').outerHeight(true);
-        };
+        // prototype.getHeight = function () {
+        //     return $(window).height() - $('h1').outerHeight(true);
+        // };
 
         prototype.getBootstrapTable = function () {
             return this.table_element.bootstrapTable;

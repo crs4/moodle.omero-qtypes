@@ -390,7 +390,7 @@ define([
             };
         };
 
-        prototype._build_textarea_of = function (element_name, label, local_map_name) {
+        prototype._build_textarea_of = function (element_name, label, local_map_name, allowed_translation_languages) {
             var id = this._build_id_of(element_name);
             var name = this._build_name_of(element_name);
 
@@ -408,6 +408,9 @@ define([
             editor.init();
             this._editors_map[element_name] = editor;
             console.log("Editors map", this._editors_map);
+            if (allowed_translation_languages !== null && allowed_translation_languages !== undefined) {
+                editor.setAllowedEditingLanguages(allowed_translation_languages);
+            }
         };
 
         //prototype._init_textarea_editor = function (element_name) {
@@ -433,17 +436,17 @@ define([
                     (value == i ? 'selected="selected"' : "") + '>' +
                     this._fraction_options[i] + '</option>';
             select += '</select>';
-            var fraction_selector = $(select);
-            this._form_utils.appendElement(this._answer_container, label, fraction_selector, false);
-
-            this._inputs[element_name] = select;
+            var select_element = $(select);
+            this._form_utils.appendElement(this._answer_container, label, select_element, false);
 
             var me = this;
-            fraction_selector = document.getElementById(id + "_select");
-            fraction_selector.onchange = function (data) {
+            select_element = document.getElementById(id + "_select");
+            select_element.onchange = function (data) {
                 console.log("Changed grade", data);
-                me._data[element_name] = fraction_selector.options[fraction_selector.selectedIndex].value;
+                me._data[element_name] = select_element.options[select_element.selectedIndex].value;
             };
+
+            this._inputs[element_name] = select_element;
         };
 
         prototype._build_hidden_of = function (element_name, value) {
@@ -461,7 +464,7 @@ define([
             }
         };
 
-        prototype._build_feedback_image_selector = function () {
+        prototype._build_feedback_image_selector = function (selector_name) {
             var me = this;
             var selector_ids = me._add_image_selector("add_images", me._answer_number,
                 M.util.get_string("feedbackimages", "qtype_omerocommon"));
@@ -470,7 +473,8 @@ define([
                 buttonname: selector_ids.button_name,
                 elementid: selector_ids.data_id,
                 elementname: selector_ids.data_name,
-                filename_element: undefined
+                filename_element: undefined,
+                disable_image_selection: false
             }, {}, true);
             me._answer_feedback_filepicker.addListener(me);
 
@@ -482,6 +486,11 @@ define([
 
             // reference to the default ModalImagePanel
             me._modal_image_panel_ctrl = M.qtypes.omerocommon.ModalImagePanel.getInstance();
+
+            me._inputs[selector_name] = selector_ids;
+
+            // return object containing the IDs of the created HTML elements
+            return selector_ids;
         };
 
         prototype.onSelectedImage = function (image_info) {
@@ -524,6 +533,20 @@ define([
             if (event) {
                 console.log("Delete image event...", event);
                 this._removeFeedbackImage(event.image);
+            }
+        };
+
+
+        prototype.enableEditingControls = function () {
+        };
+
+        prototype.setAllowedEditingLanguages = function (allowed_translation_languages) {
+            var editor;
+            if (allowed_translation_languages) {
+                for (var e in this._editors_map) {
+                    editor = this._editors_map[e];
+                    editor.setAllowedEditingLanguages(allowed_translation_languages);
+                }
             }
         };
 
